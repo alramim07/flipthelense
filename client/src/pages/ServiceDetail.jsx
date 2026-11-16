@@ -347,42 +347,8 @@ export default function ServiceDetail() {
               </div>
             )}
 
-            {/* About This Project Narrative */}
+            {/* What People Loved About This Project (Fiverr-Style Review Carousel) - Above About Section */}
             <div className="space-y-4 pt-4 border-t border-[#232323]">
-              <h2 
-                className="text-xl font-bold text-white uppercase tracking-tight"
-                style={{ fontFamily: "'Oswald', sans-serif" }}
-              >
-                About This Project & Creative Direction
-              </h2>
-              <div 
-                className="space-y-3 text-xs sm:text-sm text-neutral-300 leading-relaxed font-normal"
-                style={{ fontFamily: "'Raleway', sans-serif" }}
-              >
-                <p>
-                  {project.overview}
-                </p>
-                <h3 className="font-bold text-white text-sm pt-2 uppercase" style={{ fontFamily: "'Oswald', sans-serif" }}>
-                  Key Editing Deliverables Included:
-                </h3>
-                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-neutral-300 pt-1">
-                  {(project.deliverables || [
-                    "4K UHD Master File Export",
-                    "Multi-Camera Audio Synchronization",
-                    "Professional Hollywood Color Grading",
-                    "Sound Design & Licensed Music"
-                  ]).map((item, i) => (
-                    <li key={i} className="flex items-center space-x-2 bg-[#141414] p-2.5 rounded-lg border border-[#232323]">
-                      <Check className="w-4 h-4 text-[#FFE379] shrink-0" />
-                      <span className="text-xs">{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            {/* What People Loved About FlipTheLense (Fiverr-Style Review Carousel) */}
-            <div className="space-y-4 pt-6 border-t border-[#232323]">
               
               {/* Reviews Header */}
               <div className="flex items-center justify-between">
@@ -390,7 +356,7 @@ export default function ServiceDetail() {
                   className="text-lg sm:text-xl font-bold text-white tracking-tight"
                   style={{ fontFamily: "'Oswald', sans-serif" }}
                 >
-                  What people loved about this freelancer
+                  What people loved about this project
                 </h2>
 
                 <div className="flex items-center space-x-3">
@@ -420,7 +386,7 @@ export default function ServiceDetail() {
                 </div>
               </div>
 
-              {/* Single Review Card Container (Matching exact uploaded design) */}
+              {/* Single Review Card Container */}
               {(() => {
                 const currentReview = REVIEWS[reviewIndex];
                 return (
@@ -484,6 +450,40 @@ export default function ServiceDetail() {
                 );
               })()}
 
+            </div>
+
+            {/* About This Project Narrative */}
+            <div className="space-y-4 pt-6 border-t border-[#232323]">
+              <h2 
+                className="text-xl font-bold text-white uppercase tracking-tight"
+                style={{ fontFamily: "'Oswald', sans-serif" }}
+              >
+                About This Project & Creative Direction
+              </h2>
+              <div 
+                className="space-y-3 text-xs sm:text-sm text-neutral-300 leading-relaxed font-normal"
+                style={{ fontFamily: "'Raleway', sans-serif" }}
+              >
+                <p>
+                  {project.overview}
+                </p>
+                <h3 className="font-bold text-white text-sm pt-2 uppercase" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                  Key Editing Deliverables Included:
+                </h3>
+                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-neutral-300 pt-1">
+                  {(project.deliverables || [
+                    "4K UHD Master File Export",
+                    "Multi-Camera Audio Synchronization",
+                    "Professional Hollywood Color Grading",
+                    "Sound Design & Licensed Music"
+                  ]).map((item, i) => (
+                    <li key={i} className="flex items-center space-x-2 bg-[#141414] p-2.5 rounded-lg border border-[#232323]">
+                      <Check className="w-4 h-4 text-[#FFE379] shrink-0" />
+                      <span className="text-xs">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
 
           </div>
