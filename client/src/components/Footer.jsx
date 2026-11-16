@@ -1,7 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useSiteSettings } from '../context/SettingsContext';
 
 export default function Footer() {
+  const { settings } = useSiteSettings();
+
+  const footerLogoSrc = settings.mergeFooterLogo 
+    ? settings.frontendLogo 
+    : (settings.footerLogo || settings.frontendLogo);
+
   return (
     <footer id="footer-section" className="w-full bg-[#1A1A1A] text-[#F4F4F4] px-4 sm:px-12 pt-16 pb-10 border-t border-[#232323] mt-20">
       <div className="max-w-[1140px] mx-auto">
@@ -10,9 +17,17 @@ export default function Footer() {
           {/* Brand Info & Mission */}
           <div className="md:col-span-5 space-y-4">
             <Link to="/" className="inline-block group">
-              <div className="bg-[#FFE379] text-[#101010] font-black px-4 py-1.5 text-base tracking-wider uppercase transition-transform group-hover:scale-105" style={{ fontFamily: "'Oswald', sans-serif" }}>
-                FLIPTHELENSE
-              </div>
+              {footerLogoSrc ? (
+                <img 
+                  src={footerLogoSrc} 
+                  alt="FlipTheLense Logo" 
+                  className="h-10 max-w-[200px] object-contain transition-transform group-hover:scale-105" 
+                />
+              ) : (
+                <div className="bg-[#FFE379] text-[#101010] font-black px-4 py-1.5 text-base tracking-wider uppercase transition-transform group-hover:scale-105" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                  FLIPTHELENSE
+                </div>
+              )}
             </Link>
 
             <p className="text-xs sm:text-[13px] text-[#878787] leading-relaxed max-w-sm" style={{ fontFamily: "'Raleway', sans-serif" }}>

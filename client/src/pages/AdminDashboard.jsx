@@ -45,7 +45,14 @@ import {
   User,
   Calendar,
   MessageCircle,
-  Clock3
+  Clock3,
+  Image,
+  Upload,
+  Sliders,
+  ListPlus,
+  MousePointer,
+  CheckSquare,
+  Square
 } from 'lucide-react';
 
 export default function AdminDashboard() {
@@ -117,18 +124,48 @@ export default function AdminDashboard() {
     image: ''
   });
 
-  // Website Settings from database
+  // Website Settings from database (Favicons, Logos, Menus, Header CTA)
   const [settings, setSettings] = useState({
-    siteName: 'FlipTheLense',
-    tagline: 'From Raw Footage To A Compelling Final Video',
-    phone: '+880 1885 000118',
-    email: 'flipthelense@gmail.com',
-    address: 'Shyamoli, Mohammadpur, Dhaka 1207',
-    licenceNo: 'TRAD/DNCC/008721/2025',
-    expCounter: '4.5+',
-    projectsCounter: '523+',
-    satisfactionCounter: '99%'
+    frontendFavicon: '',
+    adminFavicon: '',
+    mergeFavicon: false,
+
+    frontendLogo: '',
+    adminLogo: '',
+    footerLogo: '',
+    mergeAdminLogo: false,
+    mergeFooterLogo: false,
+
+    activeMenuId: 'main-nav',
+    menus: [
+      {
+        id: 'main-nav',
+        name: 'Main Navigation',
+        items: [
+          { id: 'item-1', label: 'Home', path: '/' },
+          { id: 'item-2', label: 'About', path: '/about' },
+          { id: 'item-3', label: 'Services', path: '/services/cinematic-wedding-video-editing' },
+          { id: 'item-4', label: 'Portfolio', path: '/portfolio' },
+          { id: 'item-5', label: 'Contact', path: '/contact' }
+        ]
+      }
+    ],
+
+    headerCta: {
+      enabled: true,
+      text: 'Contact Us',
+      link: '/contact',
+      style: 'solid-gold',
+      size: 'medium',
+      customColor: '#FFE379',
+      textColor: '#101010'
+    }
   });
+
+  // Menu Management State
+  const [editingMenuId, setEditingMenuId] = useState('main-nav');
+  const [newMenuTitle, setNewMenuTitle] = useState('');
+  const [newMenuItem, setNewMenuItem] = useState({ label: '', path: '' });
 
   // Work Inquiries Filter & Actions State
   const [inquirySearchQuery, setInquirySearchQuery] = useState('');
@@ -521,9 +558,23 @@ export default function AdminDashboard() {
           {/* Logo Header */}
           <div className="p-6 border-b border-[#232323] flex items-center justify-between">
             <Link to="/" className="group flex items-center space-x-2">
-              <div className="bg-[#FFE379] text-[#101010] font-black px-3 py-1 text-xs tracking-wider uppercase">
-                FLIPTHELENSE
-              </div>
+              {settings.mergeAdminLogo ? (
+                settings.frontendLogo ? (
+                  <img src={settings.frontendLogo} alt="Admin Logo" className="h-7 max-w-[140px] object-contain" />
+                ) : (
+                  <div className="bg-[#FFE379] text-[#101010] font-black px-3 py-1 text-xs tracking-wider uppercase">
+                    FLIPTHELENSE
+                  </div>
+                )
+              ) : settings.adminLogo ? (
+                <img src={settings.adminLogo} alt="Admin Logo" className="h-7 max-w-[140px] object-contain" />
+              ) : settings.frontendLogo ? (
+                <img src={settings.frontendLogo} alt="Admin Logo" className="h-7 max-w-[140px] object-contain" />
+              ) : (
+                <div className="bg-[#FFE379] text-[#101010] font-black px-3 py-1 text-xs tracking-wider uppercase">
+                  FLIPTHELENSE
+                </div>
+              )}
             </Link>
             <span className="text-[10px] font-mono text-[#FFE379] bg-[#FFE379]/10 px-2 py-0.5 rounded border border-[#FFE379]/20">
               CMS v2.0
@@ -2105,163 +2156,655 @@ export default function AdminDashboard() {
           );
         })()}
 
-        {/* ================= TAB 5: WEBSITE SETTINGS (REAL DATABASE UPDATE) ================= */}
-        {activeTab === 'settings' && (
-          <div className="max-w-4xl animate-fade-in-up space-y-6">
-            <div className="rounded-2xl bg-[#141414]/85 backdrop-blur-xl border border-[#232323] p-6 sm:p-8 shadow-xl">
-              <h2 
-                className="text-xl font-black text-white uppercase tracking-tight mb-2"
-                style={{ fontFamily: "'Oswald', sans-serif" }}
-              >
-                Global Website Settings & Brand Meta
-              </h2>
-              <p className="text-xs text-neutral-400 mb-6">
-                Manage contact info, trade license credentials, and live hero experience counters. Changes persist to the database.
-              </p>
+        {/* ================= TAB 5: WEBSITE SETTINGS (RECONFIGURED PER USER SPECIFICATION) ================= */}
+        {activeTab === 'settings' && (() => {
+          // Current active menu being edited
+          const currentMenu = (settings.menus || []).find(m => m.id === editingMenuId) || settings.menus?.[0] || { id: 'main-nav', name: 'Main Navigation', items: [] };
 
+          const handleAddMenu = (e) => {
+            e.preventDefault();
+            if (!newMenuTitle.trim()) return;
+            const newId = 'menu-' + Date.now();
+            const created = {
+              id: newId,
+              name: newMenuTitle.trim(),
+              items: [
+                { id: 'item-1', label: 'Home', path: '/' },
+                { id: 'item-2', label: 'Contact', path: '/contact' }
+              ]
+            };
+            setSettings({
+              ...settings,
+              menus: [...(settings.menus || []), created]
+            });
+            setEditingMenuId(newId);
+            setNewMenuTitle('');
+          };
+
+          const handleDeleteMenu = (menuIdToDelete) => {
+            if ((settings.menus || []).length <= 1) {
+              alert('You must have at least one menu.');
+              return;
+            }
+            const updated = (settings.menus || []).filter(m => m.id !== menuIdToDelete);
+            const newActive = settings.activeMenuId === menuIdToDelete ? updated[0].id : settings.activeMenuId;
+            setSettings({
+              ...settings,
+              menus: updated,
+              activeMenuId: newActive
+            });
+            if (editingMenuId === menuIdToDelete) {
+              setEditingMenuId(updated[0].id);
+            }
+          };
+
+          const handleAddMenuItem = (e) => {
+            e.preventDefault();
+            if (!newMenuItem.label.trim() || !newMenuItem.path.trim()) return;
+            if ((currentMenu.items || []).length >= 7) {
+              alert('Maximum limit reached! A header menu can contain up to 7 items.');
+              return;
+            }
+            const updatedItems = [
+              ...(currentMenu.items || []),
+              {
+                id: 'item-' + Date.now(),
+                label: newMenuItem.label.trim(),
+                path: newMenuItem.path.trim()
+              }
+            ];
+            const updatedMenus = (settings.menus || []).map(m => m.id === currentMenu.id ? { ...m, items: updatedItems } : m);
+            setSettings({ ...settings, menus: updatedMenus });
+            setNewMenuItem({ label: '', path: '' });
+          };
+
+          const handleDeleteMenuItem = (itemId) => {
+            const updatedItems = (currentMenu.items || []).filter(it => it.id !== itemId);
+            const updatedMenus = (settings.menus || []).map(m => m.id === currentMenu.id ? { ...m, items: updatedItems } : m);
+            setSettings({ ...settings, menus: updatedMenus });
+          };
+
+          const handleUpdateMenuItem = (itemId, field, value) => {
+            const updatedItems = (currentMenu.items || []).map(it => it.id === itemId ? { ...it, [field]: value } : it);
+            const updatedMenus = (settings.menus || []).map(m => m.id === currentMenu.id ? { ...m, items: updatedItems } : m);
+            setSettings({ ...settings, menus: updatedMenus });
+          };
+
+          const handleUpdateMenuName = (newName) => {
+            const updatedMenus = (settings.menus || []).map(m => m.id === currentMenu.id ? { ...m, name: newName } : m);
+            setSettings({ ...settings, menus: updatedMenus });
+          };
+
+          return (
+            <div className="max-w-4xl animate-fade-in-up space-y-8">
               {saveSuccess && (
-                <div className="mb-6 p-3 rounded-xl bg-[#FFE379]/10 border border-[#FFE379]/40 text-[#FFE379] text-xs flex items-center space-x-2">
-                  <CheckCircle2 className="w-4 h-4" />
-                  <span>Website settings and counters saved and synchronized with database!</span>
+                <div className="p-4 rounded-2xl bg-[#FFE379]/15 border border-[#FFE379]/40 text-[#FFE379] text-xs flex items-center space-x-3 shadow-lg">
+                  <CheckCircle2 className="w-5 h-5 shrink-0" />
+                  <span className="font-bold">Website settings, logos, menus, and header CTA saved successfully!</span>
                 </div>
               )}
 
-              <form onSubmit={handleSaveSettings} className="space-y-6">
-                
-                {/* Brand & Studio Information */}
+              {/* ================= SECTION 1: LOGO & FAVICON CONFIGURATION ================= */}
+              <div className="rounded-2xl bg-[#141414]/85 backdrop-blur-xl border border-[#232323] p-6 sm:p-8 shadow-xl space-y-6">
                 <div>
-                  <h3 
-                    className="text-sm font-bold text-[#FFE379] uppercase tracking-wider mb-4 border-b border-[#232323] pb-2"
-                    style={{ fontFamily: "'Oswald', sans-serif" }}
-                  >
-                    1. Brand & Studio Contact Details
+                  <div className="flex items-center space-x-2.5">
+                    <Image className="w-5 h-5 text-[#FFE379]" />
+                    <h2 
+                      className="text-xl font-black text-white uppercase tracking-tight"
+                      style={{ fontFamily: "'Oswald', sans-serif" }}
+                    >
+                      Brand Logos & Favicon Manager
+                    </h2>
+                  </div>
+                  <p className="text-xs text-neutral-400 mt-1">
+                    Configure your favicon and logos for the frontend, admin panel, and footer with seamless merging options.
+                  </p>
+                </div>
+
+                {/* --- A. FAVICON SETTINGS --- */}
+                <div className="pt-2 border-t border-[#232323] space-y-4">
+                  <h3 className="text-sm font-bold text-[#FFE379] uppercase tracking-wider" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                    1. Favicon Configuration
                   </h3>
-                  
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+                  <div className="space-y-4 bg-[#181818]/60 p-5 rounded-2xl border border-[#262626]">
+                    {/* Favicon for Frontend */}
                     <div>
-                      <label className="block text-xs uppercase font-semibold text-neutral-400 mb-1.5">
-                        Brand / Site Title
+                      <label className="block text-xs uppercase font-semibold text-neutral-300 mb-1.5">
+                        Favicon for Frontend (URL or Path)
                       </label>
-                      <input
-                        type="text"
-                        value={settings.siteName}
-                        onChange={(e) => setSettings({ ...settings, siteName: e.target.value })}
-                        className="w-full px-4 py-2.5 bg-[#1C1C1C] border border-[#2E2E2E] rounded-xl text-white text-xs focus:border-[#FFE379] focus:outline-none"
-                      />
+                      <div className="flex items-center space-x-3">
+                        <input
+                          type="text"
+                          value={settings.frontendFavicon || ''}
+                          onChange={(e) => setSettings({ ...settings, frontendFavicon: e.target.value })}
+                          placeholder="/favicon.svg or https://..."
+                          className="flex-1 px-4 py-2.5 bg-[#1C1C1C] border border-[#2E2E2E] rounded-xl text-white text-xs font-mono focus:border-[#FFE379] focus:outline-none"
+                        />
+                        {settings.frontendFavicon && (
+                          <div className="w-9 h-9 rounded-lg bg-[#202020] border border-[#303030] flex items-center justify-center shrink-0 p-1.5">
+                            <img src={settings.frontendFavicon} alt="Frontend Favicon Preview" className="w-full h-full object-contain" />
+                          </div>
+                        )}
+                      </div>
                     </div>
 
-                    <div>
-                      <label className="block text-xs uppercase font-semibold text-neutral-400 mb-1.5">
-                        Official Trade Licence No.
-                      </label>
+                    {/* Merge Favicon Checkbox */}
+                    <label className="flex items-center space-x-3 cursor-pointer pt-1 select-none">
                       <input
-                        type="text"
-                        value={settings.licenceNo}
-                        onChange={(e) => setSettings({ ...settings, licenceNo: e.target.value })}
-                        className="w-full px-4 py-2.5 bg-[#1C1C1C] border border-[#2E2E2E] rounded-xl text-white font-mono text-xs focus:border-[#FFE379] focus:outline-none"
+                        type="checkbox"
+                        checked={!!settings.mergeFavicon}
+                        onChange={(e) => setSettings({ ...settings, mergeFavicon: e.target.checked })}
+                        className="w-4 h-4 rounded text-[#FFE379] bg-[#222] border-neutral-700 focus:ring-0 cursor-pointer accent-[#FFE379]"
                       />
+                      <span className="text-xs font-semibold text-neutral-300">
+                        Merge Admin Panel and Frontend Favicon
+                      </span>
+                    </label>
+
+                    {/* Favicon for Admin Panel (Hidden if merged) */}
+                    {!settings.mergeFavicon && (
+                      <div className="pt-2 border-t border-[#262626] animate-fade-in">
+                        <label className="block text-xs uppercase font-semibold text-neutral-300 mb-1.5">
+                          Favicon for Admin Panel (URL or Path)
+                        </label>
+                        <div className="flex items-center space-x-3">
+                          <input
+                            type="text"
+                            value={settings.adminFavicon || ''}
+                            onChange={(e) => setSettings({ ...settings, adminFavicon: e.target.value })}
+                            placeholder="/admin-favicon.svg or https://..."
+                            className="flex-1 px-4 py-2.5 bg-[#1C1C1C] border border-[#2E2E2E] rounded-xl text-white text-xs font-mono focus:border-[#FFE379] focus:outline-none"
+                          />
+                          {settings.adminFavicon && (
+                            <div className="w-9 h-9 rounded-lg bg-[#202020] border border-[#303030] flex items-center justify-center shrink-0 p-1.5">
+                              <img src={settings.adminFavicon} alt="Admin Favicon Preview" className="w-full h-full object-contain" />
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* --- B. LOGO SETTINGS --- */}
+                <div className="pt-4 border-t border-[#232323] space-y-4">
+                  <h3 className="text-sm font-bold text-[#FFE379] uppercase tracking-wider" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                    2. Logo Configuration
+                  </h3>
+
+                  <div className="space-y-4 bg-[#181818]/60 p-5 rounded-2xl border border-[#262626]">
+                    {/* Logo for Frontend Header */}
+                    <div>
+                      <label className="block text-xs uppercase font-semibold text-neutral-300 mb-1.5">
+                        Logo for Frontend Header (Image URL or Path)
+                      </label>
+                      <div className="flex items-center space-x-3">
+                        <input
+                          type="text"
+                          value={settings.frontendLogo || ''}
+                          onChange={(e) => setSettings({ ...settings, frontendLogo: e.target.value })}
+                          placeholder="e.g. /images/logo.png or https://... (Leave blank for default brand text)"
+                          className="flex-1 px-4 py-2.5 bg-[#1C1C1C] border border-[#2E2E2E] rounded-xl text-white text-xs font-mono focus:border-[#FFE379] focus:outline-none"
+                        />
+                        {settings.frontendLogo && (
+                          <div className="h-9 px-3 rounded-lg bg-[#202020] border border-[#303030] flex items-center justify-center shrink-0">
+                            <img src={settings.frontendLogo} alt="Header Logo Preview" className="h-6 max-w-[100px] object-contain" />
+                          </div>
+                        )}
+                      </div>
                     </div>
 
-                    <div>
-                      <label className="block text-xs uppercase font-semibold text-neutral-400 mb-1.5">
-                        Studio Phone
+                    {/* Merge Admin Panel and Frontend Logo Checkbox */}
+                    <div className="space-y-2 pt-1">
+                      <label className="flex items-center space-x-3 cursor-pointer select-none">
+                        <input
+                          type="checkbox"
+                          checked={!!settings.mergeAdminLogo}
+                          onChange={(e) => setSettings({ ...settings, mergeAdminLogo: e.target.checked })}
+                          className="w-4 h-4 rounded text-[#FFE379] bg-[#222] border-neutral-700 focus:ring-0 cursor-pointer accent-[#FFE379]"
+                        />
+                        <span className="text-xs font-semibold text-neutral-300">
+                          Merge Admin Panel and Frontend Logo
+                        </span>
                       </label>
-                      <input
-                        type="text"
-                        value={settings.phone}
-                        onChange={(e) => setSettings({ ...settings, phone: e.target.value })}
-                        className="w-full px-4 py-2.5 bg-[#1C1C1C] border border-[#2E2E2E] rounded-xl text-white font-mono text-xs focus:border-[#FFE379] focus:outline-none"
-                      />
+
+                      {/* Merge Footer Logo Checkbox */}
+                      <label className="flex items-center space-x-3 cursor-pointer select-none">
+                        <input
+                          type="checkbox"
+                          checked={!!settings.mergeFooterLogo}
+                          onChange={(e) => setSettings({ ...settings, mergeFooterLogo: e.target.checked })}
+                          className="w-4 h-4 rounded text-[#FFE379] bg-[#222] border-neutral-700 focus:ring-0 cursor-pointer accent-[#FFE379]"
+                        />
+                        <span className="text-xs font-semibold text-neutral-300">
+                          Merge Footer Logo with Frontend Logo
+                        </span>
+                      </label>
                     </div>
 
-                    <div>
-                      <label className="block text-xs uppercase font-semibold text-neutral-400 mb-1.5">
-                        Official Studio Email
-                      </label>
-                      <input
-                        type="email"
-                        value={settings.email}
-                        onChange={(e) => setSettings({ ...settings, email: e.target.value })}
-                        className="w-full px-4 py-2.5 bg-[#1C1C1C] border border-[#2E2E2E] rounded-xl text-white text-xs focus:border-[#FFE379] focus:outline-none"
-                      />
+                    {/* Logo for Footer (Hidden if merged) */}
+                    {!settings.mergeFooterLogo && (
+                      <div className="pt-2 border-t border-[#262626] animate-fade-in">
+                        <label className="block text-xs uppercase font-semibold text-neutral-300 mb-1.5">
+                          Logo for Footer
+                        </label>
+                        <div className="flex items-center space-x-3">
+                          <input
+                            type="text"
+                            value={settings.footerLogo || ''}
+                            onChange={(e) => setSettings({ ...settings, footerLogo: e.target.value })}
+                            placeholder="e.g. /images/footer-logo.png"
+                            className="flex-1 px-4 py-2.5 bg-[#1C1C1C] border border-[#2E2E2E] rounded-xl text-white text-xs font-mono focus:border-[#FFE379] focus:outline-none"
+                          />
+                          {settings.footerLogo && (
+                            <div className="h-9 px-3 rounded-lg bg-[#202020] border border-[#303030] flex items-center justify-center shrink-0">
+                              <img src={settings.footerLogo} alt="Footer Logo Preview" className="h-6 max-w-[100px] object-contain" />
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Logo for Admin Panel (Hidden if merged) */}
+                    {!settings.mergeAdminLogo && (
+                      <div className="pt-2 border-t border-[#262626] animate-fade-in">
+                        <label className="block text-xs uppercase font-semibold text-neutral-300 mb-1.5">
+                          Logo for Admin Panel
+                        </label>
+                        <div className="flex items-center space-x-3">
+                          <input
+                            type="text"
+                            value={settings.adminLogo || ''}
+                            onChange={(e) => setSettings({ ...settings, adminLogo: e.target.value })}
+                            placeholder="e.g. /images/admin-logo.png"
+                            className="flex-1 px-4 py-2.5 bg-[#1C1C1C] border border-[#2E2E2E] rounded-xl text-white text-xs font-mono focus:border-[#FFE379] focus:outline-none"
+                          />
+                          {settings.adminLogo && (
+                            <div className="h-9 px-3 rounded-lg bg-[#202020] border border-[#303030] flex items-center justify-center shrink-0">
+                              <img src={settings.adminLogo} alt="Admin Logo Preview" className="h-6 max-w-[100px] object-contain" />
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* ================= SECTION 2: HEADER MENU BUILDER ================= */}
+              <div className="rounded-2xl bg-[#141414]/85 backdrop-blur-xl border border-[#232323] p-6 sm:p-8 shadow-xl space-y-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div>
+                    <div className="flex items-center space-x-2.5">
+                      <ListPlus className="w-5 h-5 text-[#FFE379]" />
+                      <h2 
+                        className="text-xl font-black text-white uppercase tracking-tight"
+                        style={{ fontFamily: "'Oswald', sans-serif" }}
+                      >
+                        Header Menu Builder
+                      </h2>
                     </div>
+                    <p className="text-xs text-neutral-400 mt-1">
+                      Create multiple menus, edit items (maximum 7 items per menu), and select which one displays on the live header.
+                    </p>
                   </div>
 
-                  <div className="mt-4">
+                  {/* Active Menu Selection Badge */}
+                  <div className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-[#FFE379]/10 border border-[#FFE379]/30 text-xs font-mono text-[#FFE379]">
+                    <CheckCircle2 className="w-4 h-4" />
+                    <span>Live Display: {(settings.menus || []).find(m => m.id === settings.activeMenuId)?.name || 'Default Menu'}</span>
+                  </div>
+                </div>
+
+                {/* Menu Selection Tabs & Create New Menu */}
+                <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-[#232323]">
+                  {(settings.menus || []).map((m) => {
+                    const isSelected = editingMenuId === m.id;
+                    const isLive = settings.activeMenuId === m.id;
+                    return (
+                      <div
+                        key={m.id}
+                        className={`group inline-flex items-center rounded-xl border text-xs font-semibold transition-all ${
+                          isSelected
+                            ? 'bg-[#FFE379] text-[#101010] border-[#FFE379]'
+                            : 'bg-[#1C1C1C] text-neutral-300 border-[#2E2E2E] hover:border-neutral-600'
+                        }`}
+                      >
+                        <button
+                          type="button"
+                          onClick={() => setEditingMenuId(m.id)}
+                          className="px-3.5 py-2 flex items-center space-x-2"
+                        >
+                          <span>{m.name}</span>
+                          {isLive && (
+                            <span className={`text-[9px] px-1.5 py-0.2 rounded font-mono font-bold uppercase ${
+                              isSelected ? 'bg-black text-[#FFE379]' : 'bg-[#FFE379]/20 text-[#FFE379]'
+                            }`}>
+                              Active
+                            </span>
+                          )}
+                        </button>
+
+                        {(settings.menus || []).length > 1 && (
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteMenu(m.id)}
+                            title="Delete menu"
+                            className={`pr-2.5 pl-1 py-2 hover:text-red-500 transition-colors ${
+                              isSelected ? 'text-black/60' : 'text-neutral-500'
+                            }`}
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        )}
+                      </div>
+                    );
+                  })}
+
+                  {/* Create New Menu Form */}
+                  <form onSubmit={handleAddMenu} className="inline-flex items-center space-x-2">
+                    <input
+                      type="text"
+                      placeholder="New Menu Name..."
+                      value={newMenuTitle}
+                      onChange={(e) => setNewMenuTitle(e.target.value)}
+                      className="px-3 py-1.5 bg-[#181818] border border-[#2E2E2E] rounded-xl text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-[#FFE379]"
+                    />
+                    <button
+                      type="submit"
+                      disabled={!newMenuTitle.trim()}
+                      className="inline-flex items-center space-x-1 px-3 py-1.5 rounded-xl bg-[#222] hover:bg-[#FFE379] hover:text-[#101010] text-neutral-300 text-xs font-semibold border border-[#333] transition-all disabled:opacity-40"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                      <span>Create Menu</span>
+                    </button>
+                  </form>
+                </div>
+
+                {/* Edit Selected Menu Container */}
+                <div className="bg-[#181818]/60 p-5 rounded-2xl border border-[#262626] space-y-5">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#262626]">
+                    <div className="flex items-center space-x-3">
+                      <label className="text-xs font-bold uppercase text-neutral-400">Editing Menu Name:</label>
+                      <input
+                        type="text"
+                        value={currentMenu.name}
+                        onChange={(e) => handleUpdateMenuName(e.target.value)}
+                        className="px-3 py-1 bg-[#1C1C1C] border border-[#2E2E2E] rounded-lg text-xs font-bold text-white focus:border-[#FFE379] focus:outline-none"
+                      />
+                    </div>
+
+                    {/* Set As Live Header Menu Action */}
+                    <button
+                      type="button"
+                      onClick={() => setSettings({ ...settings, activeMenuId: currentMenu.id })}
+                      disabled={settings.activeMenuId === currentMenu.id}
+                      className={`inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-xl text-xs font-bold uppercase transition-all ${
+                        settings.activeMenuId === currentMenu.id
+                          ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 cursor-default'
+                          : 'bg-[#FFE379] hover:bg-[#F2D76B] text-[#101010] shadow-md'
+                      }`}
+                      style={{ fontFamily: "'Oswald', sans-serif" }}
+                    >
+                      <Check className="w-3.5 h-3.5" />
+                      <span>{settings.activeMenuId === currentMenu.id ? 'Currently Displayed at Header' : 'Set as Header Active Menu'}</span>
+                    </button>
+                  </div>
+
+                  {/* Menu Items List */}
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs uppercase font-bold text-neutral-400">
+                        Menu Items ({(currentMenu.items || []).length} / 7 items maximum)
+                      </span>
+                      {(currentMenu.items || []).length >= 7 && (
+                        <span className="text-[11px] font-mono text-amber-400">
+                          Limit reached (7 items max)
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="space-y-2">
+                      {(currentMenu.items || []).map((it, index) => (
+                        <div
+                          key={it.id || index}
+                          className="flex items-center space-x-3 p-3 rounded-xl bg-[#1C1C1C] border border-[#282828] hover:border-[#383838] transition-all"
+                        >
+                          <span className="w-6 h-6 rounded-md bg-[#252525] text-neutral-400 text-xs font-mono flex items-center justify-center shrink-0">
+                            {index + 1}
+                          </span>
+                          <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            <input
+                              type="text"
+                              value={it.label}
+                              onChange={(e) => handleUpdateMenuItem(it.id, 'label', e.target.value)}
+                              placeholder="Menu Label (e.g. Home)"
+                              className="px-3 py-1.5 bg-[#141414] border border-[#2C2C2C] rounded-lg text-xs text-white focus:border-[#FFE379] focus:outline-none"
+                            />
+                            <input
+                              type="text"
+                              value={it.path}
+                              onChange={(e) => handleUpdateMenuItem(it.id, 'path', e.target.value)}
+                              placeholder="Destination URL (e.g. /portfolio)"
+                              className="px-3 py-1.5 bg-[#141414] border border-[#2C2C2C] rounded-lg text-xs font-mono text-neutral-300 focus:border-[#FFE379] focus:outline-none"
+                            />
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteMenuItem(it.id)}
+                            className="p-2 text-neutral-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
+                            title="Remove item"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Add Item Form (Disabled if 7 items reached) */}
+                    {(currentMenu.items || []).length < 7 ? (
+                      <form onSubmit={handleAddMenuItem} className="flex flex-col sm:flex-row items-center gap-2 pt-2">
+                        <input
+                          type="text"
+                          placeholder="Label (e.g. Pricing, Blog)"
+                          value={newMenuItem.label}
+                          onChange={(e) => setNewMenuItem({ ...newMenuItem, label: e.target.value })}
+                          className="flex-1 w-full px-3.5 py-2 bg-[#1C1C1C] border border-[#2E2E2E] rounded-xl text-xs text-white placeholder-neutral-500 focus:border-[#FFE379] focus:outline-none"
+                        />
+                        <input
+                          type="text"
+                          placeholder="Path (e.g. /pricing, /about)"
+                          value={newMenuItem.path}
+                          onChange={(e) => setNewMenuItem({ ...newMenuItem, path: e.target.value })}
+                          className="flex-1 w-full px-3.5 py-2 bg-[#1C1C1C] border border-[#2E2E2E] rounded-xl text-xs font-mono text-white placeholder-neutral-500 focus:border-[#FFE379] focus:outline-none"
+                        />
+                        <button
+                          type="submit"
+                          disabled={!newMenuItem.label.trim() || !newMenuItem.path.trim()}
+                          className="w-full sm:w-auto px-4 py-2 rounded-xl bg-[#FFE379] hover:bg-[#F2D76B] text-[#101010] text-xs font-bold uppercase transition-all shadow-md disabled:opacity-40 shrink-0"
+                          style={{ fontFamily: "'Oswald', sans-serif" }}
+                        >
+                          <Plus className="w-4 h-4 inline-block mr-1" />
+                          <span>Add Item</span>
+                        </button>
+                      </form>
+                    ) : (
+                      <div className="p-3 rounded-xl bg-[#202020] border border-[#2D2D2D] text-center text-xs text-neutral-400 font-mono">
+                        Header menu has reached the maximum 7 items limit. Remove an item to add a new one.
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* ================= SECTION 3: HEADER CTA BUTTON CUSTOMIZER ================= */}
+              <div className="rounded-2xl bg-[#141414]/85 backdrop-blur-xl border border-[#232323] p-6 sm:p-8 shadow-xl space-y-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div>
+                    <div className="flex items-center space-x-2.5">
+                      <Sliders className="w-5 h-5 text-[#FFE379]" />
+                      <h2 
+                        className="text-xl font-black text-white uppercase tracking-tight"
+                        style={{ fontFamily: "'Oswald', sans-serif" }}
+                      >
+                        Header CTA Button Customizer
+                      </h2>
+                    </div>
+                    <p className="text-xs text-neutral-400 mt-1">
+                      Customize the text, target destination, style, shape, and size of the top-right call-to-action button.
+                    </p>
+                  </div>
+
+                  {/* Enable / Disable Switch */}
+                  <label className="flex items-center space-x-2.5 cursor-pointer select-none">
+                    <input
+                      type="checkbox"
+                      checked={settings.headerCta?.enabled !== false}
+                      onChange={(e) => setSettings({
+                        ...settings,
+                        headerCta: { ...settings.headerCta, enabled: e.target.checked }
+                      })}
+                      className="w-4 h-4 rounded text-[#FFE379] bg-[#222] border-neutral-700 focus:ring-0 cursor-pointer accent-[#FFE379]"
+                    />
+                    <span className="text-xs font-bold uppercase text-neutral-300">
+                      Show CTA on Header
+                    </span>
+                  </label>
+                </div>
+
+                <div className="pt-2 border-t border-[#232323] grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  {/* Button Text */}
+                  <div>
                     <label className="block text-xs uppercase font-semibold text-neutral-400 mb-1.5">
-                      Physical Studio Address
+                      Button Label / Text
                     </label>
                     <input
                       type="text"
-                      value={settings.address}
-                      onChange={(e) => setSettings({ ...settings, address: e.target.value })}
+                      value={settings.headerCta?.text || ''}
+                      onChange={(e) => setSettings({
+                        ...settings,
+                        headerCta: { ...settings.headerCta, text: e.target.value }
+                      })}
+                      placeholder="e.g. Contact us, Book a Call"
                       className="w-full px-4 py-2.5 bg-[#1C1C1C] border border-[#2E2E2E] rounded-xl text-white text-xs focus:border-[#FFE379] focus:outline-none"
                     />
                   </div>
-                </div>
 
-                {/* Hero Experience Counters */}
-                <div className="pt-2">
-                  <h3 
-                    className="text-sm font-bold text-[#FFE379] uppercase tracking-wider mb-4 border-b border-[#232323] pb-2"
-                    style={{ fontFamily: "'Oswald', sans-serif" }}
-                  >
-                    2. Live Experience Counters (3 Hero Boxes)
-                  </h3>
+                  {/* Button Destination Link */}
+                  <div>
+                    <label className="block text-xs uppercase font-semibold text-neutral-400 mb-1.5">
+                      Destination Link / Route
+                    </label>
+                    <input
+                      type="text"
+                      value={settings.headerCta?.link || ''}
+                      onChange={(e) => setSettings({
+                        ...settings,
+                        headerCta: { ...settings.headerCta, link: e.target.value }
+                      })}
+                      placeholder="e.g. /contact, /portfolio"
+                      className="w-full px-4 py-2.5 bg-[#1C1C1C] border border-[#2E2E2E] rounded-xl text-white font-mono text-xs focus:border-[#FFE379] focus:outline-none"
+                    />
+                  </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div>
-                      <label className="block text-xs uppercase font-semibold text-neutral-400 mb-1.5">
-                        Years Experience
-                      </label>
-                      <input
-                        type="text"
-                        value={settings.expCounter}
-                        onChange={(e) => setSettings({ ...settings, expCounter: e.target.value })}
-                        className="w-full px-4 py-2.5 bg-[#1C1C1C] border border-[#2E2E2E] rounded-xl text-white font-mono text-xs focus:border-[#FFE379] focus:outline-none"
-                      />
-                    </div>
+                  {/* Visual Style Preset */}
+                  <div>
+                    <label className="block text-xs uppercase font-semibold text-neutral-400 mb-1.5">
+                      Button Style & Shape Preset
+                    </label>
+                    <select
+                      value={settings.headerCta?.style || 'solid-gold'}
+                      onChange={(e) => setSettings({
+                        ...settings,
+                        headerCta: { ...settings.headerCta, style: e.target.value }
+                      })}
+                      className="w-full px-4 py-2.5 bg-[#1C1C1C] border border-[#2E2E2E] rounded-xl text-white text-xs focus:border-[#FFE379] focus:outline-none cursor-pointer"
+                    >
+                      <option value="solid-gold">Solid Brand Gold (Angular Box)</option>
+                      <option value="rounded-pill">Rounded Pill Gold (Curved)</option>
+                      <option value="outline-gold">Gold Outline / Ghost Border</option>
+                      <option value="glass-minimal">Glass Minimal Backdrop</option>
+                    </select>
+                  </div>
 
-                    <div>
-                      <label className="block text-xs uppercase font-semibold text-neutral-400 mb-1.5">
-                        Completed Projects
-                      </label>
-                      <input
-                        type="text"
-                        value={settings.projectsCounter}
-                        onChange={(e) => setSettings({ ...settings, projectsCounter: e.target.value })}
-                        className="w-full px-4 py-2.5 bg-[#1C1C1C] border border-[#2E2E2E] rounded-xl text-white font-mono text-xs focus:border-[#FFE379] focus:outline-none"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs uppercase font-semibold text-neutral-400 mb-1.5">
-                        Satisfaction Rate
-                      </label>
-                      <input
-                        type="text"
-                        value={settings.satisfactionCounter}
-                        onChange={(e) => setSettings({ ...settings, satisfactionCounter: e.target.value })}
-                        className="w-full px-4 py-2.5 bg-[#1C1C1C] border border-[#2E2E2E] rounded-xl text-white font-mono text-xs focus:border-[#FFE379] focus:outline-none"
-                      />
-                    </div>
+                  {/* Button Size */}
+                  <div>
+                    <label className="block text-xs uppercase font-semibold text-neutral-400 mb-1.5">
+                      Button Size
+                    </label>
+                    <select
+                      value={settings.headerCta?.size || 'medium'}
+                      onChange={(e) => setSettings({
+                        ...settings,
+                        headerCta: { ...settings.headerCta, size: e.target.value }
+                      })}
+                      className="w-full px-4 py-2.5 bg-[#1C1C1C] border border-[#2E2E2E] rounded-xl text-white text-xs focus:border-[#FFE379] focus:outline-none cursor-pointer"
+                    >
+                      <option value="small">Small (Compact)</option>
+                      <option value="medium">Medium (Standard Default)</option>
+                      <option value="large">Large (High Impact)</option>
+                    </select>
                   </div>
                 </div>
 
-                {/* Save Button */}
+                {/* Live Interactive Preview Box */}
+                <div className="p-5 rounded-2xl bg-[#101010] border border-[#242424] flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div>
+                    <span className="text-[10px] font-mono uppercase font-bold text-neutral-500 block">
+                      Live Preview on Top Header
+                    </span>
+                    <p className="text-xs text-neutral-400 mt-0.5">
+                      This is how the CTA button will appear to visitors:
+                    </p>
+                  </div>
+
+                  <div className="p-3 bg-[#1A1A1A] rounded-xl border border-[#2B2B2B] shrink-0">
+                    {settings.headerCta?.enabled !== false ? (
+                      <span
+                        className={`font-extrabold shadow-md uppercase tracking-wider inline-flex items-center justify-center ${
+                          settings.headerCta?.size === 'small'
+                            ? 'px-3.5 py-1 text-xs'
+                            : settings.headerCta?.size === 'large'
+                            ? 'px-6 py-2.5 text-sm'
+                            : 'px-5 py-1.5 text-xs'
+                        } ${
+                          settings.headerCta?.style === 'outline-gold'
+                            ? 'bg-transparent border border-[#FFE379] text-[#FFE379] rounded-none'
+                            : settings.headerCta?.style === 'rounded-pill'
+                            ? 'bg-[#FFE379] text-[#101010] rounded-full'
+                            : settings.headerCta?.style === 'glass-minimal'
+                            ? 'bg-white/10 text-white border border-white/20 rounded-xl'
+                            : 'bg-[#FFE379] text-[#101010] rounded-none'
+                        }`}
+                      >
+                        {settings.headerCta?.text || 'Contact us'}
+                      </span>
+                    ) : (
+                      <span className="text-xs text-neutral-500 font-mono italic">
+                        CTA Button is currently hidden
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Master Save Button */}
+              <div className="sticky bottom-4 z-20">
                 <button
-                  type="submit"
+                  type="button"
+                  onClick={handleSaveSettings}
                   disabled={loading}
-                  className="w-full py-3.5 px-6 rounded-xl bg-[#FFE379] hover:bg-[#F2D76B] text-[#101010] font-black uppercase text-xs sm:text-sm tracking-wider transition-all shadow-md flex items-center justify-center space-x-2 hover:scale-[1.01]"
+                  className="w-full py-4 px-6 rounded-2xl bg-[#FFE379] hover:bg-[#F2D76B] text-[#101010] font-black uppercase text-sm tracking-wider transition-all shadow-[0_10px_30px_rgba(255,227,121,0.25)] flex items-center justify-center space-x-2 hover:scale-[1.01]"
                   style={{ fontFamily: "'Oswald', sans-serif" }}
                 >
-                  <Save className="w-4 h-4" />
+                  <Save className="w-5 h-5" />
                   <span>{loading ? 'Saving Settings...' : 'Save All Website Settings'}</span>
                 </button>
-              </form>
+              </div>
             </div>
-          </div>
-        )}
+          );
+        })()}
 
       </main>
     </div>
