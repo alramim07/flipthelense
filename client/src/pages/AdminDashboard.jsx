@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate, Link, useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -38,7 +38,9 @@ import {
   ThumbsUp,
   ThumbsDown,
   Filter,
-  ChevronDown
+  ChevronDown,
+  Bell,
+  CheckCheck
 } from 'lucide-react';
 
 export default function AdminDashboard() {
@@ -123,10 +125,80 @@ export default function AdminDashboard() {
     satisfactionCounter: '99%'
   });
 
+  // Notification System State
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const notificationRef = useRef(null);
+  const [readNotificationIds, setReadNotificationIds] = useState(() => {
+    try {
+      const saved = localStorage.getItem('ftl_read_notifications');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  // Close notifications when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (notificationRef.current && !notificationRef.current.contains(e.target)) {
+        setIsNotificationOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Compute Notifications from Live Data
+  const pendingReviewsCount = reviews.filter(r => r.status === 'pending').length;
+  const recentInquiries = inquiries.slice(0, 5);
+
+  const notificationsList = [
+    ...(pendingReviewsCount > 0 ? [{
+      id: 'pending-reviews',
+      title: `${pendingReviewsCount} Pending Review${pendingReviewsCount > 1 ? 's' : ''}`,
+      desc: 'Requires moderation approval to publish live.',
+      time: 'Action Required',
+      targetTab: 'reviews',
+      icon: MessageSquare,
+      color: 'text-amber-400'
+    }] : []),
+    ...recentInquiries.map(inq => ({
+      id: `inq-${inq.id || inq._id || inq.name}`,
+      title: `Inquiry from ${inq.name || 'Client'}`,
+      desc: inq.projectType ? `Project: ${inq.projectType} • ${inq.email}` : inq.email || 'New client project request',
+      time: inq.createdAt ? new Date(inq.createdAt).toLocaleDateString() : 'Recent',
+      targetTab: 'inquiries',
+      icon: Inbox,
+      color: 'text-[#FFE379]'
+    }))
+  ];
+
+  const unreadCount = notificationsList.filter(n => !readNotificationIds.includes(n.id)).length;
+
+  const markAllNotificationsAsRead = () => {
+    const allIds = notificationsList.map(n => n.id);
+    setReadNotificationIds(allIds);
+    localStorage.setItem('ftl_read_notifications', JSON.stringify(allIds));
+  };
+
+  const handleNotificationClick = (item) => {
+    if (!readNotificationIds.includes(item.id)) {
+      const updated = [...readNotificationIds, item.id];
+      setReadNotificationIds(updated);
+      localStorage.setItem('ftl_read_notifications', JSON.stringify(updated));
+    }
+    setIsNotificationOpen(false);
+    navigate(`/admin/${item.targetTab}`);
+  };
+
   // Global ESC key listener to dismiss open modals & dropdowns
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
+        if (isNotificationOpen) {
+          setIsNotificationOpen(false);
+          return;
+        }
         if (isProjectDropdownOpen) {
           setIsProjectDropdownOpen(false);
           return;
@@ -143,7 +215,7 @@ export default function AdminDashboard() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isAddReviewModalOpen, isAddModalOpen, isProjectDropdownOpen]);
+  }, [isNotificationOpen, isAddReviewModalOpen, isAddModalOpen, isProjectDropdownOpen]);
 
   // Frontend Pages List for "Pages" Menu Tab
   const frontendPages = [
@@ -430,25 +502,19 @@ export default function AdminDashboard() {
               1. Dashboard (/admin/dashboard)
               2. Portfolio Works (/admin/portfolio)
               3. Categories (/admin/categories)
-              4. Pages (/admin/pages)
-              5. Work Inquiries (/admin/inquiries)
-              6. Website Settings (/admin/settings)
+              4. Reviews (/admin/reviews)
+              5. Pages (/admin/pages)
+              6. Work Inquiries (/admin/inquiries)
+              7. Website Settings (/admin/settings)
           */}
           <div className="p-4 space-y-1.5">
             {[
               { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-              { id: 'portfolio', label: 'Portfolio Works', icon: Film, badge: portfolioItems.length },
-              { id: 'categories', label: 'Categories', icon: Tags, badge: categories.length },
-              { 
-                id: 'reviews', 
-                label: 'Reviews', 
-                icon: MessageSquare, 
-                badge: reviews.filter(r => r.status === 'pending').length > 0 
-                  ? `${reviews.filter(r => r.status === 'pending').length} New` 
-                  : reviews.length 
-              },
-              { id: 'pages', label: 'Pages', icon: FileText, badge: frontendPages.length },
-              { id: 'inquiries', label: 'Work Inquiries', icon: Inbox, badge: inquiries.length },
+              { id: 'portfolio', label: 'Portfolio Works', icon: Film },
+              { id: 'categories', label: 'Categories', icon: Tags },
+              { id: 'reviews', label: 'Reviews', icon: MessageSquare },
+              { id: 'pages', label: 'Pages', icon: FileText },
+              { id: 'inquiries', label: 'Work Inquiries', icon: Inbox },
               { id: 'settings', label: 'Website Settings', icon: Settings },
             ].map((item) => {
               const IconComp = item.icon;
@@ -468,13 +534,6 @@ export default function AdminDashboard() {
                     <IconComp className={`w-4 h-4 ${isActive ? 'text-[#101010]' : 'text-neutral-400'}`} />
                     <span>{item.label}</span>
                   </div>
-                  {item.badge !== undefined && (
-                    <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
-                      isActive ? 'bg-[#101010] text-[#FFE379]' : 'bg-[#FFE379]/20 text-[#FFE379]'
-                    }`}>
-                      {item.badge}
-                    </span>
-                  )}
                 </Link>
               );
             })}
@@ -525,15 +584,106 @@ export default function AdminDashboard() {
             >
               {activeTab === 'dashboard' && 'Dashboard'}
               {activeTab === 'portfolio' && 'Portfolio Works'}
-              {activeTab === 'categories' && `Portfolio Categories (${categories.length})`}
-              {activeTab === 'reviews' && `Client Reviews & Feedback (${reviews.length})`}
+              {activeTab === 'categories' && 'Portfolio Categories'}
+              {activeTab === 'reviews' && 'Client Reviews & Feedback'}
               {activeTab === 'pages' && 'Pages'}
-              {activeTab === 'inquiries' && `Work Inquiries (${inquiries.length})`}
+              {activeTab === 'inquiries' && 'Work Inquiries'}
               {activeTab === 'settings' && 'Website Settings'}
             </h1>
           </div>
 
           <div className="flex items-center space-x-3">
+            {/* Notification Center Popover */}
+            <div className="relative" ref={notificationRef}>
+              <button
+                onClick={() => setIsNotificationOpen(!isNotificationOpen)}
+                className="relative p-2.5 rounded-xl bg-[#1C1C1C] hover:bg-[#252525] border border-[#303030] text-neutral-300 hover:text-white transition-all shadow-md focus:outline-none"
+                title="Notifications"
+                aria-label="View notifications"
+              >
+                <Bell className="w-4 h-4 text-[#FFE379]" />
+                {unreadCount > 0 && (
+                  <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-500 text-white text-[10px] font-bold font-mono flex items-center justify-center animate-pulse shadow-[0_0_10px_rgba(239,68,68,0.5)]">
+                    {unreadCount > 9 ? '9+' : unreadCount}
+                  </span>
+                )}
+              </button>
+
+              {/* Notification Dropdown Panel */}
+              {isNotificationOpen && (
+                <div className="absolute right-0 mt-2 w-80 sm:w-96 rounded-2xl bg-[#141414] border border-[#2E2E2E] shadow-2xl z-50 overflow-hidden backdrop-blur-xl animate-fade-in-up">
+                  <div className="flex items-center justify-between p-4 border-b border-[#232323] bg-[#181818]/70">
+                    <div className="flex items-center space-x-2">
+                      <Bell className="w-4 h-4 text-[#FFE379]" />
+                      <span className="text-sm font-bold text-white uppercase tracking-wide" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                        Notifications
+                      </span>
+                      {unreadCount > 0 && (
+                        <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-red-500/20 text-red-400 border border-red-500/30">
+                          {unreadCount} New
+                        </span>
+                      )}
+                    </div>
+                    {unreadCount > 0 && (
+                      <button
+                        onClick={markAllNotificationsAsRead}
+                        className="inline-flex items-center space-x-1 text-[11px] text-[#FFE379] hover:underline font-mono"
+                      >
+                        <CheckCheck className="w-3.5 h-3.5" />
+                        <span>Mark all read</span>
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="max-h-80 overflow-y-auto divide-y divide-[#202020]">
+                    {notificationsList.length === 0 ? (
+                      <div className="p-8 text-center text-xs text-neutral-500">
+                        <CheckCircle2 className="w-8 h-8 text-neutral-600 mx-auto mb-2 opacity-50" />
+                        No notifications right now. Everything is up to date!
+                      </div>
+                    ) : (
+                      notificationsList.map((item) => {
+                        const IconComponent = item.icon;
+                        const isRead = readNotificationIds.includes(item.id);
+                        return (
+                          <div
+                            key={item.id}
+                            onClick={() => handleNotificationClick(item)}
+                            className={`p-3.5 flex items-start space-x-3 cursor-pointer transition-colors ${
+                              isRead ? 'bg-transparent hover:bg-white/5 opacity-70' : 'bg-[#1C1A14]/40 hover:bg-[#1F1C12]/80 border-l-2 border-l-[#FFE379]'
+                            }`}
+                          >
+                            <div className={`p-2 rounded-xl bg-[#202020] shrink-0 ${item.color}`}>
+                              <IconComponent className="w-4 h-4" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center justify-between">
+                                <p className={`text-xs font-bold truncate ${isRead ? 'text-neutral-300' : 'text-white'}`}>
+                                  {item.title}
+                                </p>
+                                <span className="text-[10px] text-neutral-500 font-mono shrink-0 ml-2">
+                                  {item.time}
+                                </span>
+                              </div>
+                              <p className="text-[11px] text-neutral-400 line-clamp-2 mt-0.5 leading-snug">
+                                {item.desc}
+                              </p>
+                            </div>
+                          </div>
+                        );
+                      })
+                    )}
+                  </div>
+
+                  <div className="p-2.5 border-t border-[#232323] bg-[#121212] text-center">
+                    <span className="text-[10px] text-neutral-500 font-mono">
+                      Click any notification to navigate to that section
+                    </span>
+                  </div>
+                </div>
+              )}
+            </div>
+
             <button
               onClick={fetchAllData}
               disabled={refreshing}
