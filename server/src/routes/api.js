@@ -1,4 +1,8 @@
 import express from 'express';
+import multer from 'multer';
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
 import Portfolio from '../models/Portfolio.js';
 import Reel from '../models/Reel.js';
 import ServiceGig from '../models/ServiceGig.js';
@@ -6,7 +10,49 @@ import SiteSettings from '../models/SiteSettings.js';
 import Inquiry from '../models/Inquiry.js';
 import { getLocalStore, saveLocalStore } from '../store/localStore.js';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const uploadsDir = path.join(__dirname, '..', '..', 'uploads');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
+// Multer Storage Configuration
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, uploadsDir);
+  },
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    const basename = path.basename(file.originalname, ext).replace(/[^a-zA-Z0-9_-]/g, '_');
+    cb(null, `${basename}_${Date.now()}${ext}`);
+  }
+});
+
+const upload = multer({
+  storage,
+  limits: { fileSize: 10 * 1024 * 1024 } // 10MB limit
+});
+
 const router = express.Router();
+
+// ================= FILE UPLOAD ENDPOINT (Logos & Favicons) =================
+router.post('/upload', upload.single('file'), (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file provided' });
+    }
+    const fileUrl = `/uploads/${req.file.filename}`;
+    res.json({
+      success: true,
+      url: fileUrl,
+      filename: req.file.filename,
+      size: req.file.size
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 // ================= 1. LIGHTWEIGHT BUILT-IN REAL ANALYTICS =================
 

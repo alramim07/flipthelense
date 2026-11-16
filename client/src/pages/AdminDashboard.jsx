@@ -166,6 +166,35 @@ export default function AdminDashboard() {
   const [editingMenuId, setEditingMenuId] = useState('main-nav');
   const [newMenuTitle, setNewMenuTitle] = useState('');
   const [newMenuItem, setNewMenuItem] = useState({ label: '', path: '' });
+  const [uploadingTarget, setUploadingTarget] = useState(null); // 'frontendFavicon' | 'adminFavicon' | 'frontendLogo' | 'footerLogo' | 'adminLogo'
+
+  const handleFileUpload = async (e, targetKey) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingTarget(targetKey);
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const res = await axios.post('/api/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      if (res.data?.url) {
+        setSettings(prev => ({ ...prev, [targetKey]: res.data.url }));
+      }
+    } catch (err) {
+      console.error('File upload error:', err);
+      // Fallback: convert to base64 DataURL
+      const reader = new FileReader();
+      reader.onload = (loadEvt) => {
+        setSettings(prev => ({ ...prev, [targetKey]: loadEvt.target.result }));
+      };
+      reader.readAsDataURL(file);
+    } finally {
+      setUploadingTarget(null);
+    }
+  };
 
   // Work Inquiries Filter & Actions State
   const [inquirySearchQuery, setInquirySearchQuery] = useState('');
@@ -2270,19 +2299,32 @@ export default function AdminDashboard() {
                   <div className="space-y-4 bg-[#181818]/60 p-5 rounded-2xl border border-[#262626]">
                     {/* Favicon for Frontend */}
                     <div>
-                      <label className="block text-xs uppercase font-semibold text-neutral-300 mb-1.5">
-                        Favicon for Frontend (URL or Path)
-                      </label>
-                      <div className="flex items-center space-x-3">
+                      <div className="flex items-center justify-between mb-1.5">
+                        <label className="text-xs uppercase font-semibold text-neutral-300">
+                          Favicon for Frontend
+                        </label>
+                        <span className="text-[10px] text-neutral-500 font-mono">PNG, SVG, ICO (Square)</span>
+                      </div>
+                      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                         <input
                           type="text"
                           value={settings.frontendFavicon || ''}
                           onChange={(e) => setSettings({ ...settings, frontendFavicon: e.target.value })}
-                          placeholder="/favicon.svg or https://..."
+                          placeholder="Upload file or enter URL..."
                           className="flex-1 px-4 py-2.5 bg-[#1C1C1C] border border-[#2E2E2E] rounded-xl text-white text-xs font-mono focus:border-[#FFE379] focus:outline-none"
                         />
+                        <label className="inline-flex items-center justify-center space-x-2 px-4 py-2.5 rounded-xl bg-[#222] hover:bg-[#FFE379] hover:text-[#101010] text-neutral-300 text-xs font-bold transition-all border border-[#333] cursor-pointer shrink-0">
+                          <Upload className="w-3.5 h-3.5" />
+                          <span>{uploadingTarget === 'frontendFavicon' ? 'Uploading...' : 'Upload Favicon'}</span>
+                          <input
+                            type="file"
+                            accept="image/*,.ico,.svg"
+                            className="hidden"
+                            onChange={(e) => handleFileUpload(e, 'frontendFavicon')}
+                          />
+                        </label>
                         {settings.frontendFavicon && (
-                          <div className="w-9 h-9 rounded-lg bg-[#202020] border border-[#303030] flex items-center justify-center shrink-0 p-1.5">
+                          <div className="w-10 h-10 rounded-xl bg-[#202020] border border-[#303030] flex items-center justify-center shrink-0 p-1.5">
                             <img src={settings.frontendFavicon} alt="Frontend Favicon Preview" className="w-full h-full object-contain" />
                           </div>
                         )}
@@ -2305,19 +2347,32 @@ export default function AdminDashboard() {
                     {/* Favicon for Admin Panel (Hidden if merged) */}
                     {!settings.mergeFavicon && (
                       <div className="pt-2 border-t border-[#262626] animate-fade-in">
-                        <label className="block text-xs uppercase font-semibold text-neutral-300 mb-1.5">
-                          Favicon for Admin Panel (URL or Path)
-                        </label>
-                        <div className="flex items-center space-x-3">
+                        <div className="flex items-center justify-between mb-1.5">
+                          <label className="text-xs uppercase font-semibold text-neutral-300">
+                            Favicon for Admin Panel
+                          </label>
+                          <span className="text-[10px] text-neutral-500 font-mono">PNG, SVG, ICO</span>
+                        </div>
+                        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                           <input
                             type="text"
                             value={settings.adminFavicon || ''}
                             onChange={(e) => setSettings({ ...settings, adminFavicon: e.target.value })}
-                            placeholder="/admin-favicon.svg or https://..."
+                            placeholder="Upload file or enter URL..."
                             className="flex-1 px-4 py-2.5 bg-[#1C1C1C] border border-[#2E2E2E] rounded-xl text-white text-xs font-mono focus:border-[#FFE379] focus:outline-none"
                           />
+                          <label className="inline-flex items-center justify-center space-x-2 px-4 py-2.5 rounded-xl bg-[#222] hover:bg-[#FFE379] hover:text-[#101010] text-neutral-300 text-xs font-bold transition-all border border-[#333] cursor-pointer shrink-0">
+                            <Upload className="w-3.5 h-3.5" />
+                            <span>{uploadingTarget === 'adminFavicon' ? 'Uploading...' : 'Upload Admin Favicon'}</span>
+                            <input
+                              type="file"
+                              accept="image/*,.ico,.svg"
+                              className="hidden"
+                              onChange={(e) => handleFileUpload(e, 'adminFavicon')}
+                            />
+                          </label>
                           {settings.adminFavicon && (
-                            <div className="w-9 h-9 rounded-lg bg-[#202020] border border-[#303030] flex items-center justify-center shrink-0 p-1.5">
+                            <div className="w-10 h-10 rounded-xl bg-[#202020] border border-[#303030] flex items-center justify-center shrink-0 p-1.5">
                               <img src={settings.adminFavicon} alt="Admin Favicon Preview" className="w-full h-full object-contain" />
                             </div>
                           )}
@@ -2336,20 +2391,33 @@ export default function AdminDashboard() {
                   <div className="space-y-4 bg-[#181818]/60 p-5 rounded-2xl border border-[#262626]">
                     {/* Logo for Frontend Header */}
                     <div>
-                      <label className="block text-xs uppercase font-semibold text-neutral-300 mb-1.5">
-                        Logo for Frontend Header (Image URL or Path)
-                      </label>
-                      <div className="flex items-center space-x-3">
+                      <div className="flex items-center justify-between mb-1.5">
+                        <label className="text-xs uppercase font-semibold text-neutral-300">
+                          Logo for Frontend Header
+                        </label>
+                        <span className="text-[10px] text-neutral-500 font-mono">PNG, SVG, Transparent recommended</span>
+                      </div>
+                      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                         <input
                           type="text"
                           value={settings.frontendLogo || ''}
                           onChange={(e) => setSettings({ ...settings, frontendLogo: e.target.value })}
-                          placeholder="e.g. /images/logo.png or https://... (Leave blank for default brand text)"
+                          placeholder="Upload logo file or enter URL..."
                           className="flex-1 px-4 py-2.5 bg-[#1C1C1C] border border-[#2E2E2E] rounded-xl text-white text-xs font-mono focus:border-[#FFE379] focus:outline-none"
                         />
+                        <label className="inline-flex items-center justify-center space-x-2 px-4 py-2.5 rounded-xl bg-[#222] hover:bg-[#FFE379] hover:text-[#101010] text-neutral-300 text-xs font-bold transition-all border border-[#333] cursor-pointer shrink-0">
+                          <Upload className="w-3.5 h-3.5" />
+                          <span>{uploadingTarget === 'frontendLogo' ? 'Uploading...' : 'Upload Header Logo'}</span>
+                          <input
+                            type="file"
+                            accept="image/*,.svg"
+                            className="hidden"
+                            onChange={(e) => handleFileUpload(e, 'frontendLogo')}
+                          />
+                        </label>
                         {settings.frontendLogo && (
-                          <div className="h-9 px-3 rounded-lg bg-[#202020] border border-[#303030] flex items-center justify-center shrink-0">
-                            <img src={settings.frontendLogo} alt="Header Logo Preview" className="h-6 max-w-[100px] object-contain" />
+                          <div className="h-10 px-3 rounded-xl bg-[#202020] border border-[#303030] flex items-center justify-center shrink-0">
+                            <img src={settings.frontendLogo} alt="Header Logo Preview" className="h-6 max-w-[120px] object-contain" />
                           </div>
                         )}
                       </div>
@@ -2386,20 +2454,33 @@ export default function AdminDashboard() {
                     {/* Logo for Footer (Hidden if merged) */}
                     {!settings.mergeFooterLogo && (
                       <div className="pt-2 border-t border-[#262626] animate-fade-in">
-                        <label className="block text-xs uppercase font-semibold text-neutral-300 mb-1.5">
-                          Logo for Footer
-                        </label>
-                        <div className="flex items-center space-x-3">
+                        <div className="flex items-center justify-between mb-1.5">
+                          <label className="text-xs uppercase font-semibold text-neutral-300">
+                            Logo for Footer
+                          </label>
+                          <span className="text-[10px] text-neutral-500 font-mono">PNG, SVG</span>
+                        </div>
+                        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                           <input
                             type="text"
                             value={settings.footerLogo || ''}
                             onChange={(e) => setSettings({ ...settings, footerLogo: e.target.value })}
-                            placeholder="e.g. /images/footer-logo.png"
+                            placeholder="Upload logo file or enter URL..."
                             className="flex-1 px-4 py-2.5 bg-[#1C1C1C] border border-[#2E2E2E] rounded-xl text-white text-xs font-mono focus:border-[#FFE379] focus:outline-none"
                           />
+                          <label className="inline-flex items-center justify-center space-x-2 px-4 py-2.5 rounded-xl bg-[#222] hover:bg-[#FFE379] hover:text-[#101010] text-neutral-300 text-xs font-bold transition-all border border-[#333] cursor-pointer shrink-0">
+                            <Upload className="w-3.5 h-3.5" />
+                            <span>{uploadingTarget === 'footerLogo' ? 'Uploading...' : 'Upload Footer Logo'}</span>
+                            <input
+                              type="file"
+                              accept="image/*,.svg"
+                              className="hidden"
+                              onChange={(e) => handleFileUpload(e, 'footerLogo')}
+                            />
+                          </label>
                           {settings.footerLogo && (
-                            <div className="h-9 px-3 rounded-lg bg-[#202020] border border-[#303030] flex items-center justify-center shrink-0">
-                              <img src={settings.footerLogo} alt="Footer Logo Preview" className="h-6 max-w-[100px] object-contain" />
+                            <div className="h-10 px-3 rounded-xl bg-[#202020] border border-[#303030] flex items-center justify-center shrink-0">
+                              <img src={settings.footerLogo} alt="Footer Logo Preview" className="h-6 max-w-[120px] object-contain" />
                             </div>
                           )}
                         </div>
@@ -2409,20 +2490,33 @@ export default function AdminDashboard() {
                     {/* Logo for Admin Panel (Hidden if merged) */}
                     {!settings.mergeAdminLogo && (
                       <div className="pt-2 border-t border-[#262626] animate-fade-in">
-                        <label className="block text-xs uppercase font-semibold text-neutral-300 mb-1.5">
-                          Logo for Admin Panel
-                        </label>
-                        <div className="flex items-center space-x-3">
+                        <div className="flex items-center justify-between mb-1.5">
+                          <label className="text-xs uppercase font-semibold text-neutral-300">
+                            Logo for Admin Panel
+                          </label>
+                          <span className="text-[10px] text-neutral-500 font-mono">PNG, SVG</span>
+                        </div>
+                        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                           <input
                             type="text"
                             value={settings.adminLogo || ''}
                             onChange={(e) => setSettings({ ...settings, adminLogo: e.target.value })}
-                            placeholder="e.g. /images/admin-logo.png"
+                            placeholder="Upload logo file or enter URL..."
                             className="flex-1 px-4 py-2.5 bg-[#1C1C1C] border border-[#2E2E2E] rounded-xl text-white text-xs font-mono focus:border-[#FFE379] focus:outline-none"
                           />
+                          <label className="inline-flex items-center justify-center space-x-2 px-4 py-2.5 rounded-xl bg-[#222] hover:bg-[#FFE379] hover:text-[#101010] text-neutral-300 text-xs font-bold transition-all border border-[#333] cursor-pointer shrink-0">
+                            <Upload className="w-3.5 h-3.5" />
+                            <span>{uploadingTarget === 'adminLogo' ? 'Uploading...' : 'Upload Admin Logo'}</span>
+                            <input
+                              type="file"
+                              accept="image/*,.svg"
+                              className="hidden"
+                              onChange={(e) => handleFileUpload(e, 'adminLogo')}
+                            />
+                          </label>
                           {settings.adminLogo && (
-                            <div className="h-9 px-3 rounded-lg bg-[#202020] border border-[#303030] flex items-center justify-center shrink-0">
-                              <img src={settings.adminLogo} alt="Admin Logo Preview" className="h-6 max-w-[100px] object-contain" />
+                            <div className="h-10 px-3 rounded-xl bg-[#202020] border border-[#303030] flex items-center justify-center shrink-0">
+                              <img src={settings.adminLogo} alt="Admin Logo Preview" className="h-6 max-w-[120px] object-contain" />
                             </div>
                           )}
                         </div>
