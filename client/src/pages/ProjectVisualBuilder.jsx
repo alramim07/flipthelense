@@ -47,7 +47,45 @@ export default function ProjectVisualBuilder() {
     basicPrice: '',
     standardPrice: '',
     premiumPrice: '',
-    mediaGallery: [] // Array of { type: 'image' | 'video', url: string, caption?: string }
+    mediaGallery: [], // Array of { type: 'image' | 'video', url: string, caption?: string }
+    // Customizable package metadata
+    packages: {
+      basic: {
+        title: 'Basic Edit Package',
+        desc: 'Teaser / short trailer cut, sound design, color grading, and social multi-platform exports.',
+        delivery: '3-day delivery',
+        revisions: '2 Revisions',
+        checklist: [
+          'Up to 60 sec cut & pace',
+          'Sound effects & licensed audio',
+          'Color grading (Rec.709)',
+          'Full HD / 4K Export'
+        ]
+      },
+      standard: {
+        title: 'Standard Highlight Film',
+        desc: 'Full cinematic highlight film with color grading, dialogue audio sync, and licensed music.',
+        delivery: '5-day delivery',
+        revisions: '3 Revisions',
+        checklist: [
+          '4K UHD Master File Export',
+          'Multi-Camera Audio Synchronization',
+          'Color Grading & Film Emulation'
+        ]
+      },
+      premium: {
+        title: 'Premium Extended Feature',
+        desc: 'Comprehensive full cut + social teasers + multi-camera audio sync + master source project archive.',
+        delivery: '7-day delivery',
+        revisions: 'Unlimited Revisions',
+        checklist: [
+          'Extended Feature Cut',
+          'Free Social Media Teaser',
+          'Dialogue Cleanup & Mastering',
+          'Master ProRes Export'
+        ]
+      }
+    }
   };
 
   const [project, setProject] = useState(emptyProject);
@@ -100,7 +138,11 @@ export default function ProjectVisualBuilder() {
               ...emptyProject,
               ...res.data,
               thumbnailType: res.data.thumbnailType || (res.data.video && !res.data.img ? 'video' : 'image'),
-              mediaGallery: res.data.mediaGallery || []
+              mediaGallery: res.data.mediaGallery || [],
+              packages: {
+                ...emptyProject.packages,
+                ...(res.data.packages || {})
+              }
             });
           }
         })
@@ -255,15 +297,64 @@ export default function ProjectVisualBuilder() {
     }
   };
 
+  // Package items helper updater
+  const updatePackageField = (pkgKey, field, value) => {
+    setProject((prev) => ({
+      ...prev,
+      packages: {
+        ...prev.packages,
+        [pkgKey]: {
+          ...(prev.packages?.[pkgKey] || {}),
+          [field]: value
+        }
+      }
+    }));
+  };
+
+  const addPackageChecklistItem = (pkgKey, text) => {
+    if (!text.trim()) return;
+    setProject((prev) => {
+      const currentList = prev.packages?.[pkgKey]?.checklist || [];
+      return {
+        ...prev,
+        packages: {
+          ...prev.packages,
+          [pkgKey]: {
+            ...(prev.packages?.[pkgKey] || {}),
+            checklist: [...currentList, text.trim()]
+          }
+        }
+      };
+    });
+  };
+
+  const removePackageChecklistItem = (pkgKey, index) => {
+    setProject((prev) => {
+      const currentList = prev.packages?.[pkgKey]?.checklist || [];
+      return {
+        ...prev,
+        packages: {
+          ...prev.packages,
+          [pkgKey]: {
+            ...(prev.packages?.[pkgKey] || {}),
+            checklist: currentList.filter((_, i) => i !== index)
+          }
+        }
+      };
+    });
+  };
+
+  const [newChecklistText, setNewChecklistText] = useState('');
+
   // Dynamic pricing package preview helper
   const PACKAGES = {
     basic: {
-      title: 'Basic Edit Package',
+      title: project.packages?.basic?.title || 'Basic Edit Package',
       price: project.basicPrice ? `US$${project.basicPrice}` : 'US$0',
-      desc: 'Teaser / short trailer cut, sound design, color grading, and social multi-platform exports.',
-      delivery: '3-day delivery',
-      revisions: '2 Revisions',
-      checklist: [
+      desc: project.packages?.basic?.desc || 'Teaser / short trailer cut, sound design, color grading, and social multi-platform exports.',
+      delivery: project.packages?.basic?.delivery || '3-day delivery',
+      revisions: project.packages?.basic?.revisions || '2 Revisions',
+      checklist: project.packages?.basic?.checklist || [
         'Up to 60 sec cut & pace',
         'Sound effects & licensed audio',
         'Color grading (Rec.709)',
@@ -271,24 +362,24 @@ export default function ProjectVisualBuilder() {
       ]
     },
     standard: {
-      title: 'Standard Highlight Film',
+      title: project.packages?.standard?.title || 'Standard Highlight Film',
       price: project.standardPrice ? `US$${project.standardPrice}` : 'US$0',
-      desc: 'Full cinematic highlight film with color grading, dialogue audio sync, and licensed music.',
-      delivery: '5-day delivery',
-      revisions: '3 Revisions',
-      checklist: (project.deliverables && project.deliverables.length > 0) ? project.deliverables : [
+      desc: project.packages?.standard?.desc || 'Full cinematic highlight film with color grading, dialogue audio sync, and licensed music.',
+      delivery: project.packages?.standard?.delivery || '5-day delivery',
+      revisions: project.packages?.standard?.revisions || '3 Revisions',
+      checklist: project.packages?.standard?.checklist || [
         '4K UHD Master File Export',
         'Multi-Camera Audio Synchronization',
         'Color Grading & Film Emulation'
       ]
     },
     premium: {
-      title: 'Premium Extended Feature',
+      title: project.packages?.premium?.title || 'Premium Extended Feature',
       price: project.premiumPrice ? `US$${project.premiumPrice}` : 'US$0',
-      desc: 'Comprehensive full cut + social teasers + multi-camera audio sync + master source project archive.',
-      delivery: '7-day delivery',
-      revisions: 'Unlimited Revisions',
-      checklist: [
+      desc: project.packages?.premium?.desc || 'Comprehensive full cut + social teasers + multi-camera audio sync + master source project archive.',
+      delivery: project.packages?.premium?.delivery || '7-day delivery',
+      revisions: project.packages?.premium?.revisions || 'Unlimited Revisions',
+      checklist: project.packages?.premium?.checklist || [
         'Extended Feature Cut',
         'Free Social Media Teaser',
         'Dialogue Cleanup & Mastering',
@@ -977,52 +1068,129 @@ export default function ProjectVisualBuilder() {
                 ))}
               </div>
 
-              {/* Package Content */}
-              <div className="p-6 space-y-6">
+              {/* Package Content (Live In-Place Editable for Active Package) */}
+              <div className="p-6 space-y-5">
+                
+                {/* 1. Package Title & Price */}
                 <div>
-                  <div className="flex justify-between items-baseline mb-2">
-                    <h3 
-                      className="text-base font-bold text-white uppercase"
+                  <div className="flex justify-between items-start gap-3 mb-2">
+                    <input
+                      type="text"
+                      value={currentPkg.title}
+                      onChange={(e) => updatePackageField(activeTab, 'title', e.target.value)}
+                      placeholder="e.g. Basic Edit Package"
+                      className="w-full text-base font-bold text-white uppercase bg-transparent border-b border-dashed border-[#444] hover:border-[#FFE379] focus:border-[#FFE379] focus:outline-none transition-colors py-0.5"
                       style={{ fontFamily: "'Oswald', sans-serif" }}
-                    >
-                      {currentPkg.title}
-                    </h3>
+                    />
                     <span 
-                      className="text-2xl font-black text-[#FFE379] font-mono"
+                      className="text-2xl font-black text-[#FFE379] font-mono shrink-0 pl-2"
                     >
                       {currentPkg.price}
                     </span>
                   </div>
-                  <p 
-                    className="text-xs text-neutral-400 leading-relaxed font-normal"
+
+                  {/* 2. Package Description */}
+                  <textarea
+                    rows="2"
+                    value={currentPkg.desc}
+                    onChange={(e) => updatePackageField(activeTab, 'desc', e.target.value)}
+                    placeholder="Enter what this tier offers (e.g. Teaser cut, sound effects, color grading...)"
+                    className="w-full text-xs text-neutral-300 leading-relaxed font-normal bg-[#181818] p-2.5 rounded-lg border border-dashed border-[#333] hover:border-[#FFE379] focus:border-[#FFE379] focus:outline-none transition-all resize-none"
                     style={{ fontFamily: "'Raleway', sans-serif" }}
-                  >
-                    {currentPkg.desc}
-                  </p>
+                  />
                 </div>
 
-                <div className="flex items-center space-x-6 text-xs text-neutral-300 font-mono py-3 border-y border-[#232323]">
-                  <div className="flex items-center space-x-1.5">
-                    <Clock className="w-4 h-4 text-[#FFE379]" />
-                    <span>{currentPkg.delivery}</span>
+                {/* 3. Delivery Timeline & Revisions Count (Both Editable) */}
+                <div className="grid grid-cols-2 gap-2 py-3 border-y border-[#232323]">
+                  <div className="flex items-center space-x-1.5 bg-[#181818] px-2.5 py-1.5 rounded-lg border border-[#2D2D2D]">
+                    <Clock className="w-3.5 h-3.5 text-[#FFE379] shrink-0" />
+                    <input
+                      type="text"
+                      value={currentPkg.delivery}
+                      onChange={(e) => updatePackageField(activeTab, 'delivery', e.target.value)}
+                      placeholder="3-day delivery"
+                      className="w-full bg-transparent text-xs text-neutral-200 font-mono focus:outline-none"
+                    />
                   </div>
-                  <div className="flex items-center space-x-1.5">
-                    <ShieldCheck className="w-4 h-4 text-[#FFE379]" />
-                    <span>{currentPkg.revisions}</span>
+
+                  <div className="flex items-center space-x-1.5 bg-[#181818] px-2.5 py-1.5 rounded-lg border border-[#2D2D2D]">
+                    <ShieldCheck className="w-3.5 h-3.5 text-[#FFE379] shrink-0" />
+                    <input
+                      type="text"
+                      value={currentPkg.revisions}
+                      onChange={(e) => updatePackageField(activeTab, 'revisions', e.target.value)}
+                      placeholder="2 Revisions"
+                      className="w-full bg-transparent text-xs text-neutral-200 font-mono focus:outline-none"
+                    />
                   </div>
                 </div>
 
-                {/* Features Checklist */}
+                {/* 4. Features Checklist (Dynamic Add / Remove / Edit) */}
                 <div className="space-y-2">
-                  <span className="text-[11px] font-bold text-neutral-400 uppercase font-mono block mb-1">
-                    What's included in this package:
-                  </span>
-                  {currentPkg.checklist.map((feat, i) => (
-                    <div key={i} className="flex items-center space-x-2 text-xs text-neutral-300">
-                      <Check className="w-3.5 h-3.5 text-[#FFE379] shrink-0" />
-                      <span>{feat}</span>
-                    </div>
-                  ))}
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] font-bold text-neutral-400 uppercase font-mono">
+                      What's included in this package:
+                    </span>
+                    <span className="text-[10px] font-mono text-[#FFE379]">
+                      {currentPkg.checklist?.length || 0} features
+                    </span>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    {(currentPkg.checklist || []).map((feat, i) => (
+                      <div key={i} className="flex items-center justify-between bg-[#181818] px-2.5 py-1.5 rounded-lg border border-[#262626] group hover:border-[#FFE379]/40 transition-colors">
+                        <div className="flex items-center space-x-2 flex-1 min-w-0 mr-2">
+                          <Check className="w-3.5 h-3.5 text-[#FFE379] shrink-0" />
+                          <input
+                            type="text"
+                            value={feat}
+                            onChange={(e) => {
+                              const updated = [...currentPkg.checklist];
+                              updated[i] = e.target.value;
+                              updatePackageField(activeTab, 'checklist', updated);
+                            }}
+                            className="w-full bg-transparent text-xs text-neutral-200 focus:outline-none"
+                          />
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => removePackageChecklistItem(activeTab, i)}
+                          className="text-neutral-500 hover:text-red-400 p-0.5 rounded transition-colors"
+                          title="Remove item"
+                        >
+                          <Trash2 className="w-3 h-3" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Add Checklist Item Row */}
+                  <div className="pt-1.5 flex items-center space-x-2">
+                    <input
+                      type="text"
+                      value={newChecklistText}
+                      onChange={(e) => setNewChecklistText(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          addPackageChecklistItem(activeTab, newChecklistText);
+                          setNewChecklistText('');
+                        }
+                      }}
+                      placeholder={`Add feature to ${activeTab.toUpperCase()} and press Enter`}
+                      className="flex-1 bg-[#181818] border border-[#2D2D2D] text-xs px-3 py-1.5 rounded-lg text-white placeholder-neutral-500 focus:border-[#FFE379] outline-none"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        addPackageChecklistItem(activeTab, newChecklistText);
+                        setNewChecklistText('');
+                      }}
+                      className="px-3 py-1.5 rounded-lg bg-[#222] hover:bg-[#FFE379] hover:text-black text-white text-xs font-bold uppercase transition-colors"
+                    >
+                      <Plus className="w-3 h-3" />
+                    </button>
+                  </div>
                 </div>
 
                 {/* CTA Action Buttons */}

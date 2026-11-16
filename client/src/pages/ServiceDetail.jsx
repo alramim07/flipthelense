@@ -63,15 +63,15 @@ export default function ServiceDetail() {
       });
   }, [slug]);
 
-  // Dynamic Packages calculated from project prices
+  // Dynamic Packages calculated from project custom packages or defaults
   const PACKAGES = {
     basic: {
-      title: "Teaser / Trailer Edit",
+      title: project?.packages?.basic?.title || "Teaser / Trailer Edit",
       price: `US$${project?.basicPrice || 150}`,
-      desc: "Up to 60 seconds teaser trailer with sound effects, color grading, and social 9:16 + 16:9 exports.",
-      delivery: "3-day delivery",
-      revisions: "2 Revisions",
-      checklist: [
+      desc: project?.packages?.basic?.desc || "Up to 60 seconds teaser trailer with sound effects, color grading, and social 9:16 + 16:9 exports.",
+      delivery: project?.packages?.basic?.delivery || "3-day delivery",
+      revisions: project?.packages?.basic?.revisions || "2 Revisions",
+      checklist: project?.packages?.basic?.checklist || [
         "Up to 60 sec cut & pace",
         "Sound effects & licensed audio",
         "Color grading (Rec.709)",
@@ -79,12 +79,12 @@ export default function ServiceDetail() {
       ]
     },
     standard: {
-      title: "Cinematic Showcase Highlight",
+      title: project?.packages?.standard?.title || "Cinematic Showcase Highlight",
       price: `US$${project?.standardPrice || 300}`,
-      desc: "3 to 5 minutes cinematic highlight film with full 4K color grading, dialogue audio sync, licensed music and drone integration.",
-      delivery: "5-day delivery",
-      revisions: "3 Revisions",
-      checklist: project?.deliverables || [
+      desc: project?.packages?.standard?.desc || "3 to 5 minutes cinematic highlight film with full 4K color grading, dialogue audio sync, licensed music and drone integration.",
+      delivery: project?.packages?.standard?.delivery || "5-day delivery",
+      revisions: project?.packages?.standard?.revisions || "3 Revisions",
+      checklist: project?.packages?.standard?.checklist || project?.deliverables || [
         "4K UHD Master File Export",
         "Multi-Camera Audio Synchronization",
         "Professional Hollywood Color Grading",
@@ -92,12 +92,12 @@ export default function ServiceDetail() {
       ]
     },
     premium: {
-      title: "Full Feature Extended Cut",
+      title: project?.packages?.premium?.title || "Full Feature Extended Cut",
       price: `US$${project?.premiumPrice || 550}`,
-      desc: "Comprehensive 15-20 minutes full cut + 60s teaser + raw multicam speech edits + master project archive.",
-      delivery: "7-day delivery",
-      revisions: "Unlimited Revisions",
-      checklist: [
+      desc: project?.packages?.premium?.desc || "Comprehensive 15-20 minutes full cut + 60s teaser + raw multicam speech edits + master project archive.",
+      delivery: project?.packages?.premium?.delivery || "7-day delivery",
+      revisions: project?.packages?.premium?.revisions || "Unlimited Revisions",
+      checklist: project?.packages?.premium?.checklist || [
         "15 to 20 min Extended Feature",
         "Free 60 sec Social Teaser",
         "Full Audio Speech Mastering",
