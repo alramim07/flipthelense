@@ -418,4 +418,118 @@ router.post('/inquiries', async (req, res) => {
   }
 });
 
+// ================= 7. REVIEWS & RATINGS SYSTEM (MODERATION & PUBLIC) =================
+
+// GET reviews: filtered by projectSlug, or status ('accepted', 'pending', 'rejected', or all for admin)
+router.get('/reviews', async (req, res) => {
+  try {
+    const { projectSlug, status } = req.query;
+    const store = getLocalStore();
+    let reviews = store.reviews || [];
+
+    if (projectSlug) {
+      reviews = reviews.filter(r => r.projectSlug === projectSlug || r.projectSlug === 'all');
+    }
+
+    if (status) {
+      reviews = reviews.filter(r => r.status === status);
+    }
+
+    res.json(reviews);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// POST review (Visitor submission - starts as 'pending', or Admin custom review - starts as 'accepted')
+router.post('/reviews', async (req, res) => {
+  try {
+    const { 
+      projectSlug, 
+      projectName, 
+      name, 
+      country, 
+      flag, 
+      rating, 
+      comment, 
+      pricePaid, 
+      duration,
+      status // 'pending' or 'accepted'
+    } = req.body;
+
+    if (!name || !comment) {
+      return res.status(400).json({ error: 'Name and comment are required' });
+    }
+
+    const store = getLocalStore();
+    if (!store.reviews) store.reviews = [];
+
+    const newReview = {
+      _id: 'rev_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+      projectSlug: projectSlug || 'all',
+      projectName: projectName || 'All Projects',
+      name: name.trim(),
+      country: country || 'United States',
+      flag: flag || '🇺🇸',
+      rating: Number(rating) || 5,
+      comment: comment.trim(),
+      pricePaid: pricePaid || 'US$150-US$300',
+      duration: duration || '3-5 days',
+      status: status || 'pending', // 'pending' | 'accepted' | 'rejected'
+      date: 'Just now',
+      createdAt: new Date().toISOString()
+    };
+
+    store.reviews.unshift(newReview);
+    saveLocalStore(store);
+
+    res.status(201).json({ success: true, review: newReview });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// PATCH review status (Admin Approve / Reject / Pending)
+router.patch('/reviews/:id/status', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body; // 'accepted' | 'rejected' | 'pending'
+
+    if (!['accepted', 'rejected', 'pending'].includes(status)) {
+      return res.status(400).json({ error: 'Invalid status' });
+    }
+
+    const store = getLocalStore();
+    if (!store.reviews) store.reviews = [];
+
+    const review = store.reviews.find(r => r._id === id);
+    if (!review) {
+      return res.status(404).json({ error: 'Review not found' });
+    }
+
+    review.status = status;
+    saveLocalStore(store);
+
+    res.json({ success: true, review });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// DELETE review
+router.delete('/reviews/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const store = getLocalStore();
+    if (!store.reviews) store.reviews = [];
+
+    store.reviews = store.reviews.filter(r => r._id !== id);
+    saveLocalStore(store);
+
+    res.json({ success: true, message: 'Review deleted' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 export default router;

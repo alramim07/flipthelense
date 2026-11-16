@@ -31,15 +31,20 @@ import {
   RefreshCw,
   X,
   Tags,
-  FolderPlus
+  FolderPlus,
+  Star,
+  MessageSquare,
+  ThumbsUp,
+  ThumbsDown,
+  Filter
 } from 'lucide-react';
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
   const { tab } = useParams();
   
-  // Valid admin tabs: "dashboard" | "portfolio" | "categories" | "pages" | "inquiries" | "settings"
-  const activeTab = ['dashboard', 'portfolio', 'categories', 'pages', 'inquiries', 'settings'].includes(tab)
+  // Valid admin tabs: "dashboard" | "portfolio" | "categories" | "reviews" | "pages" | "inquiries" | "settings"
+  const activeTab = ['dashboard', 'portfolio', 'categories', 'reviews', 'pages', 'inquiries', 'settings'].includes(tab)
     ? tab
     : 'dashboard';
 
@@ -76,6 +81,22 @@ export default function AdminDashboard() {
 
   // Dynamic Portfolio Items from database
   const [portfolioItems, setPortfolioItems] = useState([]);
+
+  // Dynamic Reviews System
+  const [reviews, setReviews] = useState([]);
+  const [reviewFilterStatus, setReviewFilterStatus] = useState('all'); // 'all' | 'pending' | 'accepted' | 'rejected'
+  const [isAddReviewModalOpen, setIsAddReviewModalOpen] = useState(false);
+  const [newReviewForm, setNewReviewForm] = useState({
+    projectSlug: 'all',
+    projectName: 'All Projects',
+    name: '',
+    country: 'United States',
+    flag: '🇺🇸',
+    rating: 5,
+    comment: '',
+    pricePaid: 'US$150-US$300',
+    duration: '3-5 days'
+  });
 
   const [newPortfolio, setNewPortfolio] = useState({
     title: '',
@@ -165,6 +186,12 @@ export default function AdminDashboard() {
       if (settingsRes.data) {
         setSettings(prev => ({ ...prev, ...settingsRes.data }));
       }
+
+      // 6. Fetch Reviews
+      const reviewsRes = await axios.get('/api/reviews');
+      if (Array.isArray(reviewsRes.data)) {
+        setReviews(reviewsRes.data);
+      }
     } catch (err) {
       console.warn('API sync fallback:', err.message);
     } finally {
@@ -239,6 +266,56 @@ export default function AdminDashboard() {
     const interval = setInterval(fetchAllData, 30000);
     return () => clearInterval(interval);
   }, [navigate]);
+
+  // Review Status Action (Approve / Reject / Pending)
+  const handleUpdateReviewStatus = async (reviewId, newStatus) => {
+    try {
+      await axios.patch(`/api/reviews/${reviewId}/status`, { status: newStatus });
+      setReviews(prev => prev.map(r => r._id === reviewId ? { ...r, status: newStatus } : r));
+    } catch (err) {
+      console.error('Failed to update review status:', err);
+    }
+  };
+
+  // Delete Review
+  const handleDeleteReview = async (reviewId) => {
+    if (!window.confirm('Are you sure you want to delete this review?')) return;
+    try {
+      await axios.delete(`/api/reviews/${reviewId}`);
+      setReviews(prev => prev.filter(r => r._id !== reviewId));
+    } catch (err) {
+      console.error('Failed to delete review:', err);
+    }
+  };
+
+  // Add Custom Admin Review for Specific Project
+  const handleCreateCustomReview = async (e) => {
+    e.preventDefault();
+    if (!newReviewForm.name || !newReviewForm.comment) return;
+    try {
+      const res = await axios.post('/api/reviews', {
+        ...newReviewForm,
+        status: 'accepted'
+      });
+      if (res.data?.review) {
+        setReviews([res.data.review, ...reviews]);
+        setIsAddReviewModalOpen(false);
+        setNewReviewForm({
+          projectSlug: 'all',
+          projectName: 'All Projects',
+          name: '',
+          country: 'United States',
+          flag: '🇺🇸',
+          rating: 5,
+          comment: '',
+          pricePaid: 'US$150-US$300',
+          duration: '3-5 days'
+        });
+      }
+    } catch (err) {
+      alert('Failed to add custom review');
+    }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('ftl_admin_token');
@@ -336,6 +413,14 @@ export default function AdminDashboard() {
               { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
               { id: 'portfolio', label: 'Portfolio Works', icon: Film, badge: portfolioItems.length },
               { id: 'categories', label: 'Categories', icon: Tags, badge: categories.length },
+              { 
+                id: 'reviews', 
+                label: 'Reviews', 
+                icon: MessageSquare, 
+                badge: reviews.filter(r => r.status === 'pending').length > 0 
+                  ? `${reviews.filter(r => r.status === 'pending').length} New` 
+                  : reviews.length 
+              },
               { id: 'pages', label: 'Pages', icon: FileText, badge: frontendPages.length },
               { id: 'inquiries', label: 'Work Inquiries', icon: Inbox, badge: inquiries.length },
               { id: 'settings', label: 'Website Settings', icon: Settings },
@@ -415,6 +500,7 @@ export default function AdminDashboard() {
               {activeTab === 'dashboard' && 'Dashboard'}
               {activeTab === 'portfolio' && 'Portfolio Works'}
               {activeTab === 'categories' && `Portfolio Categories (${categories.length})`}
+              {activeTab === 'reviews' && `Client Reviews & Feedback (${reviews.length})`}
               {activeTab === 'pages' && 'Pages'}
               {activeTab === 'inquiries' && `Work Inquiries (${inquiries.length})`}
               {activeTab === 'settings' && 'Website Settings'}
@@ -1140,6 +1226,321 @@ export default function AdminDashboard() {
                 </table>
               </div>
             </div>
+          </div>
+        )}
+
+        {/* ================= TAB: REVIEWS MODERATION & CREATION ================= */}
+        {activeTab === 'reviews' && (
+          <div className="space-y-8 animate-fade-in-up">
+            {/* Header & Add Custom Review Action */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div>
+                <h2 
+                  className="text-xl font-bold text-white uppercase tracking-tight flex items-center space-x-2"
+                  style={{ fontFamily: "'Oswald', sans-serif" }}
+                >
+                  <MessageSquare className="w-5 h-5 text-[#FFE379]" />
+                  <span>Review Submissions & Approvals</span>
+                </h2>
+                <p className="text-xs text-neutral-400 mt-1">
+                  Manage visitor reviews or add custom project-specific reviews to showcase client satisfaction.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setIsAddReviewModalOpen(true)}
+                className="inline-flex items-center space-x-2 px-5 py-2.5 rounded-xl bg-[#FFE379] hover:bg-[#F2D76B] text-[#101010] text-xs font-black uppercase tracking-wider transition-all shadow-md hover:scale-105"
+                style={{ fontFamily: "'Oswald', sans-serif" }}
+              >
+                <Plus className="w-4 h-4 stroke-[3]" />
+                <span>+ Create Custom Review</span>
+              </button>
+            </div>
+
+            {/* Filter Tabs (All, Pending, Accepted, Rejected) */}
+            <div className="flex flex-wrap items-center gap-2 border-b border-[#232323] pb-4">
+              {[
+                { id: 'all', label: 'All Reviews', count: reviews.length },
+                { id: 'pending', label: 'Pending Approval', count: reviews.filter(r => r.status === 'pending').length },
+                { id: 'accepted', label: 'Accepted (Live)', count: reviews.filter(r => r.status === 'accepted').length },
+                { id: 'rejected', label: 'Rejected', count: reviews.filter(r => r.status === 'rejected').length },
+              ].map((filter) => (
+                <button
+                  key={filter.id}
+                  onClick={() => setReviewFilterStatus(filter.id)}
+                  className={`px-4 py-2 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all flex items-center space-x-2 ${
+                    reviewFilterStatus === filter.id
+                      ? 'bg-[#FFE379] text-black font-bold shadow-md'
+                      : 'bg-[#181818] text-neutral-400 hover:text-white border border-[#262626]'
+                  }`}
+                  style={{ fontFamily: "'Oswald', sans-serif" }}
+                >
+                  <span>{filter.label}</span>
+                  <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-mono ${
+                    reviewFilterStatus === filter.id ? 'bg-black text-[#FFE379]' : 'bg-[#222] text-neutral-300'
+                  }`}>
+                    {filter.count}
+                  </span>
+                </button>
+              ))}
+            </div>
+
+            {/* Reviews List */}
+            <div className="space-y-4">
+              {reviews.filter(r => reviewFilterStatus === 'all' || r.status === reviewFilterStatus).length === 0 ? (
+                <div className="p-12 text-center bg-[#141414] rounded-2xl border border-[#232323] space-y-3">
+                  <p className="text-sm font-mono text-neutral-400">No reviews found in this status category.</p>
+                </div>
+              ) : (
+                reviews
+                  .filter(r => reviewFilterStatus === 'all' || r.status === reviewFilterStatus)
+                  .map((rev) => (
+                    <div 
+                      key={rev._id}
+                      className="bg-[#141414] rounded-2xl border border-[#232323] hover:border-[#FFE379]/40 p-6 space-y-4 transition-all"
+                    >
+                      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                        <div className="flex items-start space-x-3">
+                          <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#FFE379]/30 to-amber-500/30 border border-[#FFE379]/50 flex items-center justify-center font-bold text-white text-sm shrink-0">
+                            {rev.name.charAt(0).toUpperCase()}
+                          </div>
+                          <div>
+                            <div className="flex items-center space-x-2">
+                              <h4 className="text-sm font-bold text-white">{rev.name}</h4>
+                              <span className="text-xs">{rev.flag}</span>
+                              <span className="text-xs text-neutral-400 font-mono">({rev.country})</span>
+                            </div>
+
+                            <div className="flex items-center space-x-3 text-xs text-neutral-400 mt-1">
+                              <div className="flex text-[#FFE379]">
+                                {[...Array(rev.rating || 5)].map((_, i) => (
+                                  <Star key={i} className="w-3.5 h-3.5 fill-[#FFE379]" />
+                                ))}
+                              </div>
+                              <span>•</span>
+                              <span className="text-[#FFE379] font-mono font-semibold">
+                                {rev.projectName || (rev.projectSlug === 'all' ? 'All Projects' : rev.projectSlug)}
+                              </span>
+                              <span>•</span>
+                              <span className="text-neutral-500 font-mono">{rev.date || 'Recent'}</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Status Badge & Quick Action Buttons */}
+                        <div className="flex items-center space-x-2">
+                          <span className={`px-3 py-1 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider ${
+                            rev.status === 'accepted'
+                              ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30'
+                              : rev.status === 'rejected'
+                                ? 'bg-red-500/15 text-red-400 border border-red-500/30'
+                                : 'bg-amber-500/15 text-amber-400 border border-amber-500/30'
+                          }`}>
+                            {rev.status.toUpperCase()}
+                          </span>
+
+                          {rev.status !== 'accepted' && (
+                            <button
+                              type="button"
+                              onClick={() => handleUpdateReviewStatus(rev._id, 'accepted')}
+                              className="px-3 py-1 rounded-lg bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-black text-xs font-bold transition-colors"
+                              title="Accept & Show Live"
+                            >
+                              Accept
+                            </button>
+                          )}
+
+                          {rev.status !== 'rejected' && (
+                            <button
+                              type="button"
+                              onClick={() => handleUpdateReviewStatus(rev._id, 'rejected')}
+                              className="px-3 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-black text-xs font-bold transition-colors"
+                              title="Reject Review"
+                            >
+                              Reject
+                            </button>
+                          )}
+
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteReview(rev._id)}
+                            className="p-1.5 rounded-lg text-neutral-500 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                            title="Delete Permanently"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Comment Body */}
+                      <p 
+                        className="text-xs sm:text-sm text-neutral-300 leading-relaxed bg-[#181818] p-4 rounded-xl border border-[#222]"
+                        style={{ fontFamily: "'Raleway', sans-serif" }}
+                      >
+                        {rev.comment}
+                      </p>
+
+                      {/* Fiverr Style Meta Footer */}
+                      <div className="flex items-center space-x-6 text-[11px] font-mono text-neutral-400 pt-1">
+                        <div>Price: <span className="text-white font-bold">{rev.pricePaid || 'US$150'}</span></div>
+                        <div>Duration: <span className="text-white font-bold">{rev.duration || '4 days'}</span></div>
+                      </div>
+                    </div>
+                  ))
+              )}
+            </div>
+
+            {/* Modal: Create Custom Review */}
+            {isAddReviewModalOpen && (
+              <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+                <div className="relative w-full max-w-lg bg-[#161616] border border-[#2E2E2E] rounded-3xl p-7 shadow-2xl space-y-5">
+                  <div className="flex items-center justify-between pb-3 border-b border-[#262626]">
+                    <h3 
+                      className="text-lg font-bold text-white uppercase"
+                      style={{ fontFamily: "'Oswald', sans-serif" }}
+                    >
+                      + Create Custom Project Review
+                    </h3>
+                    <button
+                      type="button"
+                      onClick={() => setIsAddReviewModalOpen(false)}
+                      className="text-neutral-400 hover:text-white"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
+
+                  <form onSubmit={handleCreateCustomReview} className="space-y-4">
+                    <div>
+                      <label className="block text-[11px] uppercase font-mono text-neutral-400 mb-1">
+                        Target Project
+                      </label>
+                      <select
+                        value={newReviewForm.projectSlug}
+                        onChange={(e) => {
+                          const selectedSlug = e.target.value;
+                          const matched = portfolioItems.find(p => p.slug === selectedSlug);
+                          setNewReviewForm({
+                            ...newReviewForm,
+                            projectSlug: selectedSlug,
+                            projectName: matched ? matched.title : 'All Projects'
+                          });
+                        }}
+                        className="w-full bg-[#1A1A1A] border border-[#333] px-3.5 py-2 rounded-xl text-xs text-white focus:border-[#FFE379] outline-none"
+                      >
+                        <option value="all">Show Across All Projects</option>
+                        {portfolioItems.map((p) => (
+                          <option key={p.slug} value={p.slug}>
+                            {p.title} ({p.slug})
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-[11px] uppercase font-mono text-neutral-400 mb-1">
+                          Client Name
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={newReviewForm.name}
+                          onChange={(e) => setNewReviewForm({ ...newReviewForm, name: e.target.value })}
+                          placeholder="e.g. Liam Harrison"
+                          className="w-full bg-[#1A1A1A] border border-[#333] px-3.5 py-2 rounded-xl text-xs text-white focus:border-[#FFE379] outline-none"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[11px] uppercase font-mono text-neutral-400 mb-1">
+                          Country & Flag
+                        </label>
+                        <input
+                          type="text"
+                          value={newReviewForm.country}
+                          onChange={(e) => setNewReviewForm({ ...newReviewForm, country: e.target.value })}
+                          placeholder="e.g. United Kingdom 🇬🇧"
+                          className="w-full bg-[#1A1A1A] border border-[#333] px-3.5 py-2 rounded-xl text-xs text-white focus:border-[#FFE379] outline-none"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-3">
+                      <div>
+                        <label className="block text-[11px] uppercase font-mono text-neutral-400 mb-1">
+                          Star Rating
+                        </label>
+                        <select
+                          value={newReviewForm.rating}
+                          onChange={(e) => setNewReviewForm({ ...newReviewForm, rating: Number(e.target.value) })}
+                          className="w-full bg-[#1A1A1A] border border-[#333] px-3 py-2 rounded-xl text-xs text-[#FFE379] font-bold focus:border-[#FFE379] outline-none"
+                        >
+                          <option value={5}>5 Stars ★★★★★</option>
+                          <option value={4}>4 Stars ★★★★☆</option>
+                          <option value={3}>3 Stars ★★★☆☆</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-[11px] uppercase font-mono text-neutral-400 mb-1">
+                          Price Paid
+                        </label>
+                        <input
+                          type="text"
+                          value={newReviewForm.pricePaid}
+                          onChange={(e) => setNewReviewForm({ ...newReviewForm, pricePaid: e.target.value })}
+                          placeholder="US$300"
+                          className="w-full bg-[#1A1A1A] border border-[#333] px-3 py-2 rounded-xl text-xs text-white focus:border-[#FFE379] outline-none font-mono"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[11px] uppercase font-mono text-neutral-400 mb-1">
+                          Duration
+                        </label>
+                        <input
+                          type="text"
+                          value={newReviewForm.duration}
+                          onChange={(e) => setNewReviewForm({ ...newReviewForm, duration: e.target.value })}
+                          placeholder="4 days"
+                          className="w-full bg-[#1A1A1A] border border-[#333] px-3 py-2 rounded-xl text-xs text-white focus:border-[#FFE379] outline-none font-mono"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] uppercase font-mono text-neutral-400 mb-1">
+                        Detailed Review Feedback
+                      </label>
+                      <textarea
+                        rows="3"
+                        required
+                        value={newReviewForm.comment}
+                        onChange={(e) => setNewReviewForm({ ...newReviewForm, comment: e.target.value })}
+                        placeholder="Write authentic, professional praise about video editing quality, speed, or color grading..."
+                        className="w-full bg-[#1A1A1A] border border-[#333] px-3.5 py-2.5 rounded-xl text-xs text-neutral-200 focus:border-[#FFE379] outline-none leading-relaxed resize-none"
+                      />
+                    </div>
+
+                    <div className="pt-2 flex items-center justify-end space-x-3">
+                      <button
+                        type="button"
+                        onClick={() => setIsAddReviewModalOpen(false)}
+                        className="px-4 py-2 rounded-xl bg-[#222] text-xs font-semibold text-neutral-300 hover:text-white"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="submit"
+                        className="px-6 py-2 rounded-xl bg-[#FFE379] hover:bg-[#F2D76B] text-black text-xs font-black uppercase tracking-wider transition-all"
+                        style={{ fontFamily: "'Oswald', sans-serif" }}
+                      >
+                        Publish Review Live
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            )}
           </div>
         )}
 

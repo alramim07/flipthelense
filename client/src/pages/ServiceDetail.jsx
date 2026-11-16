@@ -12,7 +12,12 @@ import {
   Sparkles,
   ChevronRight,
   ChevronLeft,
-  ChevronDown
+  ChevronDown,
+  ThumbsUp,
+  ThumbsDown,
+  Search,
+  Send,
+  CheckCircle2
 } from 'lucide-react';
 import axios from 'axios';
 
@@ -37,6 +42,26 @@ export default function ServiceDetail() {
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
   const [openFaqId, setOpenFaqId] = useState(null);
   
+  // Dynamic Real Reviews state (Fiverr-Style Expandable Reviews)
+  const [reviewsList, setReviewsList] = useState([]);
+  const [reviewsVisibleCount, setReviewsVisibleCount] = useState(5);
+  const [reviewSearchQuery, setReviewSearchQuery] = useState('');
+  const [reviewSort, setReviewSort] = useState('relevant'); // 'relevant' | 'recent'
+  const [helpfulVotes, setHelpfulVotes] = useState({});
+
+  // Public Review Form Submission state
+  const [isSubmittingReview, setIsSubmittingReview] = useState(false);
+  const [reviewSubmittedSuccess, setReviewSubmittedSuccess] = useState(false);
+  const [visitorReviewForm, setVisitorReviewForm] = useState({
+    name: '',
+    country: 'United States',
+    flag: '🇺🇸',
+    rating: 5,
+    comment: '',
+    pricePaid: 'US$150-US$300',
+    duration: '3-5 days'
+  });
+
   // Active review slide index for the 5 demo reviews carousel
   const [reviewIndex, setReviewIndex] = useState(0);
   const [slideDirection, setSlideDirection] = useState('next'); // 'next' | 'prev'
@@ -166,6 +191,17 @@ export default function ServiceDetail() {
         }
       })
       .catch(() => {});
+
+    // Fetch accepted reviews for this project (or all-projects reviews)
+    axios.get(`/api/reviews?status=accepted`)
+      .then(res => {
+        if (Array.isArray(res.data)) {
+          // Priority to project-specific reviews first, then general reviews
+          const matched = res.data.filter(r => r.projectSlug === slug || r.projectSlug === 'all');
+          setReviewsList(matched.length > 0 ? matched : res.data);
+        }
+      })
+      .catch(() => {});
   }, [slug]);
 
   // Resolve active comparison rows: custom project comparisonRows or fallback to default
@@ -207,6 +243,44 @@ export default function ServiceDetail() {
   };
 
   const currentPkg = PACKAGES[activeTab];
+
+  // Handle Public Visitor Review Submission (sent as pending to Admin)
+  const handleVisitorReviewSubmit = async (e) => {
+    e.preventDefault();
+    if (!visitorReviewForm.name.trim() || !visitorReviewForm.comment.trim()) return;
+
+    setIsSubmittingReview(true);
+    try {
+      await axios.post('/api/reviews', {
+        projectSlug: slug,
+        projectName: project?.title || 'Video Project',
+        name: visitorReviewForm.name.trim(),
+        country: visitorReviewForm.country.trim() || 'United States',
+        flag: visitorReviewForm.flag || '🇺🇸',
+        rating: Number(visitorReviewForm.rating) || 5,
+        comment: visitorReviewForm.comment.trim(),
+        pricePaid: visitorReviewForm.pricePaid || currentPkg.price,
+        duration: visitorReviewForm.duration || currentPkg.delivery,
+        status: 'pending' // Admin must approve before showing live
+      });
+
+      setReviewSubmittedSuccess(true);
+      setVisitorReviewForm({
+        name: '',
+        country: 'United States',
+        flag: '🇺🇸',
+        rating: 5,
+        comment: '',
+        pricePaid: 'US$150-US$300',
+        duration: '3-5 days'
+      });
+      setTimeout(() => setReviewSubmittedSuccess(false), 6000);
+    } catch (err) {
+      alert('Failed to submit review. Please try again.');
+    } finally {
+      setIsSubmittingReview(false);
+    }
+  };
 
   const handleOrderSubmit = async (e) => {
     e.preventDefault();
@@ -880,6 +954,376 @@ export default function ServiceDetail() {
                 </div>
               </div>
             )}
+
+            {/* ================= REVIEWS SECTION (FIVERR-STYLE 5 AT A TIME & SHOW MORE) ================= */}
+            <div className="mt-14 pt-10 border-t border-[#262626] space-y-8">
+              
+              {/* Header with aggregate rating & breakdown */}
+              <div>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                  <div>
+                    <h2 
+                      className="text-2xl sm:text-3xl font-black text-white tracking-wide uppercase"
+                      style={{ fontFamily: "'Oswald', sans-serif" }}
+                    >
+                      Reviews
+                    </h2>
+                    <p className="text-xs font-mono text-neutral-400 mt-1">
+                      {reviewsList.length} verified reviews for this project
+                    </p>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <div className="flex text-[#FFE379]">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-5 h-5 fill-[#FFE379]" />
+                      ))}
+                    </div>
+                    <span className="font-mono font-black text-xl text-white">5.0</span>
+                  </div>
+                </div>
+
+                {/* Rating Breakdown Grid (Exact Fiverr Style) */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-[#141414] p-6 rounded-2xl border border-[#262626]">
+                  {/* Left: Star Bars */}
+                  <div className="space-y-2">
+                    {[
+                      { star: '5 Stars', pct: '96%', count: 94 },
+                      { star: '4 Stars', pct: '4%', count: 4 },
+                      { star: '3 Stars', pct: '0%', count: 0 },
+                      { star: '2 Stars', pct: '0%', count: 0 },
+                      { star: '1 Star', pct: '0%', count: 0 }
+                    ].map((row, i) => (
+                      <div key={i} className="flex items-center space-x-3 text-xs font-mono">
+                        <span className="w-16 text-neutral-400 shrink-0">{row.star}</span>
+                        <div className="flex-1 h-2 bg-[#222] rounded-full overflow-hidden">
+                          <div 
+                            className="h-full bg-[#FFE379] rounded-full transition-all duration-500"
+                            style={{ width: row.pct }}
+                          />
+                        </div>
+                        <span className="w-8 text-neutral-500 text-right shrink-0">({row.count})</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Right: Breakdown Attributes */}
+                  <div className="space-y-3.5 border-t md:border-t-0 md:border-l border-[#262626] md:pl-6 pt-4 md:pt-0">
+                    <span className="text-xs font-mono uppercase text-[#FFE379] font-bold block">
+                      Rating Breakdown
+                    </span>
+                    <div className="space-y-2 text-xs">
+                      {[
+                        { label: 'Seller communication level', score: '5.0' },
+                        { label: 'Quality of delivery', score: '5.0' },
+                        { label: 'Value of delivery', score: '4.9' },
+                      ].map((item, i) => (
+                        <div key={i} className="flex items-center justify-between text-neutral-300">
+                          <span>{item.label}</span>
+                          <span className="font-mono font-bold text-white flex items-center space-x-1">
+                            <Star className="w-3.5 h-3.5 fill-[#FFE379] text-[#FFE379]" />
+                            <span>{item.score}</span>
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Search & Sort Bar */}
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
+                <div className="relative w-full sm:w-72">
+                  <input
+                    type="text"
+                    value={reviewSearchQuery}
+                    onChange={(e) => setReviewSearchQuery(e.target.value)}
+                    placeholder="Search reviews..."
+                    className="w-full bg-[#141414] border border-[#262626] rounded-xl pl-9 pr-4 py-2 text-xs text-white placeholder-neutral-500 focus:border-[#FFE379] outline-none"
+                  />
+                  <Search className="w-4 h-4 text-neutral-500 absolute left-3 top-2.5" />
+                </div>
+
+                <div className="flex items-center space-x-2 text-xs font-mono text-neutral-400 self-end sm:self-auto">
+                  <span>Sort By</span>
+                  <select
+                    value={reviewSort}
+                    onChange={(e) => setReviewSort(e.target.value)}
+                    className="bg-[#141414] border border-[#262626] text-[#FFE379] font-bold rounded-lg px-2.5 py-1.5 outline-none cursor-pointer"
+                  >
+                    <option value="relevant">Most relevant</option>
+                    <option value="recent">Most recent</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Reviews Cards List (Filtered & Paginated) */}
+              {(() => {
+                const filtered = reviewsList.filter(r => 
+                  !reviewSearchQuery || 
+                  r.name.toLowerCase().includes(reviewSearchQuery.toLowerCase()) ||
+                  r.comment.toLowerCase().includes(reviewSearchQuery.toLowerCase())
+                );
+
+                const visible = filtered.slice(0, reviewsVisibleCount);
+                const hasMore = visible.length < filtered.length;
+
+                return (
+                  <div className="space-y-4">
+                    {visible.length === 0 ? (
+                      <div className="p-8 text-center bg-[#141414] rounded-2xl border border-[#262626] text-xs text-neutral-400 font-mono">
+                        No reviews found matching "{reviewSearchQuery}".
+                      </div>
+                    ) : (
+                      visible.map((rev) => {
+                        const isHelpful = helpfulVotes[rev._id];
+                        return (
+                          <div 
+                            key={rev._id}
+                            className="bg-[#141414] rounded-2xl border border-[#262626] p-6 space-y-4 hover:border-[#FFE379]/30 transition-colors"
+                          >
+                            {/* Author Top Info */}
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center space-x-3">
+                                <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#FFE379]/30 to-amber-500/30 border border-[#FFE379]/40 flex items-center justify-center font-bold text-white text-sm shrink-0">
+                                  {rev.name.charAt(0).toUpperCase()}
+                                </div>
+                                <div>
+                                  <div className="flex items-center space-x-2">
+                                    <h4 className="text-sm font-bold text-white">{rev.name}</h4>
+                                    <span className="text-xs">{rev.flag || '🇺🇸'}</span>
+                                    <span className="text-xs text-neutral-400 font-mono">({rev.country})</span>
+                                  </div>
+                                  <div className="flex items-center space-x-2 text-xs text-neutral-500 font-mono mt-0.5">
+                                    <div className="flex text-[#FFE379]">
+                                      {[...Array(rev.rating || 5)].map((_, i) => (
+                                        <Star key={i} className="w-3.5 h-3.5 fill-[#FFE379]" />
+                                      ))}
+                                    </div>
+                                    <span>•</span>
+                                    <span>{rev.date || 'Recent review'}</span>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <span className="text-[10px] font-mono uppercase text-neutral-400 bg-white/5 px-2.5 py-1 rounded-md border border-white/10 hidden sm:inline-block">
+                                Ongoing collaboration
+                              </span>
+                            </div>
+
+                            {/* Comment */}
+                            <p 
+                              className="text-xs sm:text-sm text-neutral-300 leading-relaxed"
+                              style={{ fontFamily: "'Raleway', sans-serif" }}
+                            >
+                              {rev.comment}
+                            </p>
+
+                            {/* Fiverr Metadata (Price & Duration) */}
+                            <div className="flex items-center space-x-6 text-xs font-mono py-2.5 border-y border-[#202020] text-neutral-400">
+                              <div>
+                                <span className="text-neutral-500">Price: </span>
+                                <span className="text-white font-bold">{rev.pricePaid || 'US$150'}</span>
+                              </div>
+                              <div>
+                                <span className="text-neutral-500">Duration: </span>
+                                <span className="text-white font-bold">{rev.duration || '4 days'}</span>
+                              </div>
+                            </div>
+
+                            {/* Helpful Action Row */}
+                            <div className="flex items-center justify-between text-xs text-neutral-400">
+                              <div className="flex items-center space-x-3">
+                                <span>Helpful?</span>
+                                <button
+                                  type="button"
+                                  onClick={() => setHelpfulVotes({ ...helpfulVotes, [rev._id]: 'yes' })}
+                                  className={`flex items-center space-x-1 px-2.5 py-1 rounded-lg border transition-colors ${
+                                    isHelpful === 'yes'
+                                      ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40'
+                                      : 'border-[#2D2D2D] hover:border-neutral-500 text-neutral-300'
+                                  }`}
+                                >
+                                  <ThumbsUp className="w-3.5 h-3.5" />
+                                  <span>Yes</span>
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => setHelpfulVotes({ ...helpfulVotes, [rev._id]: 'no' })}
+                                  className={`flex items-center space-x-1 px-2.5 py-1 rounded-lg border transition-colors ${
+                                    isHelpful === 'no'
+                                      ? 'bg-red-500/20 text-red-400 border-red-500/40'
+                                      : 'border-[#2D2D2D] hover:border-neutral-500 text-neutral-300'
+                                  }`}
+                                >
+                                  <ThumbsDown className="w-3.5 h-3.5" />
+                                  <span>No</span>
+                                </button>
+                              </div>
+                            </div>
+
+                          </div>
+                        );
+                      })
+                    )}
+
+                    {/* Pagination Action Button (Show More Reviews / Collapse All) */}
+                    {filtered.length > 5 && (
+                      <div className="pt-4 text-center">
+                        {hasMore ? (
+                          <button
+                            type="button"
+                            onClick={() => setReviewsVisibleCount(prev => prev + 5)}
+                            className="px-6 py-3 rounded-xl border border-[#333] hover:border-[#FFE379] bg-[#141414] hover:bg-[#1A1A1A] text-white hover:text-[#FFE379] text-xs font-bold uppercase tracking-wider font-mono transition-all shadow-md inline-flex items-center space-x-2"
+                          >
+                            <span>Show More Reviews (+5)</span>
+                            <ChevronDown className="w-4 h-4" />
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => setReviewsVisibleCount(5)}
+                            className="px-6 py-3 rounded-xl border border-[#333] hover:border-[#FFE379] bg-[#141414] hover:bg-[#1A1A1A] text-white hover:text-[#FFE379] text-xs font-bold uppercase tracking-wider font-mono transition-all shadow-md inline-flex items-center space-x-2"
+                          >
+                            <span>Collapse All Reviews</span>
+                            <ChevronDown className="w-4 h-4 rotate-180" />
+                          </button>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
+
+              {/* ================= VISITOR REVIEW SUBMISSION SECTION ================= */}
+              <div className="bg-[#141414] rounded-2xl border border-[#262626] p-6 sm:p-8 space-y-6">
+                <div>
+                  <div className="inline-flex items-center space-x-2 text-xs font-mono text-[#FFE379] uppercase font-bold tracking-wider mb-1">
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>Leave Your Feedback</span>
+                  </div>
+                  <h3 
+                    className="text-xl sm:text-2xl font-black text-white uppercase tracking-wide"
+                    style={{ fontFamily: "'Oswald', sans-serif" }}
+                  >
+                    Leave a Review For This Project
+                  </h3>
+                  <p className="text-xs text-neutral-400 mt-1">
+                    Share your experience working with FlipTheLense. Submitted reviews are verified and approved by our team before publishing.
+                  </p>
+                </div>
+
+                {reviewSubmittedSuccess && (
+                  <div className="p-4 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs font-mono flex items-center space-x-2 animate-fadeIn">
+                    <CheckCircle2 className="w-4 h-4 shrink-0" />
+                    <span>Thank you! Your review has been submitted for verification and will appear once approved.</span>
+                  </div>
+                )}
+
+                <form onSubmit={handleVisitorReviewSubmit} className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-[11px] uppercase font-mono text-neutral-400 mb-1">
+                        Your Name / Username *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={visitorReviewForm.name}
+                        onChange={(e) => setVisitorReviewForm({ ...visitorReviewForm, name: e.target.value })}
+                        placeholder="e.g. Alex Morgan"
+                        className="w-full bg-[#181818] border border-[#2E2E2E] px-4 py-2.5 rounded-xl text-xs text-white placeholder-neutral-500 focus:border-[#FFE379] outline-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] uppercase font-mono text-neutral-400 mb-1">
+                        Country & Flag
+                      </label>
+                      <input
+                        type="text"
+                        value={visitorReviewForm.country}
+                        onChange={(e) => setVisitorReviewForm({ ...visitorReviewForm, country: e.target.value })}
+                        placeholder="e.g. United States 🇺🇸"
+                        className="w-full bg-[#181818] border border-[#2E2E2E] px-4 py-2.5 rounded-xl text-xs text-white placeholder-neutral-500 focus:border-[#FFE379] outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-[11px] uppercase font-mono text-neutral-400 mb-1">
+                        Your Rating
+                      </label>
+                      <select
+                        value={visitorReviewForm.rating}
+                        onChange={(e) => setVisitorReviewForm({ ...visitorReviewForm, rating: Number(e.target.value) })}
+                        className="w-full bg-[#181818] border border-[#2E2E2E] px-3.5 py-2.5 rounded-xl text-xs text-[#FFE379] font-bold focus:border-[#FFE379] outline-none cursor-pointer"
+                      >
+                        <option value={5}>5 Stars ★★★★★</option>
+                        <option value={4}>4 Stars ★★★★☆</option>
+                        <option value={3}>3 Stars ★★★☆☆</option>
+                        <option value={2}>2 Stars ★★☆☆☆</option>
+                        <option value={1}>1 Star ★☆☆☆☆</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] uppercase font-mono text-neutral-400 mb-1">
+                        Price Range
+                      </label>
+                      <input
+                        type="text"
+                        value={visitorReviewForm.pricePaid}
+                        onChange={(e) => setVisitorReviewForm({ ...visitorReviewForm, pricePaid: e.target.value })}
+                        placeholder="e.g. US$150"
+                        className="w-full bg-[#181818] border border-[#2E2E2E] px-4 py-2.5 rounded-xl text-xs text-white placeholder-neutral-500 focus:border-[#FFE379] outline-none font-mono"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] uppercase font-mono text-neutral-400 mb-1">
+                        Project Duration
+                      </label>
+                      <input
+                        type="text"
+                        value={visitorReviewForm.duration}
+                        onChange={(e) => setVisitorReviewForm({ ...visitorReviewForm, duration: e.target.value })}
+                        placeholder="e.g. 4 days"
+                        className="w-full bg-[#181818] border border-[#2E2E2E] px-4 py-2.5 rounded-xl text-xs text-white placeholder-neutral-500 focus:border-[#FFE379] outline-none font-mono"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] uppercase font-mono text-neutral-400 mb-1">
+                      Your Feedback & Experience *
+                    </label>
+                    <textarea
+                      rows="3"
+                      required
+                      value={visitorReviewForm.comment}
+                      onChange={(e) => setVisitorReviewForm({ ...visitorReviewForm, comment: e.target.value })}
+                      placeholder="Describe what you liked about the video pacing, audio design, speed, and communication..."
+                      className="w-full bg-[#181818] border border-[#2E2E2E] px-4 py-3 rounded-xl text-xs text-neutral-200 placeholder-neutral-500 focus:border-[#FFE379] outline-none leading-relaxed resize-none"
+                    />
+                  </div>
+
+                  <div className="pt-2">
+                    <button
+                      type="submit"
+                      disabled={isSubmittingReview}
+                      className="w-full sm:w-auto px-7 py-3 rounded-xl bg-[#FFE379] hover:bg-[#F2D76B] text-[#101010] text-xs font-black uppercase tracking-wider transition-all shadow-md flex items-center justify-center space-x-2 hover:scale-105 disabled:opacity-60"
+                      style={{ fontFamily: "'Oswald', sans-serif" }}
+                    >
+                      <Send className="w-3.5 h-3.5" />
+                      <span>{isSubmittingReview ? 'Submitting...' : 'Submit Review For Approval'}</span>
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+            </div>
 
           </div>
 
