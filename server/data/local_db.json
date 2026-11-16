@@ -80,7 +80,36 @@
       ],
       "basicPrice": 150,
       "standardPrice": 300,
-      "premiumPrice": 550
+      "premiumPrice": 550,
+      "comparisonRows": [
+        { "id": "cr_1", "feature": "4K UHD Master File Export", "basic": true, "standard": true, "premium": true },
+        { "id": "cr_2", "feature": "Multi-Camera Audio Synchronization", "basic": false, "standard": true, "premium": true },
+        { "id": "cr_3", "feature": "Hollywood Film Color Grading", "basic": true, "standard": true, "premium": true },
+        { "id": "cr_4", "feature": "Sound Design & Licensed Audio", "basic": true, "standard": true, "premium": true },
+        { "id": "cr_5", "feature": "Drone Aerial Footage Integration", "basic": false, "standard": true, "premium": true },
+        { "id": "cr_6", "feature": "Social Media 9:16 Vertical Cut", "basic": true, "standard": true, "premium": true },
+        { "id": "cr_7", "feature": "Raw Project Source File Archive", "basic": false, "standard": false, "premium": true }
+      ],
+      "packages": {
+        "basic": {
+          "title": "Basic Edit Package",
+          "desc": "Up to 60 seconds teaser trailer with sound effects, color grading, and social 9:16 + 16:9 exports.",
+          "delivery": "3-day delivery",
+          "revisions": "2 Revisions"
+        },
+        "standard": {
+          "title": "Standard Highlight Film",
+          "desc": "3 to 5 minutes cinematic highlight film with full 4K color grading, dialogue audio sync, licensed music and drone integration.",
+          "delivery": "5-day delivery",
+          "revisions": "3 Revisions"
+        },
+        "premium": {
+          "title": "Premium Extended Feature",
+          "desc": "Comprehensive 15-20 minutes full cut + 60s teaser + raw multicam speech edits + master project archive.",
+          "delivery": "7-day delivery",
+          "revisions": "Unlimited Revisions"
+        }
+      }
     },
     {
       "_id": "port_2",
@@ -147,7 +176,36 @@
       ],
       "basicPrice": 150,
       "standardPrice": 300,
-      "premiumPrice": 550
+      "premiumPrice": 550,
+      "comparisonRows": [
+        { "id": "cr_1", "feature": "4K UHD Master File Export", "basic": true, "standard": true, "premium": true },
+        { "id": "cr_2", "feature": "Multi-Camera Audio Synchronization", "basic": false, "standard": true, "premium": true },
+        { "id": "cr_3", "feature": "Hollywood Film Color Grading", "basic": true, "standard": true, "premium": true },
+        { "id": "cr_4", "feature": "Sound Design & Licensed Audio", "basic": true, "standard": true, "premium": true },
+        { "id": "cr_5", "feature": "Drone Aerial Footage Integration", "basic": false, "standard": true, "premium": true },
+        { "id": "cr_6", "feature": "Social Media 9:16 Vertical Cut", "basic": true, "standard": true, "premium": true },
+        { "id": "cr_7", "feature": "Raw Project Source File Archive", "basic": false, "standard": false, "premium": true }
+      ],
+      "packages": {
+        "basic": {
+          "title": "Basic Edit Package",
+          "desc": "Up to 60 seconds teaser trailer with sound effects, color grading, and social 9:16 + 16:9 exports.",
+          "delivery": "3-day delivery",
+          "revisions": "2 Revisions"
+        },
+        "standard": {
+          "title": "Standard Highlight Film",
+          "desc": "3 to 5 minutes cinematic highlight film with full 4K color grading, dialogue audio sync, licensed music and drone integration.",
+          "delivery": "5-day delivery",
+          "revisions": "3 Revisions"
+        },
+        "premium": {
+          "title": "Premium Extended Feature",
+          "desc": "Comprehensive 15-20 minutes full cut + 60s teaser + raw multicam speech edits + master project archive.",
+          "delivery": "7-day delivery",
+          "revisions": "Unlimited Revisions"
+        }
+      }
     },
     {
       "_id": "port_5",

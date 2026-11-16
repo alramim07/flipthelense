@@ -15,6 +15,17 @@ import {
 } from 'lucide-react';
 import axios from 'axios';
 
+// Shared Default Comparison Matrix
+export const DEFAULT_COMPARISON_ROWS = [
+  { id: 'cr_1', feature: '4K UHD Master File Export', basic: true, standard: true, premium: true },
+  { id: 'cr_2', feature: 'Multi-Camera Audio Synchronization', basic: false, standard: true, premium: true },
+  { id: 'cr_3', feature: 'Hollywood Film Color Grading', basic: true, standard: true, premium: true },
+  { id: 'cr_4', feature: 'Sound Design & Licensed Audio', basic: true, standard: true, premium: true },
+  { id: 'cr_5', feature: 'Drone Aerial Footage Integration', basic: false, standard: true, premium: true },
+  { id: 'cr_6', feature: 'Social Media 9:16 Vertical Cut', basic: true, standard: true, premium: true },
+  { id: 'cr_7', feature: 'Raw Project Source File Archive', basic: false, standard: false, premium: true }
+];
+
 export default function ServiceDetail() {
   const { slug } = useParams();
   const [project, setProject] = useState(null);
@@ -144,47 +155,41 @@ export default function ServiceDetail() {
       });
   }, [slug]);
 
+  // Resolve active comparison rows: custom project comparisonRows or fallback to default
+  const comparisonRows = (project?.comparisonRows && project.comparisonRows.length > 0)
+    ? project.comparisonRows
+    : DEFAULT_COMPARISON_ROWS;
+
+  // Features included in each package tier dynamically derived from comparisonRows
+  const basicIncludedFeatures = comparisonRows.filter(r => r.basic).map(r => r.feature);
+  const standardIncludedFeatures = comparisonRows.filter(r => r.standard).map(r => r.feature);
+  const premiumIncludedFeatures = comparisonRows.filter(r => r.premium).map(r => r.feature);
+
   // Dynamic Packages calculated from project custom packages or defaults
   const PACKAGES = {
     basic: {
-      title: project?.packages?.basic?.title || "Teaser / Trailer Edit",
+      title: project?.packages?.basic?.title || "Basic Edit Package",
       price: `US$${project?.basicPrice || 150}`,
       desc: project?.packages?.basic?.desc || "Up to 60 seconds teaser trailer with sound effects, color grading, and social 9:16 + 16:9 exports.",
       delivery: project?.packages?.basic?.delivery || "3-day delivery",
       revisions: project?.packages?.basic?.revisions || "2 Revisions",
-      checklist: project?.packages?.basic?.checklist || [
-        "Up to 60 sec cut & pace",
-        "Sound effects & licensed audio",
-        "Color grading (Rec.709)",
-        "1080p Full HD Export"
-      ]
+      checklist: basicIncludedFeatures.length > 0 ? basicIncludedFeatures : (project?.packages?.basic?.checklist || [])
     },
     standard: {
-      title: project?.packages?.standard?.title || "Cinematic Showcase Highlight",
+      title: project?.packages?.standard?.title || "Standard Highlight Film",
       price: `US$${project?.standardPrice || 300}`,
       desc: project?.packages?.standard?.desc || "3 to 5 minutes cinematic highlight film with full 4K color grading, dialogue audio sync, licensed music and drone integration.",
       delivery: project?.packages?.standard?.delivery || "5-day delivery",
       revisions: project?.packages?.standard?.revisions || "3 Revisions",
-      checklist: project?.packages?.standard?.checklist || project?.deliverables || [
-        "4K UHD Master File Export",
-        "Multi-Camera Audio Synchronization",
-        "Professional Hollywood Color Grading",
-        "Sound Design & Licensed Music"
-      ]
+      checklist: standardIncludedFeatures.length > 0 ? standardIncludedFeatures : (project?.packages?.standard?.checklist || [])
     },
     premium: {
-      title: project?.packages?.premium?.title || "Full Feature Extended Cut",
+      title: project?.packages?.premium?.title || "Premium Extended Feature",
       price: `US$${project?.premiumPrice || 550}`,
       desc: project?.packages?.premium?.desc || "Comprehensive 15-20 minutes full cut + 60s teaser + raw multicam speech edits + master project archive.",
       delivery: project?.packages?.premium?.delivery || "7-day delivery",
       revisions: project?.packages?.premium?.revisions || "Unlimited Revisions",
-      checklist: project?.packages?.premium?.checklist || [
-        "15 to 20 min Extended Feature",
-        "Free 60 sec Social Teaser",
-        "Full Audio Speech Mastering",
-        "Unlimited Revisions",
-        "Full 4K ProRes Export"
-      ]
+      checklist: premiumIncludedFeatures.length > 0 ? premiumIncludedFeatures : (project?.packages?.premium?.checklist || [])
     }
   };
 
@@ -571,15 +576,7 @@ export default function ServiceDetail() {
                     </thead>
 
                     <tbody className="divide-y divide-[#1F1F1F]">
-                      {(project.comparisonRows || [
-                        { id: 'cr_1', feature: '4K UHD Master File Export', basic: true, standard: true, premium: true },
-                        { id: 'cr_2', feature: 'Multi-Camera Audio Synchronization', basic: false, standard: true, premium: true },
-                        { id: 'cr_3', feature: 'Hollywood Film Color Grading', basic: true, standard: true, premium: true },
-                        { id: 'cr_4', feature: 'Sound Design & Licensed Audio', basic: true, standard: true, premium: true },
-                        { id: 'cr_5', feature: 'Drone Aerial Footage Integration', basic: false, standard: true, premium: true },
-                        { id: 'cr_6', feature: 'Social Media 9:16 Vertical Cut', basic: true, standard: true, premium: true },
-                        { id: 'cr_7', feature: 'Raw Project Source File Archive', basic: false, standard: false, premium: true }
-                      ]).map((row) => (
+                      {comparisonRows.map((row) => (
                         <tr key={row.id} className="hover:bg-white/[0.02] transition-colors">
                           <td className="py-3.5 px-5 text-neutral-200 font-medium text-xs">
                             {row.feature}
@@ -759,28 +756,20 @@ export default function ServiceDetail() {
                   </div>
                 </div>
 
-                {/* Features Checklist (Filtered directly from Compare Packages feature matrix) */}
+                {/* Features Checklist (100% matched directly with Compare Packages feature matrix) */}
                 <div className="space-y-2">
                   <span className="text-[11px] font-bold text-neutral-400 uppercase font-mono block mb-1">
                     What's included in this package:
                   </span>
                   
-                  {(() => {
-                    // Extract features where current tier is checked in comparisonRows
-                    const activeTierFeatures = (project?.comparisonRows || [])
-                      .filter((row) => row[activeTab])
-                      .map((row) => row.feature);
-
-                    // If comparisonRows exists and has items, show those; otherwise fallback to currentPkg.checklist
-                    const displayChecklist = activeTierFeatures.length > 0 ? activeTierFeatures : (currentPkg.checklist || []);
-
-                    return displayChecklist.map((feat, i) => (
-                      <div key={i} className="flex items-center space-x-2 text-xs text-neutral-300">
+                  {comparisonRows
+                    .filter((row) => row[activeTab])
+                    .map((row) => (
+                      <div key={row.id || row.feature} className="flex items-center space-x-2 text-xs text-neutral-300">
                         <Check className="w-3.5 h-3.5 text-[#FFE379] shrink-0" />
-                        <span>{feat}</span>
+                        <span>{row.feature}</span>
                       </div>
-                    ));
-                  })()}
+                    ))}
                 </div>
 
                 {/* CTA Action Buttons */}
