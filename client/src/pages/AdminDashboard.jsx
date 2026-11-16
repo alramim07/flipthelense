@@ -123,6 +123,28 @@ export default function AdminDashboard() {
     satisfactionCounter: '99%'
   });
 
+  // Global ESC key listener to dismiss open modals & dropdowns
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        if (isProjectDropdownOpen) {
+          setIsProjectDropdownOpen(false);
+          return;
+        }
+        if (isAddReviewModalOpen) {
+          setIsAddReviewModalOpen(false);
+          setIsProjectDropdownOpen(false);
+        }
+        if (isAddModalOpen) {
+          setIsAddModalOpen(false);
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isAddReviewModalOpen, isAddModalOpen, isProjectDropdownOpen]);
+
   // Frontend Pages List for "Pages" Menu Tab
   const frontendPages = [
     {
