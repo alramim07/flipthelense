@@ -333,10 +333,7 @@ export default function EditingProcessSection() {
                       : 'bg-[#161616] border-[#262626] hover:border-[#FFE379]/50 hover:bg-[#1A1A1A] shadow-2xl'
                   }`}
                 >
-                  <div className="flex items-center justify-between mb-3">
-                    <span className={`text-xs font-bold px-2.5 py-1 rounded-md font-mono ${
-                      isActive ? 'bg-[#FFE379] text-[#101010]' : 'bg-[#232323] text-neutral-400 group-hover:text-white'
-                    }`}>{item.step}</span>
+                  <div className="flex items-center justify-end mb-3">
                     <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
                       isActive ? 'bg-[#FFE379]/15 text-[#FFE379]' : 'bg-[#202020] text-neutral-400 group-hover:text-[#FFE379]'
                     }`}><IconComp className="w-4 h-4" /></div>
@@ -365,10 +362,7 @@ export default function EditingProcessSection() {
                       : 'bg-[#161616] border-[#262626] hover:border-[#FFE379]/50 hover:bg-[#1A1A1A] shadow-xl'
                   }`}
                 >
-                  <div className="flex items-center justify-between mb-3">
-                    <span className={`text-xs font-bold px-2.5 py-1 rounded-md font-mono ${
-                      isActive ? 'bg-[#FFE379] text-[#101010]' : 'bg-[#232323] text-neutral-400 group-hover:text-white'
-                    }`}>{item.step}</span>
+                  <div className="flex items-center justify-end mb-3">
                     <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
                       isActive ? 'bg-[#FFE379]/15 text-[#FFE379]' : 'bg-[#202020] text-neutral-400 group-hover:text-[#FFE379]'
                     }`}><IconComp className="w-4 h-4" /></div>
