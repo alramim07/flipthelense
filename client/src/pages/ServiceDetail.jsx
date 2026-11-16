@@ -156,7 +156,7 @@ export default function ServiceDetail() {
       });
 
     // Fetch all projects for recommendations (excluding current slug)
-    axios.get('/api/projects')
+    axios.get('/api/portfolio')
       .then(res => {
         if (Array.isArray(res.data)) {
           const others = res.data.filter(p => p.slug !== slug);

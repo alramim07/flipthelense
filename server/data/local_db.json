@@ -35,6 +35,60 @@
       "device": "Desktop",
       "timestamp": "2026-11-16T06:08:12.482Z",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794826416703_kzokp",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/services/cinematic-wedding-video-editing",
+      "referrer": "http://localhost:5173/portfolio",
+      "device": "Desktop",
+      "timestamp": "2026-11-16T10:53:36.703Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794826417769_i4ex8",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/portfolio",
+      "referrer": "http://localhost:5173/portfolio",
+      "device": "Desktop",
+      "timestamp": "2026-11-16T10:53:37.769Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794826427450_vnghy",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/tranquil-lake-reflection",
+      "referrer": "http://localhost:5173/portfolio",
+      "device": "Desktop",
+      "timestamp": "2026-11-16T10:53:47.450Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794826432170_94stu",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/portfolio",
+      "referrer": "http://localhost:5173/portfolio",
+      "device": "Desktop",
+      "timestamp": "2026-11-16T10:53:52.170Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794826432684_z7fkw",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/services/cinematic-wedding-video-editing",
+      "referrer": "http://localhost:5173/portfolio",
+      "device": "Desktop",
+      "timestamp": "2026-11-16T10:53:52.684Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794826433596_l5v1o",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/alpine-ridge-explorer",
+      "referrer": "http://localhost:5173/portfolio",
+      "device": "Desktop",
+      "timestamp": "2026-11-16T10:53:53.596Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
     }
   ],
   "inquiries": [
@@ -82,13 +136,55 @@
       "standardPrice": 300,
       "premiumPrice": 550,
       "comparisonRows": [
-        { "id": "cr_1", "feature": "4K UHD Master File Export", "basic": true, "standard": true, "premium": true },
-        { "id": "cr_2", "feature": "Multi-Camera Audio Synchronization", "basic": false, "standard": true, "premium": true },
-        { "id": "cr_3", "feature": "Hollywood Film Color Grading", "basic": true, "standard": true, "premium": true },
-        { "id": "cr_4", "feature": "Sound Design & Licensed Audio", "basic": true, "standard": true, "premium": true },
-        { "id": "cr_5", "feature": "Drone Aerial Footage Integration", "basic": false, "standard": true, "premium": true },
-        { "id": "cr_6", "feature": "Social Media 9:16 Vertical Cut", "basic": true, "standard": true, "premium": true },
-        { "id": "cr_7", "feature": "Raw Project Source File Archive", "basic": false, "standard": false, "premium": true }
+        {
+          "id": "cr_1",
+          "feature": "4K UHD Master File Export",
+          "basic": true,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_2",
+          "feature": "Multi-Camera Audio Synchronization",
+          "basic": false,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_3",
+          "feature": "Hollywood Film Color Grading",
+          "basic": true,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_4",
+          "feature": "Sound Design & Licensed Audio",
+          "basic": true,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_5",
+          "feature": "Drone Aerial Footage Integration",
+          "basic": false,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_6",
+          "feature": "Social Media 9:16 Vertical Cut",
+          "basic": true,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_7",
+          "feature": "Raw Project Source File Archive",
+          "basic": false,
+          "standard": false,
+          "premium": true
+        }
       ],
       "packages": {
         "basic": {
@@ -178,13 +274,55 @@
       "standardPrice": 300,
       "premiumPrice": 550,
       "comparisonRows": [
-        { "id": "cr_1", "feature": "4K UHD Master File Export", "basic": true, "standard": true, "premium": true },
-        { "id": "cr_2", "feature": "Multi-Camera Audio Synchronization", "basic": false, "standard": true, "premium": true },
-        { "id": "cr_3", "feature": "Hollywood Film Color Grading", "basic": true, "standard": true, "premium": true },
-        { "id": "cr_4", "feature": "Sound Design & Licensed Audio", "basic": true, "standard": true, "premium": true },
-        { "id": "cr_5", "feature": "Drone Aerial Footage Integration", "basic": false, "standard": true, "premium": true },
-        { "id": "cr_6", "feature": "Social Media 9:16 Vertical Cut", "basic": true, "standard": true, "premium": true },
-        { "id": "cr_7", "feature": "Raw Project Source File Archive", "basic": false, "standard": false, "premium": true }
+        {
+          "id": "cr_1",
+          "feature": "4K UHD Master File Export",
+          "basic": true,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_2",
+          "feature": "Multi-Camera Audio Synchronization",
+          "basic": false,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_3",
+          "feature": "Hollywood Film Color Grading",
+          "basic": true,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_4",
+          "feature": "Sound Design & Licensed Audio",
+          "basic": true,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_5",
+          "feature": "Drone Aerial Footage Integration",
+          "basic": false,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_6",
+          "feature": "Social Media 9:16 Vertical Cut",
+          "basic": true,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_7",
+          "feature": "Raw Project Source File Archive",
+          "basic": false,
+          "standard": false,
+          "premium": true
+        }
       ],
       "packages": {
         "basic": {
