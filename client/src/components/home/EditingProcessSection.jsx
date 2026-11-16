@@ -249,13 +249,33 @@ export default function EditingProcessSection() {
                    C 865 50, 970 80, 905 270
                    C 850 420, 780 445, 875 425
                    C 960 410, 1020 415, 1110 425"
-                stroke="#2E2E2E"
+                stroke="#2B2B2B"
                 strokeWidth="70"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
 
-              {/* 3. Smooth Asphalt Paved Surface (Uniform Solid Thick Road) */}
+              {/* 3. Outer Road Edge Lines (Perfect Left & Right Shoulder Lines directly along the asphalt borders) */}
+              <path
+                d="M -90 40 
+                   C -20 50, 80 65, 170 95
+                   C 260 125, 275 320, 195 385
+                   C 135 435, 120 480, 215 470
+                   C 310 460, 385 240, 480 120
+                   C 530 60, 610 65, 540 220
+                   C 480 340, 420 450, 520 440
+                   C 630 430, 720 220, 810 115
+                   C 865 50, 970 80, 905 270
+                   C 850 420, 780 445, 875 425
+                   C 960 410, 1020 415, 1110 425"
+                stroke="#FFFFFF"
+                strokeWidth="62"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                opacity="0.3"
+              />
+
+              {/* 4. Smooth Asphalt Paved Surface (Inner Roadway) */}
               <path
                 d="M -90 40 
                    C -20 50, 80 65, 170 95
@@ -269,49 +289,9 @@ export default function EditingProcessSection() {
                    C 850 420, 780 445, 875 425
                    C 960 410, 1020 415, 1110 425"
                 stroke="url(#mountainRoadGrad)"
-                strokeWidth="62"
+                strokeWidth="58"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-              />
-
-              {/* 4. Outer Continuous Guardrail / Shoulder White Lines */}
-              <path
-                d="M -90 40 
-                   C -20 50, 80 65, 170 95
-                   C 260 125, 275 320, 195 385
-                   C 135 435, 120 480, 215 470
-                   C 310 460, 385 240, 480 120
-                   C 530 60, 610 65, 540 220
-                   C 480 340, 420 450, 520 440
-                   C 630 430, 720 220, 810 115
-                   C 865 50, 970 80, 905 270
-                   C 850 420, 780 445, 875 425
-                   C 960 410, 1020 415, 1110 425"
-                stroke="#FFFFFF"
-                strokeWidth="1.8"
-                strokeOpacity="0.35"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                transform="translate(-23, -15)"
-              />
-              <path
-                d="M -90 40 
-                   C -20 50, 80 65, 170 95
-                   C 260 125, 275 320, 195 385
-                   C 135 435, 120 480, 215 470
-                   C 310 460, 385 240, 480 120
-                   C 530 60, 610 65, 540 220
-                   C 480 340, 420 450, 520 440
-                   C 630 430, 720 220, 810 115
-                   C 865 50, 970 80, 905 270
-                   C 850 420, 780 445, 875 425
-                   C 960 410, 1020 415, 1110 425"
-                stroke="#FFFFFF"
-                strokeWidth="1.8"
-                strokeOpacity="0.35"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                transform="translate(23, 15)"
               />
 
               {/* 5. Animated Golden Center Lane Track (Seamless Loop without stutter) */}
