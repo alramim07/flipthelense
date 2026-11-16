@@ -1703,38 +1703,21 @@ export default function AdminDashboard() {
 
             <div className="grid grid-cols-1 gap-4">
               {frontendPages.map((page, i) => {
-                const recordedViews = (analytics.topPages.find(p => p.path === page.slug)?.views) || 0;
                 return (
                   <div
                     key={i}
-                    className="rounded-2xl p-6 bg-[#141414]/85 backdrop-blur-xl border border-[#232323] hover:border-[#FFE379]/40 transition-all shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4"
+                    className="rounded-2xl p-6 bg-[#141414]/85 backdrop-blur-xl border border-[#232323] hover:border-[#FFE379]/40 transition-all shadow-xl flex items-center justify-between gap-4"
                   >
-                    <div className="space-y-1.5 max-w-2xl">
-                      <div className="flex items-center space-x-3">
-                        <h3 
-                          className="text-lg font-bold text-white uppercase"
-                          style={{ fontFamily: "'Oswald', sans-serif" }}
-                        >
-                          {page.title}
-                        </h3>
-                        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                          {page.status}
-                        </span>
-                      </div>
-                      <p className="text-xs text-[#FFE379] font-mono">
-                        Route: <span className="underline">{page.slug}</span>
-                      </p>
-                      <p className="text-xs text-neutral-400 leading-relaxed font-normal">
-                        {page.description}
-                      </p>
+                    <div>
+                      <h3 
+                        className="text-lg font-bold text-white uppercase"
+                        style={{ fontFamily: "'Oswald', sans-serif" }}
+                      >
+                        {page.title}
+                      </h3>
                     </div>
 
-                    <div className="flex items-center space-x-4 self-end md:self-center shrink-0">
-                      <div className="text-right text-xs font-mono hidden sm:block">
-                        <div className="text-white font-bold">{recordedViews} tracked hits</div>
-                        <div className="text-[11px] text-neutral-500">Live Status: OK</div>
-                      </div>
-
+                    <div className="flex items-center shrink-0">
                       <a
                         href={page.slug}
                         target="_blank"
