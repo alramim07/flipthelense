@@ -147,6 +147,114 @@ function createSlug(text) {
     .replace(/\-\-+/g, '-');
 }
 
+// ================= CATEGORIES (CRUD) =================
+
+// GET Categories
+router.get('/categories', async (req, res) => {
+  try {
+    const store = getLocalStore();
+    if (!store.categories || !store.categories.length) {
+      store.categories = [
+        { id: 'cat_commercials', name: 'Commercials', slug: 'commercials' },
+        { id: 'cat_wedding', name: 'Wedding', slug: 'wedding' },
+        { id: 'cat_music_video', name: 'Music Video', slug: 'music_video' },
+        { id: 'cat_documentary', name: 'Documentary', slug: 'documentary' }
+      ];
+      saveLocalStore(store);
+    }
+    res.json(store.categories);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// POST Create Category
+router.post('/categories', async (req, res) => {
+  try {
+    const { name } = req.body;
+    if (!name || !name.trim()) {
+      return res.status(400).json({ error: 'Category name is required' });
+    }
+    const store = getLocalStore();
+    store.categories = store.categories || [
+      { id: 'cat_commercials', name: 'Commercials', slug: 'commercials' },
+      { id: 'cat_wedding', name: 'Wedding', slug: 'wedding' },
+      { id: 'cat_music_video', name: 'Music Video', slug: 'music_video' },
+      { id: 'cat_documentary', name: 'Documentary', slug: 'documentary' }
+    ];
+
+    const slug = createSlug(name);
+    // Check duplicate
+    if (store.categories.some(c => c.slug === slug || c.name.toLowerCase() === name.trim().toLowerCase())) {
+      return res.status(400).json({ error: 'Category already exists' });
+    }
+
+    const newCategory = {
+      id: 'cat_' + Date.now(),
+      name: name.trim(),
+      slug
+    };
+
+    store.categories.push(newCategory);
+    saveLocalStore(store);
+    res.status(201).json({ success: true, category: newCategory });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// PUT Update Category
+router.put('/categories/:id', async (req, res) => {
+  try {
+    const { name } = req.body;
+    if (!name || !name.trim()) {
+      return res.status(400).json({ error: 'Category name is required' });
+    }
+    const store = getLocalStore();
+    store.categories = store.categories || [];
+    const index = store.categories.findIndex(c => c.id === req.params.id || c.slug === req.params.id);
+    if (index === -1) {
+      return res.status(404).json({ error: 'Category not found' });
+    }
+
+    const oldSlug = store.categories[index].slug;
+    const newSlug = createSlug(name);
+
+    store.categories[index] = {
+      ...store.categories[index],
+      name: name.trim(),
+      slug: newSlug
+    };
+
+    // Also update any portfolio items currently referencing the old category
+    if (store.portfolio) {
+      store.portfolio.forEach(p => {
+        if (p.category === oldSlug) {
+          p.category = newSlug;
+          p.tag = name.trim();
+        }
+      });
+    }
+
+    saveLocalStore(store);
+    res.json({ success: true, category: store.categories[index] });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// DELETE Category
+router.delete('/categories/:id', async (req, res) => {
+  try {
+    const store = getLocalStore();
+    store.categories = (store.categories || []).filter(c => c.id !== req.params.id && c.slug !== req.params.id);
+    saveLocalStore(store);
+    res.json({ success: true, message: 'Category deleted' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // GET Portfolio
 router.get('/portfolio', async (req, res) => {
   try {

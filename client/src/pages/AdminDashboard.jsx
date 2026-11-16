@@ -29,15 +29,17 @@ import {
   Check,
   Edit3,
   RefreshCw,
-  X
+  X,
+  Tags,
+  FolderPlus
 } from 'lucide-react';
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
   const { tab } = useParams();
   
-  // Valid admin tabs: "dashboard" | "portfolio" | "pages" | "inquiries" | "settings"
-  const activeTab = ['dashboard', 'portfolio', 'pages', 'inquiries', 'settings'].includes(tab)
+  // Valid admin tabs: "dashboard" | "portfolio" | "categories" | "pages" | "inquiries" | "settings"
+  const activeTab = ['dashboard', 'portfolio', 'categories', 'pages', 'inquiries', 'settings'].includes(tab)
     ? tab
     : 'dashboard';
 
@@ -46,6 +48,13 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+  // Category Management State
+  const [categories, setCategories] = useState([]);
+  const [newCatName, setNewCatName] = useState('');
+  const [editingCatId, setEditingCatId] = useState(null);
+  const [editingCatName, setEditingCatName] = useState('');
+  const [catActionMsg, setCatActionMsg] = useState(null);
 
   // Real-Time Analytics State fetched directly from `/api/analytics/stats`
   const [analytics, setAnalytics] = useState({
@@ -145,7 +154,13 @@ export default function AdminDashboard() {
         setPortfolioItems(portfolioRes.data);
       }
 
-      // 4. Fetch Settings
+      // 4. Fetch Categories
+      const categoriesRes = await axios.get('/api/categories');
+      if (categoriesRes.data) {
+        setCategories(categoriesRes.data);
+      }
+
+      // 5. Fetch Settings
       const settingsRes = await axios.get('/api/settings');
       if (settingsRes.data) {
         setSettings(prev => ({ ...prev, ...settingsRes.data }));
@@ -154,6 +169,54 @@ export default function AdminDashboard() {
       console.warn('API sync fallback:', err.message);
     } finally {
       setRefreshing(false);
+    }
+  };
+
+  // Category Actions: Create, Edit, Delete
+  const handleCreateCategory = async (e) => {
+    e.preventDefault();
+    if (!newCatName.trim()) return;
+    try {
+      const res = await axios.post('/api/categories', { name: newCatName.trim() });
+      if (res.data?.category) {
+        setCategories([...categories, res.data.category]);
+        setNewCatName('');
+        setCatActionMsg({ type: 'success', text: `Category "${res.data.category.name}" created successfully!` });
+      }
+    } catch (err) {
+      setCatActionMsg({ type: 'error', text: err.response?.data?.error || 'Failed to create category' });
+    } finally {
+      setTimeout(() => setCatActionMsg(null), 3000);
+    }
+  };
+
+  const handleUpdateCategory = async (catId) => {
+    if (!editingCatName.trim()) return;
+    try {
+      const res = await axios.put(`/api/categories/${catId}`, { name: editingCatName.trim() });
+      if (res.data?.category) {
+        setCategories(categories.map(c => c.id === catId ? res.data.category : c));
+        setEditingCatId(null);
+        setEditingCatName('');
+        setCatActionMsg({ type: 'success', text: 'Category updated successfully!' });
+      }
+    } catch (err) {
+      setCatActionMsg({ type: 'error', text: err.response?.data?.error || 'Failed to update category' });
+    } finally {
+      setTimeout(() => setCatActionMsg(null), 3000);
+    }
+  };
+
+  const handleDeleteCategory = async (catId) => {
+    if (!window.confirm('Are you sure you want to delete this category?')) return;
+    try {
+      await axios.delete(`/api/categories/${catId}`);
+      setCategories(categories.filter(c => c.id !== catId));
+      setCatActionMsg({ type: 'success', text: 'Category deleted successfully' });
+    } catch (err) {
+      setCatActionMsg({ type: 'error', text: 'Failed to delete category' });
+    } finally {
+      setTimeout(() => setCatActionMsg(null), 3000);
     }
   };
 
@@ -263,14 +326,16 @@ export default function AdminDashboard() {
           {/* Navigation Links:
               1. Dashboard (/admin/dashboard)
               2. Portfolio Works (/admin/portfolio)
-              3. Pages (/admin/pages)
-              4. Work Inquiries (/admin/inquiries)
-              5. Website Settings (/admin/settings)
+              3. Categories (/admin/categories)
+              4. Pages (/admin/pages)
+              5. Work Inquiries (/admin/inquiries)
+              6. Website Settings (/admin/settings)
           */}
           <div className="p-4 space-y-1.5">
             {[
               { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
               { id: 'portfolio', label: 'Portfolio Works', icon: Film, badge: portfolioItems.length },
+              { id: 'categories', label: 'Categories', icon: Tags, badge: categories.length },
               { id: 'pages', label: 'Pages', icon: FileText, badge: frontendPages.length },
               { id: 'inquiries', label: 'Work Inquiries', icon: Inbox, badge: inquiries.length },
               { id: 'settings', label: 'Website Settings', icon: Settings },
@@ -349,6 +414,7 @@ export default function AdminDashboard() {
             >
               {activeTab === 'dashboard' && 'Dashboard'}
               {activeTab === 'portfolio' && 'Portfolio Works'}
+              {activeTab === 'categories' && `Portfolio Categories (${categories.length})`}
               {activeTab === 'pages' && 'Pages'}
               {activeTab === 'inquiries' && `Work Inquiries (${inquiries.length})`}
               {activeTab === 'settings' && 'Website Settings'}
@@ -795,10 +861,11 @@ export default function AdminDashboard() {
                           onChange={(e) => setNewPortfolio({ ...newPortfolio, category: e.target.value })}
                           className="w-full px-3.5 py-2.5 rounded-xl bg-[#1A1A1A] border border-[#2D2D2D] text-xs text-white focus:border-[#FFE379] focus:outline-none"
                         >
-                          <option value="commercials">Commercials</option>
-                          <option value="wedding">Wedding</option>
-                          <option value="music_video">Music Video</option>
-                          <option value="documentary">Documentary</option>
+                          {categories.map((c) => (
+                            <option key={c.id || c.slug} value={c.slug}>
+                              {c.name}
+                            </option>
+                          ))}
                         </select>
                       </div>
 
@@ -899,6 +966,180 @@ export default function AdminDashboard() {
                 </div>
               </div>
             )}
+          </div>
+        )}
+
+        {/* ================= TAB: CATEGORIES (MANAGE CATEGORIES) ================= */}
+        {activeTab === 'categories' && (
+          <div className="space-y-6 animate-fade-in-up">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-[#141414]/85 backdrop-blur-xl border border-[#232323] p-6 rounded-2xl shadow-xl">
+              <div>
+                <div className="flex items-center space-x-2">
+                  <Tags className="w-5 h-5 text-[#FFE379]" />
+                  <h2 
+                    className="text-xl font-bold text-white uppercase tracking-tight"
+                    style={{ fontFamily: "'Oswald', sans-serif" }}
+                  >
+                    Portfolio Categories Manager
+                  </h2>
+                </div>
+                <p className="text-xs text-neutral-400 mt-1">
+                  Create, edit, update and delete categories. These automatically appear in the project builder dropdown and frontend filter tabs.
+                </p>
+              </div>
+
+              <Link
+                to="/admin/portfolio/builder"
+                className="inline-flex items-center justify-center space-x-2 px-4 py-2 rounded-xl bg-[#1E1E1E] hover:bg-[#FFE379] text-neutral-300 hover:text-black font-semibold text-xs tracking-wider transition-all border border-[#333]"
+              >
+                <Plus className="w-4 h-4" />
+                <span>Add Project with Categories</span>
+              </Link>
+            </div>
+
+            {/* Notification alert banner */}
+            {catActionMsg && (
+              <div className={`p-4 rounded-xl text-xs font-mono font-bold flex items-center space-x-2 ${
+                catActionMsg.type === 'success'
+                  ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30'
+                  : 'bg-red-500/15 text-red-400 border border-red-500/30'
+              }`}>
+                <Check className="w-4 h-4" />
+                <span>{catActionMsg.text}</span>
+              </div>
+            )}
+
+            {/* Add New Category Form */}
+            <div className="rounded-2xl bg-[#141414]/85 backdrop-blur-xl border border-[#232323] p-6 shadow-xl">
+              <h3 
+                className="text-base font-bold text-white uppercase tracking-tight mb-3 flex items-center space-x-2"
+                style={{ fontFamily: "'Oswald', sans-serif" }}
+              >
+                <FolderPlus className="w-4 h-4 text-[#FFE379]" />
+                <span>Create New Category</span>
+              </h3>
+
+              <form onSubmit={handleCreateCategory} className="flex flex-col sm:flex-row items-center gap-3">
+                <input
+                  type="text"
+                  required
+                  value={newCatName}
+                  onChange={(e) => setNewCatName(e.target.value)}
+                  placeholder="e.g. Commercials, Documentary, Music Video, Wedding, Drone Films..."
+                  className="w-full flex-1 px-4 py-2.5 rounded-xl bg-[#1A1A1A] border border-[#2D2D2D] text-xs text-white placeholder-neutral-500 focus:border-[#FFE379] focus:outline-none"
+                />
+                <button
+                  type="submit"
+                  className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-[#FFE379] hover:bg-[#F2D76B] text-[#101010] font-black uppercase text-xs tracking-wider transition-all shadow-md flex items-center justify-center space-x-1.5 shrink-0"
+                  style={{ fontFamily: "'Oswald', sans-serif" }}
+                >
+                  <Plus className="w-4 h-4 stroke-[3]" />
+                  <span>Add Category</span>
+                </button>
+              </form>
+            </div>
+
+            {/* Categories List / Table */}
+            <div className="rounded-2xl bg-[#141414]/85 backdrop-blur-xl border border-[#232323] overflow-hidden shadow-xl">
+              <div className="p-5 border-b border-[#232323] flex items-center justify-between">
+                <span className="text-xs font-semibold uppercase text-neutral-400 tracking-wider">
+                  Existing Categories ({categories.length})
+                </span>
+                <span className="text-[11px] font-mono text-[#FFE379] bg-[#FFE379]/10 px-2.5 py-1 rounded border border-[#FFE379]/20">
+                  Live in Portfolio System
+                </span>
+              </div>
+
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs">
+                  <thead className="bg-[#101010]/90 text-neutral-400 uppercase font-mono text-[10px] border-b border-[#232323]">
+                    <tr>
+                      <th className="py-3.5 px-5 font-semibold">Category Name</th>
+                      <th className="py-3.5 px-5 font-semibold">Slug Identifier</th>
+                      <th className="py-3.5 px-5 font-semibold">Associated Projects</th>
+                      <th className="py-3.5 px-5 font-semibold text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[#1F1F1F]">
+                    {categories.map((cat) => {
+                      const count = portfolioItems.filter(p => p.category === cat.slug || p.category === cat.name.toLowerCase()).length;
+                      const isEditing = editingCatId === cat.id;
+
+                      return (
+                        <tr key={cat.id || cat.slug} className="hover:bg-white/[0.02] transition-colors">
+                          <td className="py-3.5 px-5 font-medium text-white">
+                            {isEditing ? (
+                              <input
+                                type="text"
+                                value={editingCatName}
+                                onChange={(e) => setEditingCatName(e.target.value)}
+                                className="px-3 py-1.5 rounded-lg bg-[#1A1A1A] border border-[#FFE379] text-xs text-white focus:outline-none"
+                                autoFocus
+                              />
+                            ) : (
+                              <div className="flex items-center space-x-2">
+                                <span className="w-2 h-2 rounded-full bg-[#FFE379]" />
+                                <span className="font-bold text-white text-sm" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                                  {cat.name}
+                                </span>
+                              </div>
+                            )}
+                          </td>
+                          <td className="py-3.5 px-5 font-mono text-[#FFE379] text-[11px]">
+                            {cat.slug}
+                          </td>
+                          <td className="py-3.5 px-5 text-neutral-400 font-mono text-[11px]">
+                            {count} project{count === 1 ? '' : 's'}
+                          </td>
+                          <td className="py-3.5 px-5 text-right">
+                            {isEditing ? (
+                              <div className="inline-flex items-center space-x-2">
+                                <button
+                                  type="button"
+                                  onClick={() => handleUpdateCategory(cat.id)}
+                                  className="px-3 py-1 rounded-lg bg-[#FFE379] text-black font-bold text-xs uppercase"
+                                >
+                                  Save
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => setEditingCatId(null)}
+                                  className="px-3 py-1 rounded-lg bg-[#222] text-neutral-400 hover:text-white text-xs"
+                                >
+                                  Cancel
+                                </button>
+                              </div>
+                            ) : (
+                              <div className="inline-flex items-center space-x-2">
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setEditingCatId(cat.id);
+                                    setEditingCatName(cat.name);
+                                  }}
+                                  className="p-1.5 rounded-lg bg-[#1A1A1A] hover:bg-[#FFE379] text-neutral-400 hover:text-black transition-colors"
+                                  title="Edit Category Name"
+                                >
+                                  <Edit3 className="w-3.5 h-3.5" />
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => handleDeleteCategory(cat.id)}
+                                  className="p-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/80 text-red-400 hover:text-white transition-colors border border-red-500/20"
+                                  title="Delete Category"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" />
+                                </button>
+                              </div>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         )}
 

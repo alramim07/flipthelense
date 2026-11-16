@@ -204,5 +204,27 @@
     "expCounter": "4.5+",
     "projectsCounter": "523+",
     "satisfactionCounter": "99%"
-  }
+  },
+  "categories": [
+    {
+      "id": "cat_commercials",
+      "name": "Commercials",
+      "slug": "commercials"
+    },
+    {
+      "id": "cat_wedding",
+      "name": "Wedding",
+      "slug": "wedding"
+    },
+    {
+      "id": "cat_music_video",
+      "name": "Music Video",
+      "slug": "music_video"
+    },
+    {
+      "id": "cat_documentary",
+      "name": "Documentary",
+      "slug": "documentary"
+    }
+  ]
 }

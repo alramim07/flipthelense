@@ -64,6 +64,31 @@ export default function ProjectVisualBuilder() {
   const [newGalleryVideoCaption, setNewGalleryVideoCaption] = useState('');
   const [showAddVideoInput, setShowAddVideoInput] = useState(false);
 
+  // Dynamic Categories from database
+  const [categories, setCategories] = useState([]);
+
+  // Fetch categories list
+  useEffect(() => {
+    axios.get('/api/categories')
+      .then(res => {
+        if (Array.isArray(res.data) && res.data.length > 0) {
+          setCategories(res.data);
+          // If project category is empty and categories exist, default to first category
+          setProject(prev => {
+            if (!prev.category && res.data[0]) {
+              return {
+                ...prev,
+                category: res.data[0].slug,
+                tag: res.data[0].name
+              };
+            }
+            return prev;
+          });
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   // If slug is provided (editing existing), fetch that project; otherwise leave completely empty for new project
   useEffect(() => {
     if (slug) {
@@ -385,41 +410,63 @@ export default function ProjectVisualBuilder() {
           <div className="lg:col-span-8 space-y-8">
             
             {/* Category Tag & Title Header */}
-            <div className="space-y-3">
+            <div className="space-y-4">
               <div className="flex flex-wrap items-center gap-3">
-                <input
-                  type="text"
-                  value={project.tag || project.category || ''}
-                  onChange={(e) => setProject({ ...project, tag: e.target.value, category: e.target.value.toLowerCase() })}
-                  placeholder="TYPE CATEGORY (e.g. DOCUMENTARY, COMMERCIAL, WEDDING)"
-                  className="px-3.5 py-1.5 rounded-md bg-[#FFE379]/15 border border-[#FFE379]/40 text-[#FFE379] text-xs font-bold uppercase tracking-wider font-mono outline-none focus:ring-1 focus:ring-[#FFE379] min-w-[280px]"
-                />
+                <div className="relative inline-flex items-center">
+                  <select
+                    value={project.category || ''}
+                    onChange={(e) => {
+                      const selectedSlug = e.target.value;
+                      const matchedCat = categories.find(c => c.slug === selectedSlug || c.name === selectedSlug);
+                      setProject({
+                        ...project,
+                        category: selectedSlug,
+                        tag: matchedCat ? matchedCat.name : selectedSlug.toUpperCase()
+                      });
+                    }}
+                    className="appearance-none bg-[#FFE379]/15 border border-[#FFE379]/40 text-[#FFE379] text-xs font-bold uppercase tracking-wider font-mono px-4 py-2 pr-9 rounded-xl outline-none focus:ring-2 focus:ring-[#FFE379] cursor-pointer hover:bg-[#FFE379]/25 transition-all shadow-md"
+                  >
+                    {categories.length === 0 && (
+                      <option value="" className="bg-[#181818] text-white">Select Category</option>
+                    )}
+                    {categories.map((cat) => (
+                      <option key={cat.id || cat.slug} value={cat.slug} className="bg-[#181818] text-white font-mono">
+                        {cat.name.toUpperCase()}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="pointer-events-none absolute right-3 text-[#FFE379] text-xs font-bold">
+                    ▼
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => navigate('/admin/categories')}
+                  className="text-[11px] font-mono text-neutral-400 hover:text-[#FFE379] transition-colors underline decoration-dotted"
+                  title="Manage categories in Admin"
+                >
+                  + Manage Categories
+                </button>
               </div>
 
-              {/* Project Title & Headline Input */}
-              <div className="space-y-2">
-                <input
-                  type="text"
-                  value={project.title || ''}
+              {/* Single Unified Project Headline & Title Input */}
+              <div className="space-y-1">
+                <textarea
+                  rows="2"
+                  value={project.headline || project.title || ''}
                   onChange={(e) => {
                     const val = e.target.value;
                     const autoSlug = val.toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '');
                     setProject({ 
                       ...project, 
+                      headline: val, 
                       title: val, 
                       slug: project.slug ? project.slug : autoSlug 
                     });
                   }}
-                  placeholder="Enter Project Title (e.g. Alpine Ridge Explorer)"
-                  className="w-full text-base sm:text-xl font-bold text-white bg-[#181818]/80 px-4 py-2.5 rounded-xl border border-dashed border-[#3D3D3D] hover:border-[#FFE379] focus:border-[#FFE379] focus:bg-[#181818] outline-none font-mono"
-                />
-
-                <textarea
-                  rows="2"
-                  value={project.headline || ''}
-                  onChange={(e) => setProject({ ...project, headline: e.target.value })}
-                  placeholder="Enter Display Headline (e.g. I will produce cinema-grade documentary video editing, soundscapes and color grading)"
-                  className="w-full text-2xl sm:text-4xl font-extrabold text-white leading-tight uppercase bg-[#181818]/60 hover:bg-[#181818] p-3 rounded-xl border border-dashed border-[#3D3D3D] hover:border-[#FFE379] focus:border-[#FFE379] focus:bg-[#181818] focus:outline-none transition-all resize-none"
+                  placeholder="I will produce cinema-grade documentary video editing, soundscapes and color grading"
+                  className="w-full text-2xl sm:text-4xl font-extrabold text-white leading-tight uppercase bg-[#181818]/80 hover:bg-[#181818] p-4 rounded-2xl border border-dashed border-[#3D3D3D] hover:border-[#FFE379] focus:border-[#FFE379] focus:bg-[#181818] focus:outline-none transition-all resize-none shadow-xl"
                   style={{ fontFamily: "'Oswald', sans-serif" }}
                 />
               </div>
