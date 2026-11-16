@@ -1158,7 +1158,7 @@ export default function ServiceDetail() {
                             </p>
 
                             {/* Fiverr Metadata (Price & Duration) */}
-                            <div className="flex items-center space-x-6 text-xs font-mono py-2.5 border-y border-[#202020] text-neutral-400">
+                            <div className="flex items-center space-x-6 text-xs font-mono pt-2.5 border-t border-[#202020] text-neutral-400">
                               <div>
                                 <span className="text-neutral-500">Price: </span>
                                 <span className="text-white font-bold">{rev.pricePaid || 'US$150'}</span>
@@ -1166,37 +1166,6 @@ export default function ServiceDetail() {
                               <div>
                                 <span className="text-neutral-500">Duration: </span>
                                 <span className="text-white font-bold">{rev.duration || '4 days'}</span>
-                              </div>
-                            </div>
-
-                            {/* Helpful Action Row */}
-                            <div className="flex items-center justify-between text-xs text-neutral-400">
-                              <div className="flex items-center space-x-3">
-                                <span>Helpful?</span>
-                                <button
-                                  type="button"
-                                  onClick={() => setHelpfulVotes({ ...helpfulVotes, [rev._id]: 'yes' })}
-                                  className={`flex items-center space-x-1 px-2.5 py-1 rounded-lg border transition-colors ${
-                                    isHelpful === 'yes'
-                                      ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40'
-                                      : 'border-[#2D2D2D] hover:border-neutral-500 text-neutral-300'
-                                  }`}
-                                >
-                                  <ThumbsUp className="w-3.5 h-3.5" />
-                                  <span>Yes</span>
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={() => setHelpfulVotes({ ...helpfulVotes, [rev._id]: 'no' })}
-                                  className={`flex items-center space-x-1 px-2.5 py-1 rounded-lg border transition-colors ${
-                                    isHelpful === 'no'
-                                      ? 'bg-red-500/20 text-red-400 border-red-500/40'
-                                      : 'border-[#2D2D2D] hover:border-neutral-500 text-neutral-300'
-                                  }`}
-                                >
-                                  <ThumbsDown className="w-3.5 h-3.5" />
-                                  <span>No</span>
-                                </button>
                               </div>
                             </div>
 
@@ -1214,7 +1183,7 @@ export default function ServiceDetail() {
                             onClick={() => setReviewsVisibleCount(prev => prev + 5)}
                             className="px-6 py-3 rounded-xl border border-[#333] hover:border-[#FFE379] bg-[#141414] hover:bg-[#1A1A1A] text-white hover:text-[#FFE379] text-xs font-bold uppercase tracking-wider font-mono transition-all shadow-md inline-flex items-center space-x-2"
                           >
-                            <span>Show More Reviews (+5)</span>
+                            <span>Show More Reviews</span>
                             <ChevronDown className="w-4 h-4" />
                           </button>
                         ) : (
