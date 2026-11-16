@@ -2883,13 +2883,13 @@ export default function AdminDashboard() {
                 </div>
               </div>
 
-              {/* Compact Save Button (Positioned at Bottom-Right Corner) */}
-              <div className="flex justify-end pt-2 pb-6">
+              {/* Compact Floating Save Button (Pinned to Bottom-Right) */}
+              <div className="sticky bottom-6 z-30 flex justify-end pointer-events-none pb-2">
                 <button
                   type="button"
                   onClick={handleSaveSettings}
                   disabled={loading}
-                  className="px-5 py-2.5 rounded-xl bg-[#FFE379] hover:bg-[#F2D76B] text-[#101010] font-black uppercase text-xs tracking-wider transition-all shadow-[0_4px_20px_rgba(255,227,121,0.25)] flex items-center space-x-2 hover:scale-105 disabled:opacity-50"
+                  className="pointer-events-auto px-5 py-2.5 rounded-xl bg-[#FFE379] hover:bg-[#F2D76B] text-[#101010] font-black uppercase text-xs tracking-wider transition-all shadow-[0_8px_30px_rgba(255,227,121,0.35)] flex items-center space-x-2 hover:scale-105 border border-[#101010]/20 disabled:opacity-50"
                   style={{ fontFamily: "'Oswald', sans-serif" }}
                 >
                   <Save className="w-4 h-4" />
