@@ -542,9 +542,15 @@ export default function ServiceDetail() {
                           <span className="text-xs font-bold text-white uppercase mt-0.5 block" style={{ fontFamily: "'Oswald', sans-serif" }}>
                             Basic
                           </span>
-                          <span className="text-[11px] text-neutral-400 font-normal block mt-1 line-clamp-2">
+                          <span className="text-[11px] font-bold text-[#FFE379] uppercase block mt-2">
                             {project.packages?.basic?.title || 'Basic Edit Package'}
                           </span>
+                          <p 
+                            className="text-[11px] text-neutral-400 font-normal mt-1 leading-relaxed max-w-[200px] mx-auto"
+                            style={{ fontFamily: "'Raleway', sans-serif" }}
+                          >
+                            {project.packages?.basic?.desc || 'Teaser / short trailer cut, sound design, color grading, and social multi-platform exports.'}
+                          </p>
                         </th>
 
                         {/* Standard Header */}
@@ -555,9 +561,15 @@ export default function ServiceDetail() {
                           <span className="text-xs font-bold text-[#FFE379] uppercase mt-0.5 block" style={{ fontFamily: "'Oswald', sans-serif" }}>
                             Standard
                           </span>
-                          <span className="text-[11px] text-neutral-400 font-normal block mt-1 line-clamp-2">
+                          <span className="text-[11px] font-bold text-[#FFE379] uppercase block mt-2">
                             {project.packages?.standard?.title || 'Standard Highlight Film'}
                           </span>
+                          <p 
+                            className="text-[11px] text-neutral-300 font-normal mt-1 leading-relaxed max-w-[200px] mx-auto"
+                            style={{ fontFamily: "'Raleway', sans-serif" }}
+                          >
+                            {project.packages?.standard?.desc || 'Full cinematic highlight film with color grading, dialogue audio sync, and licensed music.'}
+                          </p>
                         </th>
 
                         {/* Premium Header */}
@@ -568,9 +580,15 @@ export default function ServiceDetail() {
                           <span className="text-xs font-bold text-white uppercase mt-0.5 block" style={{ fontFamily: "'Oswald', sans-serif" }}>
                             Premium
                           </span>
-                          <span className="text-[11px] text-neutral-400 font-normal block mt-1 line-clamp-2">
+                          <span className="text-[11px] font-bold text-[#FFE379] uppercase block mt-2">
                             {project.packages?.premium?.title || 'Premium Extended Feature'}
                           </span>
+                          <p 
+                            className="text-[11px] text-neutral-400 font-normal mt-1 leading-relaxed max-w-[200px] mx-auto"
+                            style={{ fontFamily: "'Raleway', sans-serif" }}
+                          >
+                            {project.packages?.premium?.desc || 'Comprehensive full cut + social teasers + multi-camera audio sync + master source project archive.'}
+                          </p>
                         </th>
                       </tr>
                     </thead>

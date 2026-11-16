@@ -1291,9 +1291,20 @@ export default function ProjectVisualBuilder() {
                       <span className="text-xs font-bold text-white uppercase mt-0.5 block" style={{ fontFamily: "'Oswald', sans-serif" }}>
                         Basic
                       </span>
-                      <span className="text-[11px] text-neutral-400 font-normal block mt-1 line-clamp-2">
-                        {project.packages?.basic?.title || 'Basic Edit Package'}
-                      </span>
+                      <input
+                        type="text"
+                        value={project.packages?.basic?.title || ''}
+                        onChange={(e) => updatePackageField('basic', 'title', e.target.value)}
+                        placeholder="Package Title (e.g. STARTER STORE)"
+                        className="w-full text-center text-[11px] font-bold uppercase text-[#FFE379] bg-transparent border-b border-dashed border-[#444] hover:border-[#FFE379] focus:border-[#FFE379] outline-none mt-1.5 py-0.5"
+                      />
+                      <textarea
+                        rows="3"
+                        value={project.packages?.basic?.desc || ''}
+                        onChange={(e) => updatePackageField('basic', 'desc', e.target.value)}
+                        placeholder="Package description / features summary..."
+                        className="w-full text-center text-[10px] text-neutral-300 font-normal bg-[#181818] p-1.5 rounded border border-dashed border-[#333] hover:border-[#FFE379] focus:border-[#FFE379] outline-none mt-1.5 resize-none leading-relaxed"
+                      />
                     </th>
                     <th className="py-5 px-6 text-center w-1/5 border-l border-[#222] bg-[#FFE379]/[0.02]">
                       <span className="text-sm font-black text-[#FFE379] font-mono block">
@@ -1302,9 +1313,20 @@ export default function ProjectVisualBuilder() {
                       <span className="text-xs font-bold text-[#FFE379] uppercase mt-0.5 block" style={{ fontFamily: "'Oswald', sans-serif" }}>
                         Standard
                       </span>
-                      <span className="text-[11px] text-neutral-400 font-normal block mt-1 line-clamp-2">
-                        {project.packages?.standard?.title || 'Standard Highlight Film'}
-                      </span>
+                      <input
+                        type="text"
+                        value={project.packages?.standard?.title || ''}
+                        onChange={(e) => updatePackageField('standard', 'title', e.target.value)}
+                        placeholder="Package Title (e.g. GROWTH STORE)"
+                        className="w-full text-center text-[11px] font-bold uppercase text-[#FFE379] bg-transparent border-b border-dashed border-[#444] hover:border-[#FFE379] focus:border-[#FFE379] outline-none mt-1.5 py-0.5"
+                      />
+                      <textarea
+                        rows="3"
+                        value={project.packages?.standard?.desc || ''}
+                        onChange={(e) => updatePackageField('standard', 'desc', e.target.value)}
+                        placeholder="Package description / features summary..."
+                        className="w-full text-center text-[10px] text-neutral-300 font-normal bg-[#181818] p-1.5 rounded border border-dashed border-[#333] hover:border-[#FFE379] focus:border-[#FFE379] outline-none mt-1.5 resize-none leading-relaxed"
+                      />
                     </th>
                     <th className="py-5 px-6 text-center w-1/5 border-l border-[#222]">
                       <span className="text-sm font-black text-[#FFE379] font-mono block">
@@ -1313,9 +1335,20 @@ export default function ProjectVisualBuilder() {
                       <span className="text-xs font-bold text-white uppercase mt-0.5 block" style={{ fontFamily: "'Oswald', sans-serif" }}>
                         Premium
                       </span>
-                      <span className="text-[11px] text-neutral-400 font-normal block mt-1 line-clamp-2">
-                        {project.packages?.premium?.title || 'Premium Extended Feature'}
-                      </span>
+                      <input
+                        type="text"
+                        value={project.packages?.premium?.title || ''}
+                        onChange={(e) => updatePackageField('premium', 'title', e.target.value)}
+                        placeholder="Package Title (e.g. CUSTOM BRAND STORE)"
+                        className="w-full text-center text-[11px] font-bold uppercase text-[#FFE379] bg-transparent border-b border-dashed border-[#444] hover:border-[#FFE379] focus:border-[#FFE379] outline-none mt-1.5 py-0.5"
+                      />
+                      <textarea
+                        rows="3"
+                        value={project.packages?.premium?.desc || ''}
+                        onChange={(e) => updatePackageField('premium', 'desc', e.target.value)}
+                        placeholder="Package description / features summary..."
+                        className="w-full text-center text-[10px] text-neutral-300 font-normal bg-[#181818] p-1.5 rounded border border-dashed border-[#333] hover:border-[#FFE379] focus:border-[#FFE379] outline-none mt-1.5 resize-none leading-relaxed"
+                      />
                     </th>
                   </tr>
                 </thead>
@@ -1397,14 +1430,32 @@ export default function ProjectVisualBuilder() {
                     <td className="py-4 px-6 text-xs font-bold uppercase font-mono text-neutral-300">
                       Delivery Timeline
                     </td>
-                    <td className="py-4 px-6 text-center border-l border-[#222] font-mono text-xs text-neutral-300">
-                      {project.packages?.basic?.delivery || '3-day delivery'}
+                    <td className="py-3 px-6 text-center border-l border-[#222]">
+                      <input
+                        type="text"
+                        value={project.packages?.basic?.delivery || ''}
+                        onChange={(e) => updatePackageField('basic', 'delivery', e.target.value)}
+                        placeholder="3-day delivery"
+                        className="w-full text-center bg-[#181818] border border-dashed border-[#333] hover:border-[#FFE379] focus:border-[#FFE379] outline-none text-xs text-neutral-200 font-mono py-1 rounded"
+                      />
                     </td>
-                    <td className="py-4 px-6 text-center border-l border-[#222] font-mono text-xs text-[#FFE379] font-bold bg-[#FFE379]/[0.02]">
-                      {project.packages?.standard?.delivery || '5-day delivery'}
+                    <td className="py-3 px-6 text-center border-l border-[#222] bg-[#FFE379]/[0.02]">
+                      <input
+                        type="text"
+                        value={project.packages?.standard?.delivery || ''}
+                        onChange={(e) => updatePackageField('standard', 'delivery', e.target.value)}
+                        placeholder="5-day delivery"
+                        className="w-full text-center bg-[#181818] border border-dashed border-[#FFE379]/30 hover:border-[#FFE379] focus:border-[#FFE379] outline-none text-xs text-[#FFE379] font-bold font-mono py-1 rounded"
+                      />
                     </td>
-                    <td className="py-4 px-6 text-center border-l border-[#222] font-mono text-xs text-neutral-300">
-                      {project.packages?.premium?.delivery || '7-day delivery'}
+                    <td className="py-3 px-6 text-center border-l border-[#222]">
+                      <input
+                        type="text"
+                        value={project.packages?.premium?.delivery || ''}
+                        onChange={(e) => updatePackageField('premium', 'delivery', e.target.value)}
+                        placeholder="7-day delivery"
+                        className="w-full text-center bg-[#181818] border border-dashed border-[#333] hover:border-[#FFE379] focus:border-[#FFE379] outline-none text-xs text-neutral-200 font-mono py-1 rounded"
+                      />
                     </td>
                   </tr>
 
@@ -1413,14 +1464,32 @@ export default function ProjectVisualBuilder() {
                     <td className="py-4 px-6 text-xs font-bold uppercase font-mono text-neutral-300">
                       Revisions Included
                     </td>
-                    <td className="py-4 px-6 text-center border-l border-[#222] font-mono text-xs text-neutral-300">
-                      {project.packages?.basic?.revisions || '2 Revisions'}
+                    <td className="py-3 px-6 text-center border-l border-[#222]">
+                      <input
+                        type="text"
+                        value={project.packages?.basic?.revisions || ''}
+                        onChange={(e) => updatePackageField('basic', 'revisions', e.target.value)}
+                        placeholder="2 Revisions"
+                        className="w-full text-center bg-[#181818] border border-dashed border-[#333] hover:border-[#FFE379] focus:border-[#FFE379] outline-none text-xs text-neutral-200 font-mono py-1 rounded"
+                      />
                     </td>
-                    <td className="py-4 px-6 text-center border-l border-[#222] font-mono text-xs text-[#FFE379] font-bold bg-[#FFE379]/[0.02]">
-                      {project.packages?.standard?.revisions || '3 Revisions'}
+                    <td className="py-3 px-6 text-center border-l border-[#222] bg-[#FFE379]/[0.02]">
+                      <input
+                        type="text"
+                        value={project.packages?.standard?.revisions || ''}
+                        onChange={(e) => updatePackageField('standard', 'revisions', e.target.value)}
+                        placeholder="3 Revisions"
+                        className="w-full text-center bg-[#181818] border border-dashed border-[#FFE379]/30 hover:border-[#FFE379] focus:border-[#FFE379] outline-none text-xs text-[#FFE379] font-bold font-mono py-1 rounded"
+                      />
                     </td>
-                    <td className="py-4 px-6 text-center border-l border-[#222] font-mono text-xs text-neutral-300">
-                      {project.packages?.premium?.revisions || 'Unlimited Revisions'}
+                    <td className="py-3 px-6 text-center border-l border-[#222]">
+                      <input
+                        type="text"
+                        value={project.packages?.premium?.revisions || ''}
+                        onChange={(e) => updatePackageField('premium', 'revisions', e.target.value)}
+                        placeholder="Unlimited Revisions"
+                        className="w-full text-center bg-[#181818] border border-dashed border-[#333] hover:border-[#FFE379] focus:border-[#FFE379] outline-none text-xs text-neutral-200 font-mono py-1 rounded"
+                      />
                     </td>
                   </tr>
                 </tbody>
