@@ -29,6 +29,7 @@ export const DEFAULT_COMPARISON_ROWS = [
 export default function ServiceDetail() {
   const { slug } = useParams();
   const [project, setProject] = useState(null);
+  const [recommendedProjects, setRecommendedProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('standard');
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
@@ -117,7 +118,7 @@ export default function ServiceDetail() {
   const [formData, setFormData] = useState({ name: '', email: '', footageLink: '', notes: '' });
   const [submitStatus, setSubmitStatus] = useState(null);
 
-  // Fetch project details by SEO-friendly slug
+  // Fetch project details & recommendations
   useEffect(() => {
     setLoading(true);
     axios.get(`/api/projects/${slug}`)
@@ -153,6 +154,16 @@ export default function ServiceDetail() {
       .finally(() => {
         setLoading(false);
       });
+
+    // Fetch all projects for recommendations (excluding current slug)
+    axios.get('/api/projects')
+      .then(res => {
+        if (Array.isArray(res.data)) {
+          const others = res.data.filter(p => p.slug !== slug);
+          setRecommendedProjects(others.slice(0, 3));
+        }
+      })
+      .catch(() => {});
   }, [slug]);
 
   // Resolve active comparison rows: custom project comparisonRows or fallback to default
@@ -723,6 +734,92 @@ export default function ServiceDetail() {
                 </div>
               </div>
             </div>
+
+            {/* ================= RECOMMENDED FOR YOU SECTION (BELOW COMPARE PACKAGES) ================= */}
+            {recommendedProjects.length > 0 && (
+              <div className="mt-14 pt-10 border-t border-[#262626] space-y-6">
+                <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+                  <div>
+                    <div className="inline-flex items-center space-x-2 text-xs font-mono text-[#FFE379] uppercase font-bold tracking-wider mb-1">
+                      <Sparkles className="w-3.5 h-3.5" />
+                      <span>More High-Impact Works</span>
+                    </div>
+                    <h2 
+                      className="text-2xl sm:text-3xl font-black text-white tracking-wide uppercase"
+                      style={{ fontFamily: "'Oswald', sans-serif" }}
+                    >
+                      Recommended For You
+                    </h2>
+                  </div>
+                  <Link
+                    to="/portfolio"
+                    className="text-xs font-mono text-neutral-400 hover:text-[#FFE379] transition-colors flex items-center space-x-1"
+                  >
+                    <span>View Full Portfolio</span>
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </Link>
+                </div>
+
+                {/* 3-Column Grid of Recommended Projects */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {recommendedProjects.map((rec) => (
+                    <Link
+                      key={rec._id || rec.slug}
+                      to={`/${rec.slug}`}
+                      className="group bg-[#141414] rounded-2xl border border-[#262626] hover:border-[#FFE379]/50 overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl flex flex-col"
+                    >
+                      {/* Thumbnail Preview */}
+                      <div className="relative aspect-video w-full bg-[#1A1A1A] overflow-hidden">
+                        {rec.img ? (
+                          <img
+                            src={rec.img}
+                            alt={rec.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-neutral-600">
+                            <Film className="w-8 h-8" />
+                          </div>
+                        )}
+                        <div className="absolute top-3 left-3">
+                          <span className="px-2.5 py-1 rounded-md text-[10px] font-mono font-bold uppercase tracking-wider bg-black/80 backdrop-blur-md text-[#FFE379] border border-[#FFE379]/30">
+                            {rec.tag || rec.category}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Content Card Body */}
+                      <div className="p-5 flex-1 flex flex-col justify-between space-y-3">
+                        <div>
+                          <h3 
+                            className="text-sm font-bold text-white group-hover:text-[#FFE379] transition-colors line-clamp-1 uppercase"
+                            style={{ fontFamily: "'Oswald', sans-serif" }}
+                          >
+                            {rec.title}
+                          </h3>
+                          <p 
+                            className="text-xs text-neutral-400 line-clamp-2 mt-1 leading-relaxed"
+                            style={{ fontFamily: "'Raleway', sans-serif" }}
+                          >
+                            {rec.headline || rec.overview}
+                          </p>
+                        </div>
+
+                        {/* Price & Action Row */}
+                        <div className="pt-3 border-t border-[#222] flex items-center justify-between text-xs">
+                          <span className="text-neutral-500 font-mono text-[11px]">
+                            STARTING AT
+                          </span>
+                          <span className="font-mono font-black text-sm text-[#FFE379]">
+                            US${rec.basicPrice || 150}
+                          </span>
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
 
           </div>
 
