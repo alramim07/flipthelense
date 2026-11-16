@@ -1418,7 +1418,7 @@ export default function ServiceDetail() {
                       style={{ fontFamily: "'Oswald', sans-serif" }}
                     >
                       <Send className="w-3.5 h-3.5" />
-                      <span>{isSubmittingReview ? 'Submitting...' : 'Submit Review For Approval'}</span>
+                      <span>{isSubmittingReview ? 'Submitting...' : 'Submit Review'}</span>
                     </button>
                   </div>
                 </form>
