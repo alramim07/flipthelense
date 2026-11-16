@@ -1396,8 +1396,16 @@ export default function AdminDashboard() {
 
             {/* Modal: Create Custom Review */}
             {isAddReviewModalOpen && (
-              <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-                <div className="relative w-full max-w-md bg-[#161616] border border-[#2E2E2E] rounded-3xl p-5 sm:p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto">
+              <div 
+                className="fixed inset-0 z-[9999] bg-black/80 backdrop-blur-md flex items-center justify-center p-4 sm:p-6"
+                onClick={(e) => {
+                  if (e.target === e.currentTarget) {
+                    setIsAddReviewModalOpen(false);
+                    setIsProjectDropdownOpen(false);
+                  }
+                }}
+              >
+                <div className="relative w-full max-w-lg bg-[#161616] border border-[#2E2E2E] rounded-3xl p-6 shadow-2xl space-y-4 my-auto max-h-[90vh] overflow-y-auto">
                   <div className="flex items-center justify-between pb-3 border-b border-[#262626]">
                     <div className="flex items-center space-x-2">
                       <div className="w-7 h-7 rounded-lg bg-[#FFE379]/10 text-[#FFE379] flex items-center justify-center">
