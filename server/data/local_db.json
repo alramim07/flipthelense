@@ -107,9 +107,253 @@
       "device": "Desktop",
       "timestamp": "2026-11-16T11:03:08.604Z",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794834726636_y0q4u",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/portfolio",
+      "referrer": "http://localhost:5173/aura-luxury-timepieces",
+      "device": "Desktop",
+      "timestamp": "2026-11-16T13:12:06.636Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794834729245_q4egt",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/",
+      "referrer": "http://localhost:5173/aura-luxury-timepieces",
+      "device": "Desktop",
+      "timestamp": "2026-11-16T13:12:09.245Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794834903480_mqpob",
+      "visitorId": "vid_1794834903395_ubmy3zo",
+      "path": "/",
+      "referrer": "Direct",
+      "device": "Desktop",
+      "timestamp": "2026-11-16T13:15:03.480Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.7977.167 Safari/537.36 Antigravity/2.32.1"
+    },
+    {
+      "id": "hit_1794836208893_zeiid",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/",
+      "referrer": "Direct",
+      "device": "Desktop",
+      "timestamp": "2026-11-16T13:36:48.893Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794836231575_vj16g",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/contact",
+      "referrer": "http://localhost:5173/aura-luxury-timepieces",
+      "device": "Desktop",
+      "timestamp": "2026-11-16T13:37:11.575Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794836355239_77qoi",
+      "visitorId": "vid_1794834903395_ubmy3zo",
+      "path": "/",
+      "referrer": "Direct",
+      "device": "Desktop",
+      "timestamp": "2026-11-16T13:39:15.239Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.7977.167 Safari/537.36 Antigravity/2.32.1"
+    },
+    {
+      "id": "hit_1794838075790_pp6z9",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/",
+      "referrer": "http://localhost:5173/aura-luxury-timepieces",
+      "device": "Desktop",
+      "timestamp": "2026-11-16T14:07:55.790Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794838081012_rmh43",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/services/cinematic-wedding-video-editing",
+      "referrer": "http://localhost:5173/aura-luxury-timepieces",
+      "device": "Desktop",
+      "timestamp": "2026-11-16T14:08:01.012Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794838085910_2tvdl",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/",
+      "referrer": "http://localhost:5173/aura-luxury-timepieces",
+      "device": "Desktop",
+      "timestamp": "2026-11-16T14:08:05.910Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794838435258_05ymh",
+      "visitorId": "vid_1794834903395_ubmy3zo",
+      "path": "/contact",
+      "referrer": "Direct",
+      "device": "Tablet",
+      "timestamp": "2026-11-16T14:13:55.258Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.7977.167 Safari/537.36 Antigravity/2.32.1"
+    },
+    {
+      "id": "hit_1794838564096_qsqw4",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/portfolio",
+      "referrer": "http://localhost:5173/aura-luxury-timepieces",
+      "device": "Desktop",
+      "timestamp": "2026-11-16T14:16:04.096Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794838566300_q77e4",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/aura-luxury-timepieces",
+      "referrer": "http://localhost:5173/aura-luxury-timepieces",
+      "device": "Desktop",
+      "timestamp": "2026-11-16T14:16:06.300Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794838572957_c6hfe",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/contact",
+      "referrer": "http://localhost:5173/aura-luxury-timepieces",
+      "device": "Desktop",
+      "timestamp": "2026-11-16T14:16:12.957Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794838576294_5gpco",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/aura-luxury-timepieces",
+      "referrer": "http://localhost:5173/aura-luxury-timepieces",
+      "device": "Desktop",
+      "timestamp": "2026-11-16T14:16:16.294Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794838578448_dr67f",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/contact",
+      "referrer": "http://localhost:5173/aura-luxury-timepieces",
+      "device": "Desktop",
+      "timestamp": "2026-11-16T14:16:18.448Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794838581681_la89k",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/aura-luxury-timepieces",
+      "referrer": "http://localhost:5173/aura-luxury-timepieces",
+      "device": "Desktop",
+      "timestamp": "2026-11-16T14:16:21.681Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794838675608_qisqi",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/portfolio",
+      "referrer": "http://localhost:5173/aura-luxury-timepieces",
+      "device": "Desktop",
+      "timestamp": "2026-11-16T14:17:55.608Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794838677485_mgnye",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/neon-dreams-seoul",
+      "referrer": "http://localhost:5173/aura-luxury-timepieces",
+      "device": "Desktop",
+      "timestamp": "2026-11-16T14:17:57.485Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794839096025_szm22",
+      "visitorId": "vid_1794834903395_ubmy3zo",
+      "path": "/services/cinematic-wedding-video-editing",
+      "referrer": "Direct",
+      "device": "Tablet",
+      "timestamp": "2026-11-16T14:24:56.025Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.7977.167 Safari/537.36 Antigravity/2.32.1"
+    },
+    {
+      "id": "hit_1794839158441_3schy",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/contact",
+      "referrer": "http://localhost:5173/aura-luxury-timepieces",
+      "device": "Desktop",
+      "timestamp": "2026-11-16T14:25:58.441Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794839171629_q80r6",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/services/cinematic-wedding-video-editing",
+      "referrer": "http://localhost:5173/aura-luxury-timepieces",
+      "device": "Desktop",
+      "timestamp": "2026-11-16T14:26:11.629Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794839173812_gsedm",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/contact",
+      "referrer": "http://localhost:5173/aura-luxury-timepieces",
+      "device": "Desktop",
+      "timestamp": "2026-11-16T14:26:13.812Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794839176627_2jjql",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/neon-dreams-seoul",
+      "referrer": "http://localhost:5173/aura-luxury-timepieces",
+      "device": "Desktop",
+      "timestamp": "2026-11-16T14:26:16.627Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794839181665_fnox6",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/contact",
+      "referrer": "http://localhost:5173/aura-luxury-timepieces",
+      "device": "Desktop",
+      "timestamp": "2026-11-16T14:26:21.665Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794839182467_nombv",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/neon-dreams-seoul",
+      "referrer": "http://localhost:5173/aura-luxury-timepieces",
+      "device": "Desktop",
+      "timestamp": "2026-11-16T14:26:22.467Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794839470541_1088i",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/",
+      "referrer": "http://localhost:5173/neon-dreams-seoul",
+      "device": "Desktop",
+      "timestamp": "2026-11-16T14:31:10.541Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
     }
   ],
   "inquiries": [
+    {
+      "_id": "inq_1794838438128",
+      "name": "Zubair Rahman",
+      "email": "zubair@studioflare.com",
+      "serviceType": "Contact Page Inquiry",
+      "packageChosen": "General Contact",
+      "notes": "Hello FlipTheLense, I need cinematic 4K color grading and sound design for my upcoming short film trailer. Please let me know your availability.",
+      "status": "New Inquiry",
+      "createdAt": "Nov 16, 08:13 PM"
+    },
     {
       "_id": "inq_1",
       "name": "Samira Ahmed",
@@ -810,7 +1054,54 @@
     "licenceNo": "TRAD/DNCC/008721/2025",
     "expCounter": "4.5+",
     "projectsCounter": "523+",
-    "satisfactionCounter": "99%"
+    "satisfactionCounter": "99%",
+    "frontendFavicon": "/uploads/Glossy_Cinematic_F_Aperture_Logo_1794840802056.png",
+    "adminFavicon": "",
+    "mergeFavicon": true,
+    "frontendLogo": "/uploads/FlipTheLense_Cinematic_Logo_1794840809037.png",
+    "adminLogo": "",
+    "footerLogo": "",
+    "mergeAdminLogo": true,
+    "mergeFooterLogo": true,
+    "activeMenuId": "main-nav",
+    "menus": [
+      {
+        "id": "main-nav",
+        "name": "Main Navigation",
+        "items": [
+          {
+            "id": "item-1",
+            "label": "Home",
+            "path": "/"
+          },
+          {
+            "id": "item-2",
+            "label": "About",
+            "path": "/about"
+          },
+          {
+            "id": "item-4",
+            "label": "Portfolio",
+            "path": "/portfolio"
+          },
+          {
+            "id": "item-5",
+            "label": "Contact",
+            "path": "/contact"
+          }
+        ]
+      }
+    ],
+    "headerCta": {
+      "enabled": true,
+      "text": "Contact Us",
+      "link": "/contact",
+      "style": "rounded-pill",
+      "size": "medium",
+      "customColor": "#FFE379",
+      "textColor": "#101010"
+    },
+    "logoHeight": 44
   },
   "categories": [
     {

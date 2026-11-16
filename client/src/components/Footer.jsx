@@ -21,7 +21,8 @@ export default function Footer() {
                 <img 
                   src={footerLogoSrc} 
                   alt="FlipTheLense Logo" 
-                  className="h-10 max-w-[200px] object-contain transition-transform group-hover:scale-105" 
+                  style={{ height: `${Math.round((settings.logoHeight || 44) * 1.15)}px` }}
+                  className="w-auto max-w-[280px] object-contain transition-transform group-hover:scale-105" 
                 />
               ) : (
                 <div className="bg-[#FFE379] text-[#101010] font-black px-4 py-1.5 text-base tracking-wider uppercase transition-transform group-hover:scale-105" style={{ fontFamily: "'Oswald', sans-serif" }}>

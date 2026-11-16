@@ -11,6 +11,7 @@ const defaultSettings = {
   frontendLogo: '',
   adminLogo: '',
   footerLogo: '',
+  logoHeight: 44, // Dynamic logo height in pixels (default 44px)
   mergeAdminLogo: false,
   mergeFooterLogo: false,
 

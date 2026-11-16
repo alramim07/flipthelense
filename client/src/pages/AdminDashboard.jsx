@@ -635,7 +635,7 @@ export default function AdminDashboard() {
                     <img 
                       src={effectiveLogo} 
                       alt="FlipTheLense" 
-                      className="h-7 max-w-[140px] object-contain" 
+                      className="h-9 max-w-[170px] object-contain transition-transform group-hover:scale-105" 
                       onError={(e) => {
                         e.currentTarget.style.display = 'none';
                         const fallback = e.currentTarget.nextElementSibling;
@@ -2461,6 +2461,32 @@ export default function AdminDashboard() {
                             <img src={settings.frontendLogo} alt="Header Logo Preview" className="h-6 max-w-[120px] object-contain" />
                           </div>
                         )}
+                      </div>
+                    </div>
+
+                    {/* Logo Size / Height Control (Dynamic Logo Sizing Slider) */}
+                    <div className="p-4 rounded-xl bg-[#141414] border border-[#282828] space-y-2">
+                      <div className="flex items-center justify-between">
+                        <label className="text-xs uppercase font-semibold text-neutral-300">
+                          Header Logo Height / Scale
+                        </label>
+                        <span className="text-xs font-mono font-bold text-[#FFE379]">
+                          {settings.logoHeight || 44}px
+                        </span>
+                      </div>
+                      <input
+                        type="range"
+                        min="28"
+                        max="80"
+                        step="2"
+                        value={settings.logoHeight || 44}
+                        onChange={(e) => setSettings({ ...settings, logoHeight: Number(e.target.value) })}
+                        className="w-full accent-[#FFE379] cursor-pointer"
+                      />
+                      <div className="flex justify-between text-[10px] text-neutral-500 font-mono">
+                        <span>Compact (28px)</span>
+                        <span>Standard (44px)</span>
+                        <span>Large / Prominent (80px)</span>
                       </div>
                     </div>
 
