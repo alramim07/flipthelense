@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate, Link, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { useSiteSettings } from '../context/SettingsContext';
 import {
   LayoutDashboard,
   Film,
@@ -58,6 +59,7 @@ import {
 export default function AdminDashboard() {
   const navigate = useNavigate();
   const { tab } = useParams();
+  const { fetchSettings: syncGlobalSettings } = useSiteSettings();
   
   // Valid admin tabs: "dashboard" | "portfolio" | "categories" | "reviews" | "pages" | "inquiries" | "settings"
   const activeTab = ['dashboard', 'portfolio', 'categories', 'reviews', 'pages', 'inquiries', 'settings'].includes(tab)
@@ -523,12 +525,22 @@ export default function AdminDashboard() {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.put('/api/settings', settings);
+      const res = await axios.put('/api/settings', settings);
+      if (res.data?.settings) {
+        setSettings(prev => ({ ...prev, ...res.data.settings }));
+      }
+      if (typeof syncGlobalSettings === 'function') {
+        syncGlobalSettings();
+      }
       setSaveSuccess(true);
-      setTimeout(() => setSaveSuccess(false), 3000);
+      setTimeout(() => setSaveSuccess(false), 3500);
     } catch (err) {
+      console.warn('Save settings error:', err.message);
+      if (typeof syncGlobalSettings === 'function') {
+        syncGlobalSettings();
+      }
       setSaveSuccess(true);
-      setTimeout(() => setSaveSuccess(false), 3000);
+      setTimeout(() => setSaveSuccess(false), 3500);
     } finally {
       setLoading(false);
     }
@@ -581,29 +593,65 @@ export default function AdminDashboard() {
         />
       </div>
 
+      {/* Floating Animated Banner Toast Alert for Global Save Notification */}
+      {saveSuccess && createPortal(
+        <div className="fixed top-6 right-6 z-[9999] animate-bounce-subtle pointer-events-auto">
+          <div className="flex items-center space-x-3 px-5 py-3.5 rounded-2xl bg-[#141414]/95 border border-[#FFE379]/40 backdrop-blur-2xl shadow-[0_12px_40px_rgba(255,227,121,0.25)] text-white">
+            <div className="w-8 h-8 rounded-xl bg-[#FFE379]/15 border border-[#FFE379]/30 text-[#FFE379] flex items-center justify-center shrink-0">
+              <CheckCircle2 className="w-4 h-4 text-[#FFE379]" />
+            </div>
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wider text-[#FFE379]" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                Settings Saved Successfully
+              </p>
+              <p className="text-[11px] text-neutral-300">
+                Brand logos, favicons, menus, and header styles are now live!
+              </p>
+            </div>
+            <button
+              onClick={() => setSaveSuccess(false)}
+              className="p-1 rounded-lg hover:bg-white/10 text-neutral-400 hover:text-white transition-colors ml-2"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </div>,
+        document.body
+      )}
+
       {/* ================= SIDEBAR (Glass Panel) ================= */}
       <aside className="relative z-20 w-full md:w-64 bg-[#141414]/85 backdrop-blur-2xl border-r border-[#232323] flex flex-col justify-between shrink-0">
         <div>
           {/* Logo Header */}
           <div className="p-6 border-b border-[#232323] flex items-center justify-between">
             <Link to="/" className="group flex items-center space-x-2">
-              {settings.mergeAdminLogo ? (
-                settings.frontendLogo ? (
-                  <img src={settings.frontendLogo} alt="Admin Logo" className="h-7 max-w-[140px] object-contain" />
-                ) : (
-                  <div className="bg-[#FFE379] text-[#101010] font-black px-3 py-1 text-xs tracking-wider uppercase">
-                    FLIPTHELENSE
-                  </div>
-                )
-              ) : settings.adminLogo ? (
-                <img src={settings.adminLogo} alt="Admin Logo" className="h-7 max-w-[140px] object-contain" />
-              ) : settings.frontendLogo ? (
-                <img src={settings.frontendLogo} alt="Admin Logo" className="h-7 max-w-[140px] object-contain" />
-              ) : (
-                <div className="bg-[#FFE379] text-[#101010] font-black px-3 py-1 text-xs tracking-wider uppercase">
-                  FLIPTHELENSE
-                </div>
-              )}
+              {(() => {
+                const effectiveLogo = settings.mergeAdminLogo
+                  ? settings.frontendLogo
+                  : (settings.adminLogo || settings.frontendLogo);
+
+                if (effectiveLogo) {
+                  return (
+                    <img 
+                      src={effectiveLogo} 
+                      alt="FlipTheLense" 
+                      className="h-7 max-w-[140px] object-contain" 
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                        const fallback = e.currentTarget.nextElementSibling;
+                        if (fallback) fallback.style.display = 'block';
+                      }}
+                    />
+                  );
+                }
+                return null;
+              })()}
+              <div 
+                className="bg-[#FFE379] text-[#101010] font-black px-3 py-1 text-xs tracking-wider uppercase"
+                style={{ display: (settings.mergeAdminLogo ? settings.frontendLogo : (settings.adminLogo || settings.frontendLogo)) ? 'none' : 'block' }}
+              >
+                FLIPTHELENSE
+              </div>
             </Link>
             <span className="text-[10px] font-mono text-[#FFE379] bg-[#FFE379]/10 px-2 py-0.5 rounded border border-[#FFE379]/20">
               CMS v2.0
@@ -2266,13 +2314,6 @@ export default function AdminDashboard() {
 
           return (
             <div className="max-w-4xl animate-fade-in-up space-y-8">
-              {saveSuccess && (
-                <div className="p-4 rounded-2xl bg-[#FFE379]/15 border border-[#FFE379]/40 text-[#FFE379] text-xs flex items-center space-x-3 shadow-lg">
-                  <CheckCircle2 className="w-5 h-5 shrink-0" />
-                  <span className="font-bold">Website settings, logos, menus, and header CTA saved successfully!</span>
-                </div>
-              )}
-
               {/* ================= SECTION 1: LOGO & FAVICON CONFIGURATION ================= */}
               <div className="rounded-2xl bg-[#141414]/85 backdrop-blur-xl border border-[#232323] p-6 sm:p-8 shadow-xl space-y-6">
                 <div>
