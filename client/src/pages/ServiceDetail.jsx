@@ -21,6 +21,36 @@ import {
 } from 'lucide-react';
 import axios from 'axios';
 
+// Comprehensive Countries with ISO Flags
+export const COUNTRIES = [
+  { name: 'United States', code: 'US', flag: '🇺🇸' },
+  { name: 'United Kingdom', code: 'GB', flag: '🇬🇧' },
+  { name: 'Canada', code: 'CA', flag: '🇨🇦' },
+  { name: 'Australia', code: 'AU', flag: '🇦🇺' },
+  { name: 'Germany', code: 'DE', flag: '🇩🇪' },
+  { name: 'France', code: 'FR', flag: '🇫🇷' },
+  { name: 'Italy', code: 'IT', flag: '🇮🇹' },
+  { name: 'Spain', code: 'ES', flag: '🇪🇸' },
+  { name: 'Netherlands', code: 'NL', flag: '🇳🇱' },
+  { name: 'Sweden', code: 'SE', flag: '🇸🇪' },
+  { name: 'Switzerland', code: 'CH', flag: '🇨🇭' },
+  { name: 'Norway', code: 'NO', flag: '🇳🇴' },
+  { name: 'Denmark', code: 'DK', flag: '🇩🇰' },
+  { name: 'Ireland', code: 'IE', flag: '🇮🇪' },
+  { name: 'New Zealand', code: 'NZ', flag: '🇳🇿' },
+  { name: 'Bangladesh', code: 'BD', flag: '🇧🇩' },
+  { name: 'India', code: 'IN', flag: '🇮🇳' },
+  { name: 'Pakistan', code: 'PK', flag: '🇵🇰' },
+  { name: 'United Arab Emirates', code: 'AE', flag: '🇦🇪' },
+  { name: 'Saudi Arabia', code: 'SA', flag: '🇸🇦' },
+  { name: 'Singapore', code: 'SG', flag: '🇸🇬' },
+  { name: 'Japan', code: 'JP', flag: '🇯🇵' },
+  { name: 'South Korea', code: 'KR', flag: '🇰🇷' },
+  { name: 'Brazil', code: 'BR', flag: '🇧🇷' },
+  { name: 'Mexico', code: 'MX', flag: '🇲🇽' },
+  { name: 'South Africa', code: 'ZA', flag: '🇿🇦' }
+];
+
 // Shared Default Comparison Matrix
 export const DEFAULT_COMPARISON_ROWS = [
   { id: 'cr_1', feature: '4K UHD Master File Export', basic: true, standard: true, premium: true },
@@ -52,14 +82,17 @@ export default function ServiceDetail() {
   // Public Review Form Submission state
   const [isSubmittingReview, setIsSubmittingReview] = useState(false);
   const [reviewSubmittedSuccess, setReviewSubmittedSuccess] = useState(false);
+  const [isCountryDropdownOpen, setIsCountryDropdownOpen] = useState(false);
+  const [countrySearchText, setCountrySearchText] = useState('');
   const [visitorReviewForm, setVisitorReviewForm] = useState({
     name: '',
     country: 'United States',
     flag: '🇺🇸',
+    packageTier: 'standard', // 'basic' | 'standard' | 'premium'
     rating: 5,
     comment: '',
-    pricePaid: 'US$150-US$300',
-    duration: '3-5 days'
+    pricePaid: '',
+    duration: ''
   });
 
   // Active review slide index for the 5 demo reviews carousel
@@ -249,6 +282,10 @@ export default function ServiceDetail() {
     e.preventDefault();
     if (!visitorReviewForm.name.trim() || !visitorReviewForm.comment.trim()) return;
 
+    // Selected package tier details
+    const chosenTierKey = visitorReviewForm.packageTier || 'standard';
+    const chosenPkg = PACKAGES[chosenTierKey] || currentPkg;
+
     setIsSubmittingReview(true);
     try {
       await axios.post('/api/reviews', {
@@ -259,8 +296,8 @@ export default function ServiceDetail() {
         flag: visitorReviewForm.flag || '🇺🇸',
         rating: Number(visitorReviewForm.rating) || 5,
         comment: visitorReviewForm.comment.trim(),
-        pricePaid: visitorReviewForm.pricePaid || currentPkg.price,
-        duration: visitorReviewForm.duration || currentPkg.delivery,
+        pricePaid: `${chosenTierKey.toUpperCase()} (${chosenPkg.price})`,
+        duration: chosenPkg.delivery,
         status: 'pending' // Admin must approve before showing live
       });
 
@@ -269,10 +306,11 @@ export default function ServiceDetail() {
         name: '',
         country: 'United States',
         flag: '🇺🇸',
+        packageTier: 'standard',
         rating: 5,
         comment: '',
-        pricePaid: 'US$150-US$300',
-        duration: '3-5 days'
+        pricePaid: '',
+        duration: ''
       });
       setTimeout(() => setReviewSubmittedSuccess(false), 6000);
     } catch (err) {
@@ -1222,6 +1260,7 @@ export default function ServiceDetail() {
 
                 <form onSubmit={handleVisitorReviewSubmit} className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {/* 1. Name */}
                     <div>
                       <label className="block text-[11px] uppercase font-mono text-neutral-400 mb-1">
                         Your Name / Username *
@@ -1236,21 +1275,70 @@ export default function ServiceDetail() {
                       />
                     </div>
 
-                    <div>
+                    {/* 2. Country (Searchable Scrollable Dropdown) */}
+                    <div className="relative">
                       <label className="block text-[11px] uppercase font-mono text-neutral-400 mb-1">
-                        Country & Flag
+                        Country *
                       </label>
-                      <input
-                        type="text"
-                        value={visitorReviewForm.country}
-                        onChange={(e) => setVisitorReviewForm({ ...visitorReviewForm, country: e.target.value })}
-                        placeholder="e.g. United States 🇺🇸"
-                        className="w-full bg-[#181818] border border-[#2E2E2E] px-4 py-2.5 rounded-xl text-xs text-white placeholder-neutral-500 focus:border-[#FFE379] outline-none"
-                      />
+                      
+                      {/* Dropdown Toggle Button */}
+                      <button
+                        type="button"
+                        onClick={() => setIsCountryDropdownOpen(!isCountryDropdownOpen)}
+                        className="w-full bg-[#181818] border border-[#2E2E2E] hover:border-[#FFE379]/50 focus:border-[#FFE379] px-4 py-2.5 rounded-xl text-xs text-white flex items-center justify-between text-left transition-colors"
+                      >
+                        <span className="flex items-center space-x-2 truncate">
+                          <span className="text-sm">{visitorReviewForm.flag}</span>
+                          <span>{visitorReviewForm.country}</span>
+                        </span>
+                        <ChevronDown className={`w-4 h-4 text-neutral-400 transition-transform ${isCountryDropdownOpen ? 'rotate-180 text-[#FFE379]' : ''}`} />
+                      </button>
+
+                      {/* Dropdown Menu with Search */}
+                      {isCountryDropdownOpen && (
+                        <div className="absolute left-0 right-0 top-full mt-1.5 z-30 bg-[#161616] border border-[#2E2E2E] rounded-xl shadow-2xl p-2 space-y-2">
+                          {/* Search Input */}
+                          <div className="relative">
+                            <input
+                              type="text"
+                              value={countrySearchText}
+                              onChange={(e) => setCountrySearchText(e.target.value)}
+                              placeholder="Search country..."
+                              className="w-full bg-[#1F1F1F] border border-[#333] rounded-lg pl-8 pr-3 py-1.5 text-xs text-white placeholder-neutral-500 focus:border-[#FFE379] outline-none"
+                              autoFocus
+                            />
+                            <Search className="w-3.5 h-3.5 text-neutral-400 absolute left-2.5 top-2" />
+                          </div>
+
+                          {/* Scrollable Countries List */}
+                          <div className="max-h-48 overflow-y-auto space-y-0.5 pr-1">
+                            {COUNTRIES.filter(c => c.name.toLowerCase().includes(countrySearchText.toLowerCase())).map((c) => (
+                              <button
+                                key={c.code}
+                                type="button"
+                                onClick={() => {
+                                  setVisitorReviewForm({ ...visitorReviewForm, country: c.name, flag: c.flag });
+                                  setIsCountryDropdownOpen(false);
+                                  setCountrySearchText('');
+                                }}
+                                className={`w-full flex items-center space-x-2.5 px-2.5 py-1.5 rounded-lg text-xs text-left transition-colors ${
+                                  visitorReviewForm.country === c.name
+                                    ? 'bg-[#FFE379] text-black font-bold'
+                                    : 'text-neutral-300 hover:bg-white/5 hover:text-white'
+                                }`}
+                              >
+                                <span className="text-sm shrink-0">{c.flag}</span>
+                                <span className="truncate">{c.name}</span>
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    {/* 3. Rating */}
                     <div>
                       <label className="block text-[11px] uppercase font-mono text-neutral-400 mb-1">
                         Your Rating
@@ -1268,30 +1356,43 @@ export default function ServiceDetail() {
                       </select>
                     </div>
 
+                    {/* 4. Package / Price Range Dropdown (Pulls directly from project packages) */}
                     <div>
                       <label className="block text-[11px] uppercase font-mono text-neutral-400 mb-1">
-                        Price Range
+                        Package Tier (Price) *
                       </label>
-                      <input
-                        type="text"
-                        value={visitorReviewForm.pricePaid}
-                        onChange={(e) => setVisitorReviewForm({ ...visitorReviewForm, pricePaid: e.target.value })}
-                        placeholder="e.g. US$150"
-                        className="w-full bg-[#181818] border border-[#2E2E2E] px-4 py-2.5 rounded-xl text-xs text-white placeholder-neutral-500 focus:border-[#FFE379] outline-none font-mono"
-                      />
+                      <select
+                        value={visitorReviewForm.packageTier || 'standard'}
+                        onChange={(e) => {
+                          const chosenTier = e.target.value;
+                          setVisitorReviewForm({
+                            ...visitorReviewForm,
+                            packageTier: chosenTier
+                          });
+                        }}
+                        className="w-full bg-[#181818] border border-[#2E2E2E] px-3.5 py-2.5 rounded-xl text-xs text-white font-mono focus:border-[#FFE379] outline-none cursor-pointer"
+                      >
+                        <option value="basic">
+                          BASIC — {PACKAGES.basic.price} ({PACKAGES.basic.title})
+                        </option>
+                        <option value="standard">
+                          STANDARD — {PACKAGES.standard.price} ({PACKAGES.standard.title})
+                        </option>
+                        <option value="premium">
+                          PREMIUM — {PACKAGES.premium.price} ({PACKAGES.premium.title})
+                        </option>
+                      </select>
                     </div>
 
+                    {/* 5. Project Duration (Automatically synced from selected package) */}
                     <div>
                       <label className="block text-[11px] uppercase font-mono text-neutral-400 mb-1">
-                        Project Duration
+                        Project Duration (Auto)
                       </label>
-                      <input
-                        type="text"
-                        value={visitorReviewForm.duration}
-                        onChange={(e) => setVisitorReviewForm({ ...visitorReviewForm, duration: e.target.value })}
-                        placeholder="e.g. 4 days"
-                        className="w-full bg-[#181818] border border-[#2E2E2E] px-4 py-2.5 rounded-xl text-xs text-white placeholder-neutral-500 focus:border-[#FFE379] outline-none font-mono"
-                      />
+                      <div className="w-full bg-[#121212] border border-[#262626] px-4 py-2.5 rounded-xl text-xs text-[#FFE379] font-mono font-bold flex items-center justify-between">
+                        <span>{PACKAGES[visitorReviewForm.packageTier || 'standard']?.delivery || '5-day delivery'}</span>
+                        <span className="text-[10px] text-neutral-500 font-normal">Auto-linked</span>
+                      </div>
                     </div>
                   </div>
 
