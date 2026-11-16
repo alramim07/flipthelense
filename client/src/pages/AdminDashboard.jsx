@@ -40,7 +40,12 @@ import {
   Filter,
   ChevronDown,
   Bell,
-  CheckCheck
+  CheckCheck,
+  Mail,
+  User,
+  Calendar,
+  MessageCircle,
+  Clock3
 } from 'lucide-react';
 
 export default function AdminDashboard() {
@@ -124,6 +129,33 @@ export default function AdminDashboard() {
     projectsCounter: '523+',
     satisfactionCounter: '99%'
   });
+
+  // Work Inquiries Filter & Actions State
+  const [inquirySearchQuery, setInquirySearchQuery] = useState('');
+  const [inquiryFilterStatus, setInquiryFilterStatus] = useState('all');
+
+  const handleUpdateInquiryStatus = async (inqId, newStatus) => {
+    try {
+      const res = await axios.put(`/api/inquiries/${inqId}`, { status: newStatus });
+      if (res.data?.success) {
+        setInquiries(prev => prev.map(item => (item._id === inqId || item.id === inqId) ? { ...item, status: newStatus } : item));
+      }
+    } catch (err) {
+      console.warn('Update inquiry status error:', err.message);
+      setInquiries(prev => prev.map(item => (item._id === inqId || item.id === inqId) ? { ...item, status: newStatus } : item));
+    }
+  };
+
+  const handleDeleteInquiry = async (inqId) => {
+    if (!window.confirm('Are you sure you want to delete this inquiry?')) return;
+    try {
+      await axios.delete(`/api/inquiries/${inqId}`);
+      setInquiries(prev => prev.filter(item => item._id !== inqId && item.id !== inqId));
+    } catch (err) {
+      console.warn('Delete inquiry error:', err.message);
+      setInquiries(prev => prev.filter(item => item._id !== inqId && item.id !== inqId));
+    }
+  };
 
   // Notification System State
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
@@ -1886,65 +1918,192 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        {/* ================= TAB 4: WORK INQUIRIES (REAL SUBMISSIONS) ================= */}
-        {activeTab === 'inquiries' && (
-          <div className="space-y-6 animate-fade-in-up">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 
-                  className="text-xl font-black text-white uppercase tracking-tight"
-                  style={{ fontFamily: "'Oswald', sans-serif" }}
-                >
-                  Client Work Inquiries & Orders ({inquiries.length})
-                </h2>
-                <p className="text-xs text-neutral-400">
-                  Real submissions received from the Contact page and Service Gigs booking forms
-                </p>
+        {/* ================= TAB 4: WORK INQUIRIES (REAL SUBMISSIONS FROM CONTACT PAGE) ================= */}
+        {activeTab === 'inquiries' && (() => {
+          const filteredInquiries = inquiries.filter(item => {
+            const matchesSearch = !inquirySearchQuery || 
+              item.name?.toLowerCase().includes(inquirySearchQuery.toLowerCase()) ||
+              item.email?.toLowerCase().includes(inquirySearchQuery.toLowerCase()) ||
+              item.notes?.toLowerCase().includes(inquirySearchQuery.toLowerCase()) ||
+              item.serviceType?.toLowerCase().includes(inquirySearchQuery.toLowerCase());
+            
+            const matchesStatus = inquiryFilterStatus === 'all' || item.status?.toLowerCase() === inquiryFilterStatus.toLowerCase();
+            return matchesSearch && matchesStatus;
+          });
+
+          return (
+            <div className="space-y-6 animate-fade-in-up">
+              {/* Header with Title and Search/Filters */}
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#141414]/85 backdrop-blur-xl border border-[#232323] p-6 rounded-2xl shadow-xl">
+                <div>
+                  <div className="flex items-center space-x-2">
+                    <Inbox className="w-5 h-5 text-[#FFE379]" />
+                    <h2 
+                      className="text-xl font-bold text-white uppercase tracking-tight"
+                      style={{ fontFamily: "'Oswald', sans-serif" }}
+                    >
+                      Contact Inquiries & Work Messages ({inquiries.length})
+                    </h2>
+                  </div>
+                  <p className="text-xs text-neutral-400 mt-1">
+                    Direct messages and work requests submitted from the Contact page and service booking forms
+                  </p>
+                </div>
+
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                  {/* Search Input */}
+                  <div className="relative">
+                    <Search className="w-4 h-4 text-neutral-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    <input
+                      type="text"
+                      placeholder="Search inquiries..."
+                      value={inquirySearchQuery}
+                      onChange={(e) => setInquirySearchQuery(e.target.value)}
+                      className="w-full sm:w-56 pl-9 pr-3 py-2 bg-[#1C1C1C] border border-[#2E2E2E] rounded-xl text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-[#FFE379] transition-all"
+                    />
+                    {inquirySearchQuery && (
+                      <button
+                        onClick={() => setInquirySearchQuery('')}
+                        className="absolute right-2.5 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-white"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Status Filter Buttons */}
+                  <div className="inline-flex items-center p-1 rounded-xl bg-[#1C1C1C] border border-[#2E2E2E] text-xs font-mono">
+                    {['all', 'new', 'contacted', 'completed'].map((statusKey) => (
+                      <button
+                        key={statusKey}
+                        onClick={() => setInquiryFilterStatus(statusKey)}
+                        className={`px-3 py-1.5 rounded-lg capitalize transition-all ${
+                          inquiryFilterStatus === statusKey
+                            ? 'bg-[#FFE379] text-[#101010] font-bold shadow'
+                            : 'text-neutral-400 hover:text-white'
+                        }`}
+                      >
+                        {statusKey === 'all' ? `All (${inquiries.length})` : statusKey}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Inquiries List */}
+              <div className="space-y-4">
+                {filteredInquiries.length > 0 ? (
+                  filteredInquiries.map((inq) => {
+                    const inqId = inq._id || inq.id;
+                    return (
+                      <div
+                        key={inqId}
+                        className="rounded-2xl p-6 bg-[#141414]/85 backdrop-blur-xl border border-[#232323] hover:border-[#FFE379]/30 transition-all shadow-xl space-y-4"
+                      >
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#232323]">
+                          <div className="flex items-start sm:items-center space-x-3">
+                            <div className="w-10 h-10 rounded-xl bg-[#FFE379]/10 text-[#FFE379] flex items-center justify-center font-bold text-sm shrink-0 border border-[#FFE379]/20">
+                              <User className="w-5 h-5" />
+                            </div>
+                            <div>
+                              <div className="flex items-center space-x-3">
+                                <h3 className="font-bold text-base text-white">{inq.name}</h3>
+                                <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase ${
+                                  inq.status?.toLowerCase().includes('new')
+                                    ? 'bg-amber-500/15 text-amber-400 border border-amber-500/30'
+                                    : inq.status?.toLowerCase().includes('contacted')
+                                    ? 'bg-blue-500/15 text-blue-400 border border-blue-500/30'
+                                    : 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30'
+                                }`}>
+                                  {inq.status || 'New'}
+                                </span>
+                              </div>
+                              <div className="flex items-center space-x-3 mt-1 text-xs text-neutral-400 font-mono">
+                                <a 
+                                  href={`mailto:${inq.email}`} 
+                                  className="inline-flex items-center space-x-1 hover:text-[#FFE379] transition-colors"
+                                >
+                                  <Mail className="w-3.5 h-3.5" />
+                                  <span>{inq.email}</span>
+                                </a>
+                                {inq.createdAt && (
+                                  <span className="inline-flex items-center space-x-1 text-neutral-500">
+                                    <Clock3 className="w-3.5 h-3.5" />
+                                    <span>{inq.createdAt}</span>
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Quick Status Action & Delete */}
+                          <div className="flex items-center space-x-2 self-end sm:self-center">
+                            <select
+                              value={inq.status || 'New'}
+                              onChange={(e) => handleUpdateInquiryStatus(inqId, e.target.value)}
+                              className="px-3 py-1.5 rounded-xl bg-[#1C1C1C] border border-[#2E2E2E] text-xs font-mono text-neutral-300 focus:outline-none focus:border-[#FFE379] cursor-pointer"
+                            >
+                              <option value="New">Mark as New</option>
+                              <option value="Contacted">Mark as Contacted</option>
+                              <option value="Completed">Mark as Completed</option>
+                            </select>
+
+                            <button
+                              onClick={() => handleDeleteInquiry(inqId)}
+                              title="Delete inquiry"
+                              className="p-2 rounded-xl bg-[#1C1C1C] hover:bg-red-500/20 text-neutral-400 hover:text-red-400 border border-[#2E2E2E] hover:border-red-500/30 transition-colors"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Inquiry Body / Message */}
+                        <div>
+                          {inq.serviceType && (
+                            <span className="text-[11px] uppercase font-bold text-neutral-400 block mb-1">
+                              Subject / Service: <span className="text-[#FFE379] normal-case">{inq.serviceType}</span>
+                              {inq.packageChosen && inq.packageChosen !== 'General Contact' && (
+                                <span className="text-neutral-500 ml-2">({inq.packageChosen})</span>
+                              )}
+                            </span>
+                          )}
+                          <div className="p-4 rounded-xl bg-[#191919] border border-[#262626] text-xs sm:text-sm text-neutral-300 leading-relaxed font-normal whitespace-pre-wrap">
+                            {inq.notes || 'No additional message provided.'}
+                          </div>
+                        </div>
+
+                        {/* Quick Reply by Mail Action */}
+                        <div className="flex justify-end pt-1">
+                          <a
+                            href={`mailto:${inq.email}?subject=Re: FlipTheLense inquiry - ${encodeURIComponent(inq.serviceType || 'Video Editing')}`}
+                            className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-xl bg-[#1F1F1F] hover:bg-[#FFE379] text-neutral-300 hover:text-[#101010] text-xs font-bold transition-all border border-[#2F2F2F] hover:border-[#FFE379]"
+                            style={{ fontFamily: "'Oswald', sans-serif" }}
+                          >
+                            <Mail className="w-3.5 h-3.5" />
+                            <span className="uppercase">Reply Via Email</span>
+                          </a>
+                        </div>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <div className="rounded-2xl p-12 bg-[#141414]/85 border border-[#232323] text-center text-neutral-400 space-y-3">
+                    <Inbox className="w-10 h-10 text-neutral-600 mx-auto opacity-40" />
+                    <p className="text-sm font-semibold text-white">
+                      {inquirySearchQuery || inquiryFilterStatus !== 'all'
+                        ? 'No matching inquiries found.'
+                        : 'No inquiries received yet.'}
+                    </p>
+                    <p className="text-xs text-neutral-500 max-w-sm mx-auto">
+                      Whenever visitors send questions or project requests through the Contact Us page, they will show up here automatically in real time.
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
-
-            <div className="space-y-4">
-              {inquiries.length > 0 ? (
-                inquiries.map((inq) => (
-                  <div
-                    key={inq._id}
-                    className="rounded-2xl p-6 bg-[#141414]/85 backdrop-blur-xl border border-[#232323] hover:border-[#FFE379]/30 transition-all shadow-xl"
-                  >
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#232323]">
-                      <div>
-                        <div className="flex items-center space-x-3">
-                          <h3 className="font-bold text-base text-white">{inq.name}</h3>
-                          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#FFE379]/15 text-[#FFE379] border border-[#FFE379]/30">
-                            {inq.status}
-                          </span>
-                        </div>
-                        <p className="text-xs text-neutral-400 font-mono mt-0.5">{inq.email}</p>
-                      </div>
-
-                      <div className="text-left sm:text-right font-mono">
-                        <div className="text-xs text-[#FFE379] font-bold">{inq.packageChosen}</div>
-                        <div className="text-[11px] text-neutral-500">{inq.createdAt}</div>
-                      </div>
-                    </div>
-
-                    <div className="pt-4">
-                      <span className="text-[11px] uppercase font-bold text-neutral-400 block mb-1">
-                        Service Requested: <span className="text-white normal-case">{inq.serviceType}</span>
-                      </span>
-                      <p className="text-xs text-neutral-300 bg-[#1A1A1A] p-3 rounded-xl border border-[#262626] leading-relaxed">
-                        "{inq.notes}"
-                      </p>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className="rounded-2xl p-10 bg-[#141414]/85 border border-[#232323] text-center text-neutral-500 font-mono text-xs">
-                  No inquiries received yet. Submit a message on the Contact page to see it appear here in real time!
-                </div>
-              )}
-            </div>
-          </div>
-        )}
+          );
+        })()}
 
         {/* ================= TAB 5: WEBSITE SETTINGS (REAL DATABASE UPDATE) ================= */}
         {activeTab === 'settings' && (

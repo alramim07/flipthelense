@@ -418,6 +418,37 @@ router.post('/inquiries', async (req, res) => {
   }
 });
 
+// PUT Update Inquiry Status / Notes
+router.put('/inquiries/:id', async (req, res) => {
+  try {
+    const { status } = req.body;
+    const store = getLocalStore();
+    const index = (store.inquiries || []).findIndex(i => i._id === req.params.id || i.id === req.params.id);
+    if (index === -1) {
+      return res.status(404).json({ error: 'Inquiry not found' });
+    }
+    if (status) {
+      store.inquiries[index].status = status;
+    }
+    saveLocalStore(store);
+    res.json({ success: true, inquiry: store.inquiries[index] });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// DELETE Inquiry
+router.delete('/inquiries/:id', async (req, res) => {
+  try {
+    const store = getLocalStore();
+    store.inquiries = (store.inquiries || []).filter(i => i._id !== req.params.id && i.id !== req.params.id);
+    saveLocalStore(store);
+    res.json({ success: true, message: 'Inquiry deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // ================= 7. REVIEWS & RATINGS SYSTEM (MODERATION & PUBLIC) =================
 
 // GET reviews: filtered by projectSlug, or status ('accepted', 'pending', 'rejected', or all for admin)
