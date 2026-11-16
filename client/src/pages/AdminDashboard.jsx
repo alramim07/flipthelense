@@ -2883,17 +2883,17 @@ export default function AdminDashboard() {
                 </div>
               </div>
 
-              {/* Master Save Button */}
-              <div className="sticky bottom-4 z-20">
+              {/* Compact Save Button (Positioned at Bottom-Right Corner) */}
+              <div className="flex justify-end pt-2 pb-6">
                 <button
                   type="button"
                   onClick={handleSaveSettings}
                   disabled={loading}
-                  className="w-full py-4 px-6 rounded-2xl bg-[#FFE379] hover:bg-[#F2D76B] text-[#101010] font-black uppercase text-sm tracking-wider transition-all shadow-[0_10px_30px_rgba(255,227,121,0.25)] flex items-center justify-center space-x-2 hover:scale-[1.01]"
+                  className="px-5 py-2.5 rounded-xl bg-[#FFE379] hover:bg-[#F2D76B] text-[#101010] font-black uppercase text-xs tracking-wider transition-all shadow-[0_4px_20px_rgba(255,227,121,0.25)] flex items-center space-x-2 hover:scale-105 disabled:opacity-50"
                   style={{ fontFamily: "'Oswald', sans-serif" }}
                 >
-                  <Save className="w-5 h-5" />
-                  <span>{loading ? 'Saving Settings...' : 'Save All Website Settings'}</span>
+                  <Save className="w-4 h-4" />
+                  <span>{loading ? 'Saving...' : 'Save Settings'}</span>
                 </button>
               </div>
             </div>
