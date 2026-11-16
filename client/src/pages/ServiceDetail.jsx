@@ -25,6 +25,8 @@ export default function ServiceDetail() {
   
   // Active review slide index for the 5 demo reviews carousel
   const [reviewIndex, setReviewIndex] = useState(0);
+  const [slideDirection, setSlideDirection] = useState('next'); // 'next' | 'prev'
+  const [isAnimating, setIsAnimating] = useState(false);
 
   // 5 Realistic Fiverr-style Client Reviews with Brand Colors
   const REVIEWS = [
@@ -86,11 +88,19 @@ export default function ServiceDetail() {
   ];
 
   const handleNextReview = () => {
+    if (isAnimating) return;
+    setSlideDirection('next');
+    setIsAnimating(true);
     setReviewIndex((prev) => (prev + 1) % REVIEWS.length);
+    setTimeout(() => setIsAnimating(false), 350);
   };
 
   const handlePrevReview = () => {
+    if (isAnimating) return;
+    setSlideDirection('prev');
+    setIsAnimating(true);
     setReviewIndex((prev) => (prev - 1 + REVIEWS.length) % REVIEWS.length);
+    setTimeout(() => setIsAnimating(false), 350);
   };
 
   const [formData, setFormData] = useState({ name: '', email: '', footageLink: '', notes: '' });
@@ -386,69 +396,76 @@ export default function ServiceDetail() {
                 </div>
               </div>
 
-              {/* Single Review Card Container */}
-              {(() => {
-                const currentReview = REVIEWS[reviewIndex];
-                return (
-                  <div className="rounded-2xl bg-[#141414] border border-[#262626] p-5 sm:p-6 shadow-xl relative transition-all duration-300">
-                    <div className="flex items-start space-x-4">
-                      
-                      {/* Avatar Circle */}
-                      <div className={`w-10 h-10 rounded-full ${currentReview.avatarBg} text-white font-bold flex items-center justify-center text-sm shadow-md shrink-0 uppercase`}>
-                        {currentReview.avatarLetter}
-                      </div>
+              {/* Single Review Card Container with Sliding Animation */}
+              <div className="overflow-hidden rounded-2xl">
+                {(() => {
+                  const currentReview = REVIEWS[reviewIndex];
+                  return (
+                    <div 
+                      key={currentReview.id}
+                      className={`rounded-2xl bg-[#141414] border border-[#262626] p-5 sm:p-6 shadow-xl relative ${
+                        slideDirection === 'next' ? 'animate-slide-in-right' : 'animate-slide-in-left'
+                      }`}
+                    >
+                      <div className="flex items-start space-x-4">
+                        
+                        {/* Avatar Circle */}
+                        <div className={`w-10 h-10 rounded-full ${currentReview.avatarBg} text-white font-bold flex items-center justify-center text-sm shadow-md shrink-0 uppercase`}>
+                          {currentReview.avatarLetter}
+                        </div>
 
-                      {/* Review Details */}
-                      <div className="flex-1 space-y-2">
-                        {/* Reviewer Name, Country Flag & Stars */}
-                        <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
-                          <span className="font-bold text-white text-sm">
-                            {currentReview.name}
-                          </span>
-                          
-                          <span className="text-neutral-500">•</span>
-                          
-                          <span className="text-xs text-neutral-400 flex items-center space-x-1">
-                            <span>{currentReview.flag}</span>
-                            <span>{currentReview.country}</span>
-                          </span>
+                        {/* Review Details */}
+                        <div className="flex-1 space-y-2">
+                          {/* Reviewer Name, Country Flag & Stars */}
+                          <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+                            <span className="font-bold text-white text-sm">
+                              {currentReview.name}
+                            </span>
+                            
+                            <span className="text-neutral-500">•</span>
+                            
+                            <span className="text-xs text-neutral-400 flex items-center space-x-1">
+                              <span>{currentReview.flag}</span>
+                              <span>{currentReview.country}</span>
+                            </span>
 
-                          <span className="text-neutral-500">•</span>
+                            <span className="text-neutral-500">•</span>
 
-                          {/* 5 Stars Rating */}
-                          <div className="flex items-center space-x-1 text-[#FFE379]">
-                            {[...Array(currentReview.rating)].map((_, idx) => (
-                              <Star key={idx} className="w-3.5 h-3.5 fill-current" />
-                            ))}
-                            <span className="text-white text-xs font-bold font-mono ml-1">
-                              {currentReview.rating}
+                            {/* 5 Stars Rating */}
+                            <div className="flex items-center space-x-1 text-[#FFE379]">
+                              {[...Array(currentReview.rating)].map((_, idx) => (
+                                <Star key={idx} className="w-3.5 h-3.5 fill-current" />
+                              ))}
+                              <span className="text-white text-xs font-bold font-mono ml-1">
+                                {currentReview.rating}
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Review Text */}
+                          <p 
+                            className="text-xs sm:text-sm text-neutral-300 leading-relaxed font-normal"
+                            style={{ fontFamily: "'Raleway', sans-serif" }}
+                          >
+                            {currentReview.comment}
+                          </p>
+
+                          {/* Date Timestamp & Pagination Indicator */}
+                          <div className="flex items-center justify-between pt-1">
+                            <span className="text-[11px] text-neutral-500 font-mono">
+                              {currentReview.date}
+                            </span>
+                            <span className="text-[10px] text-neutral-500 font-mono">
+                              {reviewIndex + 1} of {REVIEWS.length}
                             </span>
                           </div>
                         </div>
 
-                        {/* Review Text */}
-                        <p 
-                          className="text-xs sm:text-sm text-neutral-300 leading-relaxed font-normal"
-                          style={{ fontFamily: "'Raleway', sans-serif" }}
-                        >
-                          {currentReview.comment}
-                        </p>
-
-                        {/* Date Timestamp & Pagination Indicator */}
-                        <div className="flex items-center justify-between pt-1">
-                          <span className="text-[11px] text-neutral-500 font-mono">
-                            {currentReview.date}
-                          </span>
-                          <span className="text-[10px] text-neutral-500 font-mono">
-                            {reviewIndex + 1} of {REVIEWS.length}
-                          </span>
-                        </div>
                       </div>
-
                     </div>
-                  </div>
-                );
-              })()}
+                  );
+                })()}
+              </div>
 
             </div>
 
