@@ -11,7 +11,8 @@ import {
   Film, 
   Sparkles,
   ChevronRight,
-  ChevronLeft
+  ChevronLeft,
+  ChevronDown
 } from 'lucide-react';
 import axios from 'axios';
 
@@ -34,6 +35,7 @@ export default function ServiceDetail() {
   const [activeTab, setActiveTab] = useState('standard');
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
+  const [openFaqId, setOpenFaqId] = useState(null);
   
   // Active review slide index for the 5 demo reviews carousel
   const [reviewIndex, setReviewIndex] = useState(0);
@@ -817,6 +819,64 @@ export default function ServiceDetail() {
                       </div>
                     </Link>
                   ))}
+                </div>
+              </div>
+            )}
+
+            {/* ================= FAQ (FREQUENTLY ASKED QUESTIONS) ACCORDION SECTION ================= */}
+            {project?.faqs && project.faqs.length > 0 && (
+              <div className="mt-14 pt-10 border-t border-[#262626] space-y-6">
+                <div>
+                  <div className="inline-flex items-center space-x-2 text-xs font-mono text-[#FFE379] uppercase font-bold tracking-wider mb-1">
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>Got Questions?</span>
+                  </div>
+                  <h2 
+                    className="text-2xl sm:text-3xl font-black text-white tracking-wide uppercase"
+                    style={{ fontFamily: "'Oswald', sans-serif" }}
+                  >
+                    FAQ
+                  </h2>
+                </div>
+
+                {/* Minimalist Fiverr-Style Accordion List */}
+                <div className="divide-y divide-[#222] border-y border-[#222]">
+                  {project.faqs.map((faq, index) => {
+                    const isOpen = openFaqId === (faq.id || index);
+                    return (
+                      <div key={faq.id || index} className="py-4">
+                        <button
+                          type="button"
+                          onClick={() => setOpenFaqId(isOpen ? null : (faq.id || index))}
+                          className="w-full flex items-center justify-between text-left group cursor-pointer focus:outline-none"
+                        >
+                          <span 
+                            className={`text-sm sm:text-base font-medium transition-colors ${
+                              isOpen ? 'text-[#FFE379]' : 'text-neutral-200 group-hover:text-white'
+                            }`}
+                            style={{ fontFamily: "'Raleway', sans-serif" }}
+                          >
+                            {faq.question}
+                          </span>
+                          <ChevronDown 
+                            className={`w-5 h-5 text-neutral-400 group-hover:text-white transition-transform duration-300 shrink-0 ml-4 ${
+                              isOpen ? 'rotate-180 text-[#FFE379]' : ''
+                            }`} 
+                          />
+                        </button>
+
+                        {/* Collapsible Answer */}
+                        {isOpen && (
+                          <div 
+                            className="mt-3 text-xs sm:text-sm text-neutral-400 leading-relaxed pr-8 animate-fadeIn"
+                            style={{ fontFamily: "'Raleway', sans-serif" }}
+                          >
+                            {faq.answer}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             )}

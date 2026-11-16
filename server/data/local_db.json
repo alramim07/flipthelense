@@ -89,6 +89,24 @@
       "device": "Desktop",
       "timestamp": "2026-11-16T10:53:53.596Z",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794826983832_lm9n0",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/portfolio",
+      "referrer": "http://localhost:5173/portfolio",
+      "device": "Desktop",
+      "timestamp": "2026-11-16T11:03:03.832Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794826988604_egmmh",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/aura-luxury-timepieces",
+      "referrer": "http://localhost:5173/portfolio",
+      "device": "Desktop",
+      "timestamp": "2026-11-16T11:03:08.604Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
     }
   ],
   "inquiries": [
@@ -136,13 +154,55 @@
       "standardPrice": 320,
       "premiumPrice": 620,
       "comparisonRows": [
-        { "id": "cr_1", "feature": "4K UHD Master File Export", "basic": true, "standard": true, "premium": true },
-        { "id": "cr_2", "feature": "Multi-Camera Audio Synchronization", "basic": false, "standard": true, "premium": true },
-        { "id": "cr_3", "feature": "Hollywood Film Color Grading", "basic": true, "standard": true, "premium": true },
-        { "id": "cr_4", "feature": "Sound Design & Licensed Audio", "basic": true, "standard": true, "premium": true },
-        { "id": "cr_5", "feature": "Drone Aerial Footage Integration", "basic": false, "standard": false, "premium": true },
-        { "id": "cr_6", "feature": "Social Media 9:16 Vertical Cut", "basic": true, "standard": true, "premium": true },
-        { "id": "cr_7", "feature": "Raw Project Source File Archive", "basic": false, "standard": false, "premium": true }
+        {
+          "id": "cr_1",
+          "feature": "4K UHD Master File Export",
+          "basic": true,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_2",
+          "feature": "Multi-Camera Audio Synchronization",
+          "basic": false,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_3",
+          "feature": "Hollywood Film Color Grading",
+          "basic": true,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_4",
+          "feature": "Sound Design & Licensed Audio",
+          "basic": true,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_5",
+          "feature": "Drone Aerial Footage Integration",
+          "basic": false,
+          "standard": false,
+          "premium": true
+        },
+        {
+          "id": "cr_6",
+          "feature": "Social Media 9:16 Vertical Cut",
+          "basic": true,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_7",
+          "feature": "Raw Project Source File Archive",
+          "basic": false,
+          "standard": false,
+          "premium": true
+        }
       ],
       "packages": {
         "basic": {
@@ -163,7 +223,29 @@
           "delivery": "6-day delivery",
           "revisions": "Unlimited Revisions"
         }
-      }
+      },
+      "faqs": [
+        {
+          "id": "faq_1",
+          "question": "What raw footage formats and resolutions do you support?",
+          "answer": "We support all camera formats including Apple ProRes, RED RAW (R3D), Blackmagic RAW (BRAW), Sony XAVC/S-Log, Canon Cinema RAW Light, and Arri ProRes up to 8K."
+        },
+        {
+          "id": "faq_2",
+          "question": "How do you handle audio mastering and licensed commercial music?",
+          "answer": "We use commercially licensed tracks from premium libraries (e.g. Artlist, Musicbed) with high-fidelity sound effects, dialogue cleanup, and broadcast-ready LUFS mastering."
+        },
+        {
+          "id": "faq_3",
+          "question": "Will you deliver vertical 9:16 cuts for TikTok, Reels, and YouTube Shorts?",
+          "answer": "Yes! All tiers include or can be paired with bespoke 9:16 vertical exports with dynamic re-framing and mobile-optimized typography."
+        },
+        {
+          "id": "faq_4",
+          "question": "What is the revision turnaround time?",
+          "answer": "Standard revision requests are typically completed and uploaded for your review within 24 to 48 hours."
+        }
+      ]
     },
     {
       "_id": "port_2",
@@ -188,13 +270,55 @@
       "standardPrice": 360,
       "premiumPrice": 690,
       "comparisonRows": [
-        { "id": "cr_1", "feature": "4K UHD Master File Export", "basic": true, "standard": true, "premium": true },
-        { "id": "cr_2", "feature": "Multi-Camera Audio Synchronization", "basic": true, "standard": true, "premium": true },
-        { "id": "cr_3", "feature": "Hollywood Film Color Grading", "basic": true, "standard": true, "premium": true },
-        { "id": "cr_4", "feature": "Sound Design & Licensed Audio", "basic": true, "standard": true, "premium": true },
-        { "id": "cr_5", "feature": "Drone Aerial Footage Integration", "basic": false, "standard": true, "premium": true },
-        { "id": "cr_6", "feature": "Social Media 9:16 Vertical Cut", "basic": true, "standard": true, "premium": true },
-        { "id": "cr_7", "feature": "Raw Project Source File Archive", "basic": false, "standard": false, "premium": true }
+        {
+          "id": "cr_1",
+          "feature": "4K UHD Master File Export",
+          "basic": true,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_2",
+          "feature": "Multi-Camera Audio Synchronization",
+          "basic": true,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_3",
+          "feature": "Hollywood Film Color Grading",
+          "basic": true,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_4",
+          "feature": "Sound Design & Licensed Audio",
+          "basic": true,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_5",
+          "feature": "Drone Aerial Footage Integration",
+          "basic": false,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_6",
+          "feature": "Social Media 9:16 Vertical Cut",
+          "basic": true,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_7",
+          "feature": "Raw Project Source File Archive",
+          "basic": false,
+          "standard": false,
+          "premium": true
+        }
       ],
       "packages": {
         "basic": {
@@ -239,13 +363,55 @@
       "standardPrice": 420,
       "premiumPrice": 780,
       "comparisonRows": [
-        { "id": "cr_1", "feature": "4K UHD Master File Export", "basic": true, "standard": true, "premium": true },
-        { "id": "cr_2", "feature": "Multi-Camera Audio Synchronization", "basic": true, "standard": true, "premium": true },
-        { "id": "cr_3", "feature": "Hollywood Film Color Grading", "basic": true, "standard": true, "premium": true },
-        { "id": "cr_4", "feature": "Sound Design & Licensed Audio", "basic": true, "standard": true, "premium": true },
-        { "id": "cr_5", "feature": "Drone Aerial Footage Integration", "basic": false, "standard": true, "premium": true },
-        { "id": "cr_6", "feature": "Social Media 9:16 Vertical Cut", "basic": true, "standard": true, "premium": true },
-        { "id": "cr_7", "feature": "Raw Project Source File Archive", "basic": false, "standard": true, "premium": true }
+        {
+          "id": "cr_1",
+          "feature": "4K UHD Master File Export",
+          "basic": true,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_2",
+          "feature": "Multi-Camera Audio Synchronization",
+          "basic": true,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_3",
+          "feature": "Hollywood Film Color Grading",
+          "basic": true,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_4",
+          "feature": "Sound Design & Licensed Audio",
+          "basic": true,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_5",
+          "feature": "Drone Aerial Footage Integration",
+          "basic": false,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_6",
+          "feature": "Social Media 9:16 Vertical Cut",
+          "basic": true,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_7",
+          "feature": "Raw Project Source File Archive",
+          "basic": false,
+          "standard": true,
+          "premium": true
+        }
       ],
       "packages": {
         "basic": {
@@ -290,13 +456,55 @@
       "standardPrice": 340,
       "premiumPrice": 620,
       "comparisonRows": [
-        { "id": "cr_1", "feature": "4K UHD Master File Export", "basic": true, "standard": true, "premium": true },
-        { "id": "cr_2", "feature": "Multi-Camera Audio Synchronization", "basic": false, "standard": true, "premium": true },
-        { "id": "cr_3", "feature": "Hollywood Film Color Grading", "basic": true, "standard": true, "premium": true },
-        { "id": "cr_4", "feature": "Sound Design & Licensed Audio", "basic": true, "standard": true, "premium": true },
-        { "id": "cr_5", "feature": "Drone Aerial Footage Integration", "basic": false, "standard": true, "premium": true },
-        { "id": "cr_6", "feature": "Social Media 9:16 Vertical Cut", "basic": true, "standard": true, "premium": true },
-        { "id": "cr_7", "feature": "Raw Project Source File Archive", "basic": false, "standard": false, "premium": true }
+        {
+          "id": "cr_1",
+          "feature": "4K UHD Master File Export",
+          "basic": true,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_2",
+          "feature": "Multi-Camera Audio Synchronization",
+          "basic": false,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_3",
+          "feature": "Hollywood Film Color Grading",
+          "basic": true,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_4",
+          "feature": "Sound Design & Licensed Audio",
+          "basic": true,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_5",
+          "feature": "Drone Aerial Footage Integration",
+          "basic": false,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_6",
+          "feature": "Social Media 9:16 Vertical Cut",
+          "basic": true,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_7",
+          "feature": "Raw Project Source File Archive",
+          "basic": false,
+          "standard": false,
+          "premium": true
+        }
       ],
       "packages": {
         "basic": {
@@ -341,13 +549,55 @@
       "standardPrice": 380,
       "premiumPrice": 700,
       "comparisonRows": [
-        { "id": "cr_1", "feature": "4K UHD Master File Export", "basic": true, "standard": true, "premium": true },
-        { "id": "cr_2", "feature": "Multi-Camera Audio Synchronization", "basic": false, "standard": true, "premium": true },
-        { "id": "cr_3", "feature": "Hollywood Film Color Grading", "basic": true, "standard": true, "premium": true },
-        { "id": "cr_4", "feature": "Sound Design & Licensed Audio", "basic": true, "standard": true, "premium": true },
-        { "id": "cr_5", "feature": "Drone Aerial Footage Integration", "basic": true, "standard": true, "premium": true },
-        { "id": "cr_6", "feature": "Social Media 9:16 Vertical Cut", "basic": true, "standard": true, "premium": true },
-        { "id": "cr_7", "feature": "Raw Project Source File Archive", "basic": false, "standard": false, "premium": true }
+        {
+          "id": "cr_1",
+          "feature": "4K UHD Master File Export",
+          "basic": true,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_2",
+          "feature": "Multi-Camera Audio Synchronization",
+          "basic": false,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_3",
+          "feature": "Hollywood Film Color Grading",
+          "basic": true,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_4",
+          "feature": "Sound Design & Licensed Audio",
+          "basic": true,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_5",
+          "feature": "Drone Aerial Footage Integration",
+          "basic": true,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_6",
+          "feature": "Social Media 9:16 Vertical Cut",
+          "basic": true,
+          "standard": true,
+          "premium": true
+        },
+        {
+          "id": "cr_7",
+          "feature": "Raw Project Source File Archive",
+          "basic": false,
+          "standard": false,
+          "premium": true
+        }
       ],
       "packages": {
         "basic": {

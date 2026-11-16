@@ -48,6 +48,29 @@ export default function ProjectVisualBuilder() {
     standardPrice: '',
     premiumPrice: '',
     mediaGallery: [], // Array of { type: 'image' | 'video', url: string, caption?: string }
+    // Project Specific FAQs (Admin can add as many as wanted)
+    faqs: [
+      {
+        id: 'faq_1',
+        question: 'What video editing software do you use for post-production?',
+        answer: 'We primarily edit and grade in DaVinci Resolve Studio and Adobe Premiere Pro, ensuring cinema-grade color science, noise reduction, and seamless multi-camera workflows.'
+      },
+      {
+        id: 'faq_2',
+        question: 'How do I send my raw video footage and audio files?',
+        answer: 'You can upload your files via Google Drive, Dropbox, WeTransfer, or Frame.io and paste the shareable link directly in the order notes or project briefing.'
+      },
+      {
+        id: 'faq_3',
+        question: 'Are sound effects and background music commercially licensed?',
+        answer: 'Yes! All music and foley sound effects used in our edits are 100% royalty-free and cleared for commercial monetization on YouTube, Instagram, TV, and web ads.'
+      },
+      {
+        id: 'faq_4',
+        question: 'What is your turnaround time if I request revisions?',
+        answer: 'Minor revisions like text, pacing adjustments, or music tweaks are usually completed within 24 to 48 hours.'
+      }
+    ],
     // Comparison Table Rows
     comparisonRows: [
       { id: 'cr_1', feature: '4K UHD Master File Export', basic: true, standard: true, premium: true },
@@ -150,6 +173,7 @@ export default function ProjectVisualBuilder() {
               thumbnailType: res.data.thumbnailType || (res.data.video && !res.data.img ? 'video' : 'image'),
               mediaGallery: res.data.mediaGallery || [],
               comparisonRows: res.data.comparisonRows || emptyProject.comparisonRows,
+              faqs: res.data.faqs || emptyProject.faqs,
               packages: {
                 ...emptyProject.packages,
                 ...(res.data.packages || {})
@@ -408,6 +432,34 @@ export default function ProjectVisualBuilder() {
         }
         return r;
       })
+    }));
+  };
+
+  // Add FAQ item
+  const handleAddFaq = () => {
+    const newId = 'faq_' + Date.now();
+    setProject((prev) => ({
+      ...prev,
+      faqs: [
+        ...(prev.faqs || []),
+        { id: newId, question: 'New Frequently Asked Question?', answer: 'Provide clear, reassuring information for your clients here.' }
+      ]
+    }));
+  };
+
+  // Update FAQ item
+  const handleUpdateFaq = (faqId, field, value) => {
+    setProject((prev) => ({
+      ...prev,
+      faqs: (prev.faqs || []).map((f) => f.id === faqId ? { ...f, [field]: value } : f)
+    }));
+  };
+
+  // Remove FAQ item
+  const handleRemoveFaq = (faqId) => {
+    setProject((prev) => ({
+      ...prev,
+      faqs: (prev.faqs || []).filter((f) => f.id !== faqId)
     }));
   };
 
@@ -1462,6 +1514,99 @@ export default function ProjectVisualBuilder() {
                 </tbody>
               </table>
             </div>
+          </div>
+        </div>
+
+        {/* ================= FREQUENTLY ASKED QUESTIONS (FAQ) BUILDER SECTION ================= */}
+        <div className="mt-14 pt-10 border-t border-[#262626] space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <div className="inline-flex items-center space-x-2 text-xs font-mono text-[#FFE379] uppercase font-bold tracking-wider mb-1">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Client Reassurance & Doubts</span>
+              </div>
+              <h2 
+                className="text-2xl sm:text-3xl font-black text-white tracking-wide uppercase"
+                style={{ fontFamily: "'Oswald', sans-serif" }}
+              >
+                FAQ (Frequently Asked Questions)
+              </h2>
+              <p 
+                className="text-xs text-neutral-400 mt-1"
+                style={{ fontFamily: "'Raleway', sans-serif" }}
+              >
+                Add as many frequently asked questions and answers as you need. They will render as sleek expandable accordions on the live project page.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleAddFaq}
+              className="px-4 py-2.5 rounded-xl bg-[#FFE379] hover:bg-[#F2D76B] text-[#101010] font-black uppercase text-xs tracking-wider font-mono flex items-center space-x-2 transition-all shadow-md shrink-0 hover:scale-[1.02]"
+            >
+              <Plus className="w-4 h-4 stroke-[3]" />
+              <span>Add FAQ</span>
+            </button>
+          </div>
+
+          {/* List of FAQ Cards */}
+          <div className="space-y-4">
+            {(!project.faqs || project.faqs.length === 0) ? (
+              <div className="p-8 rounded-2xl bg-[#141414] border border-[#262626] text-center space-y-3">
+                <p className="text-xs font-mono text-neutral-400">No FAQ items yet for this project.</p>
+                <button
+                  type="button"
+                  onClick={handleAddFaq}
+                  className="px-4 py-2 rounded-xl bg-[#222] hover:bg-[#FFE379] hover:text-black text-white text-xs font-bold uppercase transition-colors"
+                >
+                  + Add First FAQ
+                </button>
+              </div>
+            ) : (
+              project.faqs.map((faq, index) => (
+                <div 
+                  key={faq.id || index}
+                  className="bg-[#141414] rounded-2xl border border-[#262626] p-5 space-y-3 hover:border-[#FFE379]/40 transition-colors group"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex-1 space-y-1">
+                      <label className="text-[10px] font-mono uppercase text-[#FFE379] font-bold block">
+                        Question #{index + 1}
+                      </label>
+                      <input
+                        type="text"
+                        value={faq.question}
+                        onChange={(e) => handleUpdateFaq(faq.id, 'question', e.target.value)}
+                        placeholder="e.g. Can you redesign my existing footage?"
+                        className="w-full bg-[#181818] border border-[#333] hover:border-[#555] focus:border-[#FFE379] outline-none text-sm font-semibold text-white px-3.5 py-2 rounded-xl transition-colors"
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveFaq(faq.id)}
+                      className="text-neutral-500 hover:text-red-400 p-2 rounded-lg hover:bg-red-500/10 transition-colors mt-4"
+                      title="Delete FAQ"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-mono uppercase text-neutral-400 font-semibold block">
+                      Answer
+                    </label>
+                    <textarea
+                      rows="2"
+                      value={faq.answer}
+                      onChange={(e) => handleUpdateFaq(faq.id, 'answer', e.target.value)}
+                      placeholder="Type the detailed answer here..."
+                      className="w-full bg-[#181818] border border-[#333] hover:border-[#555] focus:border-[#FFE379] outline-none text-xs text-neutral-300 px-3.5 py-2.5 rounded-xl leading-relaxed resize-y transition-colors"
+                      style={{ fontFamily: "'Raleway', sans-serif" }}
+                    />
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </div>
 
