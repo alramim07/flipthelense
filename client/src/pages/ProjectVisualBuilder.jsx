@@ -1064,46 +1064,7 @@ export default function ProjectVisualBuilder() {
           {/* ================= RIGHT COLUMN: Tiered Pricing Packages (4 Cols) ================= */}
           <div className="lg:col-span-4 sticky top-24 space-y-4">
             
-            {/* Pricing Controls Box */}
-            <div className="rounded-2xl bg-[#181818] border border-[#FFE379]/30 p-4 shadow-xl">
-              <span className="text-[10px] font-mono uppercase text-[#FFE379] font-bold block mb-2">
-                ⚙ Pricing Controls (Set Packages)
-              </span>
-              <div className="grid grid-cols-3 gap-2">
-                <div>
-                  <label className="block text-[9px] uppercase font-mono text-neutral-400 mb-1">Basic ($)</label>
-                  <input
-                    type="number"
-                    value={project.basicPrice || ''}
-                    onChange={(e) => setProject({ ...project, basicPrice: e.target.value })}
-                    placeholder="150"
-                    className="w-full bg-[#121212] border border-[#333] rounded-lg p-2 text-xs font-mono font-bold text-[#FFE379] text-center focus:border-[#FFE379] outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="block text-[9px] uppercase font-mono text-neutral-400 mb-1">Standard ($)</label>
-                  <input
-                    type="number"
-                    value={project.standardPrice || ''}
-                    onChange={(e) => setProject({ ...project, standardPrice: e.target.value })}
-                    placeholder="300"
-                    className="w-full bg-[#121212] border border-[#333] rounded-lg p-2 text-xs font-mono font-bold text-[#FFE379] text-center focus:border-[#FFE379] outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="block text-[9px] uppercase font-mono text-neutral-400 mb-1">Premium ($)</label>
-                  <input
-                    type="number"
-                    value={project.premiumPrice || ''}
-                    onChange={(e) => setProject({ ...project, premiumPrice: e.target.value })}
-                    placeholder="550"
-                    className="w-full bg-[#121212] border border-[#333] rounded-lg p-2 text-xs font-mono font-bold text-[#FFE379] text-center focus:border-[#FFE379] outline-none"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Exactly Matching Live Interactive Pricing Widget */}
+            {/* Live Interactive Pricing Widget (Synchronized directly with Compare Packages Table) */}
             <div className="rounded-2xl bg-[#141414] border border-[#2E2E2E] overflow-hidden shadow-2xl">
               
               {/* Package Selector Tabs */}
@@ -1125,20 +1086,18 @@ export default function ProjectVisualBuilder() {
                 ))}
               </div>
 
-              {/* Package Content (Live In-Place Editable for Active Package) */}
+              {/* Package Content (Read directly from Compare Packages section) */}
               <div className="p-6 space-y-5">
                 
-                {/* 1. Package Title & Price */}
+                {/* 1. Package Title & Price (Derived from Compare Packages) */}
                 <div>
                   <div className="flex justify-between items-start gap-3 mb-2">
-                    <input
-                      type="text"
-                      value={currentPkg.title}
-                      onChange={(e) => updatePackageField(activeTab, 'title', e.target.value)}
-                      placeholder="e.g. Basic Edit Package"
-                      className="w-full text-base font-bold text-white uppercase bg-transparent border-b border-dashed border-[#444] hover:border-[#FFE379] focus:border-[#FFE379] focus:outline-none transition-colors py-0.5"
+                    <h3 
+                      className="text-base font-bold text-white uppercase py-0.5"
                       style={{ fontFamily: "'Oswald', sans-serif" }}
-                    />
+                    >
+                      {currentPkg.title}
+                    </h3>
                     <span 
                       className="text-2xl font-black text-[#FFE379] font-mono shrink-0 pl-2"
                     >
@@ -1147,38 +1106,28 @@ export default function ProjectVisualBuilder() {
                   </div>
 
                   {/* 2. Package Description */}
-                  <textarea
-                    rows="2"
-                    value={currentPkg.desc}
-                    onChange={(e) => updatePackageField(activeTab, 'desc', e.target.value)}
-                    placeholder="Enter what this tier offers (e.g. Teaser cut, sound effects, color grading...)"
-                    className="w-full text-xs text-neutral-300 leading-relaxed font-normal bg-[#181818] p-2.5 rounded-lg border border-dashed border-[#333] hover:border-[#FFE379] focus:border-[#FFE379] focus:outline-none transition-all resize-none"
+                  <p 
+                    className="text-xs text-neutral-300 leading-relaxed font-normal bg-[#181818] p-3 rounded-lg border border-[#262626]"
                     style={{ fontFamily: "'Raleway', sans-serif" }}
-                  />
+                  >
+                    {currentPkg.desc || 'No description provided for this package in Compare Packages table.'}
+                  </p>
                 </div>
 
-                {/* 3. Delivery Timeline & Revisions Count (Both Editable) */}
+                {/* 3. Delivery Timeline & Revisions Count */}
                 <div className="grid grid-cols-2 gap-2 py-3 border-y border-[#232323]">
-                  <div className="flex items-center space-x-1.5 bg-[#181818] px-2.5 py-1.5 rounded-lg border border-[#2D2D2D]">
+                  <div className="flex items-center space-x-1.5 bg-[#181818] px-2.5 py-2 rounded-lg border border-[#2D2D2D]">
                     <Clock className="w-3.5 h-3.5 text-[#FFE379] shrink-0" />
-                    <input
-                      type="text"
-                      value={currentPkg.delivery}
-                      onChange={(e) => updatePackageField(activeTab, 'delivery', e.target.value)}
-                      placeholder="3-day delivery"
-                      className="w-full bg-transparent text-xs text-neutral-200 font-mono focus:outline-none"
-                    />
+                    <span className="text-xs text-neutral-200 font-mono">
+                      {currentPkg.delivery}
+                    </span>
                   </div>
 
-                  <div className="flex items-center space-x-1.5 bg-[#181818] px-2.5 py-1.5 rounded-lg border border-[#2D2D2D]">
+                  <div className="flex items-center space-x-1.5 bg-[#181818] px-2.5 py-2 rounded-lg border border-[#2D2D2D]">
                     <ShieldCheck className="w-3.5 h-3.5 text-[#FFE379] shrink-0" />
-                    <input
-                      type="text"
-                      value={currentPkg.revisions}
-                      onChange={(e) => updatePackageField(activeTab, 'revisions', e.target.value)}
-                      placeholder="2 Revisions"
-                      className="w-full bg-transparent text-xs text-neutral-200 font-mono focus:outline-none"
-                    />
+                    <span className="text-xs text-neutral-200 font-mono">
+                      {currentPkg.revisions}
+                    </span>
                   </div>
                 </div>
 
@@ -1187,9 +1136,6 @@ export default function ProjectVisualBuilder() {
                   <div className="flex items-center justify-between">
                     <span className="text-[11px] font-bold text-neutral-400 uppercase font-mono">
                       What's included in this package:
-                    </span>
-                    <span className="text-[10px] font-mono text-[#FFE379] bg-[#FFE379]/10 px-2 py-0.5 rounded border border-[#FFE379]/20">
-                      Auto-synced from Compare table
                     </span>
                   </div>
 
