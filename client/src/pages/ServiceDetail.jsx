@@ -503,6 +503,203 @@ export default function ServiceDetail() {
               </div>
             </div>
 
+            {/* Compare Packages Section (Immediately after About This Project) */}
+            <div className="pt-8 border-t border-[#232323] space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                <div>
+                  <h2 
+                    className="text-xl sm:text-2xl font-bold text-white uppercase tracking-tight"
+                    style={{ fontFamily: "'Oswald', sans-serif" }}
+                  >
+                    Compare Packages
+                  </h2>
+                  <p className="text-xs text-neutral-400 mt-0.5">
+                    Detailed feature breakdown across our tiered editing packages
+                  </p>
+                </div>
+              </div>
+
+              {/* Responsive Comparison Table */}
+              <div className="rounded-2xl bg-[#141414] border border-[#262626] overflow-hidden shadow-2xl">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-xs border-collapse">
+                    <thead>
+                      <tr className="border-b border-[#262626] bg-[#111]">
+                        <th className="py-5 px-5 text-xs uppercase font-mono font-bold text-neutral-400 w-2/5">
+                          Package
+                        </th>
+                        
+                        {/* Basic Header */}
+                        <th className="py-5 px-5 text-center w-1/5 border-l border-[#222]">
+                          <span className="text-sm sm:text-base font-black text-[#FFE379] font-mono block">
+                            US${project.basicPrice || 150}
+                          </span>
+                          <span className="text-xs font-bold text-white uppercase mt-0.5 block" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                            Basic
+                          </span>
+                          <span className="text-[11px] text-neutral-400 font-normal block mt-1 line-clamp-2">
+                            {project.packages?.basic?.title || 'Basic Edit Package'}
+                          </span>
+                        </th>
+
+                        {/* Standard Header */}
+                        <th className="py-5 px-5 text-center w-1/5 border-l border-[#222] bg-[#FFE379]/[0.03]">
+                          <span className="text-sm sm:text-base font-black text-[#FFE379] font-mono block">
+                            US${project.standardPrice || 300}
+                          </span>
+                          <span className="text-xs font-bold text-[#FFE379] uppercase mt-0.5 block" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                            Standard
+                          </span>
+                          <span className="text-[11px] text-neutral-400 font-normal block mt-1 line-clamp-2">
+                            {project.packages?.standard?.title || 'Standard Highlight Film'}
+                          </span>
+                        </th>
+
+                        {/* Premium Header */}
+                        <th className="py-5 px-5 text-center w-1/5 border-l border-[#222]">
+                          <span className="text-sm sm:text-base font-black text-[#FFE379] font-mono block">
+                            US${project.premiumPrice || 550}
+                          </span>
+                          <span className="text-xs font-bold text-white uppercase mt-0.5 block" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                            Premium
+                          </span>
+                          <span className="text-[11px] text-neutral-400 font-normal block mt-1 line-clamp-2">
+                            {project.packages?.premium?.title || 'Premium Extended Feature'}
+                          </span>
+                        </th>
+                      </tr>
+                    </thead>
+
+                    <tbody className="divide-y divide-[#1F1F1F]">
+                      {(project.comparisonRows || [
+                        { id: 'cr_1', feature: '4K UHD Master File Export', basic: true, standard: true, premium: true },
+                        { id: 'cr_2', feature: 'Multi-Camera Audio Synchronization', basic: false, standard: true, premium: true },
+                        { id: 'cr_3', feature: 'Hollywood Film Color Grading', basic: true, standard: true, premium: true },
+                        { id: 'cr_4', feature: 'Sound Design & Licensed Audio', basic: true, standard: true, premium: true },
+                        { id: 'cr_5', feature: 'Drone Aerial Footage Integration', basic: false, standard: true, premium: true },
+                        { id: 'cr_6', feature: 'Social Media 9:16 Vertical Cut', basic: true, standard: true, premium: true },
+                        { id: 'cr_7', feature: 'Raw Project Source File Archive', basic: false, standard: false, premium: true }
+                      ]).map((row) => (
+                        <tr key={row.id} className="hover:bg-white/[0.02] transition-colors">
+                          <td className="py-3.5 px-5 text-neutral-200 font-medium text-xs">
+                            {row.feature}
+                          </td>
+
+                          {/* Basic Cell */}
+                          <td className="py-3.5 px-5 text-center border-l border-[#222]">
+                            {row.basic ? (
+                              <div className="w-6 h-6 mx-auto rounded-md bg-[#FFE379] text-black flex items-center justify-center shadow-md">
+                                <Check className="w-3.5 h-3.5 stroke-[3]" />
+                              </div>
+                            ) : (
+                              <span className="text-neutral-600 font-mono text-sm">—</span>
+                            )}
+                          </td>
+
+                          {/* Standard Cell */}
+                          <td className="py-3.5 px-5 text-center border-l border-[#222] bg-[#FFE379]/[0.03]">
+                            {row.standard ? (
+                              <div className="w-6 h-6 mx-auto rounded-md bg-[#FFE379] text-black flex items-center justify-center shadow-md">
+                                <Check className="w-3.5 h-3.5 stroke-[3]" />
+                              </div>
+                            ) : (
+                              <span className="text-neutral-600 font-mono text-sm">—</span>
+                            )}
+                          </td>
+
+                          {/* Premium Cell */}
+                          <td className="py-3.5 px-5 text-center border-l border-[#222]">
+                            {row.premium ? (
+                              <div className="w-6 h-6 mx-auto rounded-md bg-[#FFE379] text-black flex items-center justify-center shadow-md">
+                                <Check className="w-3.5 h-3.5 stroke-[3]" />
+                              </div>
+                            ) : (
+                              <span className="text-neutral-600 font-mono text-sm">—</span>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+
+                      {/* Delivery Row */}
+                      <tr className="bg-[#111] border-t border-[#262626]">
+                        <td className="py-3.5 px-5 text-xs font-bold uppercase font-mono text-neutral-300">
+                          Delivery Time
+                        </td>
+                        <td className="py-3.5 px-5 text-center border-l border-[#222] font-mono text-xs text-neutral-300">
+                          {project.packages?.basic?.delivery || '3-day delivery'}
+                        </td>
+                        <td className="py-3.5 px-5 text-center border-l border-[#222] font-mono text-xs text-[#FFE379] font-bold bg-[#FFE379]/[0.03]">
+                          {project.packages?.standard?.delivery || '5-day delivery'}
+                        </td>
+                        <td className="py-3.5 px-5 text-center border-l border-[#222] font-mono text-xs text-neutral-300">
+                          {project.packages?.premium?.delivery || '7-day delivery'}
+                        </td>
+                      </tr>
+
+                      {/* Revisions Row */}
+                      <tr className="bg-[#111]">
+                        <td className="py-3.5 px-5 text-xs font-bold uppercase font-mono text-neutral-300">
+                          Revisions
+                        </td>
+                        <td className="py-3.5 px-5 text-center border-l border-[#222] font-mono text-xs text-neutral-300">
+                          {project.packages?.basic?.revisions || '2 Revisions'}
+                        </td>
+                        <td className="py-3.5 px-5 text-center border-l border-[#222] font-mono text-xs text-[#FFE379] font-bold bg-[#FFE379]/[0.03]">
+                          {project.packages?.standard?.revisions || '3 Revisions'}
+                        </td>
+                        <td className="py-3.5 px-5 text-center border-l border-[#222] font-mono text-xs text-neutral-300">
+                          {project.packages?.premium?.revisions || 'Unlimited Revisions'}
+                        </td>
+                      </tr>
+
+                      {/* Select Action Buttons Row */}
+                      <tr className="border-t border-[#262626] bg-[#101010]">
+                        <td className="py-4 px-5 text-xs font-mono font-bold text-neutral-400">
+                          Total
+                        </td>
+                        <td className="py-4 px-5 text-center border-l border-[#222]">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setActiveTab('basic');
+                              setIsOrderModalOpen(true);
+                            }}
+                            className="w-full py-2.5 px-3 rounded-xl bg-[#1A1A1A] hover:bg-[#FFE379] text-white hover:text-black font-bold uppercase text-xs font-mono transition-colors"
+                          >
+                            Select (US${project.basicPrice || 150})
+                          </button>
+                        </td>
+                        <td className="py-4 px-5 text-center border-l border-[#222] bg-[#FFE379]/[0.03]">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setActiveTab('standard');
+                              setIsOrderModalOpen(true);
+                            }}
+                            className="w-full py-2.5 px-3 rounded-xl bg-[#FFE379] hover:bg-[#F2D76B] text-black font-black uppercase text-xs font-mono transition-colors shadow-md"
+                          >
+                            Select (US${project.standardPrice || 300})
+                          </button>
+                        </td>
+                        <td className="py-4 px-5 text-center border-l border-[#222]">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setActiveTab('premium');
+                              setIsOrderModalOpen(true);
+                            }}
+                            className="w-full py-2.5 px-3 rounded-xl bg-[#1A1A1A] hover:bg-[#FFE379] text-white hover:text-black font-bold uppercase text-xs font-mono transition-colors"
+                          >
+                            Select (US${project.premiumPrice || 550})
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
           </div>
 
           {/* RIGHT COLUMN: Interactive Tiered Pricing & Booking Panel (4 Cols) */}

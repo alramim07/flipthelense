@@ -48,6 +48,16 @@ export default function ProjectVisualBuilder() {
     standardPrice: '',
     premiumPrice: '',
     mediaGallery: [], // Array of { type: 'image' | 'video', url: string, caption?: string }
+    // Comparison Table Rows
+    comparisonRows: [
+      { id: 'cr_1', feature: '4K UHD Master File Export', basic: true, standard: true, premium: true },
+      { id: 'cr_2', feature: 'Multi-Camera Audio Synchronization', basic: false, standard: true, premium: true },
+      { id: 'cr_3', feature: 'Hollywood Film Color Grading', basic: true, standard: true, premium: true },
+      { id: 'cr_4', feature: 'Sound Design & Licensed Audio', basic: true, standard: true, premium: true },
+      { id: 'cr_5', feature: 'Drone Aerial Footage Integration', basic: false, standard: true, premium: true },
+      { id: 'cr_6', feature: 'Social Media 9:16 Vertical Cut', basic: true, standard: true, premium: true },
+      { id: 'cr_7', feature: 'Raw Project Source File Archive', basic: false, standard: false, premium: true }
+    ],
     // Customizable package metadata
     packages: {
       basic: {
@@ -139,6 +149,7 @@ export default function ProjectVisualBuilder() {
               ...res.data,
               thumbnailType: res.data.thumbnailType || (res.data.video && !res.data.img ? 'video' : 'image'),
               mediaGallery: res.data.mediaGallery || [],
+              comparisonRows: res.data.comparisonRows || emptyProject.comparisonRows,
               packages: {
                 ...emptyProject.packages,
                 ...(res.data.packages || {})
@@ -345,6 +356,60 @@ export default function ProjectVisualBuilder() {
   };
 
   const [newChecklistText, setNewChecklistText] = useState('');
+  const [newComparisonFeature, setNewComparisonFeature] = useState('');
+
+  // Add comparison row
+  const handleAddComparisonRow = () => {
+    if (!newComparisonFeature.trim()) return;
+    setProject((prev) => ({
+      ...prev,
+      comparisonRows: [
+        ...(prev.comparisonRows || []),
+        {
+          id: 'cr_' + Date.now(),
+          feature: newComparisonFeature.trim(),
+          basic: false,
+          standard: true,
+          premium: true
+        }
+      ]
+    }));
+    setNewComparisonFeature('');
+  };
+
+  // Remove comparison row
+  const handleRemoveComparisonRow = (rowId) => {
+    setProject((prev) => ({
+      ...prev,
+      comparisonRows: (prev.comparisonRows || []).filter((r) => r.id !== rowId)
+    }));
+  };
+
+  // Toggle comparison cell boolean
+  const handleToggleComparisonCell = (rowId, tier) => {
+    setProject((prev) => ({
+      ...prev,
+      comparisonRows: (prev.comparisonRows || []).map((r) => {
+        if (r.id === rowId) {
+          return { ...r, [tier]: !r[tier] };
+        }
+        return r;
+      })
+    }));
+  };
+
+  // Update comparison feature name
+  const handleUpdateComparisonFeature = (rowId, newName) => {
+    setProject((prev) => ({
+      ...prev,
+      comparisonRows: (prev.comparisonRows || []).map((r) => {
+        if (r.id === rowId) {
+          return { ...r, feature: newName };
+        }
+        return r;
+      })
+    }));
+  };
 
   // Dynamic pricing package preview helper
   const PACKAGES = {
@@ -1212,6 +1277,205 @@ export default function ProjectVisualBuilder() {
             </div>
           </div>
 
+        </div>
+
+        {/* ================= COMPARE PACKAGES TABLE BUILDER (BELOW ABOUT SECTION) ================= */}
+        <div className="mt-14 pt-10 border-t border-[#262626] space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <div className="inline-flex items-center space-x-2 text-xs font-mono text-[#FFE379] uppercase font-bold tracking-wider mb-1">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Feature Comparison Matrix</span>
+              </div>
+              <h2 
+                className="text-2xl sm:text-3xl font-black text-white uppercase tracking-tight"
+                style={{ fontFamily: "'Oswald', sans-serif" }}
+              >
+                Compare Packages
+              </h2>
+              <p className="text-xs text-neutral-400 mt-1">
+                Customize features and toggle checkmarks for Basic, Standard, and Premium tiers.
+              </p>
+            </div>
+
+            {/* Quick Add Feature Row */}
+            <div className="flex items-center space-x-2">
+              <input
+                type="text"
+                value={newComparisonFeature}
+                onChange={(e) => setNewComparisonFeature(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleAddComparisonRow();
+                  }
+                }}
+                placeholder="Add feature row (e.g. Drone footage, 4K export)..."
+                className="bg-[#181818] border border-[#333] px-3.5 py-2 rounded-xl text-xs text-white placeholder-neutral-500 focus:border-[#FFE379] outline-none min-w-[260px]"
+              />
+              <button
+                type="button"
+                onClick={handleAddComparisonRow}
+                className="px-4 py-2 rounded-xl bg-[#FFE379] hover:bg-[#F2D76B] text-[#101010] font-black uppercase text-xs tracking-wider font-mono flex items-center space-x-1.5 transition-colors shrink-0"
+              >
+                <Plus className="w-3.5 h-3.5 stroke-[3]" />
+                <span>Add Row</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Interactive Comparison Table */}
+          <div className="rounded-2xl bg-[#141414] border border-[#262626] overflow-hidden shadow-2xl">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs border-collapse">
+                <thead>
+                  <tr className="border-b border-[#262626] bg-[#111]">
+                    <th className="py-5 px-6 text-xs uppercase font-mono font-bold text-neutral-400 w-2/5">
+                      Package / Features
+                    </th>
+                    <th className="py-5 px-6 text-center w-1/5 border-l border-[#222]">
+                      <span className="text-sm font-black text-[#FFE379] font-mono block">
+                        US${project.basicPrice || 150}
+                      </span>
+                      <span className="text-xs font-bold text-white uppercase mt-0.5 block" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                        Basic
+                      </span>
+                      <span className="text-[11px] text-neutral-400 font-normal block mt-1 line-clamp-2">
+                        {project.packages?.basic?.title || 'Basic Edit Package'}
+                      </span>
+                    </th>
+                    <th className="py-5 px-6 text-center w-1/5 border-l border-[#222] bg-[#FFE379]/[0.02]">
+                      <span className="text-sm font-black text-[#FFE379] font-mono block">
+                        US${project.standardPrice || 300}
+                      </span>
+                      <span className="text-xs font-bold text-[#FFE379] uppercase mt-0.5 block" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                        Standard
+                      </span>
+                      <span className="text-[11px] text-neutral-400 font-normal block mt-1 line-clamp-2">
+                        {project.packages?.standard?.title || 'Standard Highlight Film'}
+                      </span>
+                    </th>
+                    <th className="py-5 px-6 text-center w-1/5 border-l border-[#222]">
+                      <span className="text-sm font-black text-[#FFE379] font-mono block">
+                        US${project.premiumPrice || 550}
+                      </span>
+                      <span className="text-xs font-bold text-white uppercase mt-0.5 block" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                        Premium
+                      </span>
+                      <span className="text-[11px] text-neutral-400 font-normal block mt-1 line-clamp-2">
+                        {project.packages?.premium?.title || 'Premium Extended Feature'}
+                      </span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#1F1F1F]">
+                  {(project.comparisonRows || []).map((row) => (
+                    <tr key={row.id} className="hover:bg-white/[0.02] transition-colors group">
+                      {/* Feature Title (In-place editable) */}
+                      <td className="py-3.5 px-6">
+                        <div className="flex items-center justify-between space-x-2">
+                          <input
+                            type="text"
+                            value={row.feature}
+                            onChange={(e) => handleUpdateComparisonFeature(row.id, e.target.value)}
+                            className="w-full bg-transparent text-xs text-neutral-200 font-medium hover:text-white focus:text-white focus:outline-none"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveComparisonRow(row.id)}
+                            className="opacity-0 group-hover:opacity-100 p-1 text-neutral-500 hover:text-red-400 transition-opacity"
+                            title="Delete row"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </td>
+
+                      {/* Basic Checkbox Cell */}
+                      <td className="py-3.5 px-6 text-center border-l border-[#222]">
+                        <button
+                          type="button"
+                          onClick={() => handleToggleComparisonCell(row.id, 'basic')}
+                          className={`w-7 h-7 mx-auto rounded-lg flex items-center justify-center transition-all ${
+                            row.basic 
+                              ? 'bg-[#FFE379] text-black font-bold shadow-md hover:scale-110' 
+                              : 'bg-neutral-900 border border-[#2D2D2D] text-neutral-600 hover:border-neutral-500'
+                          }`}
+                          title="Click to toggle"
+                        >
+                          {row.basic ? <Check className="w-4 h-4 stroke-[3]" /> : '—'}
+                        </button>
+                      </td>
+
+                      {/* Standard Checkbox Cell */}
+                      <td className="py-3.5 px-6 text-center border-l border-[#222] bg-[#FFE379]/[0.02]">
+                        <button
+                          type="button"
+                          onClick={() => handleToggleComparisonCell(row.id, 'standard')}
+                          className={`w-7 h-7 mx-auto rounded-lg flex items-center justify-center transition-all ${
+                            row.standard 
+                              ? 'bg-[#FFE379] text-black font-bold shadow-md hover:scale-110' 
+                              : 'bg-neutral-900 border border-[#2D2D2D] text-neutral-600 hover:border-neutral-500'
+                          }`}
+                          title="Click to toggle"
+                        >
+                          {row.standard ? <Check className="w-4 h-4 stroke-[3]" /> : '—'}
+                        </button>
+                      </td>
+
+                      {/* Premium Checkbox Cell */}
+                      <td className="py-3.5 px-6 text-center border-l border-[#222]">
+                        <button
+                          type="button"
+                          onClick={() => handleToggleComparisonCell(row.id, 'premium')}
+                          className={`w-7 h-7 mx-auto rounded-lg flex items-center justify-center transition-all ${
+                            row.premium 
+                              ? 'bg-[#FFE379] text-black font-bold shadow-md hover:scale-110' 
+                              : 'bg-neutral-900 border border-[#2D2D2D] text-neutral-600 hover:border-neutral-500'
+                          }`}
+                          title="Click to toggle"
+                        >
+                          {row.premium ? <Check className="w-4 h-4 stroke-[3]" /> : '—'}
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+
+                  {/* Delivery Timeline Row */}
+                  <tr className="bg-[#111]/80 border-t-2 border-[#262626]">
+                    <td className="py-4 px-6 text-xs font-bold uppercase font-mono text-neutral-300">
+                      Delivery Timeline
+                    </td>
+                    <td className="py-4 px-6 text-center border-l border-[#222] font-mono text-xs text-neutral-300">
+                      {project.packages?.basic?.delivery || '3-day delivery'}
+                    </td>
+                    <td className="py-4 px-6 text-center border-l border-[#222] font-mono text-xs text-[#FFE379] font-bold bg-[#FFE379]/[0.02]">
+                      {project.packages?.standard?.delivery || '5-day delivery'}
+                    </td>
+                    <td className="py-4 px-6 text-center border-l border-[#222] font-mono text-xs text-neutral-300">
+                      {project.packages?.premium?.delivery || '7-day delivery'}
+                    </td>
+                  </tr>
+
+                  {/* Revisions Row */}
+                  <tr className="bg-[#111]/80">
+                    <td className="py-4 px-6 text-xs font-bold uppercase font-mono text-neutral-300">
+                      Revisions Included
+                    </td>
+                    <td className="py-4 px-6 text-center border-l border-[#222] font-mono text-xs text-neutral-300">
+                      {project.packages?.basic?.revisions || '2 Revisions'}
+                    </td>
+                    <td className="py-4 px-6 text-center border-l border-[#222] font-mono text-xs text-[#FFE379] font-bold bg-[#FFE379]/[0.02]">
+                      {project.packages?.standard?.revisions || '3 Revisions'}
+                    </td>
+                    <td className="py-4 px-6 text-center border-l border-[#222] font-mono text-xs text-neutral-300">
+                      {project.packages?.premium?.revisions || 'Unlimited Revisions'}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
 
       </div>
