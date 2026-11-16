@@ -339,7 +339,29 @@
           "delivery": "7-day delivery",
           "revisions": "Unlimited Revisions"
         }
-      }
+      },
+      "faqs": [
+        {
+          "id": "faq_w1",
+          "question": "Can you synchronize multiple audio recorders, vows mics, and DJ feeds?",
+          "answer": "Yes! We specialize in complex multi-mic synchronization. We align lapel mics from the groom and officiant with camera scratch audio and high-fidelity soundboard recordings."
+        },
+        {
+          "id": "faq_w2",
+          "question": "How do you handle color grading for changing outdoor sunset lighting?",
+          "answer": "We balance skin tones shot-by-shot in DaVinci Resolve, creating seamless exposure transitions from midday ceremonies into golden hour vows and candlelit evening receptions."
+        },
+        {
+          "id": "faq_w3",
+          "question": "Can we choose or suggest our own wedding music soundtrack?",
+          "answer": "Absolutely! You can provide a Spotify playlist of songs you love, and we will source licensed indie music with similar emotive pacing or clear rights through our Musicbed license."
+        },
+        {
+          "id": "faq_w4",
+          "question": "Do you deliver a short vertical reel for Instagram / TikTok?",
+          "answer": "Yes! All packages can include a vertical 9:16 teaser highlight formatted specifically for social media sharing."
+        }
+      ]
     },
     {
       "_id": "port_3",
@@ -432,7 +454,24 @@
           "delivery": "7-day delivery",
           "revisions": "Unlimited Revisions"
         }
-      }
+      },
+      "faqs": [
+        {
+          "id": "faq_m1",
+          "question": "How do you achieve perfect lip-sync across dozens of takes?",
+          "answer": "We align every single performance take to the master stereo WAV timeline using waveform transient analysis, ensuring 100% frame-accurate lip sync."
+        },
+        {
+          "id": "faq_m2",
+          "question": "Can you add creative vintage film grain, halation, and light leaks?",
+          "answer": "Yes! We scan authentic 16mm/35mm Kodak film grain and apply organic halation, chromatic glow, and anamorphic lens flares tailored to your song's mood."
+        },
+        {
+          "id": "faq_m3",
+          "question": "Do you offer vertical 9:16 cuts for Spotify Canvas and TikTok promo?",
+          "answer": "Yes, our Standard and Deluxe tiers include vertical cutdowns and looping Spotify Canvas edits optimized for artist streaming pages."
+        }
+      ]
     },
     {
       "_id": "port_4",
@@ -525,7 +564,24 @@
           "delivery": "8-day delivery",
           "revisions": "Unlimited Revisions"
         }
-      }
+      },
+      "faqs": [
+        {
+          "id": "faq_d1",
+          "question": "How do you handle multi-language interview subtitling?",
+          "answer": "We provide burned-in or sidecar .SRT subtitle tracks formatted for theatrical festivals, broadcast TV, or web streaming."
+        },
+        {
+          "id": "faq_d2",
+          "question": "Can you restore shaky wildlife telephoto and handheld footage?",
+          "answer": "Yes! We run optical flow gyro stabilization and planar tracking to smooth out severe micro-jitters without sacrificing edge sharpness."
+        },
+        {
+          "id": "faq_d3",
+          "question": "Is sound design and environmental foley included?",
+          "answer": "Yes, we build custom multi-layered soundscapes combining wild track audio, directional animal foley, and atmospheric wind/water textures."
+        }
+      ]
     },
     {
       "_id": "port_5",
@@ -618,7 +674,25 @@
           "delivery": "6-day delivery",
           "revisions": "Unlimited Revisions"
         }
-      }
+      },
+      "faqs": [
+        {
+          "id": "faq_c1",
+          "question": "Can you design custom engine sounds, drift FX, and electric car whines?",
+          "answer": "Yes! We specialize in automotive sound synthesis, combining binaural exhaust notes, turbo spooling, tire squeals, and futuristic electric motor hums."
+        },
+        {
+          "id": "faq_c2",
+          "question": "What speed ramp and motion blur techniques do you utilize?",
+          "answer": "We use optical flow frame blending and curve-based speed ramping to transition smoothly between high-velocity driving and crisp slow-motion wheel details."
+        },
+        {
+          "id": "faq_c3",
+          "question": "Can you remove license plates, reflections, or camera rigs from the car body?",
+          "answer": "Yes, planar tracking and clean-plate patching in DaVinci Resolve Studio allow us to remove suction mounts, chase car reflections, and unwanted logos."
+        }
+      ]
+    }
     }
   ],
   "settings": {
