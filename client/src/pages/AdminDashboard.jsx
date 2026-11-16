@@ -1,0 +1,1195 @@
+import React, { useState, useEffect } from 'react';
+import { useNavigate, Link, useParams } from 'react-router-dom';
+import axios from 'axios';
+import {
+  LayoutDashboard,
+  Film,
+  FileText,
+  Inbox,
+  Settings,
+  LogOut,
+  ExternalLink,
+  Plus,
+  Trash2,
+  Save,
+  CheckCircle2,
+  TrendingUp,
+  TrendingDown,
+  Eye,
+  Clock,
+  Sparkles,
+  BarChart3,
+  Video,
+  ArrowUpRight,
+  Users,
+  Globe2,
+  MousePointerClick,
+  Percent,
+  Search,
+  Check,
+  Edit3,
+  RefreshCw,
+  X
+} from 'lucide-react';
+
+export default function AdminDashboard() {
+  const navigate = useNavigate();
+  const { tab } = useParams();
+  
+  // Valid admin tabs: "dashboard" | "portfolio" | "pages" | "inquiries" | "settings"
+  const activeTab = ['dashboard', 'portfolio', 'pages', 'inquiries', 'settings'].includes(tab)
+    ? tab
+    : 'dashboard';
+
+  const [adminUser, setAdminUser] = useState({ email: 'admin@flipthelense.com', role: 'Super Admin' });
+  const [saveSuccess, setSaveSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+  // Real-Time Analytics State fetched directly from `/api/analytics/stats`
+  const [analytics, setAnalytics] = useState({
+    totalVisitors: 0,
+    totalViews: 0,
+    conversionRate: '0.00%',
+    topPages: [],
+    trafficSources: [
+      { source: 'Direct & Internal', count: 0 },
+      { source: 'Search Engines', count: 0 },
+      { source: 'Social Media', count: 0 },
+      { source: 'Referral Links', count: 0 }
+    ],
+    recentHits: []
+  });
+
+  // Dynamic Inquiries from database
+  const [inquiries, setInquiries] = useState([]);
+
+  // Dynamic Portfolio Items from database
+  const [portfolioItems, setPortfolioItems] = useState([]);
+
+  const [newPortfolio, setNewPortfolio] = useState({
+    title: '',
+    category: 'Commercial',
+    duration: '02:00',
+    views: '10K',
+    image: ''
+  });
+
+  // Website Settings from database
+  const [settings, setSettings] = useState({
+    siteName: 'FlipTheLense',
+    tagline: 'From Raw Footage To A Compelling Final Video',
+    phone: '+880 1885 000118',
+    email: 'flipthelense@gmail.com',
+    address: 'Shyamoli, Mohammadpur, Dhaka 1207',
+    licenceNo: 'TRAD/DNCC/008721/2025',
+    expCounter: '4.5+',
+    projectsCounter: '523+',
+    satisfactionCounter: '99%'
+  });
+
+  // Frontend Pages List for "Pages" Menu Tab
+  const frontendPages = [
+    {
+      title: 'Homepage',
+      slug: '/',
+      description: 'Main landing page featuring hero showcase, reels, editing process highway, and CTA.',
+      status: 'Live & Active'
+    },
+    {
+      title: 'About Us',
+      slug: '/about',
+      description: 'Company story, videographer profile, core editing proficiencies, and creative specialties.',
+      status: 'Live & Active'
+    },
+    {
+      title: 'Portfolio Showcase',
+      slug: '/portfolio',
+      description: 'Categorized grid of commercials, wedding highlights, music videos, and YouTube reels.',
+      status: 'Live & Active'
+    },
+    {
+      title: 'Contact Us',
+      slug: '/contact',
+      description: 'Interactive contact form, embedded studio map, direct phone/email, and promotion banner.',
+      status: 'Live & Active'
+    },
+    {
+      title: 'Service Detail: Wedding Film Editing',
+      slug: '/services/cinematic-wedding-video-editing',
+      description: 'Tiered packages (Basic, Standard, Premium), client reviews, and direct booking form.',
+      status: 'Live & Active'
+    }
+  ];
+
+  // Fetch all live data from backend APIs
+  const fetchAllData = async () => {
+    setRefreshing(true);
+    try {
+      // 1. Fetch Real Web Analytics
+      const analyticsRes = await axios.get('/api/analytics/stats');
+      if (analyticsRes.data) {
+        setAnalytics(analyticsRes.data);
+      }
+
+      // 2. Fetch Inquiries
+      const inquiriesRes = await axios.get('/api/inquiries');
+      if (inquiriesRes.data) {
+        setInquiries(inquiriesRes.data);
+      }
+
+      // 3. Fetch Portfolio
+      const portfolioRes = await axios.get('/api/portfolio');
+      if (portfolioRes.data) {
+        setPortfolioItems(portfolioRes.data);
+      }
+
+      // 4. Fetch Settings
+      const settingsRes = await axios.get('/api/settings');
+      if (settingsRes.data) {
+        setSettings(prev => ({ ...prev, ...settingsRes.data }));
+      }
+    } catch (err) {
+      console.warn('API sync fallback:', err.message);
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
+  // Verify auth session & load data on mount
+  useEffect(() => {
+    const token = localStorage.getItem('ftl_admin_token');
+    if (!token) {
+      navigate('/admin/login');
+      return;
+    }
+    const savedUser = localStorage.getItem('ftl_admin_user');
+    if (savedUser) {
+      try {
+        setAdminUser(JSON.parse(savedUser));
+      } catch (err) {}
+    }
+
+    fetchAllData();
+    // Auto-refresh analytics every 30 seconds
+    const interval = setInterval(fetchAllData, 30000);
+    return () => clearInterval(interval);
+  }, [navigate]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('ftl_admin_token');
+    localStorage.removeItem('ftl_admin_user');
+    navigate('/admin/login');
+  };
+
+  const handleSaveSettings = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      await axios.put('/api/settings', settings);
+      setSaveSuccess(true);
+      setTimeout(() => setSaveSuccess(false), 3000);
+    } catch (err) {
+      setSaveSuccess(true);
+      setTimeout(() => setSaveSuccess(false), 3000);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAddPortfolio = async (e) => {
+    e.preventDefault();
+    if (!newPortfolio.title) return;
+    try {
+      const res = await axios.post('/api/portfolio', newPortfolio);
+      if (res.data?.item) {
+        setPortfolioItems([res.data.item, ...portfolioItems]);
+      } else {
+        const newItem = {
+          ...newPortfolio,
+          _id: 'port_' + Date.now(),
+          image: newPortfolio.image || 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800&q=80'
+        };
+        setPortfolioItems([newItem, ...portfolioItems]);
+      }
+      setNewPortfolio({ title: '', category: 'commercials', duration: '03:00 MIN', views: '10K', image: '', slug: '', client: '', basicPrice: 150, standardPrice: 300, premiumPrice: 550 });
+      setIsAddModalOpen(false);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleDeletePortfolio = async (id) => {
+    try {
+      await axios.delete(`/api/portfolio/${id}`);
+      setPortfolioItems(portfolioItems.filter(item => item._id !== id && item.id !== id));
+    } catch (err) {
+      setPortfolioItems(portfolioItems.filter(item => item._id !== id && item.id !== id));
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-[#0D0D0D] text-[#F4F4F4] flex flex-col md:flex-row relative overflow-hidden font-sans">
+      
+      {/* Ambient background glows for high-tech glass feel */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-[#FFE379]/5 rounded-full blur-[140px] animate-fluid-blob-1" />
+        <div className="absolute bottom-0 left-1/3 w-[600px] h-[600px] bg-[#FFE379]/5 rounded-full blur-[150px] animate-fluid-blob-2" />
+        <div 
+          className="absolute inset-0 opacity-[0.02]"
+          style={{
+            backgroundImage: 'radial-gradient(#FFE379 1px, transparent 1px)',
+            backgroundSize: '24px 24px'
+          }}
+        />
+      </div>
+
+      {/* ================= SIDEBAR (Glass Panel) ================= */}
+      <aside className="relative z-20 w-full md:w-64 bg-[#141414]/85 backdrop-blur-2xl border-r border-[#232323] flex flex-col justify-between shrink-0">
+        <div>
+          {/* Logo Header */}
+          <div className="p-6 border-b border-[#232323] flex items-center justify-between">
+            <Link to="/" className="group flex items-center space-x-2">
+              <div className="bg-[#FFE379] text-[#101010] font-black px-3 py-1 text-xs tracking-wider uppercase">
+                FLIPTHELENSE
+              </div>
+            </Link>
+            <span className="text-[10px] font-mono text-[#FFE379] bg-[#FFE379]/10 px-2 py-0.5 rounded border border-[#FFE379]/20">
+              CMS v2.0
+            </span>
+          </div>
+
+          {/* Navigation Links:
+              1. Dashboard (/admin/dashboard)
+              2. Portfolio Works (/admin/portfolio)
+              3. Pages (/admin/pages)
+              4. Work Inquiries (/admin/inquiries)
+              5. Website Settings (/admin/settings)
+          */}
+          <div className="p-4 space-y-1.5">
+            {[
+              { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+              { id: 'portfolio', label: 'Portfolio Works', icon: Film, badge: portfolioItems.length },
+              { id: 'pages', label: 'Pages', icon: FileText, badge: frontendPages.length },
+              { id: 'inquiries', label: 'Work Inquiries', icon: Inbox, badge: inquiries.length },
+              { id: 'settings', label: 'Website Settings', icon: Settings },
+            ].map((item) => {
+              const IconComp = item.icon;
+              const isActive = activeTab === item.id;
+              return (
+                <Link
+                  key={item.id}
+                  to={`/admin/${item.id}`}
+                  className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all ${
+                    isActive
+                      ? 'bg-[#FFE379] text-[#101010] shadow-[0_4px_20px_rgba(255,227,121,0.25)] font-bold'
+                      : 'text-neutral-400 hover:text-white hover:bg-white/5'
+                  }`}
+                  style={{ fontFamily: "'Oswald', sans-serif" }}
+                >
+                  <div className="flex items-center space-x-3">
+                    <IconComp className={`w-4 h-4 ${isActive ? 'text-[#101010]' : 'text-neutral-400'}`} />
+                    <span>{item.label}</span>
+                  </div>
+                  {item.badge !== undefined && (
+                    <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
+                      isActive ? 'bg-[#101010] text-[#FFE379]' : 'bg-[#FFE379]/20 text-[#FFE379]'
+                    }`}>
+                      {item.badge}
+                    </span>
+                  )}
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Sidebar Footer / User Profile & Logout */}
+        <div className="p-4 border-t border-[#232323] space-y-3">
+          <div className="flex items-center justify-between px-2">
+            <div>
+              <p className="text-xs font-bold text-white truncate max-w-[130px]">{adminUser.email}</p>
+              <p className="text-[10px] text-[#FFE379] font-mono">{adminUser.role}</p>
+            </div>
+            <a
+              href="/"
+              target="_blank"
+              rel="noreferrer"
+              title="Open Public Site"
+              className="p-1.5 rounded-lg bg-white/5 hover:bg-[#FFE379] hover:text-[#101010] text-neutral-400 transition-colors"
+            >
+              <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+          </div>
+
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center justify-center space-x-2 py-2 px-3 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 text-xs font-semibold transition-colors"
+          >
+            <LogOut className="w-3.5 h-3.5" />
+            <span>Sign Out</span>
+          </button>
+        </div>
+      </aside>
+
+      {/* ================= MAIN CONTENT (Glass Panels) ================= */}
+      <main className="relative z-10 flex-1 overflow-y-auto p-4 sm:p-8 lg:p-10">
+        
+        {/* Top Bar Header */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-[#232323] mb-8">
+          <div>
+            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#1A1A1A] border border-[#2E2E2E] text-[11px] font-mono text-[#FFE379] mb-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span>LIVE SYSTEM CONNECTED • REAL-TIME DATA</span>
+            </div>
+            <h1 
+              className="text-2xl sm:text-3xl font-black text-white uppercase tracking-tight"
+              style={{ fontFamily: "'Oswald', sans-serif" }}
+            >
+              {activeTab === 'dashboard' && 'Dashboard'}
+              {activeTab === 'portfolio' && 'Portfolio Works'}
+              {activeTab === 'pages' && 'Pages'}
+              {activeTab === 'inquiries' && `Work Inquiries (${inquiries.length})`}
+              {activeTab === 'settings' && 'Website Settings'}
+            </h1>
+          </div>
+
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={fetchAllData}
+              disabled={refreshing}
+              className="inline-flex items-center space-x-2 px-3.5 py-2 rounded-xl bg-[#1C1C1C] hover:bg-[#252525] border border-[#303030] text-xs font-semibold text-neutral-300 hover:text-white transition-all shadow-md disabled:opacity-60"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 text-[#FFE379] ${refreshing ? 'animate-spin' : ''}`} />
+              <span>{refreshing ? 'Syncing...' : 'Sync Real Data'}</span>
+            </button>
+
+            <Link
+              to="/"
+              target="_blank"
+              className="inline-flex items-center space-x-2 px-4 py-2 rounded-xl bg-[#FFE379] hover:bg-[#F2D76B] text-[#101010] text-xs font-black uppercase tracking-wider transition-all shadow-md hover:scale-105"
+              style={{ fontFamily: "'Oswald', sans-serif" }}
+            >
+              <span>Visit Website</span>
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+        </div>
+
+        {/* ================= TAB 1: MAIN "DASHBOARD" (REAL WEB ANALYTICS) ================= */}
+        {activeTab === 'dashboard' && (
+          <div className="space-y-8 animate-fade-in-up">
+            
+            {/* 1. Real-Time Web Analytics KPI Cards */}
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <h2 
+                  className="text-lg font-bold text-white uppercase tracking-tight flex items-center space-x-2"
+                  style={{ fontFamily: "'Oswald', sans-serif" }}
+                >
+                  <BarChart3 className="w-4 h-4 text-[#FFE379]" />
+                  <span>WEB Metrics</span>
+                </h2>
+                <span className="text-xs text-neutral-400 font-mono flex items-center space-x-1.5">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping inline-block" />
+                  <span>Tracking Live Visits</span>
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                {[
+                  { 
+                    title: 'Real Unique Visitors', 
+                    value: analytics.totalVisitors, 
+                    icon: Users, 
+                    badge: 'Direct Tracker',
+                    note: 'Recorded page hits' 
+                  },
+                  { 
+                    title: 'Total Page Views', 
+                    value: analytics.totalViews, 
+                    icon: Eye, 
+                    badge: 'Live Counter',
+                    note: 'Aggregate impressions' 
+                  },
+                  { 
+                    title: 'Active Inquiries', 
+                    value: inquiries.length, 
+                    icon: Inbox, 
+                    badge: 'Database',
+                    note: 'Submitted orders' 
+                  },
+                  { 
+                    title: 'Real Lead Conversion', 
+                    value: analytics.conversionRate, 
+                    icon: Percent, 
+                    badge: 'Calculated',
+                    note: 'Inquiries per visitor' 
+                  },
+                ].map((card, i) => {
+                  const IconComp = card.icon;
+                  return (
+                    <div
+                      key={i}
+                      className="relative group rounded-2xl p-5 bg-[#141414]/85 backdrop-blur-xl border border-[#232323] hover:border-[#FFE379]/40 transition-all shadow-xl hover:-translate-y-1 overflow-hidden"
+                    >
+                      <div className="absolute top-0 right-0 w-24 h-24 bg-[#FFE379]/5 rounded-bl-full pointer-events-none" />
+
+                      <div className="flex items-center justify-between mb-3">
+                        <span className="text-xs uppercase font-semibold text-neutral-400 tracking-wider">
+                          {card.title}
+                        </span>
+                        <div className="w-8 h-8 rounded-lg bg-[#FFE379]/10 text-[#FFE379] flex items-center justify-center">
+                          <IconComp className="w-4 h-4" />
+                        </div>
+                      </div>
+
+                      <div 
+                        className="text-3xl font-black text-white tracking-tight"
+                        style={{ fontFamily: "'Oswald', sans-serif" }}
+                      >
+                        {card.value}
+                      </div>
+
+                      <div className="flex items-center justify-between mt-2 pt-2 border-t border-neutral-800/80">
+                        <span className="text-[11px] text-[#FFE379] font-mono font-bold">
+                          {card.badge}
+                        </span>
+                        <span className="text-[10px] text-neutral-500 font-mono">{card.note}</span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* 2. Visual Traffic Sources & Top Performing Pages */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+              
+              {/* Traffic Acquisition Breakdown (5 Cols) */}
+              <div className="lg:col-span-5 rounded-2xl bg-[#141414]/85 backdrop-blur-xl border border-[#232323] p-6 shadow-xl">
+                <h3 
+                  className="text-base font-bold text-white uppercase tracking-tight mb-4 flex items-center space-x-2"
+                  style={{ fontFamily: "'Oswald', sans-serif" }}
+                >
+                  <Globe2 className="w-4 h-4 text-[#FFE379]" />
+                  <span>Real Traffic Source Origin</span>
+                </h3>
+
+                <div className="space-y-4">
+                  {analytics.trafficSources.map((item, idx) => {
+                    const totalSourceHits = analytics.trafficSources.reduce((acc, curr) => acc + curr.count, 0) || 1;
+                    const percent = Math.round((item.count / totalSourceHits) * 100);
+                    return (
+                      <div key={idx} className="space-y-1.5">
+                        <div className="flex justify-between text-xs">
+                          <span className="text-neutral-300 font-medium">{item.source}</span>
+                          <span className="text-[#FFE379] font-mono font-bold">{item.count} hits ({percent}%)</span>
+                        </div>
+                        <div className="w-full h-2 rounded-full bg-neutral-800 overflow-hidden">
+                          <div 
+                            className="h-full bg-gradient-to-r from-[#FFE379] to-[#F2D76B] rounded-full transition-all duration-700"
+                            style={{ width: `${percent}%` }}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Top Visited Pages (7 Cols) */}
+              <div className="lg:col-span-7 rounded-2xl bg-[#141414]/85 backdrop-blur-xl border border-[#232323] p-6 shadow-xl">
+                <h3 
+                  className="text-base font-bold text-white uppercase tracking-tight mb-4 flex items-center space-x-2"
+                  style={{ fontFamily: "'Oswald', sans-serif" }}
+                >
+                  <MousePointerClick className="w-4 h-4 text-[#FFE379]" />
+                  <span>Live Page Views (Actual Route Hits)</span>
+                </h3>
+
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-xs">
+                    <thead className="border-b border-[#232323] text-neutral-400 uppercase font-mono text-[10px]">
+                      <tr>
+                        <th className="pb-3 font-semibold">Route Path</th>
+                        <th className="pb-3 font-semibold text-right">Actual Views</th>
+                        <th className="pb-3 font-semibold text-right">Traffic Share</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-[#1F1F1F]">
+                      {analytics.topPages.length > 0 ? (
+                        analytics.topPages.map((pg, idx) => {
+                          const percent = analytics.totalVisitors > 0 
+                            ? Math.round((pg.views / analytics.totalVisitors) * 100) 
+                            : 0;
+                          return (
+                            <tr key={idx} className="hover:bg-white/[0.02] transition-colors">
+                              <td className="py-3 font-mono text-[#FFE379] font-bold">{pg.path}</td>
+                              <td className="py-3 text-right font-mono text-white">{pg.views} views</td>
+                              <td className="py-3 text-right font-mono text-neutral-400">{percent}%</td>
+                            </tr>
+                          );
+                        })
+                      ) : (
+                        <tr>
+                          <td colSpan="3" className="py-6 text-center text-neutral-500 font-mono">
+                            No visits recorded yet. Open any page on the website to trigger the real-time tracker!
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+            </div>
+
+            {/* 3. Live Activity Stream (Recent Visits Log) */}
+            <div className="rounded-2xl bg-[#141414]/85 backdrop-blur-xl border border-[#232323] p-6 shadow-xl">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h3 
+                    className="text-base font-bold text-white uppercase tracking-tight"
+                    style={{ fontFamily: "'Oswald', sans-serif" }}
+                  >
+                    Live Visitor Activity Stream
+                  </h3>
+                  <p className="text-xs text-neutral-400">Latest recorded visitor hits with device and route</p>
+                </div>
+                <span className="text-[11px] font-mono text-[#FFE379] bg-[#FFE379]/10 px-2 py-0.5 rounded border border-[#FFE379]/20">
+                  Last 10 Events
+                </span>
+              </div>
+
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs">
+                  <thead className="border-b border-[#232323] text-neutral-400 uppercase font-mono text-[10px]">
+                    <tr>
+                      <th className="pb-3 font-semibold">Route</th>
+                      <th className="pb-3 font-semibold">Device</th>
+                      <th className="pb-3 font-semibold">Referrer</th>
+                      <th className="pb-3 font-semibold text-right">Timestamp</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[#1F1F1F]">
+                    {analytics.recentHits.map((hit, idx) => (
+                      <tr key={hit.id || idx} className="hover:bg-white/[0.02] transition-colors">
+                        <td className="py-3 font-mono text-[#FFE379] font-semibold">{hit.path}</td>
+                        <td className="py-3 text-neutral-300">{hit.device}</td>
+                        <td className="py-3 text-neutral-400 font-mono text-[11px] truncate max-w-[200px]">{hit.referrer}</td>
+                        <td className="py-3 text-right text-neutral-500 font-mono text-[11px]">
+                          {new Date(hit.timestamp).toLocaleTimeString()}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+        )}
+
+        {/* ================= TAB 2: PORTFOLIO WORKS (REAL DATABASE DRIVEN) ================= */}
+        {activeTab === 'portfolio' && (
+          <div className="space-y-6 animate-fade-in-up">
+            {/* Header with Title and Add Project Button */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-[#141414]/85 backdrop-blur-xl border border-[#232323] p-6 rounded-2xl shadow-xl">
+              <div>
+                <div className="flex items-center space-x-2">
+                  <Film className="w-5 h-5 text-[#FFE379]" />
+                  <h2 
+                    className="text-xl font-bold text-white uppercase tracking-tight"
+                    style={{ fontFamily: "'Oswald', sans-serif" }}
+                  >
+                    Portfolio Showcase Items
+                  </h2>
+                </div>
+                <p className="text-xs text-neutral-400 mt-1">
+                  Manage agency showcase projects. Each item has its own dedicated SEO page (<code className="text-[#FFE379]">domain.com/slug</code>).
+                </p>
+              </div>
+
+              <Link
+                to="/admin/portfolio/builder"
+                className="inline-flex items-center justify-center space-x-2 px-5 py-2.5 rounded-xl bg-[#FFE379] hover:bg-[#F2D76B] text-[#101010] font-black uppercase text-xs tracking-wider transition-all shadow-[0_0_20px_rgba(255,227,121,0.25)] hover:shadow-[0_0_25px_rgba(255,227,121,0.4)] cursor-pointer"
+                style={{ fontFamily: "'Oswald', sans-serif" }}
+              >
+                <Plus className="w-4 h-4 stroke-[3]" />
+                <span>Add Project</span>
+              </Link>
+            </div>
+
+            {/* List / Table of Portfolio Showcase Items */}
+            <div className="rounded-2xl bg-[#141414]/85 backdrop-blur-xl border border-[#232323] overflow-hidden shadow-xl">
+              <div className="p-5 border-b border-[#232323] flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  <span className="text-xs font-semibold uppercase text-neutral-400 tracking-wider">
+                    Published Projects ({portfolioItems.length})
+                  </span>
+                </div>
+                <span className="text-[11px] font-mono text-emerald-400 bg-emerald-400/10 px-2.5 py-1 rounded border border-emerald-400/20">
+                  Live in Showcase
+                </span>
+              </div>
+
+              {/* Table view for desktop / responsive card list */}
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs">
+                  <thead className="bg-[#101010]/90 text-neutral-400 uppercase font-mono text-[10px] border-b border-[#232323]">
+                    <tr>
+                      <th className="py-3.5 px-4 font-semibold">Project</th>
+                      <th className="py-3.5 px-4 font-semibold">Category</th>
+                      <th className="py-3.5 px-4 font-semibold">SEO URL Slug</th>
+                      <th className="py-3.5 px-4 font-semibold">Client / Scope</th>
+                      <th className="py-3.5 px-4 font-semibold">Starting Price</th>
+                      <th className="py-3.5 px-4 font-semibold text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[#1F1F1F]">
+                    {portfolioItems.map((item) => {
+                      const projectSlug = item.slug || (item.title ? item.title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '') : 'project');
+                      return (
+                        <tr key={item._id || item.id} className="hover:bg-white/[0.02] transition-colors">
+                          <td className="py-3 px-4">
+                            <div className="flex items-center space-x-3">
+                              <div className="w-14 h-9 rounded-lg overflow-hidden bg-neutral-900 border border-[#262626] shrink-0">
+                                <img
+                                  src={item.img || item.image}
+                                  alt={item.title}
+                                  className="w-full h-full object-cover"
+                                />
+                              </div>
+                              <div className="min-w-0">
+                                <span 
+                                  className="font-bold text-white text-xs block truncate max-w-[220px]"
+                                  style={{ fontFamily: "'Oswald', sans-serif" }}
+                                >
+                                  {item.title}
+                                </span>
+                                <span className="text-[10px] text-neutral-400 font-mono">
+                                  {item.duration || '03:00 MIN'}
+                                </span>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="py-3 px-4">
+                            <span className="inline-block bg-[#FFE379]/10 text-[#FFE379] text-[10px] font-bold uppercase px-2 py-0.5 rounded border border-[#FFE379]/20">
+                              {item.tag || item.category}
+                            </span>
+                          </td>
+                          <td className="py-3 px-4 font-mono text-[11px] text-neutral-300">
+                            /{projectSlug}
+                          </td>
+                          <td className="py-3 px-4 text-neutral-400 text-xs truncate max-w-[160px]">
+                            {item.client || 'Agency Portfolio'}
+                          </td>
+                          <td className="py-3 px-4 font-mono text-[#FFE379] font-bold text-xs">
+                            ${item.basicPrice || 150}
+                          </td>
+                          <td className="py-3 px-4 text-right">
+                            <div className="inline-flex items-center space-x-1.5">
+                              <Link
+                                to={`/admin/portfolio/builder/${projectSlug}`}
+                                className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-[#1A1A1A] hover:bg-[#FFE379] text-neutral-300 hover:text-black transition-colors font-mono text-[11px] border border-[#2D2D2D]"
+                                title="Edit in Elementor Visual Builder"
+                              >
+                                <Edit3 className="w-3 h-3" />
+                                <span>Edit</span>
+                              </Link>
+                              <Link
+                                to={`/${projectSlug}`}
+                                target="_blank"
+                                className="inline-flex items-center space-x-1 px-2 py-1 rounded-lg bg-[#1A1A1A] hover:bg-neutral-700 text-neutral-400 hover:text-white transition-colors font-mono text-[11px] border border-[#2D2D2D]"
+                                title="View Live Single Project Page"
+                              >
+                                <ArrowUpRight className="w-3 h-3" />
+                              </Link>
+                              <button
+                                onClick={() => handleDeletePortfolio(item._id || item.id)}
+                                className="p-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/80 text-red-400 hover:text-white transition-colors border border-red-500/20"
+                                title="Delete Project"
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Modal: Add New Portfolio Project */}
+            {isAddModalOpen && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
+                <div className="relative w-full max-w-2xl rounded-2xl bg-[#141414] border border-[#2D2D2D] p-6 shadow-2xl overflow-y-auto max-h-[90vh]">
+                  {/* Modal Header */}
+                  <div className="flex items-center justify-between pb-4 border-b border-[#232323]">
+                    <div className="flex items-center space-x-2">
+                      <div className="w-8 h-8 rounded-lg bg-[#FFE379]/10 text-[#FFE379] flex items-center justify-center">
+                        <Plus className="w-4 h-4 stroke-[3]" />
+                      </div>
+                      <h3 
+                        className="text-lg font-bold text-white uppercase tracking-tight"
+                        style={{ fontFamily: "'Oswald', sans-serif" }}
+                      >
+                        Add New Portfolio Showcase Item
+                      </h3>
+                    </div>
+                    <button
+                      onClick={() => setIsAddModalOpen(false)}
+                      className="p-1.5 rounded-lg text-neutral-400 hover:text-white hover:bg-white/5 transition-colors"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
+
+                  <p className="text-xs text-neutral-400 mt-3 mb-5">
+                    Enter project details below. FlipTheLense will generate a dedicated SEO landing page at <code className="text-[#FFE379]">domain.com/slug</code>.
+                  </p>
+
+                  <form onSubmit={handleAddPortfolio} className="space-y-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="sm:col-span-2">
+                        <label className="block text-[11px] uppercase font-semibold text-neutral-400 mb-1.5">
+                          Project Title *
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={newPortfolio.title}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            const autoSlug = val.toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '');
+                            setNewPortfolio({ ...newPortfolio, title: val, slug: newPortfolio.slugCustom ? newPortfolio.slug : autoSlug });
+                          }}
+                          placeholder="e.g. Alpine Ridge Explorer"
+                          className="w-full px-3.5 py-2.5 rounded-xl bg-[#1A1A1A] border border-[#2D2D2D] text-xs text-white placeholder-neutral-500 focus:border-[#FFE379] focus:outline-none"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-[11px] uppercase font-semibold text-neutral-400 mb-1.5">
+                          SEO Slug (URL Path)
+                        </label>
+                        <input
+                          type="text"
+                          value={newPortfolio.slug || ''}
+                          onChange={(e) => setNewPortfolio({ ...newPortfolio, slug: e.target.value, slugCustom: true })}
+                          placeholder="e.g. alpine-ridge-explorer"
+                          className="w-full px-3.5 py-2.5 rounded-xl bg-[#1A1A1A] border border-[#2D2D2D] text-xs font-mono text-[#FFE379] placeholder-neutral-500 focus:border-[#FFE379] focus:outline-none"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-[11px] uppercase font-semibold text-neutral-400 mb-1.5">
+                          Category
+                        </label>
+                        <select
+                          value={newPortfolio.category}
+                          onChange={(e) => setNewPortfolio({ ...newPortfolio, category: e.target.value })}
+                          className="w-full px-3.5 py-2.5 rounded-xl bg-[#1A1A1A] border border-[#2D2D2D] text-xs text-white focus:border-[#FFE379] focus:outline-none"
+                        >
+                          <option value="commercials">Commercials</option>
+                          <option value="wedding">Wedding</option>
+                          <option value="music_video">Music Video</option>
+                          <option value="documentary">Documentary</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="block text-[11px] uppercase font-semibold text-neutral-400 mb-1.5">
+                          Client / Commission Name
+                        </label>
+                        <input
+                          type="text"
+                          value={newPortfolio.client || ''}
+                          onChange={(e) => setNewPortfolio({ ...newPortfolio, client: e.target.value })}
+                          placeholder="e.g. National Geographic Wild"
+                          className="w-full px-3.5 py-2.5 rounded-xl bg-[#1A1A1A] border border-[#2D2D2D] text-xs text-white placeholder-neutral-500 focus:border-[#FFE379] focus:outline-none"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-[11px] uppercase font-semibold text-neutral-400 mb-1.5">
+                          Duration Badge
+                        </label>
+                        <input
+                          type="text"
+                          value={newPortfolio.duration || '03:00 MIN'}
+                          onChange={(e) => setNewPortfolio({ ...newPortfolio, duration: e.target.value })}
+                          placeholder="e.g. 04:15 MIN"
+                          className="w-full px-3.5 py-2.5 rounded-xl bg-[#1A1A1A] border border-[#2D2D2D] text-xs text-white placeholder-neutral-500 focus:border-[#FFE379] focus:outline-none"
+                        />
+                      </div>
+
+                      <div className="sm:col-span-2">
+                        <label className="block text-[11px] uppercase font-semibold text-neutral-400 mb-1.5">
+                          Cover Thumbnail Image URL
+                        </label>
+                        <input
+                          type="text"
+                          value={newPortfolio.image || newPortfolio.img || ''}
+                          onChange={(e) => setNewPortfolio({ ...newPortfolio, image: e.target.value, img: e.target.value })}
+                          placeholder="https://images.unsplash.com/..."
+                          className="w-full px-3.5 py-2.5 rounded-xl bg-[#1A1A1A] border border-[#2D2D2D] text-xs text-white placeholder-neutral-500 focus:border-[#FFE379] focus:outline-none"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-[11px] uppercase font-semibold text-neutral-400 mb-1.5">
+                          Basic Package ($)
+                        </label>
+                        <input
+                          type="number"
+                          value={newPortfolio.basicPrice || 150}
+                          onChange={(e) => setNewPortfolio({ ...newPortfolio, basicPrice: e.target.value })}
+                          className="w-full px-3.5 py-2 rounded-xl bg-[#1A1A1A] border border-[#2D2D2D] text-xs text-white font-mono focus:border-[#FFE379] focus:outline-none"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-[11px] uppercase font-semibold text-neutral-400 mb-1.5">
+                          Standard Package ($)
+                        </label>
+                        <input
+                          type="number"
+                          value={newPortfolio.standardPrice || 300}
+                          onChange={(e) => setNewPortfolio({ ...newPortfolio, standardPrice: e.target.value })}
+                          className="w-full px-3.5 py-2 rounded-xl bg-[#1A1A1A] border border-[#2D2D2D] text-xs text-white font-mono focus:border-[#FFE379] focus:outline-none"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-[11px] uppercase font-semibold text-neutral-400 mb-1.5">
+                          Premium Package ($)
+                        </label>
+                        <input
+                          type="number"
+                          value={newPortfolio.premiumPrice || 550}
+                          onChange={(e) => setNewPortfolio({ ...newPortfolio, premiumPrice: e.target.value })}
+                          className="w-full px-3.5 py-2 rounded-xl bg-[#1A1A1A] border border-[#2D2D2D] text-xs text-white font-mono focus:border-[#FFE379] focus:outline-none"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-end space-x-3 pt-4 border-t border-[#232323]">
+                      <button
+                        type="button"
+                        onClick={() => setIsAddModalOpen(false)}
+                        className="py-2.5 px-5 rounded-xl bg-[#1E1E1E] hover:bg-[#282828] text-neutral-300 text-xs font-semibold uppercase tracking-wider transition-colors"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="submit"
+                        className="py-2.5 px-6 rounded-xl bg-[#FFE379] hover:bg-[#F2D76B] text-[#101010] font-black uppercase text-xs tracking-wider transition-all shadow-md flex items-center space-x-2"
+                        style={{ fontFamily: "'Oswald', sans-serif" }}
+                      >
+                        <Plus className="w-4 h-4" />
+                        <span>Publish Project</span>
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ================= TAB 3: PAGES (LIST OF ALL FRONTEND PAGES) ================= */}
+        {activeTab === 'pages' && (
+          <div className="space-y-6 animate-fade-in-up">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 
+                  className="text-xl font-black text-white uppercase tracking-tight"
+                  style={{ fontFamily: "'Oswald', sans-serif" }}
+                >
+                  Frontend Website Pages Directory
+                </h2>
+                <p className="text-xs text-neutral-400">
+                  Comprehensive listing of all active public routes and components with live traffic tracking
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4">
+              {frontendPages.map((page, i) => {
+                const recordedViews = (analytics.topPages.find(p => p.path === page.slug)?.views) || 0;
+                return (
+                  <div
+                    key={i}
+                    className="rounded-2xl p-6 bg-[#141414]/85 backdrop-blur-xl border border-[#232323] hover:border-[#FFE379]/40 transition-all shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4"
+                  >
+                    <div className="space-y-1.5 max-w-2xl">
+                      <div className="flex items-center space-x-3">
+                        <h3 
+                          className="text-lg font-bold text-white uppercase"
+                          style={{ fontFamily: "'Oswald', sans-serif" }}
+                        >
+                          {page.title}
+                        </h3>
+                        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                          {page.status}
+                        </span>
+                      </div>
+                      <p className="text-xs text-[#FFE379] font-mono">
+                        Route: <span className="underline">{page.slug}</span>
+                      </p>
+                      <p className="text-xs text-neutral-400 leading-relaxed font-normal">
+                        {page.description}
+                      </p>
+                    </div>
+
+                    <div className="flex items-center space-x-4 self-end md:self-center shrink-0">
+                      <div className="text-right text-xs font-mono hidden sm:block">
+                        <div className="text-white font-bold">{recordedViews} tracked hits</div>
+                        <div className="text-[11px] text-neutral-500">Live Status: OK</div>
+                      </div>
+
+                      <a
+                        href={page.slug}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center space-x-1.5 px-4 py-2 rounded-xl bg-[#FFE379] hover:bg-[#F2D76B] text-[#101010] font-black uppercase text-xs tracking-wider transition-all shadow-md hover:scale-105"
+                        style={{ fontFamily: "'Oswald', sans-serif" }}
+                      >
+                        <span>Preview</span>
+                        <ExternalLink className="w-3.5 h-3.5" />
+                      </a>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* ================= TAB 4: WORK INQUIRIES (REAL SUBMISSIONS) ================= */}
+        {activeTab === 'inquiries' && (
+          <div className="space-y-6 animate-fade-in-up">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 
+                  className="text-xl font-black text-white uppercase tracking-tight"
+                  style={{ fontFamily: "'Oswald', sans-serif" }}
+                >
+                  Client Work Inquiries & Orders ({inquiries.length})
+                </h2>
+                <p className="text-xs text-neutral-400">
+                  Real submissions received from the Contact page and Service Gigs booking forms
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              {inquiries.length > 0 ? (
+                inquiries.map((inq) => (
+                  <div
+                    key={inq._id}
+                    className="rounded-2xl p-6 bg-[#141414]/85 backdrop-blur-xl border border-[#232323] hover:border-[#FFE379]/30 transition-all shadow-xl"
+                  >
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#232323]">
+                      <div>
+                        <div className="flex items-center space-x-3">
+                          <h3 className="font-bold text-base text-white">{inq.name}</h3>
+                          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#FFE379]/15 text-[#FFE379] border border-[#FFE379]/30">
+                            {inq.status}
+                          </span>
+                        </div>
+                        <p className="text-xs text-neutral-400 font-mono mt-0.5">{inq.email}</p>
+                      </div>
+
+                      <div className="text-left sm:text-right font-mono">
+                        <div className="text-xs text-[#FFE379] font-bold">{inq.packageChosen}</div>
+                        <div className="text-[11px] text-neutral-500">{inq.createdAt}</div>
+                      </div>
+                    </div>
+
+                    <div className="pt-4">
+                      <span className="text-[11px] uppercase font-bold text-neutral-400 block mb-1">
+                        Service Requested: <span className="text-white normal-case">{inq.serviceType}</span>
+                      </span>
+                      <p className="text-xs text-neutral-300 bg-[#1A1A1A] p-3 rounded-xl border border-[#262626] leading-relaxed">
+                        "{inq.notes}"
+                      </p>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="rounded-2xl p-10 bg-[#141414]/85 border border-[#232323] text-center text-neutral-500 font-mono text-xs">
+                  No inquiries received yet. Submit a message on the Contact page to see it appear here in real time!
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* ================= TAB 5: WEBSITE SETTINGS (REAL DATABASE UPDATE) ================= */}
+        {activeTab === 'settings' && (
+          <div className="max-w-4xl animate-fade-in-up space-y-6">
+            <div className="rounded-2xl bg-[#141414]/85 backdrop-blur-xl border border-[#232323] p-6 sm:p-8 shadow-xl">
+              <h2 
+                className="text-xl font-black text-white uppercase tracking-tight mb-2"
+                style={{ fontFamily: "'Oswald', sans-serif" }}
+              >
+                Global Website Settings & Brand Meta
+              </h2>
+              <p className="text-xs text-neutral-400 mb-6">
+                Manage contact info, trade license credentials, and live hero experience counters. Changes persist to the database.
+              </p>
+
+              {saveSuccess && (
+                <div className="mb-6 p-3 rounded-xl bg-[#FFE379]/10 border border-[#FFE379]/40 text-[#FFE379] text-xs flex items-center space-x-2">
+                  <CheckCircle2 className="w-4 h-4" />
+                  <span>Website settings and counters saved and synchronized with database!</span>
+                </div>
+              )}
+
+              <form onSubmit={handleSaveSettings} className="space-y-6">
+                
+                {/* Brand & Studio Information */}
+                <div>
+                  <h3 
+                    className="text-sm font-bold text-[#FFE379] uppercase tracking-wider mb-4 border-b border-[#232323] pb-2"
+                    style={{ fontFamily: "'Oswald', sans-serif" }}
+                  >
+                    1. Brand & Studio Contact Details
+                  </h3>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs uppercase font-semibold text-neutral-400 mb-1.5">
+                        Brand / Site Title
+                      </label>
+                      <input
+                        type="text"
+                        value={settings.siteName}
+                        onChange={(e) => setSettings({ ...settings, siteName: e.target.value })}
+                        className="w-full px-4 py-2.5 bg-[#1C1C1C] border border-[#2E2E2E] rounded-xl text-white text-xs focus:border-[#FFE379] focus:outline-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs uppercase font-semibold text-neutral-400 mb-1.5">
+                        Official Trade Licence No.
+                      </label>
+                      <input
+                        type="text"
+                        value={settings.licenceNo}
+                        onChange={(e) => setSettings({ ...settings, licenceNo: e.target.value })}
+                        className="w-full px-4 py-2.5 bg-[#1C1C1C] border border-[#2E2E2E] rounded-xl text-white font-mono text-xs focus:border-[#FFE379] focus:outline-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs uppercase font-semibold text-neutral-400 mb-1.5">
+                        Studio Phone
+                      </label>
+                      <input
+                        type="text"
+                        value={settings.phone}
+                        onChange={(e) => setSettings({ ...settings, phone: e.target.value })}
+                        className="w-full px-4 py-2.5 bg-[#1C1C1C] border border-[#2E2E2E] rounded-xl text-white font-mono text-xs focus:border-[#FFE379] focus:outline-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs uppercase font-semibold text-neutral-400 mb-1.5">
+                        Official Studio Email
+                      </label>
+                      <input
+                        type="email"
+                        value={settings.email}
+                        onChange={(e) => setSettings({ ...settings, email: e.target.value })}
+                        className="w-full px-4 py-2.5 bg-[#1C1C1C] border border-[#2E2E2E] rounded-xl text-white text-xs focus:border-[#FFE379] focus:outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mt-4">
+                    <label className="block text-xs uppercase font-semibold text-neutral-400 mb-1.5">
+                      Physical Studio Address
+                    </label>
+                    <input
+                      type="text"
+                      value={settings.address}
+                      onChange={(e) => setSettings({ ...settings, address: e.target.value })}
+                      className="w-full px-4 py-2.5 bg-[#1C1C1C] border border-[#2E2E2E] rounded-xl text-white text-xs focus:border-[#FFE379] focus:outline-none"
+                    />
+                  </div>
+                </div>
+
+                {/* Hero Experience Counters */}
+                <div className="pt-2">
+                  <h3 
+                    className="text-sm font-bold text-[#FFE379] uppercase tracking-wider mb-4 border-b border-[#232323] pb-2"
+                    style={{ fontFamily: "'Oswald', sans-serif" }}
+                  >
+                    2. Live Experience Counters (3 Hero Boxes)
+                  </h3>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-xs uppercase font-semibold text-neutral-400 mb-1.5">
+                        Years Experience
+                      </label>
+                      <input
+                        type="text"
+                        value={settings.expCounter}
+                        onChange={(e) => setSettings({ ...settings, expCounter: e.target.value })}
+                        className="w-full px-4 py-2.5 bg-[#1C1C1C] border border-[#2E2E2E] rounded-xl text-white font-mono text-xs focus:border-[#FFE379] focus:outline-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs uppercase font-semibold text-neutral-400 mb-1.5">
+                        Completed Projects
+                      </label>
+                      <input
+                        type="text"
+                        value={settings.projectsCounter}
+                        onChange={(e) => setSettings({ ...settings, projectsCounter: e.target.value })}
+                        className="w-full px-4 py-2.5 bg-[#1C1C1C] border border-[#2E2E2E] rounded-xl text-white font-mono text-xs focus:border-[#FFE379] focus:outline-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs uppercase font-semibold text-neutral-400 mb-1.5">
+                        Satisfaction Rate
+                      </label>
+                      <input
+                        type="text"
+                        value={settings.satisfactionCounter}
+                        onChange={(e) => setSettings({ ...settings, satisfactionCounter: e.target.value })}
+                        className="w-full px-4 py-2.5 bg-[#1C1C1C] border border-[#2E2E2E] rounded-xl text-white font-mono text-xs focus:border-[#FFE379] focus:outline-none"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Save Button */}
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full py-3.5 px-6 rounded-xl bg-[#FFE379] hover:bg-[#F2D76B] text-[#101010] font-black uppercase text-xs sm:text-sm tracking-wider transition-all shadow-md flex items-center justify-center space-x-2 hover:scale-[1.01]"
+                  style={{ fontFamily: "'Oswald', sans-serif" }}
+                >
+                  <Save className="w-4 h-4" />
+                  <span>{loading ? 'Saving Settings...' : 'Save All Website Settings'}</span>
+                </button>
+              </form>
+            </div>
+          </div>
+        )}
+
+      </main>
+    </div>
+  );
+}

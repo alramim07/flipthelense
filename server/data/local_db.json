@@ -1,0 +1,208 @@
+{
+  "analytics": [
+    {
+      "id": "hit_1794809272509_927a3",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/portfolio",
+      "referrer": "http://localhost:5173/portfolio",
+      "device": "Desktop",
+      "timestamp": "2026-11-16T06:07:52.509Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794809276151_tpd5d",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/alpine-ridge-explorer",
+      "referrer": "http://localhost:5173/portfolio",
+      "device": "Desktop",
+      "timestamp": "2026-11-16T06:07:56.151Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794809289456_h9twq",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/portfolio",
+      "referrer": "http://localhost:5173/portfolio",
+      "device": "Desktop",
+      "timestamp": "2026-11-16T06:08:09.456Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794809292482_p37vh",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/alpine-ridge-explorer",
+      "referrer": "http://localhost:5173/portfolio",
+      "device": "Desktop",
+      "timestamp": "2026-11-16T06:08:12.482Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    }
+  ],
+  "inquiries": [
+    {
+      "_id": "inq_1",
+      "name": "Samira Ahmed",
+      "email": "samira@creativestudio.com",
+      "serviceType": "Cinematic Wedding Film",
+      "packageChosen": "Diamond Package ($850)",
+      "createdAt": "11/16/2026, 11:17 AM",
+      "status": "New Inquiry",
+      "notes": "Need 4K grading and cinematic pacing for our destination wedding in Sylhet."
+    },
+    {
+      "_id": "inq_2",
+      "name": "Marcus Vance",
+      "email": "marcus@creator.io",
+      "serviceType": "YouTube Retention & VFX",
+      "packageChosen": "Pro Creator ($450)",
+      "createdAt": "Yesterday, 4:30 PM",
+      "status": "In Progress",
+      "notes": "Weekly 15-minute tech review edits with dynamic motion graphics."
+    }
+  ],
+  "portfolio": [
+    {
+      "_id": "port_1",
+      "title": "Alpine Ridge Explorer",
+      "slug": "alpine-ridge-explorer",
+      "category": "documentary",
+      "tag": "Documentary",
+      "client": "National Geographic Wild",
+      "duration": "04:15 MIN",
+      "img": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=900&q=80",
+      "video": "https://www.youtube.com/embed/ScMzIvxBSi4",
+      "overview": "A breath-taking high-altitude cinematic documentary exploring the sharp ridges and wild terrain of the Alps.",
+      "headline": "I will produce cinema-grade documentary video editing, soundscapes and color grading",
+      "deliverables": [
+        "4K UHD Master File Export",
+        "Spatial Audio & Foley Sound Effects",
+        "Film Emulation Color Grade (DaVinci Resolve)",
+        "Custom Title Sequence & Sound Design"
+      ],
+      "basicPrice": 150,
+      "standardPrice": 300,
+      "premiumPrice": 550
+    },
+    {
+      "_id": "port_2",
+      "title": "Tranquil Lake Reflection",
+      "slug": "tranquil-lake-reflection",
+      "category": "commercials",
+      "tag": "Commercials",
+      "client": "Aura Lifestyle Media",
+      "duration": "01:30 MIN",
+      "img": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80",
+      "video": "https://www.youtube.com/embed/ScMzIvxBSi4",
+      "overview": "A serene luxury lifestyle commercial crafted with smooth speed ramps, warm hues, and elegant minimal typography.",
+      "headline": "I will edit high-converting commercial brand ads and lifestyle promotional videos",
+      "deliverables": [
+        "1080p & 4K Multi-format Exports (16:9 + 9:16)",
+        "Dynamic Speed Ramping & Motion Blur",
+        "Licensed High-Energy Commercial Soundtrack",
+        "Brand Color Palette Conformance"
+      ],
+      "basicPrice": 180,
+      "standardPrice": 350,
+      "premiumPrice": 650
+    },
+    {
+      "_id": "port_3",
+      "title": "Green Meadows Solitude",
+      "slug": "green-meadows-solitude",
+      "category": "music_video",
+      "tag": "Music Video",
+      "client": "Sony Music Indie",
+      "duration": "03:45 MIN",
+      "img": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80",
+      "video": "https://www.youtube.com/embed/ScMzIvxBSi4",
+      "overview": "An atmospheric indie music video paced rhythmically with subtle film grain, organic flare transitions, and emotive storytelling.",
+      "headline": "I will create artistic music video edits with rhythm pacing and cinematic film look",
+      "deliverables": [
+        "Rhythmic Beat-Sync Cutting",
+        "Film Grain & Halation Effects (16mm/35mm)",
+        "Lip-Sync Audio Alignment",
+        "Creative Visual Transitions & Glows"
+      ],
+      "basicPrice": 200,
+      "standardPrice": 400,
+      "premiumPrice": 750
+    },
+    {
+      "_id": "port_4",
+      "title": "Tuscan Sunset Avenue",
+      "slug": "cinematic-wedding-video-editing",
+      "category": "wedding",
+      "tag": "Wedding Film",
+      "client": "Royal Heritage Weddings",
+      "duration": "05:20 MIN",
+      "img": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=80",
+      "video": "https://www.youtube.com/embed/ScMzIvxBSi4",
+      "overview": "A luxury destination wedding film capturing emotional vows, golden sunset ceremonies, and celebratory evening receptions.",
+      "headline": "I will do cinematic wedding video editing, 4K film color grading and storytelling",
+      "deliverables": [
+        "4K UHD Master File Export",
+        "Multi-Camera Audio Synchronization",
+        "Professional Hollywood Color Grading",
+        "Sound Design & Licensed Music",
+        "Drone Footage Integration"
+      ],
+      "basicPrice": 150,
+      "standardPrice": 300,
+      "premiumPrice": 550
+    },
+    {
+      "_id": "port_5",
+      "title": "Cliffside Perspective",
+      "slug": "cliffside-perspective",
+      "category": "documentary",
+      "tag": "Documentary",
+      "client": "Nordic Visual Labs",
+      "duration": "02:50 MIN",
+      "img": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=900&q=80",
+      "video": "https://www.youtube.com/embed/ScMzIvxBSi4",
+      "overview": "Dramatic drone photography and rugged coastal scenery cut to tension-building cinematic sound design.",
+      "headline": "I will edit outdoor adventure documentaries and cinematic drone footage",
+      "deliverables": [
+        "Drone Horizon Stabilization",
+        "Wind Audio Noise Reduction",
+        "HDR & Rec.709 Master Exports",
+        "Cinematic Narrative Structure"
+      ],
+      "basicPrice": 140,
+      "standardPrice": 280,
+      "premiumPrice": 520
+    },
+    {
+      "_id": "port_6",
+      "title": "Golden Hour Photographer",
+      "slug": "golden-hour-photographer",
+      "category": "wedding",
+      "tag": "Wedding Film",
+      "client": "Bella & Edward Story",
+      "duration": "04:10 MIN",
+      "img": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=900&q=80",
+      "video": "https://www.youtube.com/embed/ScMzIvxBSi4",
+      "overview": "Heartfelt vows and intimate portrait sessions combined into an unforgettable romantic highlight film.",
+      "headline": "I will craft romantic wedding teasers and emotional highlight films",
+      "deliverables": [
+        "Vows & Speeches Audio Sync",
+        "Dreamy Film Glow & Skin Tone Balancing",
+        "Social Reel 9:16 + Master 16:9",
+        "Licensed Emotional Soundtrack"
+      ],
+      "basicPrice": 160,
+      "standardPrice": 320,
+      "premiumPrice": 600
+    }
+  ],
+  "settings": {
+    "siteName": "FlipTheLense",
+    "tagline": "From Raw Footage To A Compelling Final Video",
+    "phone": "+880 1885 000118",
+    "email": "flipthelense@gmail.com",
+    "address": "Shyamoli, Mohammadpur, Dhaka 1207",
+    "licenceNo": "TRAD/DNCC/008721/2025",
+    "expCounter": "4.5+",
+    "projectsCounter": "523+",
+    "satisfactionCounter": "99%"
+  }
+}

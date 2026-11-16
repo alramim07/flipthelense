@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FlipTheLense - Senior Cinematographer & Video Editor</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Google Fonts: Oswald / Anton for headline + Inter / Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background-color: #000000;
+      color: #FFFFFF;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Exact Typography from Blueprint */
+    .hero-title {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.12;
+    }
+
+    .about-name-title {
+      font-family: 'Oswald', 'Anton', sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* Staggered Cards Layout matching exact wireframe */
+    .wireframe-container {
+      background-color: #C5D0DC;
+      position: relative;
+    }
+
+    .reel-card {
+      background-color: #FFFFFF;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.22);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      cursor: pointer;
+    }
+    .reel-card:hover {
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.35);
+    }
+
+    .explore-btn {
+      background-color: #BAC7D5;
+      color: #111827;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      border-radius: 9999px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.18);
+      border: 1px solid rgba(0,0,0,0.1);
+      transition: background-color 0.2s;
+    }
+    .explore-btn:hover {
+      background-color: #a8b8c9;
+    }
+
+    /* Modal Backdrop */
+    .modal-backdrop {
+      backdrop-filter: blur(14px);
+      background-color: rgba(0, 0, 0, 0.9);
+    }
+  </style>
+</head>
+<body class="selection:bg-[#f39200] selection:text-black">
+
+  <!-- MAIN CANVAS (Max 1100px closely matching the Figma wireframe proportions) -->
+  <div class="max-w-[1080px] mx-auto px-4 sm:px-6 py-4">
+
+    <!-- 1. EXACT BLUEPRINT NAVBAR -->
+    <!-- Gray bar (#C5D0DC) with rounded-lg edges, orange Logo pill, centered links, orange Contact us pill -->
+    <header class="w-full bg-[#C5D0DC] rounded-md py-1.5 px-3 sm:px-4 flex items-center justify-between shadow-sm mb-12">
+      <!-- Orange Logo block -->
+      <a href="#hero" class="bg-[#F59E0B] hover:bg-[#D97706] text-black font-extrabold px-6 py-1.5 rounded text-sm tracking-wide transition shadow-sm">
+        Logo
+      </a>
+
+      <!-- Center navigation links: Home, About, Portfolio, Resume -->
+      <nav class="flex items-center space-x-6 sm:space-x-10 text-xs sm:text-sm font-medium text-black">
+        <a href="#hero" class="hover:opacity-75 transition">Home</a>
+        <a href="#about" class="hover:opacity-75 transition">About</a>
+        <a href="service-detail.html" class="hover:opacity-75 transition font-bold text-[#f39200]">Services</a>
+        <a href="#portfolio-section" class="hover:opacity-75 transition">Portfolio</a>
+        <a href="#reviews-section" class="hover:opacity-75 transition">Resume</a>
+      </nav>
+
+      <!-- Orange Contact us button -->
+      <a href="#footer-section" class="bg-[#F59E0B] hover:bg-[#D97706] text-black font-extrabold px-5 py-1.5 rounded text-xs sm:text-sm transition shadow-sm">
+        Contact us
+      </a>
+    </header>
+
+
+    <!-- 2. HERO SECTION -->
+    <section id="hero" class="mb-14">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+        
+        <!-- Left: Text typography exactly as written in the blueprint -->
+        <div class="md:col-span-7 space-y-3 pt-1">
+          <!-- Small subtitle -->
+          <p class="text-neutral-400 text-xs sm:text-sm tracking-normal">
+            Cinematography. Video Editing. Visual Storytelling
+          </p>
+
+          <!-- Main headline matching exact 3-line layout from blueprint -->
+          <h1 class="text-4xl sm:text-5xl lg:text-[54px] hero-title text-white">
+            Crafting<br>
+            Stories Through<br>
+            Cinematic Videos.
+          </h1>
+        </div>
+
+        <!-- Right: Gig Video Section with hide/view option & project counter -->
+        <!-- Clean rounded-xl container with light gray preview, hide/view toggle and counter bar -->
+        <div class="md:col-span-5">
+          <div class="relative bg-[#C5D0DC] rounded-2xl overflow-hidden aspect-[4/3] shadow-md group cursor-pointer" onclick="toggleGigMedia()">
+            
+            <!-- Default Photo State (Video Editor / Cinematographer at work) -->
+            <img id="gigImage" src="https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=900&q=80" alt="Gig Video Preview" class="w-full h-full object-cover">
+
+            <!-- Video State (Toggled on click or button) -->
+            <div id="gigVideoContainer" class="hidden absolute inset-0 bg-black">
+              <iframe id="gigIframe" class="w-full h-full" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+
+            <!-- Hide/View Option Pill in top right -->
+            <div class="absolute top-2.5 right-2.5 z-10">
+              <button onclick="event.stopPropagation(); toggleGigMedia();" id="gigToggleBtn" class="bg-black/70 hover:bg-black text-[#F59E0B] text-[10px] font-bold px-2.5 py-1 rounded-full backdrop-blur-md border border-white/10 flex items-center space-x-1 transition">
+                <i data-lucide="play" class="w-3 h-3 fill-current"></i>
+                <span id="gigToggleText">View Video</span>
+              </button>
+            </div>
+
+            <!-- Counter Overlay Removed -->
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- 3. SCROLL REELS / SHORTS (UPDOWN STAGGERED WIREFRAME LAYOUT) -->
+    <!-- Exactly matching wireframe: light gray container with overlapping/staggered white cards -->
+    <section class="mb-24 relative pt-12 pb-8">
+      
+      <!-- The Light Gray Horizontal Band Container (#C5D0DC) -->
+      <div class="wireframe-container rounded-lg px-4 sm:px-8 py-10 min-h-[380px] flex items-center relative">
+        
+        <!-- 4 Staggered Columns extending out top & bottom exactly like the wireframe -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 w-full items-center">
+          
+          <!-- Column 1: Lower top, extends out bottom -->
+          <div class="flex flex-col gap-4 -translate-y-2 sm:translate-y-4">
+            <!-- Top Card -->
+            <div class="reel-card aspect-[9/14]" onclick="openModalVideo('Cinematic Wedding Teaser', 'https://www.youtube.com/embed/ScMzIvxBSi4')">
+              <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover">
+            </div>
+            <!-- Bottom Card (Overlaps outside bottom border into black) -->
+            <div class="reel-card aspect-[9/14] translate-y-6 sm:translate-y-12" onclick="openModalVideo('Dream Car Reel', 'https://www.youtube.com/embed/ScMzIvxBSi4')">
+              <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover">
+            </div>
+          </div>
+
+          <!-- Column 2: Peak Column (Extends HIGH above the gray band, exactly like blueprint) -->
+          <div class="flex flex-col gap-4 -translate-y-12 sm:-translate-y-20">
+            <!-- Top Card (Reaches up into hero section area) -->
+            <div class="reel-card aspect-[9/14]" onclick="openModalVideo('Street Pacing Edit', 'https://www.youtube.com/embed/ScMzIvxBSi4')">
+              <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover">
+            </div>
+            <!-- Bottom Card -->
+            <div class="reel-card aspect-[9/14]" onclick="openModalVideo('Commercial Audio', 'https://www.youtube.com/embed/ScMzIvxBSi4')">
+              <img src="https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover">
+            </div>
+          </div>
+
+          <!-- Column 3: Medium Column (Extends out bottom) -->
+          <div class="flex flex-col gap-4 translate-y-0">
+            <!-- Top Card -->
+            <div class="reel-card aspect-[9/14]" onclick="openModalVideo('Neon Cyberpunk Color Grade', 'https://www.youtube.com/embed/ScMzIvxBSi4')">
+              <img src="https://images.unsplash.com/photo-1508739773434-c26b3d09e071?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover">
+            </div>
+            <!-- Bottom Card (Overlaps outside bottom border into black) -->
+            <div class="reel-card aspect-[9/14] translate-y-6 sm:translate-y-12" onclick="openModalVideo('Nature Documentary', 'https://www.youtube.com/embed/ScMzIvxBSi4')">
+              <img src="https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover">
+            </div>
+          </div>
+
+          <!-- Column 4: Staggered High Column -->
+          <div class="flex flex-col gap-4 -translate-y-6 sm:-translate-y-10">
+            <!-- Top Card -->
+            <div class="reel-card aspect-[9/14]" onclick="openModalVideo('Energy Commercial', 'https://www.youtube.com/embed/ScMzIvxBSi4')">
+              <img src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover">
+            </div>
+            <!-- Bottom Card -->
+            <div class="reel-card aspect-[9/14]" onclick="openModalVideo('Fashion Model Reel', 'https://www.youtube.com/embed/ScMzIvxBSi4')">
+              <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover">
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Wireframe Pill Button: "Explore more" placed at bottom center overlapping the section -->
+        <div class="absolute -bottom-5 left-1/2 -translate-x-1/2 z-20">
+          <a href="#portfolio-section" class="explore-btn text-xs sm:text-sm px-6 py-2 flex items-center space-x-1 cursor-pointer">
+            <span>Explore more</span>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- 4. ABOUT SECTION WITH SKILL PARAMETERS -->
+    <section id="about" class="mb-20 pt-8">
+      <div class="space-y-3 max-w-3xl">
+        <!-- Exact headline and subhead from wireframe -->
+        <h2 class="text-3xl sm:text-4xl font-normal text-white">About</h2>
+        <div class="text-neutral-400 text-xs font-mono">Since 2022</div>
+        <h3 class="text-lg sm:text-xl about-name-title text-white pt-1">
+          HELLO, I'M PARVEJ MOSHARROF POLLOB
+        </h3>
+
+        <!-- Exact paragraphs from blueprint -->
+        <div class="space-y-4 text-neutral-300 text-xs sm:text-[13px] leading-relaxed text-justify">
+          <p>
+            For the past 4.5+ years, I have dedicated myself to the art of visual storytelling. Currently working as a Senior Cinematographer and Video Editor, I lead production workflows and collaborate with a talented team of creatives to deliver high-impact media for weddings and commercial clients.
+          </p>
+          <p>
+            My approach to editing is both technical and emotional. Whether I am crafting a fast-paced real estate promo, a heartfelt wedding trailer, or executing complex motion graphics and speed ramps, my goal is always to keep the audience engaged from the first frame to the last.
+          </p>
+        </div>
+
+        <!-- SOFTWARE ICONS & CONNECTING LINE EXACTLY AS DRAWN IN THE WIREFRAME -->
+        <div class="pt-6 pb-2">
+          <div class="w-full max-w-xl bg-black rounded-lg overflow-hidden border border-neutral-900 shadow-md">
+            <img src="software_icons.png" alt="Software Proficiency - Pr, Ai, Ae, Filmora" class="w-full object-contain">
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- 5. EDITING PROCESS SECTION (EXACT GRAPHIC BANNER FROM BLUEPRINT) -->
+    <section class="mb-20">
+      <div class="w-full rounded-xl overflow-hidden border border-neutral-800 shadow-xl">
+        <img src="editing_process_banner.png" alt="My Editing Process" class="w-full object-cover">
+      </div>
+    </section>
+
+
+    <!-- 6. CLIENT REVIEW SECTION (EXACT GRAPHIC CARD FROM BLUEPRINT) -->
+    <section id="reviews-section" class="mb-20">
+      <div class="w-full bg-[#C5D0DC] rounded-xl p-6 sm:p-12 flex items-center justify-center shadow-xl">
+        <div class="max-w-md w-full bg-white rounded-lg shadow-2xl p-4 overflow-hidden">
+          <img src="review_section.png" alt="Client Review Testimonial" class="w-full object-contain">
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 7. OUR PORTFOLIO SECTION (MATCHING "CONSEPT IDEA REFERANCE" & CATEGORIES) -->
+    <section id="portfolio-section" class="mb-20">
+      <div class="text-center max-w-2xl mx-auto mb-8">
+        <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Our Portfolio</h2>
+        <p class="text-neutral-400 text-xs sm:text-sm mt-2">Our portfolio highlights a diverse range of creative work.</p>
+      </div>
+
+      <!-- Exact Blueprint Category Pills -->
+      <div class="flex flex-wrap items-center justify-center gap-2 mb-4" id="categoryContainer">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- Blueprint Reference Image Preview -->
+      <div class="max-w-2xl mx-auto rounded-lg overflow-hidden border border-neutral-800 shadow-xl mb-8">
+        <img src="portfolio_reference_crop.png" alt="Portfolio Concept Reference Grid" class="w-full object-cover">
+      </div>
+
+      <!-- Interactive Filtered Portfolio Cards Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5" id="portfolioGrid">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
+
+    <!-- 8. READY TO TAKE YOUR VIDEOS INTO NEXT LEVEL? (EXACT TEXT & BUTTON) -->
+    <section class="mb-14 text-center py-12 px-4 bg-[#0a0a0a] border border-neutral-900 rounded-xl">
+      <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight mb-2">
+        Ready to take your<br>
+        Videos into next level?
+      </h2>
+      <p class="text-neutral-400 text-xs sm:text-sm max-w-md mx-auto mb-6">
+        Lets collaborate and craft cinematic magic that truly connects.
+      </p>
+      <a href="mailto:parvejmosharrof@gmail.com" class="inline-block bg-[#C5D0DC] hover:bg-[#b0bfd0] text-black font-semibold text-xs sm:text-sm px-8 py-2.5 rounded transition">
+        Get Started
+      </a>
+    </section>
+
+
+    <!-- 9. FOOTER SECTION (EXACT REFERENCE FROM BLUEPRINT RIGHT COLUMN: SAYEED FAHAD) -->
+    <footer id="footer-section" class="w-full bg-white text-black -mx-4 sm:-mx-6 px-4 sm:px-12 pt-12 pb-8 border-t border-neutral-300 mt-20">
+      <div class="max-w-[1080px] mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 sm:gap-12 pb-10 border-b border-neutral-200">
+          
+          <!-- Column 1: Sayeed Fahad Logo & Intro -->
+          <div class="md:col-span-5 space-y-4">
+            <div class="flex items-center space-x-3">
+              <img src="sayeed_fahad_logo.png" alt="Sayeed Fahad" class="h-10 object-contain">
+            </div>
+
+            <p class="text-xs text-neutral-600 leading-relaxed max-w-sm">
+              Transform your passion into skill with courses that teach video editing from basics to brilliance.
+            </p>
+
+            <div class="pt-2 text-[11px] text-neutral-800 font-medium">
+              <span class="font-bold">Licence No:</span> TRAD/DNCC/008721/2025
+            </div>
+          </div>
+
+          <!-- Column 2: Company Links -->
+          <div class="md:col-span-3 space-y-3">
+            <h4 class="font-bold text-sm text-neutral-900">Company</h4>
+            <ul class="space-y-2 text-xs text-neutral-600">
+              <li><a href="#about" class="hover:text-black transition">About Us</a></li>
+              <li><a href="#" class="hover:text-black transition">Become A Teacher</a></li>
+              <li><a href="#" class="hover:text-black transition">Become an Instructor</a></li>
+              <li><a href="#" class="hover:text-black transition">Privacy Policy</a></li>
+              <li><a href="#" class="hover:text-black transition">Terms & Conditions</a></li>
+              <li><a href="#" class="hover:text-black transition">Refund Policy</a></li>
+            </ul>
+          </div>
+
+          <!-- Column 3: Get In Touch -->
+          <div class="md:col-span-4 space-y-3">
+            <h4 class="font-bold text-sm text-neutral-900">Get In Touch</h4>
+            <div class="space-y-2 text-xs text-neutral-600">
+              <div class="flex items-start">
+                <span class="w-16 font-medium text-neutral-800 shrink-0">Address</span>
+                <span>: Shyamoli, Mohammadpur, Dhaka 1207</span>
+              </div>
+              <div class="flex items-center">
+                <span class="w-16 font-medium text-neutral-800 shrink-0">Phone</span>
+                <span>: +880 1885 000118</span>
+              </div>
+              <div class="flex items-center">
+                <span class="w-16 font-medium text-neutral-800 shrink-0">Email</span>
+                <span>: sayeedfahad@gmail.com</span>
+              </div>
+            </div>
+
+            <!-- Social Icons (Facebook & YouTube dark square buttons matching screenshot) -->
+            <div class="flex items-center space-x-2 pt-2">
+              <a href="#" class="w-7 h-7 bg-black hover:bg-neutral-800 text-white rounded flex items-center justify-center transition">
+                <i data-lucide="facebook" class="w-4 h-4 fill-current"></i>
+              </a>
+              <a href="#" class="w-7 h-7 bg-black hover:bg-neutral-800 text-white rounded flex items-center justify-center transition">
+                <i data-lucide="youtube" class="w-4 h-4 fill-current"></i>
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Payment & Trust Badges Strip (Pay With: Visa, Mastercard, Amex, bKash, Nagad, etc.) -->
+        <div class="pt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
+          <div class="max-w-md w-full overflow-hidden opacity-90">
+            <img src="payment_badges.png" alt="Payment Gateways Accepted" class="w-full object-contain">
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- VIDEO MODAL PLAYER -->
+  <div id="videoModal" class="fixed inset-0 z-50 hidden modal-backdrop flex items-center justify-center p-4">
+    <div class="relative w-full max-w-4xl bg-neutral-900 rounded-lg border border-neutral-700 overflow-hidden shadow-2xl">
+      <div class="p-3 bg-neutral-950 flex justify-between items-center border-b border-neutral-800">
+        <h3 id="modalTitle" class="text-xs font-bold text-white">Video Player</h3>
+        <button onclick="closeModalVideo()" class="text-neutral-400 hover:text-white p-1">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+      <div class="aspect-video w-full bg-black">
+        <iframe id="modalFrame" class="w-full h-full" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // Exact categories matching the blueprint right column
+    const CATEGORIES = [
+      { id: "all", name: "All" },
+      { id: "wedding_video", name: "Wedding Video" },
+      { id: "wedding_photo", name: "Wedding Photo" },
+      { id: "graphic_design", name: "Graphic Design" },
+      { id: "reels_shorts", name: "Reels / Shorts" },
+      { id: "documentary", name: "Documentary" },
+      { id: "full_production", name: "Full Production" }
+    ];
+
+    let portfolioData = [
+      { id: "p1", title: "Dream Car Bengal - Commercial", category: "full_production", badge: "Premium", img: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80", video: "https://www.youtube.com/embed/ScMzIvxBSi4" },
+      { id: "p2", title: "Royal Wedding Cinematic Film", category: "wedding_video", badge: "Premium", img: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80", video: "https://www.youtube.com/embed/ScMzIvxBSi4" },
+      { id: "p3", title: "JBL GO3 Audio Product Video", category: "reels_shorts", badge: "Standard", img: "https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=600&q=80", video: "https://www.youtube.com/embed/ScMzIvxBSi4" },
+      { id: "p4", title: "Seylon Documentary Reel", category: "documentary", badge: "Standard", img: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80", video: "https://www.youtube.com/embed/ScMzIvxBSi4" },
+      { id: "p5", title: "Cinematic Wedding Photography", category: "wedding_photo", badge: "Standard", img: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=600&q=80", video: "https://www.youtube.com/embed/ScMzIvxBSi4" },
+      { id: "p6", title: "Luxe Bottle Creative Poster", category: "graphic_design", badge: "Premium", img: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=600&q=80", video: "https://www.youtube.com/embed/ScMzIvxBSi4" }
+    ];
+
+    let currentFilter = 'all';
+    let isGigVideoPlaying = false;
+
+    function renderCategories() {
+      const container = document.getElementById('categoryContainer');
+      container.innerHTML = CATEGORIES.map(c => `
+        <button onclick="setCategory('${c.id}')" class="px-3.5 py-1.5 rounded-sm text-xs font-medium transition ${
+          currentFilter === c.id 
+            ? 'bg-[#F59E0B] text-black font-bold' 
+            : 'bg-[#181818] text-neutral-300 hover:text-white border border-neutral-800'
+        }">
+          ${c.name}
+        </button>
+      `).join('');
+    }
+
+    function renderPortfolio() {
+      const grid = document.getElementById('portfolioGrid');
+      const filtered = currentFilter === 'all' 
+        ? portfolioData 
+        : portfolioData.filter(p => p.category === currentFilter);
+
+      grid.innerHTML = filtered.map(item => `
+        <div class="bg-[#121212] border border-neutral-800 rounded-sm overflow-hidden group">
+          <div class="aspect-square relative overflow-hidden bg-neutral-900 cursor-pointer" onclick="openModalVideo('${item.title}', '${item.video}')">
+            <img src="${item.img}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            <div class="absolute top-2 left-2">
+              <span class="bg-black/70 text-[10px] uppercase font-bold text-white px-2 py-0.5 rounded backdrop-blur-sm border border-white/10">
+                ${item.badge}
+              </span>
+            </div>
+            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+              <div class="w-10 h-10 rounded-full bg-[#F59E0B] text-black flex items-center justify-center">
+                <i data-lucide="play" class="w-5 h-5 fill-current ml-0.5"></i>
+              </div>
+            </div>
+          </div>
+          <div class="p-3">
+            <a href="service-detail.html" class="block">
+              <h4 class="text-xs font-bold text-white hover:text-[#F59E0B] transition line-clamp-1">${item.title}</h4>
+            </a>
+            <div class="flex items-center justify-between mt-2 pt-2 border-t border-neutral-800/80">
+              <span class="text-[10px] text-neutral-400 capitalize">${item.category.replace('_', ' ')}</span>
+              <a href="service-detail.html" class="text-[10px] font-bold text-[#F59E0B] hover:underline flex items-center">
+                View Gig / Book <i data-lucide="arrow-right" class="w-3 h-3 ml-0.5"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    function setCategory(id) {
+      currentFilter = id;
+      renderCategories();
+      renderPortfolio();
+    }
+
+    // Toggle Gig Video Option
+    function toggleGigMedia() {
+      const img = document.getElementById('gigImage');
+      const videoCont = document.getElementById('gigVideoContainer');
+      const iframe = document.getElementById('gigIframe');
+      const btnText = document.getElementById('gigToggleText');
+
+      if (!isGigVideoPlaying) {
+        iframe.src = "https://www.youtube.com/embed/ScMzIvxBSi4?autoplay=1";
+        videoCont.classList.remove('hidden');
+        img.classList.add('hidden');
+        btnText.innerText = "Hide Video";
+        isGigVideoPlaying = true;
+      } else {
+        iframe.src = "";
+        videoCont.classList.add('hidden');
+        img.classList.remove('hidden');
+        btnText.innerText = "View Video";
+        isGigVideoPlaying = false;
+      }
+    }
+
+    // Modal
+    function openModalVideo(title, url) {
+      document.getElementById('modalTitle').innerText = title;
+      document.getElementById('modalFrame').src = url;
+      document.getElementById('videoModal').classList.remove('hidden');
+    }
+
+    function closeModalVideo() {
+      document.getElementById('modalFrame').src = "";
+      document.getElementById('videoModal').classList.add('hidden');
+    }
+
+    window.onload = function() {
+      renderCategories();
+      renderPortfolio();
+      lucide.createIcons();
+    };
+  </script>
+</body>
+</html>
