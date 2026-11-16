@@ -411,6 +411,12 @@ export default function ProjectVisualBuilder() {
     }));
   };
 
+  // Features automatically derived from Compare Packages matrix for each tier
+  const activeComparisonRows = project.comparisonRows || [];
+  const basicDerivedFeatures = activeComparisonRows.filter(r => r.basic).map(r => r.feature);
+  const standardDerivedFeatures = activeComparisonRows.filter(r => r.standard).map(r => r.feature);
+  const premiumDerivedFeatures = activeComparisonRows.filter(r => r.premium).map(r => r.feature);
+
   // Dynamic pricing package preview helper
   const PACKAGES = {
     basic: {
@@ -419,12 +425,7 @@ export default function ProjectVisualBuilder() {
       desc: project.packages?.basic?.desc || 'Teaser / short trailer cut, sound design, color grading, and social multi-platform exports.',
       delivery: project.packages?.basic?.delivery || '3-day delivery',
       revisions: project.packages?.basic?.revisions || '2 Revisions',
-      checklist: project.packages?.basic?.checklist || [
-        'Up to 60 sec cut & pace',
-        'Sound effects & licensed audio',
-        'Color grading (Rec.709)',
-        'Full HD / 4K Export'
-      ]
+      checklist: basicDerivedFeatures
     },
     standard: {
       title: project.packages?.standard?.title || 'Standard Highlight Film',
@@ -432,11 +433,7 @@ export default function ProjectVisualBuilder() {
       desc: project.packages?.standard?.desc || 'Full cinematic highlight film with color grading, dialogue audio sync, and licensed music.',
       delivery: project.packages?.standard?.delivery || '5-day delivery',
       revisions: project.packages?.standard?.revisions || '3 Revisions',
-      checklist: project.packages?.standard?.checklist || [
-        '4K UHD Master File Export',
-        'Multi-Camera Audio Synchronization',
-        'Color Grading & Film Emulation'
-      ]
+      checklist: standardDerivedFeatures
     },
     premium: {
       title: project.packages?.premium?.title || 'Premium Extended Feature',
@@ -444,12 +441,7 @@ export default function ProjectVisualBuilder() {
       desc: project.packages?.premium?.desc || 'Comprehensive full cut + social teasers + multi-camera audio sync + master source project archive.',
       delivery: project.packages?.premium?.delivery || '7-day delivery',
       revisions: project.packages?.premium?.revisions || 'Unlimited Revisions',
-      checklist: project.packages?.premium?.checklist || [
-        'Extended Feature Cut',
-        'Free Social Media Teaser',
-        'Dialogue Cleanup & Mastering',
-        'Master ProRes Export'
-      ]
+      checklist: premiumDerivedFeatures
     }
   };
 
@@ -1190,71 +1182,30 @@ export default function ProjectVisualBuilder() {
                   </div>
                 </div>
 
-                {/* 4. Features Checklist (Dynamic Add / Remove / Edit) */}
+                {/* 4. Features Checklist (Automatically synced from Compare Packages matrix) */}
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <span className="text-[11px] font-bold text-neutral-400 uppercase font-mono">
                       What's included in this package:
                     </span>
-                    <span className="text-[10px] font-mono text-[#FFE379]">
-                      {currentPkg.checklist?.length || 0} features
+                    <span className="text-[10px] font-mono text-[#FFE379] bg-[#FFE379]/10 px-2 py-0.5 rounded border border-[#FFE379]/20">
+                      Auto-synced from Compare table
                     </span>
                   </div>
 
                   <div className="space-y-1.5">
-                    {(currentPkg.checklist || []).map((feat, i) => (
-                      <div key={i} className="flex items-center justify-between bg-[#181818] px-2.5 py-1.5 rounded-lg border border-[#262626] group hover:border-[#FFE379]/40 transition-colors">
-                        <div className="flex items-center space-x-2 flex-1 min-w-0 mr-2">
-                          <Check className="w-3.5 h-3.5 text-[#FFE379] shrink-0" />
-                          <input
-                            type="text"
-                            value={feat}
-                            onChange={(e) => {
-                              const updated = [...currentPkg.checklist];
-                              updated[i] = e.target.value;
-                              updatePackageField(activeTab, 'checklist', updated);
-                            }}
-                            className="w-full bg-transparent text-xs text-neutral-200 focus:outline-none"
-                          />
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => removePackageChecklistItem(activeTab, i)}
-                          className="text-neutral-500 hover:text-red-400 p-0.5 rounded transition-colors"
-                          title="Remove item"
-                        >
-                          <Trash2 className="w-3 h-3" />
-                        </button>
+                    {currentPkg.checklist.length === 0 ? (
+                      <div className="text-[11px] text-neutral-500 italic py-2">
+                        No features enabled for this tier in Compare Packages table below.
                       </div>
-                    ))}
-                  </div>
-
-                  {/* Add Checklist Item Row */}
-                  <div className="pt-1.5 flex items-center space-x-2">
-                    <input
-                      type="text"
-                      value={newChecklistText}
-                      onChange={(e) => setNewChecklistText(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                          e.preventDefault();
-                          addPackageChecklistItem(activeTab, newChecklistText);
-                          setNewChecklistText('');
-                        }
-                      }}
-                      placeholder={`Add feature to ${activeTab.toUpperCase()} and press Enter`}
-                      className="flex-1 bg-[#181818] border border-[#2D2D2D] text-xs px-3 py-1.5 rounded-lg text-white placeholder-neutral-500 focus:border-[#FFE379] outline-none"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => {
-                        addPackageChecklistItem(activeTab, newChecklistText);
-                        setNewChecklistText('');
-                      }}
-                      className="px-3 py-1.5 rounded-lg bg-[#222] hover:bg-[#FFE379] hover:text-black text-white text-xs font-bold uppercase transition-colors"
-                    >
-                      <Plus className="w-3 h-3" />
-                    </button>
+                    ) : (
+                      currentPkg.checklist.map((feat, i) => (
+                        <div key={i} className="flex items-center space-x-2 bg-[#181818] px-2.5 py-1.5 rounded-lg border border-[#262626]">
+                          <Check className="w-3.5 h-3.5 text-[#FFE379] shrink-0" />
+                          <span className="text-xs text-neutral-300 font-sans">{feat}</span>
+                        </div>
+                      ))
+                    )}
                   </div>
                 </div>
 
