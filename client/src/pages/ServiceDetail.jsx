@@ -10,7 +10,8 @@ import {
   Share2, 
   Film, 
   Sparkles,
-  ChevronRight
+  ChevronRight,
+  ChevronLeft
 } from 'lucide-react';
 import axios from 'axios';
 
@@ -22,6 +23,76 @@ export default function ServiceDetail() {
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
   
+  // Active review slide index for the 5 demo reviews carousel
+  const [reviewIndex, setReviewIndex] = useState(0);
+
+  // 5 Realistic Fiverr-style Client Reviews with Brand Colors
+  const REVIEWS = [
+    {
+      id: 1,
+      name: "caiusidris",
+      country: "United States",
+      flag: "🇺🇸",
+      avatarLetter: "C",
+      avatarBg: "bg-gradient-to-tr from-pink-500 to-rose-600",
+      rating: 5,
+      date: "4 months ago",
+      comment: "Amazed with the level of quality and perfection. Well done. They crafted our documentary cut with Hollywood standard pacing and colors. I truly appreciate their work."
+    },
+    {
+      id: 2,
+      name: "elena_v",
+      country: "United Kingdom",
+      flag: "🇬🇧",
+      avatarLetter: "E",
+      avatarBg: "bg-gradient-to-tr from-purple-500 to-indigo-600",
+      rating: 5,
+      date: "2 months ago",
+      comment: "Exceptional storytelling and audio sync! Our brand ad exceeded all engagement metrics on TikTok and YouTube. Definitely booking their standard package again!"
+    },
+    {
+      id: 3,
+      name: "david_miller",
+      country: "Australia",
+      flag: "🇦🇺",
+      avatarLetter: "D",
+      avatarBg: "bg-gradient-to-tr from-amber-500 to-orange-600",
+      rating: 5,
+      date: "3 weeks ago",
+      comment: "Super fast turnaround and spot-on color grade! They turned our raw mountain footage into a breath-taking masterpiece. Communications were 10/10."
+    },
+    {
+      id: 4,
+      name: "sophia_nordic",
+      country: "Norway",
+      flag: "🇳🇴",
+      avatarLetter: "S",
+      avatarBg: "bg-gradient-to-tr from-emerald-500 to-teal-600",
+      rating: 5,
+      date: "1 month ago",
+      comment: "Incredible attention to detail with licensed music and sound design. Our clients literally shed tears watching the teaser cut. Highly recommended agency!"
+    },
+    {
+      id: 5,
+      name: "marcus_creatives",
+      country: "Canada",
+      flag: "🇨🇦",
+      avatarLetter: "M",
+      avatarBg: "bg-gradient-to-tr from-blue-500 to-cyan-600",
+      rating: 5,
+      date: "Just now",
+      comment: "One of the best post-production agencies I have worked with. Clean multicam sync, DaVinci film look, and prompt revisions. 5 stars all the way!"
+    }
+  ];
+
+  const handleNextReview = () => {
+    setReviewIndex((prev) => (prev + 1) % REVIEWS.length);
+  };
+
+  const handlePrevReview = () => {
+    setReviewIndex((prev) => (prev - 1 + REVIEWS.length) % REVIEWS.length);
+  };
+
   const [formData, setFormData] = useState({ name: '', email: '', footageLink: '', notes: '' });
   const [submitStatus, setSubmitStatus] = useState(null);
 
@@ -308,6 +379,111 @@ export default function ServiceDetail() {
                   ))}
                 </ul>
               </div>
+            </div>
+
+            {/* What People Loved About FlipTheLense (Fiverr-Style Review Carousel) */}
+            <div className="space-y-4 pt-6 border-t border-[#232323]">
+              
+              {/* Reviews Header */}
+              <div className="flex items-center justify-between">
+                <h2 
+                  className="text-lg sm:text-xl font-bold text-white tracking-tight"
+                  style={{ fontFamily: "'Oswald', sans-serif" }}
+                >
+                  What people loved about this freelancer
+                </h2>
+
+                <div className="flex items-center space-x-3">
+                  <span className="text-xs text-neutral-400 font-medium hover:text-[#FFE379] cursor-pointer transition-colors">
+                    See all reviews ({REVIEWS.length})
+                  </span>
+
+                  {/* Carousel Prev / Next Arrow Controls */}
+                  <div className="flex items-center space-x-1.5">
+                    <button
+                      type="button"
+                      onClick={handlePrevReview}
+                      className="w-7 h-7 rounded-full bg-[#1A1A1A] hover:bg-[#FFE379] text-neutral-400 hover:text-black flex items-center justify-center transition-colors border border-[#2D2D2D]"
+                      title="Previous review"
+                    >
+                      <ChevronLeft className="w-4 h-4" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleNextReview}
+                      className="w-7 h-7 rounded-full bg-[#1A1A1A] hover:bg-[#FFE379] text-neutral-400 hover:text-black flex items-center justify-center transition-colors border border-[#2D2D2D]"
+                      title="Next review"
+                    >
+                      <ChevronRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Single Review Card Container (Matching exact uploaded design) */}
+              {(() => {
+                const currentReview = REVIEWS[reviewIndex];
+                return (
+                  <div className="rounded-2xl bg-[#141414] border border-[#262626] p-5 sm:p-6 shadow-xl relative transition-all duration-300">
+                    <div className="flex items-start space-x-4">
+                      
+                      {/* Avatar Circle */}
+                      <div className={`w-10 h-10 rounded-full ${currentReview.avatarBg} text-white font-bold flex items-center justify-center text-sm shadow-md shrink-0 uppercase`}>
+                        {currentReview.avatarLetter}
+                      </div>
+
+                      {/* Review Details */}
+                      <div className="flex-1 space-y-2">
+                        {/* Reviewer Name, Country Flag & Stars */}
+                        <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+                          <span className="font-bold text-white text-sm">
+                            {currentReview.name}
+                          </span>
+                          
+                          <span className="text-neutral-500">•</span>
+                          
+                          <span className="text-xs text-neutral-400 flex items-center space-x-1">
+                            <span>{currentReview.flag}</span>
+                            <span>{currentReview.country}</span>
+                          </span>
+
+                          <span className="text-neutral-500">•</span>
+
+                          {/* 5 Stars Rating */}
+                          <div className="flex items-center space-x-1 text-[#FFE379]">
+                            {[...Array(currentReview.rating)].map((_, idx) => (
+                              <Star key={idx} className="w-3.5 h-3.5 fill-current" />
+                            ))}
+                            <span className="text-white text-xs font-bold font-mono ml-1">
+                              {currentReview.rating}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Review Text */}
+                        <p 
+                          className="text-xs sm:text-sm text-neutral-300 leading-relaxed font-normal"
+                          style={{ fontFamily: "'Raleway', sans-serif" }}
+                        >
+                          {currentReview.comment}
+                        </p>
+
+                        {/* Date Timestamp & Pagination Indicator */}
+                        <div className="flex items-center justify-between pt-1">
+                          <span className="text-[11px] text-neutral-500 font-mono">
+                            {currentReview.date}
+                          </span>
+                          <span className="text-[10px] text-neutral-500 font-mono">
+                            {reviewIndex + 1} of {REVIEWS.length}
+                          </span>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                );
+              })()}
+
             </div>
 
           </div>
