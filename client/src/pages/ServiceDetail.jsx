@@ -17,7 +17,10 @@ import {
   ThumbsDown,
   Search,
   Send,
-  CheckCircle2
+  CheckCircle2,
+  CreditCard,
+  AlertCircle,
+  Mail
 } from 'lucide-react';
 import axios from 'axios';
 
@@ -1477,7 +1480,7 @@ export default function ServiceDetail() {
                     className="w-full py-3.5 rounded-xl bg-[#FFE379] hover:bg-[#F2D76B] text-[#101010] font-black uppercase text-xs tracking-wider transition-all shadow-md flex items-center justify-center space-x-2 hover:scale-[1.02]"
                     style={{ fontFamily: "'Oswald', sans-serif" }}
                   >
-                    <span>Book This Project Edit ({currentPkg.price})</span>
+                    <span>Book This Project ({currentPkg.price})</span>
                     <ArrowRight className="w-4 h-4" />
                   </button>
 
@@ -1518,103 +1521,82 @@ export default function ServiceDetail() {
         </div>
       )}
 
-      {/* Booking / Inquiry Modal */}
+      {/* Booking / Payment Notice Modal */}
       {isOrderModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="relative w-full max-w-md bg-[#161616] border border-[#2E2E2E] rounded-3xl p-8 shadow-2xl">
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 animate-fade-in">
+          <div className="relative w-full max-w-lg bg-[#141414] border border-[#2E2E2E] rounded-3xl p-6 sm:p-8 shadow-2xl overflow-hidden">
+            {/* Ambient Background Glow */}
+            <div className="absolute -top-16 -right-16 w-48 h-48 rounded-full bg-[#FFE379]/10 blur-[80px] pointer-events-none" />
+
             <button
               onClick={() => setIsOrderModalOpen(false)}
-              className="absolute top-5 right-5 text-neutral-400 hover:text-white text-base"
+              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-neutral-400 hover:text-white flex items-center justify-center transition-colors text-sm"
+              aria-label="Close"
             >
               ✕
             </button>
 
-            <div className="mb-6">
-              <span className="text-[10px] font-mono text-[#FFE379] bg-[#FFE379]/10 px-2.5 py-1 rounded border border-[#FFE379]/30 uppercase font-bold">
-                {activeTab.toUpperCase()} • {currentPkg.price}
-              </span>
-              <h3 
-                className="text-xl font-bold text-white uppercase mt-2"
-                style={{ fontFamily: "'Oswald', sans-serif" }}
-              >
-                Start Project Order
-              </h3>
-              <p className="text-xs text-neutral-400 mt-1">
-                Provide your footage link or project details to initiate production.
+            {/* Header Icon & Tag */}
+            <div className="flex items-center space-x-3 mb-4">
+              <div className="w-12 h-12 rounded-2xl bg-[#FFE379]/10 border border-[#FFE379]/30 text-[#FFE379] flex items-center justify-center shrink-0">
+                <CreditCard className="w-6 h-6" />
+              </div>
+              <div>
+                <span className="text-[10px] font-mono text-[#FFE379] bg-[#FFE379]/10 px-2.5 py-0.5 rounded border border-[#FFE379]/20 uppercase font-bold">
+                  {activeTab.toUpperCase()} TIER • {currentPkg.price}
+                </span>
+                <h3 
+                  className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight mt-1"
+                  style={{ fontFamily: "'Oswald', sans-serif" }}
+                >
+                  Direct Payment Gateway Under Integration
+                </h3>
+              </div>
+            </div>
+
+            {/* Explanation / Notice Box */}
+            <div className="p-4 rounded-2xl bg-[#1A1A1A] border border-[#282828] space-y-2 mb-6">
+              <div className="flex items-center space-x-2 text-xs font-bold text-[#FFE379]">
+                <AlertCircle className="w-4 h-4 shrink-0" />
+                <span>Automated Card/Online Checkout Coming Soon</span>
+              </div>
+              <p className="text-xs text-neutral-300 leading-relaxed font-normal">
+                Our direct automated checkout and payment gateway are currently undergoing final security compliance and testing. 
+                In the meantime, you can easily book this project or get a customized invoice by reaching out directly through our <strong className="text-white">Contact Page</strong>.
               </p>
             </div>
 
-            {submitStatus === 'success' ? (
-              <div className="py-8 text-center space-y-2">
-                <Check className="w-12 h-12 text-[#FFE379] mx-auto animate-bounce" />
-                <h4 className="font-bold text-white text-base uppercase">Order Inquiry Placed!</h4>
-                <p className="text-xs text-neutral-400">Our editor will reach out within 24 hours.</p>
+            {/* Summary of Selected Package */}
+            <div className="mb-6 p-4 rounded-xl bg-[#101010] border border-[#222222] flex items-center justify-between">
+              <div>
+                <p className="text-[11px] uppercase font-bold text-neutral-400">Selected Project</p>
+                <p className="text-xs font-bold text-white truncate max-w-[220px] sm:max-w-xs">{project.title}</p>
               </div>
-            ) : (
-              <form onSubmit={handleOrderSubmit} className="space-y-4">
-                <div>
-                  <label className="block text-[11px] uppercase font-semibold text-neutral-400 mb-1">
-                    Your Full Name
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    placeholder="e.g. David Miller"
-                    className="w-full px-4 py-2.5 bg-[#1C1C1C] border border-[#2E2E2E] text-white text-xs rounded-xl focus:border-[#FFE379] focus:outline-none"
-                  />
-                </div>
+              <div className="text-right">
+                <p className="text-[11px] uppercase font-bold text-neutral-400">Starting Price</p>
+                <p className="text-sm font-black text-[#FFE379] font-mono">{currentPkg.price}</p>
+              </div>
+            </div>
 
-                <div>
-                  <label className="block text-[11px] uppercase font-semibold text-neutral-400 mb-1">
-                    Your Email Address
-                  </label>
-                  <input
-                    type="email"
-                    required
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    placeholder="david@example.com"
-                    className="w-full px-4 py-2.5 bg-[#1C1C1C] border border-[#2E2E2E] text-white text-xs rounded-xl focus:border-[#FFE379] focus:outline-none"
-                  />
-                </div>
+            {/* Actions */}
+            <div className="space-y-3">
+              <Link
+                to="/contact"
+                className="w-full py-3.5 rounded-xl bg-[#FFE379] hover:bg-[#F2D76B] text-[#101010] font-black uppercase text-xs tracking-wider transition-all shadow-md flex items-center justify-center space-x-2 hover:scale-[1.02]"
+                style={{ fontFamily: "'Oswald', sans-serif" }}
+              >
+                <Mail className="w-4 h-4" />
+                <span>Contact Us To Book</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
 
-                <div>
-                  <label className="block text-[11px] uppercase font-semibold text-neutral-400 mb-1">
-                    Raw Footage Link (Google Drive / WeTransfer)
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.footageLink}
-                    onChange={(e) => setFormData({ ...formData, footageLink: e.target.value })}
-                    placeholder="https://drive.google.com/..."
-                    className="w-full px-4 py-2.5 bg-[#1C1C1C] border border-[#2E2E2E] text-white text-xs rounded-xl focus:border-[#FFE379] focus:outline-none"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-[11px] uppercase font-semibold text-neutral-400 mb-1">
-                    Project Instructions / Notes
-                  </label>
-                  <textarea
-                    rows="3"
-                    value={formData.notes}
-                    onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                    placeholder="Desired music style, color grade mood, turnaround timeline..."
-                    className="w-full px-4 py-2.5 bg-[#1C1C1C] border border-[#2E2E2E] text-white text-xs rounded-xl focus:border-[#FFE379] focus:outline-none resize-none"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full py-3 bg-[#FFE379] hover:bg-[#F2D76B] text-[#101010] font-black uppercase text-xs tracking-wider rounded-xl transition-all shadow-md mt-2"
-                  style={{ fontFamily: "'Oswald', sans-serif" }}
-                >
-                  Confirm & Submit Project Inquiry
-                </button>
-              </form>
-            )}
+              <button
+                onClick={() => setIsOrderModalOpen(false)}
+                className="w-full py-2.5 rounded-xl bg-[#1C1C1C] hover:bg-[#252525] border border-[#2D2D2D] text-xs font-semibold text-neutral-400 hover:text-white transition-all text-center block"
+              >
+                Continue Browsing
+              </button>
+            </div>
 
           </div>
         </div>

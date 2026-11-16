@@ -1213,7 +1213,7 @@ export default function ProjectVisualBuilder() {
                     className="w-full py-3.5 rounded-xl bg-[#FFE379] text-[#101010] font-black uppercase text-xs tracking-wider shadow-md flex items-center justify-center space-x-2 opacity-90 cursor-default"
                     style={{ fontFamily: "'Oswald', sans-serif" }}
                   >
-                    <span>Book This Project Edit ({currentPkg.price})</span>
+                    <span>Book This Project ({currentPkg.price})</span>
                     <ArrowRight className="w-4 h-4" />
                   </div>
 
