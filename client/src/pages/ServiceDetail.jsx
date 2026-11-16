@@ -759,17 +759,28 @@ export default function ServiceDetail() {
                   </div>
                 </div>
 
-                {/* Features Checklist */}
+                {/* Features Checklist (Filtered directly from Compare Packages feature matrix) */}
                 <div className="space-y-2">
                   <span className="text-[11px] font-bold text-neutral-400 uppercase font-mono block mb-1">
                     What's included in this package:
                   </span>
-                  {currentPkg.checklist.map((feat, i) => (
-                    <div key={i} className="flex items-center space-x-2 text-xs text-neutral-300">
-                      <Check className="w-3.5 h-3.5 text-[#FFE379] shrink-0" />
-                      <span>{feat}</span>
-                    </div>
-                  ))}
+                  
+                  {(() => {
+                    // Extract features where current tier is checked in comparisonRows
+                    const activeTierFeatures = (project?.comparisonRows || [])
+                      .filter((row) => row[activeTab])
+                      .map((row) => row.feature);
+
+                    // If comparisonRows exists and has items, show those; otherwise fallback to currentPkg.checklist
+                    const displayChecklist = activeTierFeatures.length > 0 ? activeTierFeatures : (currentPkg.checklist || []);
+
+                    return displayChecklist.map((feat, i) => (
+                      <div key={i} className="flex items-center space-x-2 text-xs text-neutral-300">
+                        <Check className="w-3.5 h-3.5 text-[#FFE379] shrink-0" />
+                        <span>{feat}</span>
+                      </div>
+                    ));
+                  })()}
                 </div>
 
                 {/* CTA Action Buttons */}
