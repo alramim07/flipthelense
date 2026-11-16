@@ -46,15 +46,15 @@ export default function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-[#1A1A1A]/95 backdrop-blur-md border-b border-[#232323] py-2.5 px-4 sm:px-8 flex items-center justify-between shadow-xl transition-all">
+    <header className="sticky top-0 z-50 w-full bg-[#1A1A1A]/95 backdrop-blur-md border-b border-[#232323] py-2 px-4 sm:px-8 flex items-center justify-between shadow-xl transition-all">
       {/* Brand Logo in exact Videen Gold or Uploaded Image */}
-      <Link to="/" className="flex items-center space-x-2 group shrink-0 py-1">
+      <Link to="/" className="flex items-center space-x-2 group shrink-0">
         {settings.frontendLogo ? (
           <img 
             src={settings.frontendLogo} 
             alt="FlipTheLense Logo" 
-            style={{ height: `${settings.logoHeight || 44}px` }}
-            className="w-auto max-w-[280px] object-contain transition-transform group-hover:scale-105" 
+            style={{ height: `${settings.logoHeight || 52}px` }}
+            className="w-auto max-w-[320px] object-contain transition-transform group-hover:scale-105" 
           />
         ) : (
           <div className="bg-[#FFE379] text-black font-black px-3.5 py-1 text-sm tracking-wider uppercase transition-transform group-hover:scale-105" style={{ fontFamily: "'Oswald', sans-serif" }}>

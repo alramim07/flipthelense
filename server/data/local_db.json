@@ -341,6 +341,15 @@
       "device": "Desktop",
       "timestamp": "2026-11-16T14:31:10.541Z",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794843280888_6kkx8",
+      "visitorId": "vid_1794834903395_ubmy3zo",
+      "path": "/",
+      "referrer": "Direct",
+      "device": "Mobile",
+      "timestamp": "2026-11-16T15:34:40.888Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.7977.167 Safari/537.36 Antigravity/2.32.1"
     }
   ],
   "inquiries": [
@@ -1058,7 +1067,7 @@
     "frontendFavicon": "/uploads/Glossy_Cinematic_F_Aperture_Logo_1794840802056.png",
     "adminFavicon": "",
     "mergeFavicon": true,
-    "frontendLogo": "/uploads/FlipTheLense_Cinematic_Logo_1794840809037.png",
+    "frontendLogo": "/uploads/FlipTheLense_Logo_Cropped.png",
     "adminLogo": "",
     "footerLogo": "",
     "mergeAdminLogo": true,
@@ -1101,7 +1110,7 @@
       "customColor": "#FFE379",
       "textColor": "#101010"
     },
-    "logoHeight": 44
+    "logoHeight": 52
   },
   "categories": [
     {
