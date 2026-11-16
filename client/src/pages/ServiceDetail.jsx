@@ -673,18 +673,24 @@ export default function ServiceDetail() {
                           Total
                         </td>
                         <td className="py-4 px-5 text-center border-l border-[#222]">
+                          <span className="text-base font-black text-[#FFE379] font-mono block mb-2">
+                            US${project.basicPrice || 150}
+                          </span>
                           <button
                             type="button"
                             onClick={() => {
                               setActiveTab('basic');
                               setIsOrderModalOpen(true);
                             }}
-                            className="w-full py-2.5 px-3 rounded-xl bg-[#1A1A1A] hover:bg-[#FFE379] text-white hover:text-black font-bold uppercase text-xs font-mono transition-colors"
+                            className="w-full py-2.5 px-3 rounded-xl bg-[#1A1A1A] hover:bg-[#FFE379] text-white hover:text-black font-bold uppercase text-xs font-mono transition-colors shadow-sm"
                           >
-                            Select (US${project.basicPrice || 150})
+                            Select
                           </button>
                         </td>
                         <td className="py-4 px-5 text-center border-l border-[#222] bg-[#FFE379]/[0.03]">
+                          <span className="text-base font-black text-[#FFE379] font-mono block mb-2">
+                            US${project.standardPrice || 300}
+                          </span>
                           <button
                             type="button"
                             onClick={() => {
@@ -693,19 +699,22 @@ export default function ServiceDetail() {
                             }}
                             className="w-full py-2.5 px-3 rounded-xl bg-[#FFE379] hover:bg-[#F2D76B] text-black font-black uppercase text-xs font-mono transition-colors shadow-md"
                           >
-                            Select (US${project.standardPrice || 300})
+                            Select
                           </button>
                         </td>
                         <td className="py-4 px-5 text-center border-l border-[#222]">
+                          <span className="text-base font-black text-[#FFE379] font-mono block mb-2">
+                            US${project.premiumPrice || 550}
+                          </span>
                           <button
                             type="button"
                             onClick={() => {
                               setActiveTab('premium');
                               setIsOrderModalOpen(true);
                             }}
-                            className="w-full py-2.5 px-3 rounded-xl bg-[#1A1A1A] hover:bg-[#FFE379] text-white hover:text-black font-bold uppercase text-xs font-mono transition-colors"
+                            className="w-full py-2.5 px-3 rounded-xl bg-[#1A1A1A] hover:bg-[#FFE379] text-white hover:text-black font-bold uppercase text-xs font-mono transition-colors shadow-sm"
                           >
-                            Select (US${project.premiumPrice || 550})
+                            Select
                           </button>
                         </td>
                       </tr>

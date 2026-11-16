@@ -1285,10 +1285,17 @@ export default function ProjectVisualBuilder() {
                       Package / Features
                     </th>
                     <th className="py-5 px-6 text-center w-1/5 border-l border-[#222]">
-                      <span className="text-sm font-black text-[#FFE379] font-mono block">
-                        US${project.basicPrice || 150}
-                      </span>
-                      <span className="text-xs font-bold text-white uppercase mt-0.5 block" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                      <div className="flex items-center justify-center space-x-1">
+                        <span className="text-xs font-mono font-bold text-neutral-400">US$</span>
+                        <input
+                          type="number"
+                          value={project.basicPrice || ''}
+                          onChange={(e) => setProject({ ...project, basicPrice: e.target.value })}
+                          placeholder="150"
+                          className="w-20 text-center text-sm font-black text-[#FFE379] font-mono bg-[#181818] border border-dashed border-[#444] hover:border-[#FFE379] focus:border-[#FFE379] outline-none rounded py-0.5"
+                        />
+                      </div>
+                      <span className="text-xs font-bold text-white uppercase mt-1 block" style={{ fontFamily: "'Oswald', sans-serif" }}>
                         Basic
                       </span>
                       <input
@@ -1307,10 +1314,17 @@ export default function ProjectVisualBuilder() {
                       />
                     </th>
                     <th className="py-5 px-6 text-center w-1/5 border-l border-[#222] bg-[#FFE379]/[0.02]">
-                      <span className="text-sm font-black text-[#FFE379] font-mono block">
-                        US${project.standardPrice || 300}
-                      </span>
-                      <span className="text-xs font-bold text-[#FFE379] uppercase mt-0.5 block" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                      <div className="flex items-center justify-center space-x-1">
+                        <span className="text-xs font-mono font-bold text-neutral-400">US$</span>
+                        <input
+                          type="number"
+                          value={project.standardPrice || ''}
+                          onChange={(e) => setProject({ ...project, standardPrice: e.target.value })}
+                          placeholder="300"
+                          className="w-20 text-center text-sm font-black text-[#FFE379] font-mono bg-[#181818] border border-dashed border-[#FFE379]/40 hover:border-[#FFE379] focus:border-[#FFE379] outline-none rounded py-0.5"
+                        />
+                      </div>
+                      <span className="text-xs font-bold text-[#FFE379] uppercase mt-1 block" style={{ fontFamily: "'Oswald', sans-serif" }}>
                         Standard
                       </span>
                       <input
@@ -1329,10 +1343,17 @@ export default function ProjectVisualBuilder() {
                       />
                     </th>
                     <th className="py-5 px-6 text-center w-1/5 border-l border-[#222]">
-                      <span className="text-sm font-black text-[#FFE379] font-mono block">
-                        US${project.premiumPrice || 550}
-                      </span>
-                      <span className="text-xs font-bold text-white uppercase mt-0.5 block" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                      <div className="flex items-center justify-center space-x-1">
+                        <span className="text-xs font-mono font-bold text-neutral-400">US$</span>
+                        <input
+                          type="number"
+                          value={project.premiumPrice || ''}
+                          onChange={(e) => setProject({ ...project, premiumPrice: e.target.value })}
+                          placeholder="550"
+                          className="w-20 text-center text-sm font-black text-[#FFE379] font-mono bg-[#181818] border border-dashed border-[#444] hover:border-[#FFE379] focus:border-[#FFE379] outline-none rounded py-0.5"
+                        />
+                      </div>
+                      <span className="text-xs font-bold text-white uppercase mt-1 block" style={{ fontFamily: "'Oswald', sans-serif" }}>
                         Premium
                       </span>
                       <input
