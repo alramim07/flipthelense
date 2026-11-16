@@ -181,136 +181,169 @@ export default function EditingProcessSection() {
 
           {/* ===== BACKGROUND HIGHWAY SVG ===== */}
           <div
-            className="absolute -inset-x-8 -top-8 -bottom-8 pointer-events-none hidden md:block"
+            className="absolute -inset-x-10 -top-10 -bottom-10 pointer-events-none hidden md:block"
             style={{ zIndex: 0 }}
           >
             <svg
               className="w-full h-full"
-              viewBox="0 0 1020 500"
+              viewBox="0 0 1020 520"
               fill="none"
               preserveAspectRatio="none"
               style={{ overflow: 'visible' }}
             >
               <defs>
-                {/* Glow filter for realistic highway presence */}
-                <filter id="roadGlow" x="-20%" y="-20%" width="140%" height="140%">
-                  <feGaussianBlur stdDeviation="8" result="blur" />
+                {/* Glow filter for realistic asphalt presence */}
+                <filter id="roadAtmosphere" x="-30%" y="-30%" width="160%" height="160%">
+                  <feGaussianBlur stdDeviation="12" result="blur" />
                   <feComposite in="SourceGraphic" in2="blur" operator="over" />
                 </filter>
+                <filter id="yellowGlow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="4" result="blur" />
+                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                </filter>
+                {/* Subtle asphalt gradient for realistic texture & elevation */}
+                <linearGradient id="mountainRoadGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#1E1E1E" />
+                  <stop offset="50%" stopColor="#151515" />
+                  <stop offset="100%" stopColor="#1C1C1C" />
+                </linearGradient>
               </defs>
 
-              {/* Path Definition:
-                  P0: -50, -20 (enters from top-left outside)
-                  P1: 170, 95 (Card 01)
-                  P2: 170, 395 (Card 02)
-                  P3: 510, 95 (Card 03)
-                  P4: 850, 95 (Card 05)
-                  P5: 510, 395 (Card 04)
-                  P6: 850, 395 (Card 06)
-                  P7: 1080, 410 (Exit right)
-              */}
-
               {/* 
-                Calculated Continuous Organic Highway Spline:
-                - Realistic smooth highway turning radii (C1 continuity between curves)
-                - Wide highway roadbed for impactful presence
+                Pure Curve Mountain Highway Spline (পাহাড়ি আঁকাবাঁকা মসৃণ হাইওয়ে):
+                Sequentially weaves through the exact centers of Step 01 -> 02 -> 03 -> 04 -> 05 -> 06
+                Continuous cubic beziers with smooth G1/C1 continuity and organic hairpin bends.
               */}
 
-              {/* 1. Road Outer Dark Foundation / Shadow */}
+              {/* Path Data:
+                  Start off-screen left: (-80, 50)
+                  Through Card 01 (170, 95)
+                  Hairpin curve down through Card 02 (170, 395)
+                  Sweeping mountain switchback S-curve up through Card 03 (510, 95)
+                  Curving down through Card 04 (510, 395)
+                  Sweeping up over the ridge through Card 05 (850, 95)
+                  Down through Card 06 (850, 395)
+                  Smoothly exits off-screen right (1100, 430)
+              */}
+
+              {/* 1. Road Deep Shadow / Elevation Grounding */}
               <path
-                d="M -60 -30 
-                   C 30 10, 110 30, 165 95
-                   C 215 155, 215 320, 165 390
-                   C 120 455, 230 460, 310 395
-                   C 390 330, 430 190, 505 95
-                   C 570 15, 740 15, 845 95
-                   C 920 155, 860 270, 755 330
-                   C 665 385, 590 405, 505 405
-                   C 430 405, 710 405, 845 405
-                   C 930 405, 1000 410, 1100 415"
-                stroke="#0A0A0A"
-                strokeWidth="58"
+                d="M -90 40 
+                   C -20 50, 80 65, 170 95
+                   C 260 125, 275 320, 195 385
+                   C 135 435, 120 480, 215 470
+                   C 310 460, 385 240, 480 120
+                   C 530 60, 610 65, 540 220
+                   C 480 340, 420 450, 520 440
+                   C 630 430, 720 220, 810 115
+                   C 865 50, 970 80, 905 270
+                   C 850 420, 780 445, 875 425
+                   C 960 410, 1020 415, 1110 425"
+                stroke="#050505"
+                strokeWidth="74"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                opacity="0.95"
+                opacity="0.8"
               />
 
-              {/* 2. Asphalt Road Surface (Wider & Solid) */}
+              {/* 2. Concrete Road Curb / Shoulder (Pahari Mountain Edge Curb) */}
               <path
-                d="M -60 -30 
-                   C 30 10, 110 30, 165 95
-                   C 215 155, 215 320, 165 390
-                   C 120 455, 230 460, 310 395
-                   C 390 330, 430 190, 505 95
-                   C 570 15, 740 15, 845 95
-                   C 920 155, 860 270, 755 330
-                   C 665 385, 590 405, 505 405
-                   C 430 405, 710 405, 845 405
-                   C 930 405, 1000 410, 1100 415"
-                stroke="#1B1B1B"
-                strokeWidth="42"
+                d="M -90 40 
+                   C -20 50, 80 65, 170 95
+                   C 260 125, 275 320, 195 385
+                   C 135 435, 120 480, 215 470
+                   C 310 460, 385 240, 480 120
+                   C 530 60, 610 65, 540 220
+                   C 480 340, 420 450, 520 440
+                   C 630 430, 720 220, 810 115
+                   C 865 50, 970 80, 905 270
+                   C 850 420, 780 445, 875 425
+                   C 960 410, 1020 415, 1110 425"
+                stroke="#2B2B2B"
+                strokeWidth="56"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
 
-              {/* 3. Left / Outer White Boundary Rail */}
+              {/* 3. Smooth Asphalt Paved Surface */}
               <path
-                d="M -60 -30 
-                   C 30 10, 110 30, 165 95
-                   C 215 155, 215 320, 165 390
-                   C 120 455, 230 460, 310 395
-                   C 390 330, 430 190, 505 95
-                   C 570 15, 740 15, 845 95
-                   C 920 155, 860 270, 755 330
-                   C 665 385, 590 405, 505 405
-                   C 430 405, 710 405, 845 405
-                   C 930 405, 1000 410, 1100 415"
+                d="M -90 40 
+                   C -20 50, 80 65, 170 95
+                   C 260 125, 275 320, 195 385
+                   C 135 435, 120 480, 215 470
+                   C 310 460, 385 240, 480 120
+                   C 530 60, 610 65, 540 220
+                   C 480 340, 420 450, 520 440
+                   C 630 430, 720 220, 810 115
+                   C 865 50, 970 80, 905 270
+                   C 850 420, 780 445, 875 425
+                   C 960 410, 1020 415, 1110 425"
+                stroke="url(#mountainRoadGrad)"
+                strokeWidth="48"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+
+              {/* 4. Outer Continuous Guardrail / Shoulder White Lines */}
+              <path
+                d="M -90 40 
+                   C -20 50, 80 65, 170 95
+                   C 260 125, 275 320, 195 385
+                   C 135 435, 120 480, 215 470
+                   C 310 460, 385 240, 480 120
+                   C 530 60, 610 65, 540 220
+                   C 480 340, 420 450, 520 440
+                   C 630 430, 720 220, 810 115
+                   C 865 50, 970 80, 905 270
+                   C 850 420, 780 445, 875 425
+                   C 960 410, 1020 415, 1110 425"
                 stroke="#FFFFFF"
-                strokeWidth="2.5"
-                strokeOpacity="0.9"
+                strokeWidth="1.8"
+                strokeOpacity="0.4"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                transform="translate(-10, -10)"
+                transform="translate(-18, -12)"
               />
-
-              {/* 4. Right / Inner White Boundary Rail */}
               <path
-                d="M -60 -30 
-                   C 30 10, 110 30, 165 95
-                   C 215 155, 215 320, 165 390
-                   C 120 455, 230 460, 310 395
-                   C 390 330, 430 190, 505 95
-                   C 570 15, 740 15, 845 95
-                   C 920 155, 860 270, 755 330
-                   C 665 385, 590 405, 505 405
-                   C 430 405, 710 405, 845 405
-                   C 930 405, 1000 410, 1100 415"
+                d="M -90 40 
+                   C -20 50, 80 65, 170 95
+                   C 260 125, 275 320, 195 385
+                   C 135 435, 120 480, 215 470
+                   C 310 460, 385 240, 480 120
+                   C 530 60, 610 65, 540 220
+                   C 480 340, 420 450, 520 440
+                   C 630 430, 720 220, 810 115
+                   C 865 50, 970 80, 905 270
+                   C 850 420, 780 445, 875 425
+                   C 960 410, 1020 415, 1110 425"
                 stroke="#FFFFFF"
-                strokeWidth="2.5"
-                strokeOpacity="0.9"
+                strokeWidth="1.8"
+                strokeOpacity="0.4"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                transform="translate(10, 10)"
+                transform="translate(18, 12)"
               />
 
-              {/* 5. Animated Golden Center Lane Track */}
+              {/* 5. Animated Golden Center Lane Track (Cinema Reel / Moving Mountain Highway Markings) */}
               <path
-                d="M -60 -30 
-                   C 30 10, 110 30, 165 95
-                   C 215 155, 215 320, 165 390
-                   C 120 455, 230 460, 310 395
-                   C 390 330, 430 190, 505 95
-                   C 570 15, 740 15, 845 95
-                   C 920 155, 860 270, 755 330
-                   C 665 385, 590 405, 505 405
-                   C 430 405, 710 405, 845 405
-                   C 930 405, 1000 410, 1100 415"
+                d="M -90 40 
+                   C -20 50, 80 65, 170 95
+                   C 260 125, 275 320, 195 385
+                   C 135 435, 120 480, 215 470
+                   C 310 460, 385 240, 480 120
+                   C 530 60, 610 65, 540 220
+                   C 480 340, 420 450, 520 440
+                   C 630 430, 720 220, 810 115
+                   C 865 50, 970 80, 905 270
+                   C 850 420, 780 445, 875 425
+                   C 960 410, 1020 415, 1110 425"
                 stroke="#FFE379"
-                strokeWidth="4"
-                strokeDasharray="20 14"
+                strokeWidth="3.5"
+                strokeDasharray="18 14"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 className="animate-road-middle-track"
+                filter="url(#yellowGlow)"
               />
             </svg>
           </div>
