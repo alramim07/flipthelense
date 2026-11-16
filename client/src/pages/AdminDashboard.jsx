@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useNavigate, Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import {
@@ -879,8 +880,8 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-            {/* Modal: Add New Portfolio Project */}
-            {isAddModalOpen && (
+            {/* Modal: Add New Portfolio Project rendered in Portal */}
+            {isAddModalOpen && createPortal(
               <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
                 <div className="relative w-full max-w-2xl rounded-2xl bg-[#141414] border border-[#2D2D2D] p-6 shadow-2xl overflow-y-auto max-h-[90vh]">
                   {/* Modal Header */}
@@ -1053,7 +1054,8 @@ export default function AdminDashboard() {
                     </div>
                   </form>
                 </div>
-              </div>
+              </div>,
+              document.body
             )}
           </div>
         )}
@@ -1394,8 +1396,8 @@ export default function AdminDashboard() {
               )}
             </div>
 
-            {/* Modal: Create Custom Review */}
-            {isAddReviewModalOpen && (
+            {/* Modal: Create Custom Review rendered in Portal directly into body */}
+            {isAddReviewModalOpen && createPortal(
               <div 
                 className="fixed inset-0 z-[9999] bg-black/80 backdrop-blur-md flex items-center justify-center p-4 sm:p-6"
                 onClick={(e) => {
@@ -1654,7 +1656,8 @@ export default function AdminDashboard() {
                     </div>
                   </form>
                 </div>
-              </div>
+              </div>,
+              document.body
             )}
           </div>
         )}

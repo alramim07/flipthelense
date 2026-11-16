@@ -47,10 +47,10 @@ function AppContent() {
   }, [location.pathname, isAdminRoute]);
 
   return (
-    <div className={`min-h-screen ${isAdminRoute ? 'h-screen overflow-hidden flex flex-col' : 'flex flex-col justify-between'} bg-black text-white`}>
+    <div className={`min-h-screen ${isAdminRoute ? '' : 'flex flex-col justify-between'} bg-black text-white`}>
       {/* Do not render public Navbar or Footer on Admin Portal pages */}
       {!isAdminRoute && <Navbar />}
-      <div className={isAdminRoute ? 'h-full flex-1 overflow-hidden' : ''}>
+      <div>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<AboutUs />} />
