@@ -47,8 +47,8 @@ function AppContent() {
   }, [location.pathname, isAdminRoute]);
 
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-black text-white">
-      <div>
+    <div className={`min-h-screen flex flex-col ${isAdminRoute ? '' : 'justify-between'} bg-black text-white`}>
+      <div className={isAdminRoute ? 'min-h-screen flex flex-col' : ''}>
         {/* Do not render public Navbar or Footer on Admin Portal pages */}
         {!isAdminRoute && <Navbar />}
         <Routes>

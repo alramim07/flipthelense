@@ -36,7 +36,8 @@ import {
   MessageSquare,
   ThumbsUp,
   ThumbsDown,
-  Filter
+  Filter,
+  ChevronDown
 } from 'lucide-react';
 
 export default function AdminDashboard() {
@@ -86,6 +87,8 @@ export default function AdminDashboard() {
   const [reviews, setReviews] = useState([]);
   const [reviewFilterStatus, setReviewFilterStatus] = useState('all'); // 'all' | 'pending' | 'accepted' | 'rejected'
   const [isAddReviewModalOpen, setIsAddReviewModalOpen] = useState(false);
+  const [projectSearchQuery, setProjectSearchQuery] = useState('');
+  const [isProjectDropdownOpen, setIsProjectDropdownOpen] = useState(false);
   const [newReviewForm, setNewReviewForm] = useState({
     projectSlug: 'all',
     projectName: 'All Projects',
@@ -1394,7 +1397,7 @@ export default function AdminDashboard() {
             {/* Modal: Create Custom Review */}
             {isAddReviewModalOpen && (
               <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-                <div className="relative w-full max-w-lg bg-[#161616] border border-[#2E2E2E] rounded-3xl p-7 shadow-2xl space-y-5">
+                <div className="relative w-full max-w-lg bg-[#161616] border border-[#2E2E2E] rounded-3xl p-7 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto">
                   <div className="flex items-center justify-between pb-3 border-b border-[#262626]">
                     <h3 
                       className="text-lg font-bold text-white uppercase"
@@ -1404,7 +1407,10 @@ export default function AdminDashboard() {
                     </h3>
                     <button
                       type="button"
-                      onClick={() => setIsAddReviewModalOpen(false)}
+                      onClick={() => {
+                        setIsAddReviewModalOpen(false);
+                        setIsProjectDropdownOpen(false);
+                      }}
                       className="text-neutral-400 hover:text-white"
                     >
                       <X className="w-5 h-5" />
@@ -1412,30 +1418,126 @@ export default function AdminDashboard() {
                   </div>
 
                   <form onSubmit={handleCreateCustomReview} className="space-y-4">
-                    <div>
+                    {/* Target Project Dropdown with Live Search */}
+                    <div className="relative">
                       <label className="block text-[11px] uppercase font-mono text-neutral-400 mb-1">
                         Target Project
                       </label>
-                      <select
-                        value={newReviewForm.projectSlug}
-                        onChange={(e) => {
-                          const selectedSlug = e.target.value;
-                          const matched = portfolioItems.find(p => p.slug === selectedSlug);
-                          setNewReviewForm({
-                            ...newReviewForm,
-                            projectSlug: selectedSlug,
-                            projectName: matched ? matched.title : 'All Projects'
-                          });
-                        }}
-                        className="w-full bg-[#1A1A1A] border border-[#333] px-3.5 py-2 rounded-xl text-xs text-white focus:border-[#FFE379] outline-none"
+                      <button
+                        type="button"
+                        onClick={() => setIsProjectDropdownOpen(!isProjectDropdownOpen)}
+                        className="w-full bg-[#1A1A1A] border border-[#333] hover:border-[#FFE379]/60 px-3.5 py-2.5 rounded-xl text-xs text-white focus:border-[#FFE379] outline-none flex items-center justify-between transition-colors"
                       >
-                        <option value="all">Show Across All Projects</option>
-                        {portfolioItems.map((p) => (
-                          <option key={p.slug} value={p.slug}>
-                            {p.title} ({p.slug})
-                          </option>
-                        ))}
-                      </select>
+                        <span className="truncate font-semibold">
+                          {newReviewForm.projectSlug === 'all'
+                            ? '🌐 Show Across All Projects'
+                            : `🎬 ${newReviewForm.projectName} (${newReviewForm.projectSlug})`}
+                        </span>
+                        <ChevronDown className={`w-4 h-4 text-neutral-400 transition-transform shrink-0 ml-2 ${isProjectDropdownOpen ? 'rotate-180 text-[#FFE379]' : ''}`} />
+                      </button>
+
+                      {/* Dropdown Menu with Live Filter Search */}
+                      {isProjectDropdownOpen && (
+                        <div className="absolute left-0 right-0 top-full mt-1.5 bg-[#181818] border border-[#333] rounded-2xl shadow-2xl z-30 overflow-hidden animate-fade-in">
+                          {/* Search Bar inside dropdown */}
+                          <div className="p-2 border-b border-[#282828] bg-[#121212]">
+                            <div className="relative">
+                              <Search className="w-3.5 h-3.5 text-neutral-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                              <input
+                                type="text"
+                                autoFocus
+                                value={projectSearchQuery}
+                                onChange={(e) => setProjectSearchQuery(e.target.value)}
+                                placeholder="Search project name or slug..."
+                                className="w-full bg-[#1C1C1C] text-white text-xs pl-8 pr-3 py-1.5 rounded-lg border border-[#2E2E2E] focus:border-[#FFE379] outline-none placeholder-neutral-500 font-mono"
+                              />
+                            </div>
+                          </div>
+
+                          {/* Options List */}
+                          <div className="max-h-56 overflow-y-auto divide-y divide-[#222]">
+                            {/* "All Projects" Option */}
+                            {('show across all projects'.includes(projectSearchQuery.toLowerCase()) || projectSearchQuery.trim() === '') && (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setNewReviewForm({
+                                    ...newReviewForm,
+                                    projectSlug: 'all',
+                                    projectName: 'All Projects'
+                                  });
+                                  setIsProjectDropdownOpen(false);
+                                  setProjectSearchQuery('');
+                                }}
+                                className={`w-full text-left px-3.5 py-2.5 text-xs flex items-center justify-between transition-colors ${
+                                  newReviewForm.projectSlug === 'all'
+                                    ? 'bg-[#FFE379]/15 text-[#FFE379] font-bold'
+                                    : 'text-neutral-300 hover:bg-[#222]'
+                                }`}
+                              >
+                                <div>
+                                  <div className="font-semibold">🌐 Show Across All Projects</div>
+                                  <div className="text-[10px] text-neutral-500 font-mono">Global site-wide review</div>
+                                </div>
+                                {newReviewForm.projectSlug === 'all' && <Check className="w-4 h-4 text-[#FFE379]" />}
+                              </button>
+                            )}
+
+                            {/* Filtered Portfolio Projects */}
+                            {portfolioItems
+                              .filter((p) => {
+                                const q = projectSearchQuery.toLowerCase();
+                                return (
+                                  (p.title && p.title.toLowerCase().includes(q)) ||
+                                  (p.slug && p.slug.toLowerCase().includes(q)) ||
+                                  (p.category && p.category.toLowerCase().includes(q))
+                                );
+                              })
+                              .map((p) => {
+                                const isSelected = newReviewForm.projectSlug === p.slug;
+                                return (
+                                  <button
+                                    key={p.slug}
+                                    type="button"
+                                    onClick={() => {
+                                      setNewReviewForm({
+                                        ...newReviewForm,
+                                        projectSlug: p.slug,
+                                        projectName: p.title || p.slug
+                                      });
+                                      setIsProjectDropdownOpen(false);
+                                      setProjectSearchQuery('');
+                                    }}
+                                    className={`w-full text-left px-3.5 py-2.5 text-xs flex items-center justify-between transition-colors ${
+                                      isSelected
+                                        ? 'bg-[#FFE379]/15 text-[#FFE379] font-bold'
+                                        : 'text-neutral-300 hover:bg-[#222]'
+                                    }`}
+                                  >
+                                    <div className="truncate mr-2">
+                                      <div className="font-semibold text-white truncate">{p.title}</div>
+                                      <div className="text-[10px] text-neutral-400 font-mono">slug: /{p.slug}</div>
+                                    </div>
+                                    {isSelected && <Check className="w-4 h-4 text-[#FFE379] shrink-0" />}
+                                  </button>
+                                );
+                              })}
+
+                            {portfolioItems.filter((p) => {
+                              const q = projectSearchQuery.toLowerCase();
+                              return (
+                                (p.title && p.title.toLowerCase().includes(q)) ||
+                                (p.slug && p.slug.toLowerCase().includes(q))
+                              );
+                            }).length === 0 &&
+                              !('show across all projects'.includes(projectSearchQuery.toLowerCase())) && (
+                                <div className="p-4 text-center text-xs text-neutral-500 font-mono">
+                                  No projects match "{projectSearchQuery}"
+                                </div>
+                              )}
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     <div className="grid grid-cols-2 gap-3">
