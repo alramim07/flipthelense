@@ -450,25 +450,43 @@ export default function ProjectVisualBuilder() {
                 </button>
               </div>
 
-              {/* Single Unified Project Headline & Title Input */}
-              <div className="space-y-1">
-                <textarea
-                  rows="2"
-                  value={project.headline || project.title || ''}
-                  onChange={(e) => {
-                    const val = e.target.value;
-                    const autoSlug = val.toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '');
-                    setProject({ 
-                      ...project, 
-                      headline: val, 
-                      title: val, 
-                      slug: project.slug ? project.slug : autoSlug 
-                    });
-                  }}
-                  placeholder="I will produce cinema-grade documentary video editing, soundscapes and color grading"
-                  className="w-full text-2xl sm:text-4xl font-extrabold text-white leading-tight uppercase bg-[#181818]/80 hover:bg-[#181818] p-4 rounded-2xl border border-dashed border-[#3D3D3D] hover:border-[#FFE379] focus:border-[#FFE379] focus:bg-[#181818] focus:outline-none transition-all resize-none shadow-xl"
-                  style={{ fontFamily: "'Oswald', sans-serif" }}
-                />
+              {/* Clean Single-Row Project Title with SEO Character Counter */}
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between text-[11px] font-mono">
+                  <label className="text-neutral-400 uppercase font-semibold">
+                    Project Title / Headline (SEO Optimized)
+                  </label>
+                  <span className={`font-bold ${
+                    (project.headline || project.title || '').length > 70 
+                      ? 'text-amber-400' 
+                      : (project.headline || project.title || '').length >= 30
+                        ? 'text-emerald-400'
+                        : 'text-neutral-500'
+                  }`}>
+                    {(project.headline || project.title || '').length}/80 chars
+                    {(project.headline || project.title || '').length >= 30 && (project.headline || project.title || '').length <= 70 ? ' (SEO Optimal)' : ''}
+                  </span>
+                </div>
+
+                <div className="relative">
+                  <input
+                    type="text"
+                    maxLength={80}
+                    value={project.headline || project.title || ''}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      const autoSlug = val.toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '');
+                      setProject({ 
+                        ...project, 
+                        headline: val, 
+                        title: val, 
+                        slug: project.slug ? project.slug : autoSlug 
+                      });
+                    }}
+                    placeholder="e.g. Cinema-Grade Documentary Video Editing & Color Grading"
+                    className="w-full text-base sm:text-lg font-bold text-white bg-[#181818] hover:bg-[#1C1C1C] px-4 py-3 rounded-xl border border-[#333] hover:border-[#FFE379]/60 focus:border-[#FFE379] focus:bg-[#1A1A1A] focus:outline-none transition-all shadow-md font-sans placeholder-neutral-500"
+                  />
+                </div>
               </div>
             </div>
 
