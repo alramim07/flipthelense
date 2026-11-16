@@ -181,14 +181,14 @@ export default function EditingProcessSection() {
 
           {/* ===== BACKGROUND HIGHWAY SVG ===== */}
           <div
-            className="absolute -inset-x-10 -top-10 -bottom-10 pointer-events-none hidden md:block"
+            className="absolute -inset-x-6 -top-6 -bottom-6 pointer-events-none hidden md:block"
             style={{ zIndex: 0 }}
           >
             <svg
               className="w-full h-full"
               viewBox="0 0 1020 520"
               fill="none"
-              preserveAspectRatio="none"
+              preserveAspectRatio="xMidYMid meet"
               style={{ overflow: 'visible' }}
             >
               <defs>
@@ -198,7 +198,7 @@ export default function EditingProcessSection() {
                   <feComposite in="SourceGraphic" in2="blur" operator="over" />
                 </filter>
                 <filter id="yellowGlow" x="-20%" y="-20%" width="140%" height="140%">
-                  <feGaussianBlur stdDeviation="4" result="blur" />
+                  <feGaussianBlur stdDeviation="3.5" result="blur" />
                   <feComposite in="SourceGraphic" in2="blur" operator="over" />
                 </filter>
                 {/* Subtle asphalt gradient for realistic texture & elevation */}
@@ -213,17 +213,7 @@ export default function EditingProcessSection() {
                 Pure Curve Mountain Highway Spline (পাহাড়ি আঁকাবাঁকা মসৃণ হাইওয়ে):
                 Sequentially weaves through the exact centers of Step 01 -> 02 -> 03 -> 04 -> 05 -> 06
                 Continuous cubic beziers with smooth G1/C1 continuity and organic hairpin bends.
-              */}
-
-              {/* Path Data:
-                  Start off-screen left: (-80, 50)
-                  Through Card 01 (170, 95)
-                  Hairpin curve down through Card 02 (170, 395)
-                  Sweeping mountain switchback S-curve up through Card 03 (510, 95)
-                  Curving down through Card 04 (510, 395)
-                  Sweeping up over the ridge through Card 05 (850, 95)
-                  Down through Card 06 (850, 395)
-                  Smoothly exits off-screen right (1100, 430)
+                Uniform thick road width throughout all sections and curves.
               */}
 
               {/* 1. Road Deep Shadow / Elevation Grounding */}
@@ -240,7 +230,7 @@ export default function EditingProcessSection() {
                    C 850 420, 780 445, 875 425
                    C 960 410, 1020 415, 1110 425"
                 stroke="#050505"
-                strokeWidth="74"
+                strokeWidth="84"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 opacity="0.8"
@@ -259,13 +249,13 @@ export default function EditingProcessSection() {
                    C 865 50, 970 80, 905 270
                    C 850 420, 780 445, 875 425
                    C 960 410, 1020 415, 1110 425"
-                stroke="#2B2B2B"
-                strokeWidth="56"
+                stroke="#2E2E2E"
+                strokeWidth="70"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
 
-              {/* 3. Smooth Asphalt Paved Surface */}
+              {/* 3. Smooth Asphalt Paved Surface (Uniform Solid Thick Road) */}
               <path
                 d="M -90 40 
                    C -20 50, 80 65, 170 95
@@ -279,7 +269,7 @@ export default function EditingProcessSection() {
                    C 850 420, 780 445, 875 425
                    C 960 410, 1020 415, 1110 425"
                 stroke="url(#mountainRoadGrad)"
-                strokeWidth="48"
+                strokeWidth="62"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
@@ -299,10 +289,10 @@ export default function EditingProcessSection() {
                    C 960 410, 1020 415, 1110 425"
                 stroke="#FFFFFF"
                 strokeWidth="1.8"
-                strokeOpacity="0.4"
+                strokeOpacity="0.35"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                transform="translate(-18, -12)"
+                transform="translate(-23, -15)"
               />
               <path
                 d="M -90 40 
@@ -318,13 +308,13 @@ export default function EditingProcessSection() {
                    C 960 410, 1020 415, 1110 425"
                 stroke="#FFFFFF"
                 strokeWidth="1.8"
-                strokeOpacity="0.4"
+                strokeOpacity="0.35"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                transform="translate(18, 12)"
+                transform="translate(23, 15)"
               />
 
-              {/* 5. Animated Golden Center Lane Track (Cinema Reel / Moving Mountain Highway Markings) */}
+              {/* 5. Animated Golden Center Lane Track (Seamless Loop without stutter) */}
               <path
                 d="M -90 40 
                    C -20 50, 80 65, 170 95
@@ -338,8 +328,8 @@ export default function EditingProcessSection() {
                    C 850 420, 780 445, 875 425
                    C 960 410, 1020 415, 1110 425"
                 stroke="#FFE379"
-                strokeWidth="3.5"
-                strokeDasharray="18 14"
+                strokeWidth="4"
+                strokeDasharray="20 12"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 className="animate-road-middle-track"

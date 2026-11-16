@@ -128,18 +128,22 @@
   animation: laserFlow 3.8s linear infinite;
 }
 
-/* Endless Running Road / Cinema Film Reel Track Animation */
+/* Endless Running Road / Cinema Film Reel Track Animation
+   Dash pattern cycle: 20px dash + 12px gap = 32px period.
+   Offset travel: -96px (32px * 3 exact periods) with linear timing
+   guarantees 100% seamless infinite loop without any pause, skip or stutter! */
 @keyframes filmReelRoadTrack {
   0% {
     stroke-dashoffset: 0;
   }
   100% {
-    stroke-dashoffset: -100;
+    stroke-dashoffset: -96;
   }
 }
 
 .animate-road-middle-track {
-  animation: filmReelRoadTrack 1.8s linear infinite;
+  animation: filmReelRoadTrack 1.2s linear infinite;
+  will-change: stroke-dashoffset;
 }
 
 /* Fluid Brand Color Mixing Gradient Animation */
