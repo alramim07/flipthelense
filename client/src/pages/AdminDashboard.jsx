@@ -373,7 +373,7 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0D0D0D] text-[#F4F4F4] flex flex-col md:flex-row relative overflow-hidden font-sans">
+    <div className="h-screen bg-[#0D0D0D] text-[#F4F4F4] flex flex-col md:flex-row relative overflow-hidden font-sans">
       
       {/* Ambient background glows for high-tech glass feel */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -1257,7 +1257,7 @@ export default function AdminDashboard() {
                 style={{ fontFamily: "'Oswald', sans-serif" }}
               >
                 <Plus className="w-4 h-4 stroke-[3]" />
-                <span>+ Create Custom Review</span>
+                <span>Create Custom Review</span>
               </button>
             </div>
 
@@ -1397,27 +1397,32 @@ export default function AdminDashboard() {
             {/* Modal: Create Custom Review */}
             {isAddReviewModalOpen && (
               <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-                <div className="relative w-full max-w-lg bg-[#161616] border border-[#2E2E2E] rounded-3xl p-7 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto">
+                <div className="relative w-full max-w-md bg-[#161616] border border-[#2E2E2E] rounded-3xl p-5 sm:p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto">
                   <div className="flex items-center justify-between pb-3 border-b border-[#262626]">
-                    <h3 
-                      className="text-lg font-bold text-white uppercase"
-                      style={{ fontFamily: "'Oswald', sans-serif" }}
-                    >
-                      + Create Custom Project Review
-                    </h3>
+                    <div className="flex items-center space-x-2">
+                      <div className="w-7 h-7 rounded-lg bg-[#FFE379]/10 text-[#FFE379] flex items-center justify-center">
+                        <Plus className="w-4 h-4 stroke-[3]" />
+                      </div>
+                      <h3 
+                        className="text-base font-bold text-white uppercase"
+                        style={{ fontFamily: "'Oswald', sans-serif" }}
+                      >
+                        Create Custom Review
+                      </h3>
+                    </div>
                     <button
                       type="button"
                       onClick={() => {
                         setIsAddReviewModalOpen(false);
                         setIsProjectDropdownOpen(false);
                       }}
-                      className="text-neutral-400 hover:text-white"
+                      className="text-neutral-400 hover:text-white p-1 rounded-lg hover:bg-white/5 transition-colors"
                     >
                       <X className="w-5 h-5" />
                     </button>
                   </div>
 
-                  <form onSubmit={handleCreateCustomReview} className="space-y-4">
+                  <form onSubmit={handleCreateCustomReview} className="space-y-3.5">
                     {/* Target Project Dropdown with Live Search */}
                     <div className="relative">
                       <label className="block text-[11px] uppercase font-mono text-neutral-400 mb-1">
