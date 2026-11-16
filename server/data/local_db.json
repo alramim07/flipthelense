@@ -116,278 +116,259 @@
   "portfolio": [
     {
       "_id": "port_1",
-      "title": "Alpine Ridge Explorer",
-      "slug": "alpine-ridge-explorer",
-      "category": "documentary",
-      "tag": "Documentary",
-      "client": "National Geographic Wild",
-      "duration": "04:15 MIN",
-      "img": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=900&q=80",
+      "title": "Aura Luxury Timepieces",
+      "slug": "aura-luxury-timepieces",
+      "category": "commercials",
+      "tag": "Commercials",
+      "client": "Aura Horology Geneva",
+      "duration": "01:15 MIN",
+      "img": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=1200&q=80",
       "video": "https://www.youtube.com/embed/ScMzIvxBSi4",
-      "overview": "A breath-taking high-altitude cinematic documentary exploring the sharp ridges and wild terrain of the Alps.",
-      "headline": "I will produce cinema-grade documentary video editing, soundscapes and color grading",
+      "overview": "A sleek, high-end luxury watch commercial crafted with macro speed ramps, reflective light flares, rhythmic ticking sound design, and bespoke DaVinci color grading.",
+      "headline": "I will edit high-converting luxury product commercials and brand commercial ads",
       "deliverables": [
-        "4K UHD Master File Export",
-        "Spatial Audio & Foley Sound Effects",
-        "Film Emulation Color Grade (DaVinci Resolve)",
-        "Custom Title Sequence & Sound Design"
+        "4K UHD Master File Export (16:9 + 9:16)",
+        "Macro Speed Ramping & Motion Blur",
+        "Licensed High-Energy Commercial Soundtrack",
+        "Brand Color Palette Conformance"
       ],
-      "basicPrice": 150,
-      "standardPrice": 300,
-      "premiumPrice": 550,
+      "basicPrice": 160,
+      "standardPrice": 320,
+      "premiumPrice": 620,
       "comparisonRows": [
-        {
-          "id": "cr_1",
-          "feature": "4K UHD Master File Export",
-          "basic": true,
-          "standard": true,
-          "premium": true
-        },
-        {
-          "id": "cr_2",
-          "feature": "Multi-Camera Audio Synchronization",
-          "basic": false,
-          "standard": true,
-          "premium": true
-        },
-        {
-          "id": "cr_3",
-          "feature": "Hollywood Film Color Grading",
-          "basic": true,
-          "standard": true,
-          "premium": true
-        },
-        {
-          "id": "cr_4",
-          "feature": "Sound Design & Licensed Audio",
-          "basic": true,
-          "standard": true,
-          "premium": true
-        },
-        {
-          "id": "cr_5",
-          "feature": "Drone Aerial Footage Integration",
-          "basic": false,
-          "standard": true,
-          "premium": true
-        },
-        {
-          "id": "cr_6",
-          "feature": "Social Media 9:16 Vertical Cut",
-          "basic": true,
-          "standard": true,
-          "premium": true
-        },
-        {
-          "id": "cr_7",
-          "feature": "Raw Project Source File Archive",
-          "basic": false,
-          "standard": false,
-          "premium": true
-        }
+        { "id": "cr_1", "feature": "4K UHD Master File Export", "basic": true, "standard": true, "premium": true },
+        { "id": "cr_2", "feature": "Multi-Camera Audio Synchronization", "basic": false, "standard": true, "premium": true },
+        { "id": "cr_3", "feature": "Hollywood Film Color Grading", "basic": true, "standard": true, "premium": true },
+        { "id": "cr_4", "feature": "Sound Design & Licensed Audio", "basic": true, "standard": true, "premium": true },
+        { "id": "cr_5", "feature": "Drone Aerial Footage Integration", "basic": false, "standard": false, "premium": true },
+        { "id": "cr_6", "feature": "Social Media 9:16 Vertical Cut", "basic": true, "standard": true, "premium": true },
+        { "id": "cr_7", "feature": "Raw Project Source File Archive", "basic": false, "standard": false, "premium": true }
       ],
       "packages": {
         "basic": {
-          "title": "Basic Edit Package",
-          "desc": "Up to 60 seconds teaser trailer with sound effects, color grading, and social 9:16 + 16:9 exports.",
-          "delivery": "3-day delivery",
+          "title": "Short Teaser Cut",
+          "desc": "Up to 30s punchy brand teaser with sound design, color grading, and 9:16 vertical social export.",
+          "delivery": "2-day delivery",
           "revisions": "2 Revisions"
         },
         "standard": {
-          "title": "Standard Highlight Film",
-          "desc": "3 to 5 minutes cinematic highlight film with full 4K color grading, dialogue audio sync, licensed music and drone integration.",
-          "delivery": "5-day delivery",
-          "revisions": "3 Revisions"
+          "title": "Commercial Highlight",
+          "desc": "60s cinematic brand commercial with sound design, beat-synced pacing, and multi-format exports.",
+          "delivery": "4-day delivery",
+          "revisions": "4 Revisions"
         },
         "premium": {
-          "title": "Premium Extended Feature",
-          "desc": "Comprehensive 15-20 minutes full cut + 60s teaser + raw multicam speech edits + master project archive.",
-          "delivery": "7-day delivery",
+          "title": "Full Commercial Campaign",
+          "desc": "Complete ad campaign: 90s master commercial + 3 cutdowns (15s/30s/stories) + project archive.",
+          "delivery": "6-day delivery",
           "revisions": "Unlimited Revisions"
         }
       }
     },
     {
       "_id": "port_2",
-      "title": "Tranquil Lake Reflection",
-      "slug": "tranquil-lake-reflection",
-      "category": "commercials",
-      "tag": "Commercials",
-      "client": "Aura Lifestyle Media",
-      "duration": "01:30 MIN",
-      "img": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80",
-      "video": "https://www.youtube.com/embed/ScMzIvxBSi4",
-      "overview": "A serene luxury lifestyle commercial crafted with smooth speed ramps, warm hues, and elegant minimal typography.",
-      "headline": "I will edit high-converting commercial brand ads and lifestyle promotional videos",
-      "deliverables": [
-        "1080p & 4K Multi-format Exports (16:9 + 9:16)",
-        "Dynamic Speed Ramping & Motion Blur",
-        "Licensed High-Energy Commercial Soundtrack",
-        "Brand Color Palette Conformance"
-      ],
-      "basicPrice": 180,
-      "standardPrice": 350,
-      "premiumPrice": 650
-    },
-    {
-      "_id": "port_3",
-      "title": "Green Meadows Solitude",
-      "slug": "green-meadows-solitude",
-      "category": "music_video",
-      "tag": "Music Video",
-      "client": "Sony Music Indie",
-      "duration": "03:45 MIN",
-      "img": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80",
-      "video": "https://www.youtube.com/embed/ScMzIvxBSi4",
-      "overview": "An atmospheric indie music video paced rhythmically with subtle film grain, organic flare transitions, and emotive storytelling.",
-      "headline": "I will create artistic music video edits with rhythm pacing and cinematic film look",
-      "deliverables": [
-        "Rhythmic Beat-Sync Cutting",
-        "Film Grain & Halation Effects (16mm/35mm)",
-        "Lip-Sync Audio Alignment",
-        "Creative Visual Transitions & Glows"
-      ],
-      "basicPrice": 200,
-      "standardPrice": 400,
-      "premiumPrice": 750
-    },
-    {
-      "_id": "port_4",
-      "title": "Tuscan Sunset Avenue",
-      "slug": "cinematic-wedding-video-editing",
+      "title": "Amalfi Coast Romance",
+      "slug": "amalfi-coast-romance",
       "category": "wedding",
       "tag": "Wedding Film",
-      "client": "Royal Heritage Weddings",
-      "duration": "05:20 MIN",
-      "img": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=80",
+      "client": "Vows & Horizons Italy",
+      "duration": "06:20 MIN",
+      "img": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80",
       "video": "https://www.youtube.com/embed/ScMzIvxBSi4",
-      "overview": "A luxury destination wedding film capturing emotional vows, golden sunset ceremonies, and celebratory evening receptions.",
-      "headline": "I will do cinematic wedding video editing, 4K film color grading and storytelling",
+      "overview": "A tear-jerking luxury destination wedding film capturing emotional seaside vows, golden cliffside ceremonies, and elegant evening celebrations along the Amalfi Coast.",
+      "headline": "I will craft cinematic destination wedding films, emotional storytelling and 4K color grading",
       "deliverables": [
         "4K UHD Master File Export",
-        "Multi-Camera Audio Synchronization",
-        "Professional Hollywood Color Grading",
-        "Sound Design & Licensed Music",
-        "Drone Footage Integration"
+        "Vows & Multi-Mic Speech Audio Mastering",
+        "Film Emulation Color Grade (DaVinci Resolve)",
+        "Licensed Emotional Soundtrack & Foley",
+        "Drone Horizon Integration"
       ],
-      "basicPrice": 150,
-      "standardPrice": 300,
-      "premiumPrice": 550,
+      "basicPrice": 180,
+      "standardPrice": 360,
+      "premiumPrice": 690,
       "comparisonRows": [
-        {
-          "id": "cr_1",
-          "feature": "4K UHD Master File Export",
-          "basic": true,
-          "standard": true,
-          "premium": true
-        },
-        {
-          "id": "cr_2",
-          "feature": "Multi-Camera Audio Synchronization",
-          "basic": false,
-          "standard": true,
-          "premium": true
-        },
-        {
-          "id": "cr_3",
-          "feature": "Hollywood Film Color Grading",
-          "basic": true,
-          "standard": true,
-          "premium": true
-        },
-        {
-          "id": "cr_4",
-          "feature": "Sound Design & Licensed Audio",
-          "basic": true,
-          "standard": true,
-          "premium": true
-        },
-        {
-          "id": "cr_5",
-          "feature": "Drone Aerial Footage Integration",
-          "basic": false,
-          "standard": true,
-          "premium": true
-        },
-        {
-          "id": "cr_6",
-          "feature": "Social Media 9:16 Vertical Cut",
-          "basic": true,
-          "standard": true,
-          "premium": true
-        },
-        {
-          "id": "cr_7",
-          "feature": "Raw Project Source File Archive",
-          "basic": false,
-          "standard": false,
-          "premium": true
-        }
+        { "id": "cr_1", "feature": "4K UHD Master File Export", "basic": true, "standard": true, "premium": true },
+        { "id": "cr_2", "feature": "Multi-Camera Audio Synchronization", "basic": true, "standard": true, "premium": true },
+        { "id": "cr_3", "feature": "Hollywood Film Color Grading", "basic": true, "standard": true, "premium": true },
+        { "id": "cr_4", "feature": "Sound Design & Licensed Audio", "basic": true, "standard": true, "premium": true },
+        { "id": "cr_5", "feature": "Drone Aerial Footage Integration", "basic": false, "standard": true, "premium": true },
+        { "id": "cr_6", "feature": "Social Media 9:16 Vertical Cut", "basic": true, "standard": true, "premium": true },
+        { "id": "cr_7", "feature": "Raw Project Source File Archive", "basic": false, "standard": false, "premium": true }
       ],
       "packages": {
         "basic": {
-          "title": "Basic Edit Package",
-          "desc": "Up to 60 seconds teaser trailer with sound effects, color grading, and social 9:16 + 16:9 exports.",
+          "title": "Emotional Teaser",
+          "desc": "60s cinematic wedding teaser with speech overlay, color grading, and social 9:16 cut.",
           "delivery": "3-day delivery",
           "revisions": "2 Revisions"
         },
         "standard": {
-          "title": "Standard Highlight Film",
-          "desc": "3 to 5 minutes cinematic highlight film with full 4K color grading, dialogue audio sync, licensed music and drone integration.",
+          "title": "Cinematic Highlight Film",
+          "desc": "3-5 min highlight film with multi-cam vows audio sync, licensed indie score, and drone footage.",
           "delivery": "5-day delivery",
           "revisions": "3 Revisions"
         },
         "premium": {
-          "title": "Premium Extended Feature",
-          "desc": "Comprehensive 15-20 minutes full cut + 60s teaser + raw multicam speech edits + master project archive.",
+          "title": "Full Feature Extended Documentary",
+          "desc": "15-20 min full wedding documentary + 60s teaser + full ceremony/speeches multicam edit.",
           "delivery": "7-day delivery",
           "revisions": "Unlimited Revisions"
         }
       }
     },
     {
-      "_id": "port_5",
-      "title": "Cliffside Perspective",
-      "slug": "cliffside-perspective",
-      "category": "documentary",
-      "tag": "Documentary",
-      "client": "Nordic Visual Labs",
-      "duration": "02:50 MIN",
-      "img": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=900&q=80",
+      "_id": "port_3",
+      "title": "Neon Dreams Seoul",
+      "slug": "neon-dreams-seoul",
+      "category": "music_video",
+      "tag": "Music Video",
+      "client": "SubPop Asia Records",
+      "duration": "03:45 MIN",
+      "img": "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1200&q=80",
       "video": "https://www.youtube.com/embed/ScMzIvxBSi4",
-      "overview": "Dramatic drone photography and rugged coastal scenery cut to tension-building cinematic sound design.",
-      "headline": "I will edit outdoor adventure documentaries and cinematic drone footage",
+      "overview": "A high-octane indie pop music video edit featuring dynamic beat-sync cutting, anamorphic lens flares, halation glow, and trippy rhythm transitions across nighttime Seoul.",
+      "headline": "I will edit artistic music videos with rhythmic beat cutting, film grain and creative VFX",
       "deliverables": [
-        "Drone Horizon Stabilization",
-        "Wind Audio Noise Reduction",
-        "HDR & Rec.709 Master Exports",
-        "Cinematic Narrative Structure"
+        "Rhythmic Beat-Sync Cutting & Speed Ramps",
+        "Film Grain & 16mm/35mm Halation Emulation",
+        "Lip-Sync Audio Alignment & Mastering",
+        "Creative Visual Glows & Match Cuts"
       ],
-      "basicPrice": 140,
-      "standardPrice": 280,
-      "premiumPrice": 520
+      "basicPrice": 200,
+      "standardPrice": 420,
+      "premiumPrice": 780,
+      "comparisonRows": [
+        { "id": "cr_1", "feature": "4K UHD Master File Export", "basic": true, "standard": true, "premium": true },
+        { "id": "cr_2", "feature": "Multi-Camera Audio Synchronization", "basic": true, "standard": true, "premium": true },
+        { "id": "cr_3", "feature": "Hollywood Film Color Grading", "basic": true, "standard": true, "premium": true },
+        { "id": "cr_4", "feature": "Sound Design & Licensed Audio", "basic": true, "standard": true, "premium": true },
+        { "id": "cr_5", "feature": "Drone Aerial Footage Integration", "basic": false, "standard": true, "premium": true },
+        { "id": "cr_6", "feature": "Social Media 9:16 Vertical Cut", "basic": true, "standard": true, "premium": true },
+        { "id": "cr_7", "feature": "Raw Project Source File Archive", "basic": false, "standard": true, "premium": true }
+      ],
+      "packages": {
+        "basic": {
+          "title": "Performance Cut",
+          "desc": "Up to 2 minutes performance-only cut with rhythmic pacing and film color grading.",
+          "delivery": "3-day delivery",
+          "revisions": "2 Revisions"
+        },
+        "standard": {
+          "title": "Full Official Music Video",
+          "desc": "Full track music video with story + performance cutting, VFX glows, and 4K export.",
+          "delivery": "5-day delivery",
+          "revisions": "4 Revisions"
+        },
+        "premium": {
+          "title": "Director's Cut Deluxe",
+          "desc": "Full music video + 3 social teasers + vertical reels + clean instrumental cut + master project archive.",
+          "delivery": "7-day delivery",
+          "revisions": "Unlimited Revisions"
+        }
+      }
     },
     {
-      "_id": "port_6",
-      "title": "Golden Hour Photographer",
-      "slug": "golden-hour-photographer",
-      "category": "wedding",
-      "tag": "Wedding Film",
-      "client": "Bella & Edward Story",
-      "duration": "04:10 MIN",
-      "img": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=900&q=80",
+      "_id": "port_4",
+      "title": "Guardians of the Serengeti",
+      "slug": "guardians-of-the-serengeti",
+      "category": "documentary",
+      "tag": "Documentary",
+      "client": "Earth Wildlife Media",
+      "duration": "08:15 MIN",
+      "img": "https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=1200&q=80",
       "video": "https://www.youtube.com/embed/ScMzIvxBSi4",
-      "overview": "Heartfelt vows and intimate portrait sessions combined into an unforgettable romantic highlight film.",
-      "headline": "I will craft romantic wedding teasers and emotional highlight films",
+      "overview": "A poignant wildlife conservation documentary crafted with intimate telephoto pacing, spatial environmental foley, and naturalistic Rec.709 color fidelity.",
+      "headline": "I will produce cinema-grade documentary video editing, soundscapes and color grading",
       "deliverables": [
-        "Vows & Speeches Audio Sync",
-        "Dreamy Film Glow & Skin Tone Balancing",
-        "Social Reel 9:16 + Master 16:9",
-        "Licensed Emotional Soundtrack"
+        "4K UHD Master File Export",
+        "Spatial Audio & Environmental Foley",
+        "Naturalistic Film Emulation Color Grade",
+        "Narrative Archival Photo / Footage Restoration"
       ],
-      "basicPrice": 160,
-      "standardPrice": 320,
-      "premiumPrice": 600
+      "basicPrice": 170,
+      "standardPrice": 340,
+      "premiumPrice": 620,
+      "comparisonRows": [
+        { "id": "cr_1", "feature": "4K UHD Master File Export", "basic": true, "standard": true, "premium": true },
+        { "id": "cr_2", "feature": "Multi-Camera Audio Synchronization", "basic": false, "standard": true, "premium": true },
+        { "id": "cr_3", "feature": "Hollywood Film Color Grading", "basic": true, "standard": true, "premium": true },
+        { "id": "cr_4", "feature": "Sound Design & Licensed Audio", "basic": true, "standard": true, "premium": true },
+        { "id": "cr_5", "feature": "Drone Aerial Footage Integration", "basic": false, "standard": true, "premium": true },
+        { "id": "cr_6", "feature": "Social Media 9:16 Vertical Cut", "basic": true, "standard": true, "premium": true },
+        { "id": "cr_7", "feature": "Raw Project Source File Archive", "basic": false, "standard": false, "premium": true }
+      ],
+      "packages": {
+        "basic": {
+          "title": "Trailer & Pitch Cut",
+          "desc": "Up to 90 seconds festival trailer with dramatic score and color grade.",
+          "delivery": "3-day delivery",
+          "revisions": "2 Revisions"
+        },
+        "standard": {
+          "title": "Short Doc Featurette",
+          "desc": "5 to 8 minutes narrative documentary short with voiceover cleanup and foley design.",
+          "delivery": "5-day delivery",
+          "revisions": "3 Revisions"
+        },
+        "premium": {
+          "title": "Full Festival Master Cut",
+          "desc": "Up to 20 minutes documentary cut with sound mastering, subtitles, and DCP export readiness.",
+          "delivery": "8-day delivery",
+          "revisions": "Unlimited Revisions"
+        }
+      }
+    },
+    {
+      "_id": "port_5",
+      "title": "HyperDrive Cyberpunk EV",
+      "slug": "hyperdrive-cyberpunk-ev",
+      "category": "commercials",
+      "tag": "Commercials",
+      "client": "Veloce Automotive",
+      "duration": "01:45 MIN",
+      "img": "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80",
+      "video": "https://www.youtube.com/embed/ScMzIvxBSi4",
+      "overview": "A futuristic electric supercar launch video featuring neon color grade, sound synthesis, whip-pan transitions, and thrilling chase sequences.",
+      "headline": "I will edit high-octane automotive commercials, car reels and futuristic promotional videos",
+      "deliverables": [
+        "Engine & Electric Motor Sound Synthesis",
+        "High-Velocity Speed Ramping & Drift Cuts",
+        "HDR / 4K UHD Master File Exports",
+        "Custom Kinetic Typography"
+      ],
+      "basicPrice": 190,
+      "standardPrice": 380,
+      "premiumPrice": 700,
+      "comparisonRows": [
+        { "id": "cr_1", "feature": "4K UHD Master File Export", "basic": true, "standard": true, "premium": true },
+        { "id": "cr_2", "feature": "Multi-Camera Audio Synchronization", "basic": false, "standard": true, "premium": true },
+        { "id": "cr_3", "feature": "Hollywood Film Color Grading", "basic": true, "standard": true, "premium": true },
+        { "id": "cr_4", "feature": "Sound Design & Licensed Audio", "basic": true, "standard": true, "premium": true },
+        { "id": "cr_5", "feature": "Drone Aerial Footage Integration", "basic": true, "standard": true, "premium": true },
+        { "id": "cr_6", "feature": "Social Media 9:16 Vertical Cut", "basic": true, "standard": true, "premium": true },
+        { "id": "cr_7", "feature": "Raw Project Source File Archive", "basic": false, "standard": false, "premium": true }
+      ],
+      "packages": {
+        "basic": {
+          "title": "Social Reel / TikTok Cut",
+          "desc": "30-60s fast-paced automotive reel with bass-boosted sound design and color grade.",
+          "delivery": "2-day delivery",
+          "revisions": "2 Revisions"
+        },
+        "standard": {
+          "title": "Commercial Launch Film",
+          "desc": "90s full vehicle showcase with cinematic color grade, engine sound design, and drone shots.",
+          "delivery": "4-day delivery",
+          "revisions": "3 Revisions"
+        },
+        "premium": {
+          "title": "Full Dealership Package",
+          "desc": "Full commercial + 4 social cuts (vertical 9:16) + interior featurette + master source files.",
+          "delivery": "6-day delivery",
+          "revisions": "Unlimited Revisions"
+        }
+      }
     }
   ],
   "settings": {

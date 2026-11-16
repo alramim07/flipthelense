@@ -4,88 +4,35 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import VideoModal from '../components/common/VideoModal';
 
-const PORTFOLIO_PROJECTS = [
-  {
-    id: 1,
-    title: 'Alpine Ridge Explorer',
-    category: 'documentary',
-    tag: 'Documentary',
-    client: 'National Geographic Wild',
-    duration: '04:15 MIN',
-    img: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=900&q=80',
-    video: 'https://www.youtube.com/embed/ScMzIvxBSi4',
-  },
-  {
-    id: 2,
-    title: 'Tranquil Lake Reflection',
-    category: 'commercials',
-    tag: 'Commercials',
-    client: 'Aura Lifestyle Media',
-    duration: '01:30 MIN',
-    img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80',
-    video: 'https://www.youtube.com/embed/ScMzIvxBSi4',
-  },
-  {
-    id: 3,
-    title: 'Green Meadows Solitude',
-    category: 'music_video',
-    tag: 'Music Video',
-    client: 'Sony Music Indie',
-    duration: '03:45 MIN',
-    img: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80',
-    video: 'https://www.youtube.com/embed/ScMzIvxBSi4',
-  },
-  {
-    id: 4,
-    title: 'Tuscan Sunset Avenue',
-    category: 'wedding',
-    tag: 'Wedding Film',
-    client: 'Royal Heritage Weddings',
-    duration: '05:20 MIN',
-    img: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=80',
-    video: 'https://www.youtube.com/embed/ScMzIvxBSi4',
-  },
-  {
-    id: 5,
-    title: 'Cliffside Perspective',
-    category: 'documentary',
-    tag: 'Documentary',
-    client: 'Nordic Visual Labs',
-    duration: '02:50 MIN',
-    img: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=900&q=80',
-    video: 'https://www.youtube.com/embed/ScMzIvxBSi4',
-  },
-  {
-    id: 6,
-    title: 'Golden Hour Photographer',
-    category: 'wedding',
-    tag: 'Wedding Film',
-    client: 'Bella & Edward Story',
-    duration: '04:10 MIN',
-    img: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=900&q=80',
-    video: 'https://www.youtube.com/embed/ScMzIvxBSi4',
-  }
-];
-
-const CATEGORIES = [
-  { id: 'all', name: 'ALL' },
-  { id: 'wedding', name: 'WEDDING' },
-  { id: 'commercials', name: 'COMMERCIALS' },
-  { id: 'documentary', name: 'DOCUMENTARY' },
-  { id: 'music_video', name: 'MUSIC VIDEO' }
-];
-
 export default function Portfolio() {
   const [activeCategory, setActiveCategory] = useState('all');
   const [modalVideo, setModalVideo] = useState({ isOpen: false, title: '', url: '' });
-  const [projects, setProjects] = useState(PORTFOLIO_PROJECTS);
+  const [projects, setProjects] = useState([]);
+  const [categories, setCategories] = useState([
+    { id: 'all', name: 'ALL' },
+    { id: 'commercials', name: 'COMMERCIALS' },
+    { id: 'wedding', name: 'WEDDING' },
+    { id: 'music_video', name: 'MUSIC VIDEO' },
+    { id: 'documentary', name: 'DOCUMENTARY' }
+  ]);
 
-  // Fetch dynamic projects managed via Admin Dashboard
+  // Fetch dynamic projects & categories managed via Admin Dashboard
   useEffect(() => {
     axios.get('/api/portfolio')
       .then(res => {
-        if (Array.isArray(res.data) && res.data.length > 0) {
+        if (Array.isArray(res.data)) {
           setProjects(res.data);
+        }
+      })
+      .catch(() => {});
+
+    axios.get('/api/categories')
+      .then(res => {
+        if (Array.isArray(res.data) && res.data.length > 0) {
+          setCategories([
+            { id: 'all', name: 'ALL' },
+            ...res.data.map(c => ({ id: c.slug, name: c.name.toUpperCase() }))
+          ]);
         }
       })
       .catch(() => {});
@@ -319,7 +266,7 @@ export default function Portfolio() {
 
           {/* Interactive Category Filter Pills */}
           <div className="flex flex-wrap items-center justify-center gap-2 mt-8">
-            {CATEGORIES.map((cat) => (
+            {categories.map((cat) => (
               <button
                 key={cat.id}
                 onClick={() => setActiveCategory(cat.id)}
