@@ -635,11 +635,11 @@ export default function HomePageBuilder() {
                         }}
                         className="w-full px-2 py-1 bg-[#121212] border border-[#282828] rounded-lg text-[10px] text-white focus:border-[#FFE379] focus:outline-none"
                       >
-                        <option value="youtube">YouTube (🔴)</option>
-                        <option value="instagram">Instagram (📸)</option>
-                        <option value="tiktok">TikTok (🎵)</option>
-                        <option value="facebook">Facebook (🔵)</option>
-                        <option value="pinterest">Pinterest (📌)</option>
+                        <option value="youtube">YouTube</option>
+                        <option value="instagram">Instagram</option>
+                        <option value="tiktok">TikTok</option>
+                        <option value="facebook">Facebook</option>
+                        <option value="pinterest">Pinterest</option>
                       </select>
                     </div>
                     <div>
