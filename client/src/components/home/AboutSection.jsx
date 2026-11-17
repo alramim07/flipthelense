@@ -54,6 +54,10 @@ export default function AboutSection() {
   const bio1 = aboutData.bio1 || 'For the past 4.5+ years, I have dedicated myself to the art of visual storytelling. Currently working as a Senior Cinematographer and Video Editor, I lead production workflows and collaborate with a talented team of creatives to deliver high-impact media for weddings and commercial clients.';
   const bio2 = aboutData.bio2 || 'My approach to editing is both technical and emotional. Whether I am crafting a fast-paced real estate promo, a heartfelt wedding trailer, or executing complex motion graphics and speed ramps, my goal is always to keep the audience engaged from the first frame to the last.';
 
+  const skills = (aboutData.skills && aboutData.skills.length > 0)
+    ? aboutData.skills
+    : SOFTWARE_SKILLS;
+
   return (
     <section id="about" className="mb-28 pt-8">
       <div className="max-w-4xl mx-auto">
@@ -163,8 +167,8 @@ export default function AboutSection() {
 
           {/* Dynamic 5-column software grid */}
           <div className="relative z-10 grid grid-cols-5 gap-3 sm:gap-6 items-end">
-            {SOFTWARE_SKILLS.map((skill) => (
-              <div key={skill.id} className="flex flex-col items-center group">
+            {skills.map((skill, index) => (
+              <div key={skill.id || index} className="flex flex-col items-center group">
                 
                 {/* Dynamic Icon with smooth interactive hover */}
                 <div className="h-16 sm:h-20 md:h-24 flex items-center justify-center transition-all duration-300 group-hover:-translate-y-2.5 group-hover:scale-108 cursor-pointer">
@@ -178,12 +182,12 @@ export default function AboutSection() {
                 {/* Progress bar and Level Label */}
                 <div className="w-full mt-4 flex flex-col items-center">
                   <div className="w-full h-[3.5px] rounded-full bg-neutral-800/90 overflow-hidden relative">
-                    <div className={`h-full w-full bg-gradient-to-r ${skill.barColor} rounded-full`}></div>
+                    <div className={`h-full w-full bg-gradient-to-r ${skill.barColor || 'from-[#3b82f6] to-[#1d4ed8]'} rounded-full`}></div>
                     {/* Shimmer light beam running across the skill bar on hover */}
                     <div className="absolute inset-0 bg-white/40 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                   </div>
                   <span className="text-[9px] sm:text-[11px] font-sans font-semibold tracking-wider text-neutral-400 group-hover:text-white transition-colors uppercase mt-2 text-center select-none">
-                    {skill.level}
+                    {skill.level || 'INTERMEDIATE'}
                   </span>
                 </div>
 

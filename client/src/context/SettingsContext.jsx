@@ -98,7 +98,44 @@ const defaultSettings = {
       subtitle: 'Since 2022',
       nameHeading: "HELLO, I'M PARVEJ MOSHARROF POLLOB",
       bio1: 'For the past 4.5+ years, I have dedicated myself to the art of visual storytelling. Currently working as a Senior Cinematographer and Video Editor, I lead production workflows and collaborate with a talented team of creatives to deliver high-impact media for weddings and commercial clients.',
-      bio2: 'My approach to editing is both technical and emotional. Whether I am crafting a fast-paced real estate promo, a heartfelt wedding trailer, or executing complex motion graphics and speed ramps, my goal is always to keep the audience engaged from the first frame to the last.'
+      bio2: 'My approach to editing is both technical and emotional. Whether I am crafting a fast-paced real estate promo, a heartfelt wedding trailer, or executing complex motion graphics and speed ramps, my goal is always to keep the audience engaged from the first frame to the last.',
+      skills: [
+        {
+          id: 'ps',
+          name: 'Adobe Photoshop',
+          icon: '/icon_ps_floppy.png',
+          level: 'INTERMEDIATE',
+          barColor: 'from-[#00c8ff] to-[#0072ff]'
+        },
+        {
+          id: 'ai',
+          name: 'Adobe Illustrator',
+          icon: '/icon_ai.png',
+          level: 'INTERMEDIATE',
+          barColor: 'from-[#ff9a00] to-[#e65100]'
+        },
+        {
+          id: 'pr',
+          name: 'Adobe Premiere Pro',
+          icon: '/icon_pr.png',
+          level: 'INTERMEDIATE',
+          barColor: 'from-[#3b82f6] to-[#1d4ed8]'
+        },
+        {
+          id: 'ae',
+          name: 'Adobe After Effects',
+          icon: '/icon_ae.png',
+          level: 'INTERMEDIATE',
+          barColor: 'from-[#c084fc] to-[#7e22ce]'
+        },
+        {
+          id: 'filmora',
+          name: 'Wondershare Filmora',
+          icon: '/icon_filmora.png',
+          level: 'INTERMEDIATE',
+          barColor: 'from-[#2dd4bf] to-[#0f766e]'
+        }
+      ]
     },
     cta: {
       tagline: "LET'S CREATE CINEMATIC MAGIC",
@@ -142,7 +179,13 @@ export function SettingsProvider({ children }) {
           homeContent: {
             hero: { ...defaultSettings.homeContent.hero, ...(res.data.homeContent?.hero || {}) },
             reels: res.data.homeContent?.reels && res.data.homeContent.reels.length > 0 ? res.data.homeContent.reels : defaultSettings.homeContent.reels,
-            about: { ...defaultSettings.homeContent.about, ...(res.data.homeContent?.about || {}) },
+            about: {
+              ...defaultSettings.homeContent.about,
+              ...(res.data.homeContent?.about || {}),
+              skills: res.data.homeContent?.about?.skills && res.data.homeContent.about.skills.length > 0
+                ? res.data.homeContent.about.skills
+                : defaultSettings.homeContent.about.skills
+            },
             cta: { ...defaultSettings.homeContent.cta, ...(res.data.homeContent?.cta || {}) }
           },
           menus: res.data.menus && res.data.menus.length > 0 ? res.data.menus : defaultSettings.menus

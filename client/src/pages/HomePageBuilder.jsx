@@ -51,7 +51,44 @@ export default function HomePageBuilder() {
       subtitle: 'Since 2022',
       nameHeading: "HELLO, I'M PARVEJ MOSHARROF POLLOB",
       bio1: 'For the past 4.5+ years, I have dedicated myself to the art of visual storytelling. Currently working as a Senior Cinematographer and Video Editor, I lead production workflows and collaborate with a talented team of creatives to deliver high-impact media for weddings and commercial clients.',
-      bio2: 'My approach to editing is both technical and emotional. Whether I am crafting a fast-paced real estate promo, a heartfelt wedding trailer, or executing complex motion graphics and speed ramps, my goal is always to keep the audience engaged from the first frame to the last.'
+      bio2: 'My approach to editing is both technical and emotional. Whether I am crafting a fast-paced real estate promo, a heartfelt wedding trailer, or executing complex motion graphics and speed ramps, my goal is always to keep the audience engaged from the first frame to the last.',
+      skills: [
+        {
+          id: 'ps',
+          name: 'Adobe Photoshop',
+          icon: '/icon_ps_floppy.png',
+          level: 'INTERMEDIATE',
+          barColor: 'from-[#00c8ff] to-[#0072ff]'
+        },
+        {
+          id: 'ai',
+          name: 'Adobe Illustrator',
+          icon: '/icon_ai.png',
+          level: 'INTERMEDIATE',
+          barColor: 'from-[#ff9a00] to-[#e65100]'
+        },
+        {
+          id: 'pr',
+          name: 'Adobe Premiere Pro',
+          icon: '/icon_pr.png',
+          level: 'INTERMEDIATE',
+          barColor: 'from-[#3b82f6] to-[#1d4ed8]'
+        },
+        {
+          id: 'ae',
+          name: 'Adobe After Effects',
+          icon: '/icon_ae.png',
+          level: 'INTERMEDIATE',
+          barColor: 'from-[#c084fc] to-[#7e22ce]'
+        },
+        {
+          id: 'filmora',
+          name: 'Wondershare Filmora',
+          icon: '/icon_filmora.png',
+          level: 'INTERMEDIATE',
+          barColor: 'from-[#2dd4bf] to-[#0f766e]'
+        }
+      ]
     },
     cta: {
       tagline: "LET'S CREATE CINEMATIC MAGIC",
@@ -460,6 +497,154 @@ export default function HomePageBuilder() {
                 })}
                 className="w-full px-3.5 py-2 bg-[#1A1A1A] border border-[#2D2D2D] rounded-xl text-xs text-neutral-200 focus:border-[#FFE379] focus:outline-none resize-y leading-relaxed"
               />
+            </div>
+
+            {/* --- Dynamic Software & Adobe Skills Customizer --- */}
+            <div className="pt-4 border-t border-[#262626] space-y-3">
+              <div className="flex items-center justify-between">
+                <div>
+                  <label className="block text-xs uppercase font-bold text-[#FFE379]">
+                    Software & Editing Tools Icons (Dynamic)
+                  </label>
+                  <p className="text-[11px] text-neutral-400 mt-0.5">
+                    Upload your own software logos (Photoshop, Premiere, After Effects, DaVinci, CapCut, etc.) or paste SVG/image links.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const newSkill = {
+                      id: 'skill_' + Date.now(),
+                      name: 'New Software',
+                      icon: '/icon_pr.png',
+                      level: 'INTERMEDIATE',
+                      barColor: 'from-[#3b82f6] to-[#1d4ed8]'
+                    };
+                    const updated = [...(homeData.about?.skills || []), newSkill];
+                    setHomeData({
+                      ...homeData,
+                      about: { ...homeData.about, skills: updated }
+                    });
+                  }}
+                  className="px-3 py-1.5 rounded-xl bg-[#222] hover:bg-[#2C2C2C] text-[#FFE379] border border-[#3A3A3A] hover:border-[#FFE379]/50 text-xs font-bold uppercase transition flex items-center space-x-1"
+                  style={{ fontFamily: "'Oswald', sans-serif" }}
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>Add Tool</span>
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 pt-2">
+                {(homeData.about?.skills || []).map((skill, sIdx) => (
+                  <div key={skill.id || sIdx} className="p-3 bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl space-y-2.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-mono text-[#FFE379] font-bold">
+                        Slot #{sIdx + 1}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const updated = (homeData.about?.skills || []).filter((_, i) => i !== sIdx);
+                          setHomeData({
+                            ...homeData,
+                            about: { ...homeData.about, skills: updated }
+                          });
+                        }}
+                        className="text-neutral-500 hover:text-red-400 p-1 rounded transition"
+                        title="Remove tool"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+
+                    {/* Preview Box & Upload */}
+                    <div className="flex items-center space-x-3">
+                      <div className="w-14 h-14 rounded-xl bg-black/60 border border-[#333] flex items-center justify-center p-2 shrink-0 overflow-hidden">
+                        {skill.icon ? (
+                          <img src={skill.icon} alt={skill.name} className="max-w-full max-h-full object-contain" />
+                        ) : (
+                          <span className="text-[9px] text-neutral-500 font-mono">No Icon</span>
+                        )}
+                      </div>
+                      <div className="flex-1 space-y-1.5">
+                        <label className="cursor-pointer inline-flex items-center space-x-1 px-3 py-1.5 bg-[#252525] hover:bg-[#303030] text-white text-[11px] font-bold rounded-lg border border-[#383838] transition">
+                          <Upload className="w-3 h-3 text-[#FFE379]" />
+                          <span>Upload Icon</span>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={(e) => handleUpload(e, (url) => {
+                              const updated = [...(homeData.about?.skills || [])];
+                              updated[sIdx] = { ...updated[sIdx], icon: url };
+                              setHomeData({
+                                ...homeData,
+                                about: { ...homeData.about, skills: updated }
+                              });
+                            })}
+                          />
+                        </label>
+                        <input
+                          type="text"
+                          value={skill.icon || ''}
+                          onChange={(e) => {
+                            const updated = [...(homeData.about?.skills || [])];
+                            updated[sIdx] = { ...updated[sIdx], icon: e.target.value };
+                            setHomeData({
+                              ...homeData,
+                              about: { ...homeData.about, skills: updated }
+                            });
+                          }}
+                          placeholder="or paste icon URL..."
+                          className="w-full px-2 py-1 bg-[#121212] border border-[#262626] rounded text-[10px] font-mono text-neutral-400 focus:border-[#FFE379] focus:outline-none"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Name & Proficiency Level */}
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <label className="block text-[9px] uppercase font-bold text-neutral-500 mb-0.5">
+                          Tool Name
+                        </label>
+                        <input
+                          type="text"
+                          value={skill.name || ''}
+                          onChange={(e) => {
+                            const updated = [...(homeData.about?.skills || [])];
+                            updated[sIdx] = { ...updated[sIdx], name: e.target.value };
+                            setHomeData({
+                              ...homeData,
+                              about: { ...homeData.about, skills: updated }
+                            });
+                          }}
+                          placeholder="e.g. Photoshop"
+                          className="w-full px-2 py-1 bg-[#121212] border border-[#262626] rounded text-xs text-white focus:border-[#FFE379] focus:outline-none"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[9px] uppercase font-bold text-neutral-500 mb-0.5">
+                          Proficiency
+                        </label>
+                        <input
+                          type="text"
+                          value={skill.level || 'INTERMEDIATE'}
+                          onChange={(e) => {
+                            const updated = [...(homeData.about?.skills || [])];
+                            updated[sIdx] = { ...updated[sIdx], level: e.target.value };
+                            setHomeData({
+                              ...homeData,
+                              about: { ...homeData.about, skills: updated }
+                            });
+                          }}
+                          placeholder="e.g. ADVANCED"
+                          className="w-full px-2 py-1 bg-[#121212] border border-[#262626] rounded text-xs font-mono text-neutral-300 focus:border-[#FFE379] focus:outline-none uppercase"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
