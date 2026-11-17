@@ -1216,7 +1216,7 @@ export default function HomePageBuilder() {
                       ) : (
                         <div className="text-center leading-none">
                           <span className="text-xs font-black text-white block uppercase" style={{ fontFamily: "'Oswald', sans-serif" }}>
-                            {brand.iconEmoji} {brand.name || 'Brand'}
+                            {brand.name || 'Brand'}
                           </span>
                           {brand.subtitle && (
                             <span className="text-[8px] font-mono block mt-1" style={{ color: brand.color || '#FFE379' }}>
@@ -1282,46 +1282,25 @@ export default function HomePageBuilder() {
                       />
                     </div>
 
-                    {/* Subtitle / Category & Icon Emoji */}
-                    <div className="grid grid-cols-3 gap-2">
-                      <div className="col-span-2">
-                        <label className="block text-[9px] uppercase font-bold text-neutral-500 mb-0.5">
-                          Subtitle
-                        </label>
-                        <input
-                          type="text"
-                          value={brand.subtitle || ''}
-                          onChange={(e) => {
-                            const updated = [...(homeData.brands?.items || [])];
-                            updated[bIdx] = { ...updated[bIdx], subtitle: e.target.value };
-                            setHomeData({
-                              ...homeData,
-                              brands: { ...homeData.brands, items: updated }
-                            });
-                          }}
-                          placeholder="e.g. cosmetics"
-                          className="w-full px-2 py-1 bg-[#121212] border border-[#282828] rounded text-[11px] text-neutral-300 focus:border-[#FFE379] focus:outline-none"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-[9px] uppercase font-bold text-neutral-500 mb-0.5">
-                          Icon / Emoji
-                        </label>
-                        <input
-                          type="text"
-                          value={brand.iconEmoji || ''}
-                          onChange={(e) => {
-                            const updated = [...(homeData.brands?.items || [])];
-                            updated[bIdx] = { ...updated[bIdx], iconEmoji: e.target.value };
-                            setHomeData({
-                              ...homeData,
-                              brands: { ...homeData.brands, items: updated }
-                            });
-                          }}
-                          placeholder="🪷"
-                          className="w-full px-2 py-1 bg-[#121212] border border-[#282828] rounded text-center text-xs text-white focus:border-[#FFE379] focus:outline-none"
-                        />
-                      </div>
+                    {/* Subtitle / Category */}
+                    <div>
+                      <label className="block text-[9px] uppercase font-bold text-neutral-500 mb-0.5">
+                        Subtitle
+                      </label>
+                      <input
+                        type="text"
+                        value={brand.subtitle || ''}
+                        onChange={(e) => {
+                          const updated = [...(homeData.brands?.items || [])];
+                          updated[bIdx] = { ...updated[bIdx], subtitle: e.target.value };
+                          setHomeData({
+                            ...homeData,
+                            brands: { ...homeData.brands, items: updated }
+                          });
+                        }}
+                        placeholder="e.g. cosmetics"
+                        className="w-full px-2.5 py-1.5 bg-[#121212] border border-[#282828] rounded text-xs text-neutral-300 focus:border-[#FFE379] focus:outline-none"
+                      />
                     </div>
                   </div>
                 ))}
