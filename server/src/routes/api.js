@@ -705,7 +705,17 @@ router.post('/reels/resolve-url', async (req, res) => {
       });
     }
 
-    // 5. Fallback for custom / other video links
+    // 5. Pinterest Pins / Video Pins
+    if (trimmedUrl.includes('pinterest.com') || trimmedUrl.includes('pin.it')) {
+      platform = 'pinterest';
+      return res.json({
+        platform,
+        embedUrl: trimmedUrl,
+        thumbnailUrl
+      });
+    }
+
+    // 6. Fallback for custom / other video links
     return res.json({
       platform,
       embedUrl,

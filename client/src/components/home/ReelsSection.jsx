@@ -3,34 +3,78 @@ import { Link } from 'react-router-dom';
 import { Eye, Heart, MessageCircle, Share2, Play } from 'lucide-react';
 import { useSiteSettings } from '../../context/SettingsContext';
 
-// Helper to render platform badge / logo
+// Helper to render platform icon (No text name, with Pinterest support)
 function PlatformBadge({ platform }) {
   const p = (platform || 'youtube').toLowerCase();
+
+  // 1. Instagram
   if (p === 'instagram') {
     return (
-      <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045] text-white shadow-md">
-        IG Reel
-      </span>
+      <div 
+        className="w-6 h-6 rounded-full flex items-center justify-center bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] shadow-md border border-white/20"
+        title="Instagram Reel"
+      >
+        <svg className="w-3.5 h-3.5 text-white fill-none stroke-current stroke-2" viewBox="0 0 24 24">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+        </svg>
+      </div>
     );
   }
+
+  // 2. TikTok
   if (p === 'tiktok') {
     return (
-      <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-black/90 text-[#00f2fe] border border-[#fe0979]/50 shadow-md">
-        TikTok
-      </span>
+      <div 
+        className="w-6 h-6 rounded-full flex items-center justify-center bg-black/95 border border-[#25F4EE]/50 shadow-md"
+        title="TikTok"
+      >
+        <svg className="w-3.5 h-3.5 fill-white" viewBox="0 0 24 24">
+          <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.35 0 .69.06 1 .18V8.9a6.37 6.37 0 0 0-1-.08 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V9.06a8.16 8.16 0 0 0 4.76 1.52v-3.45a4.85 4.85 0 0 1-1-.44z"/>
+        </svg>
+      </div>
     );
   }
+
+  // 3. Facebook
   if (p === 'facebook') {
     return (
-      <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-[#1877F2] text-white shadow-md">
-        Facebook
-      </span>
+      <div 
+        className="w-6 h-6 rounded-full flex items-center justify-center bg-[#1877F2] shadow-md border border-white/20"
+        title="Facebook"
+      >
+        <svg className="w-3.5 h-3.5 fill-white" viewBox="0 0 24 24">
+          <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+        </svg>
+      </div>
     );
   }
+
+  // 4. Pinterest
+  if (p === 'pinterest') {
+    return (
+      <div 
+        className="w-6 h-6 rounded-full flex items-center justify-center bg-[#E60023] shadow-md border border-white/20"
+        title="Pinterest"
+      >
+        <svg className="w-3.5 h-3.5 fill-white" viewBox="0 0 24 24">
+          <path d="M12 0a12 12 0 0 0-4.37 23.18c-.06-.52-.11-1.32.02-1.89l.86-3.64s-.22-.44-.22-1.09c0-1.02.59-1.78 1.33-1.78.63 0 .93.47.93 1.04 0 .63-.4 1.58-.61 2.45-.17.74.37 1.34 1.1 1.34 1.32 0 2.34-1.39 2.34-3.4 0-1.78-1.28-3.02-3.1-3.02-2.27 0-3.6 1.7-3.6 3.46 0 .69.26 1.42.59 1.82a.24.24 0 0 1 .06.23c-.06.26-.2.82-.23.94-.04.16-.14.2-.32.12-1.19-.55-1.93-2.28-1.93-3.67 0-2.98 2.17-5.72 6.25-5.72 3.28 0 5.83 2.34 5.83 5.46 0 3.26-2.05 5.88-4.9 5.88-.96 0-1.86-.5-2.17-1.09l-.59 2.25c-.22.84-.81 1.89-1.21 2.53A12 12 0 1 0 12 0z"/>
+        </svg>
+      </div>
+    );
+  }
+
+  // 5. Default: YouTube
   return (
-    <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-[#FF0000] text-white shadow-md">
-      YouTube
-    </span>
+    <div 
+      className="w-6 h-6 rounded-full flex items-center justify-center bg-[#FF0000] shadow-md border border-white/20"
+      title="YouTube"
+    >
+      <svg className="w-3.5 h-3.5 fill-white ml-0.5" viewBox="0 0 24 24">
+        <path d="M10 15l5.19-3L10 9v6m11.56-7.83c.13.47.22 1.1.28 1.9.07.8.1 1.49.1 2.09L22 12c0 2.19-.16 3.8-.44 4.83-.25.9-.83 1.48-1.73 1.73-.47.13-1.33.22-2.65.28-1.3.07-2.49.1-3.59.1L12 22c-4.19 0-6.8-.16-7.83-.44-.9-.25-1.48-.83-1.73-1.73-.13-.47-.22-1.1-.28-1.9-.07-.8-.1-1.49-.1-2.09L2 12c0-2.19.16-3.8.44-4.83.25-.9.83-1.48 1.73-1.73.47-.13 1.33-.22 2.65-.28 1.3-.07 2.49-.1 3.59-.1L12 2c4.19 0 6.8.16 7.83.44.9.25 1.48.83 1.73 1.73z"/>
+      </svg>
+    </div>
   );
 }
 

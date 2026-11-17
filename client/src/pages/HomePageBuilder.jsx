@@ -535,7 +535,7 @@ export default function HomePageBuilder() {
 
           <div className="mt-2 space-y-4">
             <p className="text-xs text-neutral-400">
-              Paste any <strong className="text-white">YouTube, Instagram Reel, TikTok, or Facebook</strong> video link. The platform and video embed are automatically detected! You can also customize viral metrics (Views, Likes, Comments, Shares) and upload custom vertical covers.
+              Paste any <strong className="text-white">YouTube, Instagram Reel, TikTok, Facebook, or Pinterest</strong> video link. The platform icon and video embed are automatically detected! You can also customize viral metrics (Views, Likes, Comments, Shares) and upload custom vertical covers.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
@@ -589,7 +589,7 @@ export default function HomePageBuilder() {
                   {/* Video URL with Instant Auto-Resolver */}
                   <div>
                     <label className="block text-[9px] uppercase font-bold text-[#FFE379] mb-0.5">
-                      Video Link (YouTube, IG, TikTok, FB)
+                      Video Link (YouTube, IG, TikTok, FB, Pinterest)
                     </label>
                     <input
                       type="text"
@@ -635,10 +635,11 @@ export default function HomePageBuilder() {
                         }}
                         className="w-full px-2 py-1 bg-[#121212] border border-[#282828] rounded-lg text-[10px] text-white focus:border-[#FFE379] focus:outline-none"
                       >
-                        <option value="youtube">YouTube</option>
-                        <option value="instagram">Instagram</option>
-                        <option value="tiktok">TikTok</option>
-                        <option value="facebook">Facebook</option>
+                        <option value="youtube">YouTube (🔴)</option>
+                        <option value="instagram">Instagram (📸)</option>
+                        <option value="tiktok">TikTok (🎵)</option>
+                        <option value="facebook">Facebook (🔵)</option>
+                        <option value="pinterest">Pinterest (📌)</option>
                       </select>
                     </div>
                     <div>
