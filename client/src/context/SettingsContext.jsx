@@ -137,6 +137,71 @@ const defaultSettings = {
         }
       ]
     },
+    process: {
+      badge: 'MY WORKFLOW',
+      titleLine1: 'My',
+      titleLine2: 'Editing Process',
+      subtitle: 'FROM RAW FOOTAGE TO A COMPELLING FINAL VIDEO.',
+      animationEnabled: true,
+      animationStyle: 'classic-road', // 'classic-road' | 'neon-cyber' | 'filmstrip-sprocket' | 'electric-pulse' | 'cosmic-drift' | 'hyperspeed-warp'
+      bottomBannerText: 'A structured, creative and detail-focused process that turns your raw footage into engaging, viral video content.',
+      steps: [
+        {
+          step: '01',
+          title: 'Discovery & Planning',
+          desc: 'Understand your goals, audience and creative vision.',
+          icon: '', // Custom icon image URL, or default lucide icon
+          iconType: 'default',
+          position: 'top',
+          nodeIndex: 0
+        },
+        {
+          step: '02',
+          title: 'Footage Organization',
+          desc: 'Ingest, back up and organize all raw footage for a smooth editing workflow.',
+          icon: '',
+          iconType: 'default',
+          position: 'bottom',
+          nodeIndex: 1
+        },
+        {
+          step: '03',
+          title: 'Rough Cut & Story Build',
+          desc: 'Arrange the best shots and craft the initial flow of the story.',
+          icon: '',
+          iconType: 'default',
+          position: 'top',
+          nodeIndex: 2
+        },
+        {
+          step: '04',
+          title: 'Editing & Polishing',
+          desc: 'Refine the cut, add transitions, graphics and maintain a strong narrative.',
+          icon: '',
+          iconType: 'default',
+          position: 'bottom',
+          nodeIndex: 3
+        },
+        {
+          step: '05',
+          title: 'Color, Sound & Refinement',
+          desc: 'Enhance the visuals with color grading, sound design and motion graphics.',
+          icon: '',
+          iconType: 'default',
+          position: 'top',
+          nodeIndex: 4
+        },
+        {
+          step: '06',
+          title: 'Final Review & Delivery',
+          desc: 'Review, make necessary revisions and deliver a ready-to-publish video.',
+          icon: '',
+          iconType: 'default',
+          position: 'bottom',
+          nodeIndex: 5
+        }
+      ]
+    },
     cta: {
       tagline: "LET'S CREATE CINEMATIC MAGIC",
       headlineLine1: 'Ready to take your',
@@ -185,6 +250,13 @@ export function SettingsProvider({ children }) {
               skills: res.data.homeContent?.about?.skills && res.data.homeContent.about.skills.length > 0
                 ? res.data.homeContent.about.skills
                 : defaultSettings.homeContent.about.skills
+            },
+            process: {
+              ...defaultSettings.homeContent.process,
+              ...(res.data.homeContent?.process || {}),
+              steps: res.data.homeContent?.process?.steps && res.data.homeContent.process.steps.length > 0
+                ? res.data.homeContent.process.steps
+                : defaultSettings.homeContent.process.steps
             },
             cta: { ...defaultSettings.homeContent.cta, ...(res.data.homeContent?.cta || {}) }
           },

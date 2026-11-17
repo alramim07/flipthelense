@@ -146,6 +146,100 @@
   will-change: stroke-dashoffset;
 }
 
+/* --- New Preset Highway & Road Animations for Editing Process Section --- */
+/* 1. Neon Cyber Laser Flow */
+@keyframes neonCyberPulse {
+  0% {
+    stroke-dashoffset: 0;
+    filter: drop-shadow(0 0 4px #FFE379);
+  }
+  50% {
+    filter: drop-shadow(0 0 16px #FFE379) drop-shadow(0 0 24px #F59E0B);
+  }
+  100% {
+    stroke-dashoffset: -96;
+    filter: drop-shadow(0 0 4px #FFE379);
+  }
+}
+.animate-neon-cyber {
+  animation: neonCyberPulse 1.0s linear infinite;
+  will-change: stroke-dashoffset, filter;
+}
+
+/* 2. Cinema Filmstrip Sprocket Rhythm */
+@keyframes filmstripSprocket {
+  0% {
+    stroke-dashoffset: 0;
+    opacity: 0.85;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: -128;
+    opacity: 0.85;
+  }
+}
+.animate-filmstrip-sprocket {
+  animation: filmstripSprocket 1.8s steps(8) infinite;
+  will-change: stroke-dashoffset;
+}
+
+/* 3. Electric Pulse Stream */
+@keyframes electricPulseStream {
+  0% {
+    stroke-dashoffset: 0;
+    stroke: #FFE379;
+  }
+  33% {
+    stroke: #60A5FA;
+  }
+  66% {
+    stroke: #C084FC;
+  }
+  100% {
+    stroke-dashoffset: -192;
+    stroke: #FFE379;
+  }
+}
+.animate-electric-pulse {
+  animation: electricPulseStream 2s linear infinite;
+  will-change: stroke-dashoffset, stroke;
+}
+
+/* 4. Cosmic Particle Drift (Slow, elegant luxury highway flow) */
+@keyframes cosmicDriftFlow {
+  0% {
+    stroke-dashoffset: 0;
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: -64;
+    opacity: 0.6;
+  }
+}
+.animate-cosmic-drift {
+  animation: cosmicDriftFlow 2.8s ease-in-out infinite alternate;
+  will-change: stroke-dashoffset, opacity;
+}
+
+/* 5. Hyper Speed Warp Dash (Fast energetic rush for high retention) */
+@keyframes hyperSpeedWarp {
+  0% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: -160;
+  }
+}
+.animate-hyperspeed-warp {
+  animation: hyperSpeedWarp 0.65s linear infinite;
+  will-change: stroke-dashoffset;
+}
+
 /* Fluid Brand Color Mixing Gradient Animation */
 @keyframes brandColorMix {
   0% {

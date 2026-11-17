@@ -90,6 +90,65 @@ export default function HomePageBuilder() {
         }
       ]
     },
+    process: {
+      badge: 'MY WORKFLOW',
+      titleLine1: 'My',
+      titleLine2: 'Editing Process',
+      subtitle: 'FROM RAW FOOTAGE TO A COMPELLING FINAL VIDEO.',
+      animationEnabled: true,
+      animationStyle: 'classic-road',
+      bottomBannerText: 'A structured, creative and detail-focused process that turns your raw footage into engaging, viral video content.',
+      steps: [
+        {
+          step: '01',
+          title: 'Discovery & Planning',
+          desc: 'Understand your goals, audience and creative vision.',
+          icon: '',
+          position: 'top',
+          nodeIndex: 0
+        },
+        {
+          step: '02',
+          title: 'Footage Organization',
+          desc: 'Ingest, back up and organize all raw footage for a smooth editing workflow.',
+          icon: '',
+          position: 'bottom',
+          nodeIndex: 1
+        },
+        {
+          step: '03',
+          title: 'Rough Cut & Story Build',
+          desc: 'Arrange the best shots and craft the initial flow of the story.',
+          icon: '',
+          position: 'top',
+          nodeIndex: 2
+        },
+        {
+          step: '04',
+          title: 'Editing & Polishing',
+          desc: 'Refine the cut, add transitions, graphics and maintain a strong narrative.',
+          icon: '',
+          position: 'bottom',
+          nodeIndex: 3
+        },
+        {
+          step: '05',
+          title: 'Color, Sound & Refinement',
+          desc: 'Enhance the visuals with color grading, sound design and motion graphics.',
+          icon: '',
+          position: 'top',
+          nodeIndex: 4
+        },
+        {
+          step: '06',
+          title: 'Final Review & Delivery',
+          desc: 'Review, make necessary revisions and deliver a ready-to-publish video.',
+          icon: '',
+          position: 'bottom',
+          nodeIndex: 5
+        }
+      ]
+    },
     cta: {
       tagline: "LET'S CREATE CINEMATIC MAGIC",
       headlineLine1: 'Ready to take your',
@@ -649,11 +708,289 @@ export default function HomePageBuilder() {
           </div>
         </div>
 
-        {/* ================= 4. CTA BANNER BUILDER ================= */}
+        {/* ================= 4. MY EDITING PROCESS SECTION BUILDER ================= */}
+        <div className="relative group rounded-3xl p-6 sm:p-8 bg-[#141414]/90 border-2 border-[#262626] hover:border-[#FFE379]/50 transition-all shadow-xl">
+          <div className="absolute -top-3.5 left-6 px-3 py-0.5 rounded-full bg-[#FFE379] text-[#101010] text-[10px] font-black uppercase tracking-wider flex items-center space-x-1 shadow">
+            <Film className="w-3 h-3" />
+            <span>Section 4: My Editing Process (Workflow & S-Curve Highway)</span>
+          </div>
+
+          <div className="mt-2 space-y-6">
+            {/* Headers & Subtitle */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-[11px] uppercase font-bold text-[#FFE379] mb-1">
+                  Tagline Pill Badge
+                </label>
+                <input
+                  type="text"
+                  value={homeData.process?.badge || 'MY WORKFLOW'}
+                  onChange={(e) => setHomeData({
+                    ...homeData,
+                    process: { ...homeData.process, badge: e.target.value }
+                  })}
+                  className="w-full px-3.5 py-2 bg-[#1A1A1A] border border-[#2D2D2D] rounded-xl text-xs text-white focus:border-[#FFE379] focus:outline-none uppercase"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[11px] uppercase font-bold text-neutral-400 mb-1">
+                  Title Line 1 (White)
+                </label>
+                <input
+                  type="text"
+                  value={homeData.process?.titleLine1 || 'My'}
+                  onChange={(e) => setHomeData({
+                    ...homeData,
+                    process: { ...homeData.process, titleLine1: e.target.value }
+                  })}
+                  className="w-full px-3.5 py-2 bg-[#1A1A1A] border border-[#2D2D2D] rounded-xl text-xs font-bold text-white focus:border-[#FFE379] focus:outline-none uppercase"
+                  style={{ fontFamily: "'Oswald', sans-serif" }}
+                />
+              </div>
+
+              <div>
+                <label className="block text-[11px] uppercase font-bold text-[#FFE379] mb-1">
+                  Title Line 2 (Golden Highlight)
+                </label>
+                <input
+                  type="text"
+                  value={homeData.process?.titleLine2 || 'Editing Process'}
+                  onChange={(e) => setHomeData({
+                    ...homeData,
+                    process: { ...homeData.process, titleLine2: e.target.value }
+                  })}
+                  className="w-full px-3.5 py-2 bg-[#1A1A1A] border border-[#2D2D2D] rounded-xl text-xs font-bold text-[#FFE379] focus:border-[#FFE379] focus:outline-none uppercase"
+                  style={{ fontFamily: "'Oswald', sans-serif" }}
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-[11px] uppercase font-bold text-neutral-400 mb-1">
+                  Section Subtitle
+                </label>
+                <input
+                  type="text"
+                  value={homeData.process?.subtitle || ''}
+                  onChange={(e) => setHomeData({
+                    ...homeData,
+                    process: { ...homeData.process, subtitle: e.target.value }
+                  })}
+                  placeholder="FROM RAW FOOTAGE TO A COMPELLING FINAL VIDEO."
+                  className="w-full px-3.5 py-2 bg-[#1A1A1A] border border-[#2D2D2D] rounded-xl text-xs text-neutral-300 focus:border-[#FFE379] focus:outline-none uppercase"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[11px] uppercase font-bold text-neutral-400 mb-1">
+                  Bottom Equalizer Banner Text
+                </label>
+                <input
+                  type="text"
+                  value={homeData.process?.bottomBannerText || ''}
+                  onChange={(e) => setHomeData({
+                    ...homeData,
+                    process: { ...homeData.process, bottomBannerText: e.target.value }
+                  })}
+                  className="w-full px-3.5 py-2 bg-[#1A1A1A] border border-[#2D2D2D] rounded-xl text-xs text-neutral-300 focus:border-[#FFE379] focus:outline-none"
+                />
+              </div>
+            </div>
+
+            {/* --- Animation Controls & 6 Preset Styles --- */}
+            <div className="p-4 bg-[#181818] border border-[#2A2A2A] rounded-2xl space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                  <h4 className="text-xs uppercase font-bold text-[#FFE379]">
+                    Background S-Curve Highway Animation Settings
+                  </h4>
+                  <p className="text-[11px] text-neutral-400 mt-0.5">
+                    Enable or disable the animated loop running along the road and choose from cinematic animation styles.
+                  </p>
+                </div>
+
+                {/* Checkbox to Toggle Animation ON / OFF */}
+                <label className="flex items-center space-x-2.5 cursor-pointer select-none bg-[#202020] px-3.5 py-1.5 rounded-xl border border-[#333]">
+                  <input
+                    type="checkbox"
+                    checked={homeData.process?.animationEnabled !== false}
+                    onChange={(e) => setHomeData({
+                      ...homeData,
+                      process: { ...homeData.process, animationEnabled: e.target.checked }
+                    })}
+                    className="w-4 h-4 rounded text-[#FFE379] bg-[#141414] border-neutral-700 focus:ring-0 cursor-pointer accent-[#FFE379]"
+                  />
+                  <span className="text-xs font-bold uppercase text-white">
+                    {homeData.process?.animationEnabled !== false ? 'Animation: ON' : 'Animation: OFF'}
+                  </span>
+                </label>
+              </div>
+
+              {/* 6 Preset Animation Types */}
+              {homeData.process?.animationEnabled !== false && (
+                <div className="pt-2 border-t border-[#262626]">
+                  <label className="block text-[10px] uppercase font-bold text-neutral-400 mb-2">
+                    Select Animation Style Preset (6 Suitable Options)
+                  </label>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                    {[
+                      { id: 'classic-road', name: '1. Classic Golden Highway', desc: 'Continuous steady road track (1.2s seamless loop)' },
+                      { id: 'neon-cyber', name: '2. Neon Cyber Pulse', desc: 'Glowing amber laser stream with dynamic pulsing aura' },
+                      { id: 'filmstrip-sprocket', name: '3. Filmstrip Sprocket Rhythm', desc: 'Cinematic 24 FPS stepped rhythmic frame movement' },
+                      { id: 'electric-pulse', name: '4. Electric Multi-Color Wave', desc: 'Electrifying chroma flow cycling Gold, Cyan & Purple' },
+                      { id: 'cosmic-drift', name: '5. Luxury Cosmic Drift', desc: 'Slow, elegant velvet ease flow for a premium feel' },
+                      { id: 'hyperspeed-warp', name: '6. High-Retention Warp Dash', desc: 'Fast, high-energy dash for high viewer retention' }
+                    ].map((anim) => {
+                      const isSelected = (homeData.process?.animationStyle || 'classic-road') === anim.id;
+                      return (
+                        <div
+                          key={anim.id}
+                          onClick={() => setHomeData({
+                            ...homeData,
+                            process: { ...homeData.process, animationStyle: anim.id }
+                          })}
+                          className={`p-3 rounded-xl border cursor-pointer transition-all ${
+                            isSelected
+                              ? 'bg-[#FFE379]/10 border-[#FFE379] shadow-[0_0_15px_rgba(255,227,121,0.2)]'
+                              : 'bg-[#121212] border-[#282828] hover:border-[#383838]'
+                          }`}
+                        >
+                          <div className="flex items-center justify-between mb-1">
+                            <span className={`text-xs font-bold ${isSelected ? 'text-[#FFE379]' : 'text-white'}`}>
+                              {anim.name}
+                            </span>
+                            {isSelected && <span className="w-2 h-2 rounded-full bg-[#FFE379] animate-ping" />}
+                          </div>
+                          <p className="text-[10px] text-neutral-400 leading-snug">
+                            {anim.desc}
+                          </p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* --- 6 Process Cards Editor --- */}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <label className="block text-xs uppercase font-bold text-[#FFE379]">
+                  Workflow Steps & Card Content (6 Sequential Cards)
+                </label>
+                <span className="text-[10px] font-mono text-neutral-500">
+                  Custom Icon Upload or Lucide Icons
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                {(homeData.process?.steps || []).map((step, idx) => (
+                  <div key={step.step || idx} className="p-3.5 bg-[#181818] border border-[#282828] rounded-2xl space-y-2.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-mono font-bold text-[#FFE379]">
+                        STEP {step.step} ({step.position === 'top' ? 'Top Row' : 'Bottom Row'})
+                      </span>
+                    </div>
+
+                    {/* Icon preview & upload */}
+                    <div className="flex items-center space-x-3">
+                      <div className="w-12 h-12 rounded-xl bg-[#121212] border border-[#303030] flex items-center justify-center p-1.5 shrink-0 overflow-hidden">
+                        {step.icon ? (
+                          <img src={step.icon} alt={step.title} className="w-full h-full object-contain" />
+                        ) : (
+                          <Film className="w-5 h-5 text-[#FFE379]" />
+                        )}
+                      </div>
+                      <div className="flex-1 space-y-1">
+                        <label className="cursor-pointer inline-flex items-center space-x-1 px-2.5 py-1 bg-[#222] hover:bg-[#2C2C2C] text-white text-[10px] font-bold rounded-lg border border-[#383838] transition">
+                          <Upload className="w-3 h-3 text-[#FFE379]" />
+                          <span>Change Icon</span>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={(e) => handleUpload(e, (url) => {
+                              const updated = [...(homeData.process?.steps || [])];
+                              updated[idx] = { ...updated[idx], icon: url };
+                              setHomeData({
+                                ...homeData,
+                                process: { ...homeData.process, steps: updated }
+                              });
+                            })}
+                          />
+                        </label>
+                        <input
+                          type="text"
+                          value={step.icon || ''}
+                          onChange={(e) => {
+                            const updated = [...(homeData.process?.steps || [])];
+                            updated[idx] = { ...updated[idx], icon: e.target.value };
+                            setHomeData({
+                              ...homeData,
+                              process: { ...homeData.process, steps: updated }
+                            });
+                          }}
+                          placeholder="or paste icon URL..."
+                          className="w-full px-2 py-0.5 bg-[#121212] border border-[#282828] rounded text-[10px] font-mono text-neutral-400 focus:border-[#FFE379] focus:outline-none"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Step Title */}
+                    <div>
+                      <label className="block text-[9px] uppercase font-bold text-neutral-500 mb-0.5">
+                        Card Title
+                      </label>
+                      <input
+                        type="text"
+                        value={step.title || ''}
+                        onChange={(e) => {
+                          const updated = [...(homeData.process?.steps || [])];
+                          updated[idx] = { ...updated[idx], title: e.target.value };
+                          setHomeData({
+                            ...homeData,
+                            process: { ...homeData.process, steps: updated }
+                          });
+                        }}
+                        className="w-full px-2.5 py-1.5 bg-[#121212] border border-[#282828] rounded-lg text-xs font-bold text-white focus:border-[#FFE379] focus:outline-none"
+                        style={{ fontFamily: "'Oswald', sans-serif" }}
+                      />
+                    </div>
+
+                    {/* Step Description */}
+                    <div>
+                      <label className="block text-[9px] uppercase font-bold text-neutral-500 mb-0.5">
+                        Card Description
+                      </label>
+                      <textarea
+                        rows={2}
+                        value={step.desc || ''}
+                        onChange={(e) => {
+                          const updated = [...(homeData.process?.steps || [])];
+                          updated[idx] = { ...updated[idx], desc: e.target.value };
+                          setHomeData({
+                            ...homeData,
+                            process: { ...homeData.process, steps: updated }
+                          });
+                        }}
+                        className="w-full px-2.5 py-1.5 bg-[#121212] border border-[#282828] rounded-lg text-xs text-neutral-300 focus:border-[#FFE379] focus:outline-none resize-none leading-relaxed"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        {/* ================= 5. CTA BANNER BUILDER ================= */}
         <div className="relative group rounded-3xl p-6 sm:p-8 bg-[#141414]/90 border-2 border-[#262626] hover:border-[#FFE379]/50 transition-all shadow-xl">
           <div className="absolute -top-3.5 left-6 px-3 py-0.5 rounded-full bg-[#FFE379] text-[#101010] text-[10px] font-black uppercase tracking-wider flex items-center space-x-1 shadow">
             <Sparkles className="w-3 h-3" />
-            <span>Section 4: Call To Action (Bottom Banner)</span>
+            <span>Section 5: Call To Action (Bottom Banner)</span>
           </div>
 
           <div className="mt-2 space-y-4">

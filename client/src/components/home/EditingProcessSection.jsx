@@ -9,13 +9,14 @@ import {
   CheckCircle2,
   Video
 } from 'lucide-react';
+import { useSiteSettings } from '../../context/SettingsContext';
 
-const PROCESS_STEPS = [
+const DEFAULT_PROCESS_STEPS = [
   {
     step: '01',
     title: 'Discovery & Planning',
     desc: 'Understand your goals, audience and creative vision.',
-    icon: ClipboardList,
+    iconComp: ClipboardList,
     accent: '#FFE379',
     position: 'top',
     nodeIndex: 0,
@@ -24,7 +25,7 @@ const PROCESS_STEPS = [
     step: '02',
     title: 'Footage Organization',
     desc: 'Ingest, back up and organize all raw footage for a smooth editing workflow.',
-    icon: FolderArchive,
+    iconComp: FolderArchive,
     accent: '#FFE379',
     position: 'bottom',
     nodeIndex: 1,
@@ -33,7 +34,7 @@ const PROCESS_STEPS = [
     step: '03',
     title: 'Rough Cut & Story Build',
     desc: 'Arrange the best shots and craft the initial flow of the story.',
-    icon: Film,
+    iconComp: Film,
     accent: '#FFE379',
     position: 'top',
     nodeIndex: 2,
@@ -42,7 +43,7 @@ const PROCESS_STEPS = [
     step: '04',
     title: 'Editing & Polishing',
     desc: 'Refine the cut, add transitions, graphics and maintain a strong narrative.',
-    icon: Scissors,
+    iconComp: Scissors,
     accent: '#FFE379',
     position: 'bottom',
     nodeIndex: 3,
@@ -51,7 +52,7 @@ const PROCESS_STEPS = [
     step: '05',
     title: 'Color, Sound & Refinement',
     desc: 'Enhance the visuals with color grading, sound design and motion graphics.',
-    icon: SlidersHorizontal,
+    iconComp: SlidersHorizontal,
     accent: '#FFE379',
     position: 'top',
     nodeIndex: 4,
@@ -60,7 +61,7 @@ const PROCESS_STEPS = [
     step: '06',
     title: 'Final Review & Delivery',
     desc: 'Review, make necessary revisions and deliver a ready-to-publish video.',
-    icon: CheckCircle2,
+    iconComp: CheckCircle2,
     accent: '#FFE379',
     position: 'bottom',
     nodeIndex: 5,
@@ -69,6 +70,51 @@ const PROCESS_STEPS = [
 
 export default function EditingProcessSection() {
   const [activeStep, setActiveStep] = useState(2); // default step 03 active
+  const { settings } = useSiteSettings();
+
+  const processConfig = settings.homeContent?.process || {};
+
+  const badgeText = processConfig.badge || 'MY WORKFLOW';
+  const title1 = processConfig.titleLine1 || 'My';
+  const title2 = processConfig.titleLine2 || 'Editing Process';
+  const subtitle = processConfig.subtitle || 'FROM RAW FOOTAGE TO A COMPELLING FINAL VIDEO.';
+  const bottomBannerText = processConfig.bottomBannerText || 'A structured, creative and detail-focused process that turns your raw footage into engaging, viral video content.';
+  const animationEnabled = processConfig.animationEnabled !== false;
+  const animationStyle = processConfig.animationStyle || 'classic-road';
+
+  // Merge configured steps with defaults for icons & position
+  const rawSteps = processConfig.steps && processConfig.steps.length > 0
+    ? processConfig.steps
+    : DEFAULT_PROCESS_STEPS;
+
+  const mergedSteps = rawSteps.map((s, idx) => {
+    const fallback = DEFAULT_PROCESS_STEPS[idx] || DEFAULT_PROCESS_STEPS[0];
+    return {
+      ...fallback,
+      ...s,
+      iconComp: fallback.iconComp
+    };
+  });
+
+  // Determine dynamic animation class for highway center lane
+  const getHighwayAnimationClass = () => {
+    if (!animationEnabled) return '';
+    switch (animationStyle) {
+      case 'neon-cyber':
+        return 'animate-neon-cyber';
+      case 'filmstrip-sprocket':
+        return 'animate-filmstrip-sprocket';
+      case 'electric-pulse':
+        return 'animate-electric-pulse';
+      case 'cosmic-drift':
+        return 'animate-cosmic-drift';
+      case 'hyperspeed-warp':
+        return 'animate-hyperspeed-warp';
+      case 'classic-road':
+      default:
+        return 'animate-road-middle-track';
+    }
+  };
 
   return (
     <section id="process" className="mb-24 pt-4">
@@ -136,7 +182,7 @@ export default function EditingProcessSection() {
               className="text-xs uppercase tracking-widest text-[#FFE379] font-semibold"
               style={{ fontFamily: "'Raleway', sans-serif" }}
             >
-              MY WORKFLOW
+              {badgeText}
             </span>
           </div>
 
@@ -150,7 +196,7 @@ export default function EditingProcessSection() {
               className="text-3xl sm:text-5xl lg:text-[54px] font-black text-white uppercase tracking-tight"
               style={{ fontFamily: "'Oswald', sans-serif" }}
             >
-              My <span className="text-[#FFE379]">Editing Process</span>
+              {title1} <span className="text-[#FFE379]">{title2}</span>
             </h2>
           </div>
 
@@ -158,25 +204,11 @@ export default function EditingProcessSection() {
             className="text-xs sm:text-sm text-neutral-400 uppercase tracking-[0.25em] mt-3 font-medium"
             style={{ fontFamily: "'Raleway', sans-serif" }}
           >
-            FROM RAW FOOTAGE TO A COMPELLING FINAL VIDEO.
+            {subtitle}
           </p>
         </div>
 
         {/* ================= INTERACTIVE 6-STEP WORKFLOW TIMELINE WITH S-CURVE HIGHWAY ================= */}
-        {/*
-          High-end layered Highway:
-          - An absolute SVG background layer (z-0) spanning the full width and height of the 2-row layout plus overflow margins.
-          - Cards stay on z-10 with fully opaque backgrounds so the highway flows seamlessly underneath them.
-          - Path accurately traces:
-            1. Starts top-left outside (-60, -30)
-            2. Curves down into Card 01 center (170, 95)
-            3. Curves down into Card 02 center (170, 395)
-            4. Loops diagonally up-right passing between rows into Card 03 center (510, 95)
-            5. Crests smoothly over top and descends into Card 05 center (850, 95)
-            6. Sweeps downward-left into Card 04 center (510, 395)
-            7. Channels across right through Card 06 center (850, 395)
-            8. Exits smoothly off right boundary (1080, 420)
-        */}
         <div className="relative z-10 max-w-5xl mx-auto">
 
           {/* ===== BACKGROUND HIGHWAY SVG ===== */}
@@ -192,7 +224,6 @@ export default function EditingProcessSection() {
               style={{ overflow: 'visible' }}
             >
               <defs>
-                {/* Glow filter for realistic asphalt presence */}
                 <filter id="roadAtmosphere" x="-30%" y="-30%" width="160%" height="160%">
                   <feGaussianBlur stdDeviation="12" result="blur" />
                   <feComposite in="SourceGraphic" in2="blur" operator="over" />
@@ -201,7 +232,6 @@ export default function EditingProcessSection() {
                   <feGaussianBlur stdDeviation="3.5" result="blur" />
                   <feComposite in="SourceGraphic" in2="blur" operator="over" />
                 </filter>
-                {/* Subtle asphalt gradient for realistic texture & elevation */}
                 <linearGradient id="mountainRoadGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%" stopColor="#1E1E1E" />
                   <stop offset="50%" stopColor="#151515" />
@@ -209,14 +239,7 @@ export default function EditingProcessSection() {
                 </linearGradient>
               </defs>
 
-              {/* 
-                Pure Curve Mountain Highway Spline (পাহাড়ি আঁকাবাঁকা মসৃণ হাইওয়ে):
-                Sequentially weaves through the exact centers of Step 01 -> 02 -> 03 -> 04 -> 05 -> 06
-                Continuous cubic beziers with smooth G1/C1 continuity and organic hairpin bends.
-                Uniform thick road width throughout all sections and curves.
-              */}
-
-              {/* 1. Road Deep Shadow / Elevation Grounding */}
+              {/* 1. Road Deep Shadow */}
               <path
                 d="M -90 40 
                    C -20 50, 80 65, 170 95
@@ -236,7 +259,7 @@ export default function EditingProcessSection() {
                 opacity="0.8"
               />
 
-              {/* 2. Concrete Road Curb / Shoulder (Pahari Mountain Edge Curb) */}
+              {/* 2. Concrete Road Curb */}
               <path
                 d="M -90 40 
                    C -20 50, 80 65, 170 95
@@ -255,7 +278,7 @@ export default function EditingProcessSection() {
                 strokeLinejoin="round"
               />
 
-              {/* 3. Outer Road Edge Lines (Perfect Left & Right Shoulder Lines directly along the asphalt borders) */}
+              {/* 3. Outer Road Edge Lines */}
               <path
                 d="M -90 40 
                    C -20 50, 80 65, 170 95
@@ -275,7 +298,7 @@ export default function EditingProcessSection() {
                 opacity="0.3"
               />
 
-              {/* 4. Smooth Asphalt Paved Surface (Inner Roadway) */}
+              {/* 4. Smooth Asphalt Paved Surface */}
               <path
                 d="M -90 40 
                    C -20 50, 80 65, 170 95
@@ -294,7 +317,7 @@ export default function EditingProcessSection() {
                 strokeLinejoin="round"
               />
 
-              {/* 5. Animated Golden Center Lane Track (Seamless Loop without stutter) */}
+              {/* 5. Center Lane Track with Selectable Animation */}
               <path
                 d="M -90 40 
                    C -20 50, 80 65, 170 95
@@ -312,17 +335,19 @@ export default function EditingProcessSection() {
                 strokeDasharray="20 12"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className="animate-road-middle-track"
+                className={getHighwayAnimationClass()}
                 filter="url(#yellowGlow)"
               />
             </svg>
           </div>
 
-          {/* Top Row Cards (Steps 01, 03, 05) — fully opaque, z-10 */}
+          {/* Top Row Cards (Steps 01, 03, 05) */}
           <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-24">
-            {PROCESS_STEPS.filter(s => s.position === 'top').map((item) => {
+            {mergedSteps.filter(s => s.position === 'top').map((item) => {
               const isActive = activeStep === item.nodeIndex;
-              const IconComp = item.icon;
+              const IconComp = item.iconComp;
+              const hasCustomIcon = Boolean(item.icon);
+
               return (
                 <div
                   key={item.step}
@@ -333,25 +358,36 @@ export default function EditingProcessSection() {
                       : 'bg-[#161616] border-[#262626] hover:border-[#FFE379]/50 hover:bg-[#1A1A1A] shadow-2xl'
                   }`}
                 >
-                  <div className="flex items-center justify-end mb-3">
-                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-xs font-mono font-bold text-neutral-500 group-hover:text-[#FFE379] transition">
+                      STEP {item.step}
+                    </span>
+                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center p-1 transition-colors ${
                       isActive ? 'bg-[#FFE379]/15 text-[#FFE379]' : 'bg-[#202020] text-neutral-400 group-hover:text-[#FFE379]'
-                    }`}><IconComp className="w-4 h-4" /></div>
+                    }`}>
+                      {hasCustomIcon ? (
+                        <img src={item.icon} alt={item.title} className="w-full h-full object-contain" />
+                      ) : (
+                        <IconComp className="w-4 h-4" />
+                      )}
+                    </div>
                   </div>
                   <h3 className="text-base sm:text-lg font-bold text-white mb-1.5 transition-colors group-hover:text-[#FFE379]"
                     style={{ fontFamily: "'Oswald', sans-serif" }}>{item.title}</h3>
-                  <p className="text-xs text-neutral-400 leading-relaxed font-normal"
+                  <p className="text-xs text-neutral-400 leading-relaxed font-normal whitespace-pre-line"
                     style={{ fontFamily: "'Raleway', sans-serif" }}>{item.desc}</p>
                 </div>
               );
             })}
           </div>
 
-          {/* Bottom Row Cards (Steps 02, 04, 06) — fully opaque, z-10 */}
+          {/* Bottom Row Cards (Steps 02, 04, 06) */}
           <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-            {PROCESS_STEPS.filter(s => s.position === 'bottom').map((item) => {
+            {mergedSteps.filter(s => s.position === 'bottom').map((item) => {
               const isActive = activeStep === item.nodeIndex;
-              const IconComp = item.icon;
+              const IconComp = item.iconComp;
+              const hasCustomIcon = Boolean(item.icon);
+
               return (
                 <div
                   key={item.step}
@@ -362,14 +398,23 @@ export default function EditingProcessSection() {
                       : 'bg-[#161616] border-[#262626] hover:border-[#FFE379]/50 hover:bg-[#1A1A1A] shadow-xl'
                   }`}
                 >
-                  <div className="flex items-center justify-end mb-3">
-                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-xs font-mono font-bold text-neutral-500 group-hover:text-[#FFE379] transition">
+                      STEP {item.step}
+                    </span>
+                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center p-1 transition-colors ${
                       isActive ? 'bg-[#FFE379]/15 text-[#FFE379]' : 'bg-[#202020] text-neutral-400 group-hover:text-[#FFE379]'
-                    }`}><IconComp className="w-4 h-4" /></div>
+                    }`}>
+                      {hasCustomIcon ? (
+                        <img src={item.icon} alt={item.title} className="w-full h-full object-contain" />
+                      ) : (
+                        <IconComp className="w-4 h-4" />
+                      )}
+                    </div>
                   </div>
                   <h3 className="text-base sm:text-lg font-bold text-white mb-1.5 transition-colors group-hover:text-[#FFE379]"
                     style={{ fontFamily: "'Oswald', sans-serif" }}>{item.title}</h3>
-                  <p className="text-xs text-neutral-400 leading-relaxed"
+                  <p className="text-xs text-neutral-400 leading-relaxed font-normal whitespace-pre-line"
                     style={{ fontFamily: "'Raleway', sans-serif" }}>{item.desc}</p>
                 </div>
               );
@@ -388,7 +433,7 @@ export default function EditingProcessSection() {
               className="text-xs sm:text-[13px] text-neutral-300 leading-snug font-normal"
               style={{ fontFamily: "'Raleway', sans-serif" }}
             >
-              A structured, creative and detail-focused process that turns your raw footage into engaging, viral video content.
+              {bottomBannerText}
             </p>
           </div>
 
