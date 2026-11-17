@@ -32,6 +32,7 @@ export default function Portfolio() {
   };
 
   const bottomCta = portfolioSettings.bottomCta || {
+    bgImage: '/videen_cta_bg.jpg',
     badge: 'WORK WITH US',
     title: 'HAVE A PROJECT IN MIND?',
     description: "Ready to produce high-end wedding films, viral reels, or cinematic TV commercials? Let's discuss your timeline and vision.",
@@ -393,8 +394,16 @@ export default function Portfolio() {
       </section>
 
       {/* ================= 3. BOTTOM CINEMATIC CTA BANNER ================= */}
-      <section className="py-20 px-6 text-center bg-gradient-to-b from-[#101010] to-black border-t border-[#232323]">
-        <div className="max-w-2xl mx-auto space-y-5">
+      <section 
+        className="relative py-24 sm:py-32 px-6 text-center overflow-hidden border-t border-[#232323] bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `url('${bottomCta.bgImage || '/videen_cta_bg.jpg'}')`
+        }}
+      >
+        {/* Dark Cinematic Vignette & Backdrop Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#101010]/85 via-[#101010]/75 to-black/95 pointer-events-none" />
+
+        <div className="relative z-10 max-w-2xl mx-auto space-y-6">
           {bottomCta.badge && (
             <span 
               className="text-xs uppercase tracking-[4.5px] text-[#FFE379] font-medium block"
@@ -405,7 +414,7 @@ export default function Portfolio() {
           )}
 
           <h2 
-            className="text-3xl sm:text-5xl font-extrabold text-[#F4F4F4] uppercase tracking-normal"
+            className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-[#F4F4F4] uppercase tracking-normal drop-shadow-[0_4px_20px_rgba(0,0,0,0.8)]"
             style={{ fontFamily: "'Oswald', sans-serif" }}
           >
             {bottomCta.title || 'HAVE A PROJECT IN MIND?'}
@@ -413,17 +422,17 @@ export default function Portfolio() {
 
           {bottomCta.description && (
             <p 
-              className="text-neutral-400 text-xs sm:text-sm max-w-md mx-auto leading-relaxed"
+              className="text-neutral-300 text-xs sm:text-sm lg:text-base max-w-lg mx-auto leading-relaxed drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]"
               style={{ fontFamily: "'Raleway', sans-serif" }}
             >
               {bottomCta.description}
             </p>
           )}
 
-          <div className="pt-3 flex flex-wrap items-center justify-center gap-4">
+          <div className="pt-4 flex flex-wrap items-center justify-center gap-4">
             <Link 
               to={bottomCta.buttonLink || '/contact'} 
-              className={`inline-flex items-center space-x-2 font-semibold text-sm px-8 py-3.5 uppercase tracking-wider transition-all shadow-xl hover:scale-105 active:scale-95 ${
+              className={`inline-flex items-center space-x-2 font-semibold text-sm px-9 py-4 uppercase tracking-wider transition-all shadow-2xl hover:scale-105 active:scale-95 ${
                 bottomCta.buttonStyle === 'rounded-gold' 
                   ? 'bg-[#FFE379] hover:bg-[#ebd074] text-black rounded-xl' 
                   : bottomCta.buttonStyle === 'pill-gold'

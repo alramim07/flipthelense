@@ -501,6 +501,7 @@ const defaultSettings = {
       description: 'Bespoke video editing, high-end commercial grading, and story-driven post production across global client productions.'
     },
     bottomCta: {
+      bgImage: '/videen_cta_bg.jpg',
       badge: 'WORK WITH US',
       title: 'HAVE A PROJECT IN MIND?',
       description: "Ready to produce high-end wedding films, viral reels, or cinematic TV commercials? Let's discuss your timeline and vision.",

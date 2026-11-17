@@ -42,6 +42,7 @@ export default function PortfolioPageBuilder() {
       if (!cloned.hero.statProjects) cloned.hero.statProjects = '523';
       if (!cloned.hero.statProjectsLabel) cloned.hero.statProjectsLabel = 'Project Done';
       if (!cloned.bottomCta) cloned.bottomCta = {};
+      if (!cloned.bottomCta.bgImage) cloned.bottomCta.bgImage = '/videen_cta_bg.jpg';
       if (!cloned.bottomCta.badge) cloned.bottomCta.badge = 'WORK WITH US';
       if (!cloned.bottomCta.title) cloned.bottomCta.title = 'HAVE A PROJECT IN MIND?';
       if (!cloned.bottomCta.description) cloned.bottomCta.description = "Ready to produce high-end wedding films, viral reels, or cinematic TV commercials? Let's discuss your timeline and vision.";
@@ -576,6 +577,40 @@ export default function PortfolioPageBuilder() {
           </div>
 
           <div className="mt-2 space-y-4">
+            {/* Background Image URL or Upload */}
+            <div>
+              <label className="block text-[11px] uppercase font-bold text-[#FFE379] mb-1">
+                Background Image URL or Upload
+              </label>
+              <div className="flex items-center space-x-2">
+                <input
+                  type="text"
+                  value={portfolioData.bottomCta?.bgImage || ''}
+                  onChange={(e) => setPortfolioData({
+                    ...portfolioData,
+                    bottomCta: { ...portfolioData.bottomCta, bgImage: e.target.value }
+                  })}
+                  placeholder="/videen_cta_bg.jpg or upload below..."
+                  className="flex-1 px-3.5 py-2 bg-[#1A1A1A] border border-[#2D2D2D] rounded-xl text-xs text-neutral-300 focus:border-[#FFE379] focus:outline-none"
+                />
+                <label className="cursor-pointer px-4 py-2 bg-[#262626] hover:bg-[#333] border border-white/10 rounded-xl text-xs font-bold text-white flex items-center space-x-1.5 transition-all">
+                  <Upload className="w-3.5 h-3.5 text-[#FFE379]" />
+                  <span>Upload</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => handleUpload(e, (url) => {
+                      setPortfolioData({
+                        ...portfolioData,
+                        bottomCta: { ...portfolioData.bottomCta, bgImage: url }
+                      });
+                    })}
+                  />
+                </label>
+              </div>
+            </div>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-[11px] uppercase font-bold text-[#FFE379] mb-1">
