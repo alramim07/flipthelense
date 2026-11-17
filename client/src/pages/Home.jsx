@@ -3,6 +3,7 @@ import HeroSection from '../components/home/HeroSection';
 import ReelsSection from '../components/home/ReelsSection';
 import AboutSection from '../components/home/AboutSection';
 import EditingProcessSection from '../components/home/EditingProcessSection';
+import BrandsSection from '../components/home/BrandsSection';
 import ClientReviewSection from '../components/home/ClientReviewSection';
 import CtaSection from '../components/home/CtaSection';
 import VideoModal from '../components/common/VideoModal';
@@ -32,10 +33,13 @@ export default function Home() {
       {/* 4. Editing Process */}
       <EditingProcessSection />
 
-      {/* 5. Client Review Testimonials */}
+      {/* 5. Brands I've Worked With / Trusted Collaborations */}
+      <BrandsSection />
+
+      {/* 6. Client Review Testimonials */}
       <ClientReviewSection />
 
-      {/* 6. Call To Action Banner */}
+      {/* 7. Call To Action Banner */}
       <CtaSection />
 
       {/* Global Video Modal */}
