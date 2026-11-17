@@ -100,37 +100,27 @@ export default function EditingProcessSection() {
   const getHighwayAnimationClass = () => {
     if (!animationEnabled) return '';
     switch (animationStyle) {
-      case 'neon-cyber':
-        return 'animate-neon-cyber';
-      case 'filmstrip-sprocket':
-        return 'animate-filmstrip-sprocket';
-      case 'electric-pulse':
-        return 'animate-electric-pulse';
-      case 'cosmic-drift':
-        return 'animate-cosmic-drift';
       case 'hyperspeed-warp':
         return 'animate-hyperspeed-warp';
-      case 'timeline-playhead':
-        return 'animate-neon-cyber';
-      case 'audio-beats':
-        return 'animate-electric-pulse';
-      case 'chroma-glitch':
-        return 'animate-road-middle-track animate-chroma-glitch';
-      case 'film-grain-dust':
-        return 'animate-filmstrip-sprocket';
-      case 'golden-bokeh':
-        return 'animate-cosmic-drift';
       case 'classic-road':
-      default:
         return 'animate-road-middle-track';
+      default:
+        // By default or for other atmospheric background modes, road remains a clean, elegant still luxury track
+        return '';
     }
   };
 
   return (
     <section id="process" className="mb-24 pt-4">
       <div className={`relative w-full rounded-3xl overflow-hidden border border-[#232323] shadow-2xl bg-[#121212] p-6 sm:p-12 lg:p-14 ${
-        animationEnabled && animationStyle === 'chroma-glitch' ? 'animate-chroma-glitch' : ''
-      }`}>
+        animationEnabled && animationStyle === 'chroma-drift' ? 'animate-chroma-drift' : ''
+      }`}
+      style={{
+        backgroundImage: animationEnabled && animationStyle === 'chroma-drift'
+          ? 'linear-gradient(-45deg, #121212, #18150c, #0c151a, #16101c, #141414)'
+          : undefined
+      }}
+      >
         
         {/* Subtle background grid pattern */}
         <div 
@@ -141,42 +131,69 @@ export default function EditingProcessSection() {
           }}
         />
 
-        {/* Dynamic Creative Overlay Layer based on Selected Animation */}
+        {/* Dynamic Creative Background Environments based on Selected Style */}
         {animationEnabled && (
           <>
-            {/* 1. Timecode Playhead Scanline (Sweeping razor line across timeline) */}
-            {(animationStyle === 'timeline-playhead' || animationStyle === 'neon-cyber') && (
+            {/* 1. Cyberpunk 3D Wireframe Grid Floor (Perspective depth underneath cards) */}
+            {animationStyle === 'cyber-grid' && (
+              <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 opacity-25">
+                <div 
+                  className="w-full h-full animate-cyber-grid"
+                  style={{
+                    backgroundImage: 'linear-gradient(to right, rgba(255, 227, 121, 0.25) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 227, 121, 0.25) 1px, transparent 1px)',
+                    backgroundSize: '40px 40px',
+                    transformOrigin: '50% 100%'
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-transparent to-[#121212]" />
+              </div>
+            )}
+
+            {/* 2. Golden Ambient Bokeh Orbs & Cinema Light Leaks */}
+            {animationStyle === 'golden-bokeh' && (
               <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
-                <div className="absolute top-0 bottom-0 w-[2px] bg-gradient-to-b from-transparent via-[#FFE379] to-transparent shadow-[0_0_12px_#FFE379] animate-timeline-playhead">
-                  <div className="w-2.5 h-2.5 -ml-1 bg-[#FFE379] rounded-sm transform rotate-45 shadow" />
+                <div className="absolute top-1/4 left-1/12 w-64 h-64 rounded-full bg-[#FFE379]/15 blur-3xl animate-bokeh-orb-1" />
+                <div className="absolute bottom-1/4 right-1/12 w-80 h-80 rounded-full bg-amber-500/10 blur-3xl animate-bokeh-orb-2" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-[#FFE379]/5 blur-[100px]" />
+              </div>
+            )}
+
+            {/* 3. 35mm Film Strip Ribbon Stream (Moving cinematic film frames in background) */}
+            {animationStyle === 'film-reel-ribbon' && (
+              <div className="absolute top-2 left-0 right-0 h-16 pointer-events-none overflow-hidden z-0 opacity-30">
+                <div className="flex space-x-3 w-[200%] animate-film-reel-scroll">
+                  {[...Array(24)].map((_, i) => (
+                    <div key={i} className="w-16 h-12 rounded border border-neutral-700 bg-neutral-900/80 shrink-0 flex flex-col justify-between p-1">
+                      <div className="flex justify-between">
+                        <span className="w-1 h-1 rounded-full bg-[#FFE379]/50" />
+                        <span className="w-1 h-1 rounded-full bg-[#FFE379]/50" />
+                      </div>
+                      <Film className="w-3.5 h-3.5 text-[#FFE379]/60 mx-auto" />
+                      <div className="flex justify-between">
+                        <span className="w-1 h-1 rounded-full bg-[#FFE379]/50" />
+                        <span className="w-1 h-1 rounded-full bg-[#FFE379]/50" />
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             )}
 
-            {/* 2. Audio Wave Beats Radar Glow */}
-            {(animationStyle === 'audio-beats' || animationStyle === 'electric-pulse') && (
-              <div className="absolute -inset-10 pointer-events-none rounded-3xl animate-audio-beats z-0" />
-            )}
-
-            {/* 3. Golden Bokeh Particle Spheres */}
-            {(animationStyle === 'golden-bokeh' || animationStyle === 'cosmic-drift') && (
-              <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
-                <div className="absolute top-1/4 left-1/6 w-48 h-48 rounded-full bg-[#FFE379]/10 blur-2xl animate-bokeh-1" />
-                <div className="absolute bottom-1/4 right-1/6 w-64 h-64 rounded-full bg-[#FFE379]/8 blur-3xl animate-bokeh-2" />
-                <div className="absolute top-2/3 left-1/2 w-36 h-36 rounded-full bg-amber-500/10 blur-xl animate-bokeh-1" />
+            {/* 4. Audio Equalizer Waveform Soundstage (Studio editing background) */}
+            {animationStyle === 'equalizer-wave' && (
+              <div className="absolute bottom-0 inset-x-0 h-28 pointer-events-none overflow-hidden z-0 opacity-20 flex items-end justify-center space-x-1 px-4">
+                {[15, 35, 65, 90, 45, 80, 100, 55, 75, 40, 95, 60, 85, 30, 70, 50, 90, 65, 40, 85, 100, 45, 60, 30, 75, 90, 50, 80, 65, 35].map((h, i) => (
+                  <div
+                    key={i}
+                    className="w-1.5 sm:w-2 bg-gradient-to-t from-[#FFE379] via-amber-400 to-transparent rounded-t animate-equalizer-bar"
+                    style={{
+                      height: `${h}%`,
+                      animationDelay: `${(i % 8) * 0.15}s`,
+                      animationDuration: `${1.0 + (i % 5) * 0.2}s`
+                    }}
+                  />
+                ))}
               </div>
-            )}
-
-            {/* 4. Film Grain & Cinematic Dust Flicker */}
-            {animationStyle === 'film-grain-dust' && (
-              <div 
-                className="absolute inset-0 pointer-events-none opacity-20 z-0 animate-film-grain"
-                style={{
-                  backgroundImage: 'radial-gradient(circle, #FFE379 0.8px, transparent 0.8px), radial-gradient(circle, #FFFFFF 0.5px, transparent 0.5px)',
-                  backgroundSize: '16px 16px, 24px 24px',
-                  backgroundPosition: '0 0, 8px 8px'
-                }}
-              />
             )}
           </>
         )}

@@ -128,10 +128,11 @@
   animation: laserFlow 3.8s linear infinite;
 }
 
-/* Endless Running Road / Cinema Film Reel Track Animation
-   Dash pattern cycle: 20px dash + 12px gap = 32px period.
-   Offset travel: -96px (32px * 3 exact periods) with linear timing
-   guarantees 100% seamless infinite loop without any pause, skip or stutter! */
+/* ========================================================
+   CREATIVE BACKGROUND DESIGNS & ANIMATIONS FOR EDITING PROCESS
+   ======================================================== */
+
+/* 1. Classic Highway Animation */
 @keyframes filmReelRoadTrack {
   0% {
     stroke-dashoffset: 0;
@@ -146,87 +147,77 @@
   will-change: stroke-dashoffset;
 }
 
-/* --- New Preset Highway & Road Animations for Editing Process Section --- */
-/* 1. Neon Cyber Laser Flow */
-@keyframes neonCyberPulse {
+/* 2. Cyberpunk Laser Wireframe Grid Flow */
+@keyframes cyberGridMove {
   0% {
-    stroke-dashoffset: 0;
-    filter: drop-shadow(0 0 4px #FFE379);
+    transform: perspective(300px) rotateX(60deg) translateY(0);
+  }
+  100% {
+    transform: perspective(300px) rotateX(60deg) translateY(40px);
+  }
+}
+.animate-cyber-grid {
+  animation: cyberGridMove 2.2s linear infinite;
+}
+
+/* 3. Golden Ambient Bokeh Orbs Drift */
+@keyframes bokehOrb1 {
+  0%, 100% { transform: translate(0px, 0px) scale(1); opacity: 0.25; }
+  33% { transform: translate(45px, -35px) scale(1.25); opacity: 0.55; }
+  66% { transform: translate(-30px, 40px) scale(0.9); opacity: 0.35; }
+}
+@keyframes bokehOrb2 {
+  0%, 100% { transform: translate(0px, 0px) scale(1.1); opacity: 0.2; }
+  33% { transform: translate(-50px, 30px) scale(0.85); opacity: 0.5; }
+  66% { transform: translate(35px, -45px) scale(1.3); opacity: 0.4; }
+}
+.animate-bokeh-orb-1 {
+  animation: bokehOrb1 8s ease-in-out infinite;
+}
+.animate-bokeh-orb-2 {
+  animation: bokehOrb2 10s ease-in-out infinite 1.5s;
+}
+
+/* 4. Film Strip Reels & Sprocket Ribbon Flow */
+@keyframes filmReelScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+.animate-film-reel-scroll {
+  animation: filmReelScroll 22s linear infinite;
+}
+
+/* 5. Audio Equalizer Wave Pulse */
+@keyframes equalizerBarPulse {
+  0%, 100% { transform: scaleY(0.3); opacity: 0.3; }
+  50% { transform: scaleY(1); opacity: 0.95; }
+}
+.animate-equalizer-bar {
+  animation: equalizerBarPulse 1.2s ease-in-out infinite;
+}
+
+/* 6. Multi-Chroma Color Grading Wave (Gold -> Cyan -> Purple hue drift) */
+@keyframes chromaGradientDrift {
+  0% {
+    background-position: 0% 50%;
   }
   50% {
-    filter: drop-shadow(0 0 16px #FFE379) drop-shadow(0 0 24px #F59E0B);
+    background-position: 100% 50%;
   }
   100% {
-    stroke-dashoffset: -96;
-    filter: drop-shadow(0 0 4px #FFE379);
+    background-position: 0% 50%;
   }
 }
-.animate-neon-cyber {
-  animation: neonCyberPulse 1.0s linear infinite;
-  will-change: stroke-dashoffset, filter;
-}
-
-/* 2. Cinema Filmstrip Sprocket Rhythm */
-@keyframes filmstripSprocket {
-  0% {
-    stroke-dashoffset: 0;
-    opacity: 0.85;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    stroke-dashoffset: -128;
-    opacity: 0.85;
-  }
-}
-.animate-filmstrip-sprocket {
-  animation: filmstripSprocket 1.8s steps(8) infinite;
-  will-change: stroke-dashoffset;
+.animate-chroma-drift {
+  background-size: 250% 250%;
+  animation: chromaGradientDrift 7s ease-in-out infinite;
 }
 
-/* 3. Electric Pulse Stream */
-@keyframes electricPulseStream {
-  0% {
-    stroke-dashoffset: 0;
-    stroke: #FFE379;
-  }
-  33% {
-    stroke: #60A5FA;
-  }
-  66% {
-    stroke: #C084FC;
-  }
-  100% {
-    stroke-dashoffset: -192;
-    stroke: #FFE379;
-  }
-}
-.animate-electric-pulse {
-  animation: electricPulseStream 2s linear infinite;
-  will-change: stroke-dashoffset, stroke;
-}
-
-/* 4. Cosmic Particle Drift (Slow, elegant luxury highway flow) */
-@keyframes cosmicDriftFlow {
-  0% {
-    stroke-dashoffset: 0;
-    opacity: 0.6;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    stroke-dashoffset: -64;
-    opacity: 0.6;
-  }
-}
-.animate-cosmic-drift {
-  animation: cosmicDriftFlow 2.8s ease-in-out infinite alternate;
-  will-change: stroke-dashoffset, opacity;
-}
-
-/* 5. Hyper Speed Warp Dash (Fast energetic rush for high retention) */
+/* 7. Hyper Speed Warp Dash (Fast energy road) */
 @keyframes hyperSpeedWarp {
   0% {
     stroke-dashoffset: 0;
@@ -238,116 +229,6 @@
 .animate-hyperspeed-warp {
   animation: hyperSpeedWarp 0.65s linear infinite;
   will-change: stroke-dashoffset;
-}
-
-/* 6. Creative Video Editing Relevant Animations for Process Section */
-
-/* A. Timecode Scanline Flow */
-@keyframes timecodeScanFlow {
-  0% {
-    top: 0%;
-    opacity: 0.1;
-  }
-  50% {
-    opacity: 0.7;
-  }
-  100% {
-    top: 100%;
-    opacity: 0.1;
-  }
-}
-.animate-timecode-scanline {
-  animation: timecodeScanFlow 3.5s ease-in-out infinite;
-}
-
-/* B. Film Grain Sparkle & Dust */
-@keyframes grainFlicker {
-  0%, 100% { transform: translate(0, 0); opacity: 0.15; }
-  20% { transform: translate(-2px, 3px); opacity: 0.35; }
-  40% { transform: translate(3px, -2px); opacity: 0.2; }
-  60% { transform: translate(-3px, -1px); opacity: 0.4; }
-  80% { transform: translate(2px, 2px); opacity: 0.25; }
-}
-.animate-film-grain {
-  animation: grainFlicker 0.4s steps(4) infinite;
-}
-
-/* C. Audio Beats Pulse Radar */
-@keyframes audioBeatsWave {
-  0% {
-    transform: scale(0.95);
-    opacity: 0.2;
-    box-shadow: 0 0 0 0 rgba(255, 227, 121, 0.4);
-  }
-  50% {
-    transform: scale(1.03);
-    opacity: 0.6;
-    box-shadow: 0 0 40px 10px rgba(255, 227, 121, 0.15);
-  }
-  100% {
-    transform: scale(0.95);
-    opacity: 0.2;
-    box-shadow: 0 0 0 0 rgba(255, 227, 121, 0.4);
-  }
-}
-.animate-audio-beats {
-  animation: audioBeatsWave 1.8s ease-in-out infinite;
-}
-
-/* D. Golden Bokeh Particle Float */
-@keyframes bokehDrift1 {
-  0%, 100% { transform: translateY(0px) translateX(0px) scale(1); opacity: 0.25; }
-  50% { transform: translateY(-30px) translateX(25px) scale(1.2); opacity: 0.55; }
-}
-@keyframes bokehDrift2 {
-  0%, 100% { transform: translateY(0px) translateX(0px) scale(1.1); opacity: 0.2; }
-  50% { transform: translateY(35px) translateX(-20px) scale(0.9); opacity: 0.5; }
-}
-.animate-bokeh-1 {
-  animation: bokehDrift1 6s ease-in-out infinite;
-}
-.animate-bokeh-2 {
-  animation: bokehDrift2 8s ease-in-out infinite 1s;
-}
-
-/* E. Chroma RGB Glitch Wave */
-@keyframes chromaGlitch {
-  0%, 92%, 100% {
-    filter: none;
-    opacity: 0.9;
-  }
-  93% {
-    filter: drop-shadow(-3px 0 0 rgba(255, 0, 80, 0.7)) drop-shadow(3px 0 0 rgba(0, 220, 255, 0.7));
-    opacity: 1;
-  }
-  96% {
-    filter: drop-shadow(2px 0 0 rgba(255, 227, 121, 0.9)) drop-shadow(-2px 0 0 rgba(192, 132, 252, 0.7));
-    opacity: 0.95;
-  }
-}
-.animate-chroma-glitch {
-  animation: chromaGlitch 4.5s ease-in-out infinite;
-}
-
-/* F. Dual Playhead Razor Sweep (Video editing timeline marker) */
-@keyframes timelinePlayheadSweep {
-  0% {
-    left: 0%;
-    opacity: 0;
-  }
-  10% {
-    opacity: 0.8;
-  }
-  90% {
-    opacity: 0.8;
-  }
-  100% {
-    left: 100%;
-    opacity: 0;
-  }
-}
-.animate-timeline-playhead {
-  animation: timelinePlayheadSweep 5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
 /* Fluid Brand Color Mixing Gradient Animation */

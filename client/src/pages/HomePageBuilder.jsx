@@ -937,26 +937,22 @@ export default function HomePageBuilder() {
                 </label>
               </div>
 
-              {/* Creative Video Editing Animation Presets */}
+              {/* Creative Video Editing Animation & Background Environments */}
               {homeData.process?.animationEnabled !== false && (
                 <div className="pt-2 border-t border-[#262626]">
                   <label className="block text-[10px] uppercase font-bold text-neutral-400 mb-2">
-                    Select Creative Animation Preset (10 Tailored Video Editing Animations)
+                    Select Creative Background Animation & Atmosphere (Tailored Video Editing Themes)
                   </label>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
                     {[
-                      { id: 'classic-road', name: '1. Golden Highway', desc: 'Continuous steady road track with seamless loop' },
-                      { id: 'timeline-playhead', name: '2. Razor Playhead Sweep', desc: 'Sweeping video timeline needle with keyframe diamond' },
-                      { id: 'audio-beats', name: '3. Soundwave Beat Radar', desc: 'Pulsing sonic waves synced to high-energy audio tracks' },
-                      { id: 'chroma-glitch', name: '4. RGB Split Glitch', desc: 'Subtle chromatic aberration glitch transition effect' },
-                      { id: 'film-grain-dust', name: '5. 35mm Film Grain', desc: 'Cinematic dust, grain & vintage sprocket flicker' },
-                      { id: 'golden-bokeh', name: '6. Luxury Golden Bokeh', desc: 'Floating cinematic lens flare orbs & soft light leaks' },
-                      { id: 'neon-cyber', name: '7. Neon Laser Pulse', desc: 'Amber cyber laser beam with high dynamic range glow' },
-                      { id: 'filmstrip-sprocket', name: '8. 24 FPS Sprockets', desc: 'Stepped rhythmic 24 FPS cinema shutter gate motion' },
-                      { id: 'electric-pulse', name: '9. Multi-Chroma Wave', desc: 'Electrifying chroma flow cycling Gold, Cyan & Purple' },
-                      { id: 'hyperspeed-warp', name: '10. Speed Ramp Warp', desc: 'Viral reels speed-ramp rush for maximum viewer retention' }
+                      { id: 'golden-bokeh', name: '1. Luxury Bokeh & Light Leaks', desc: 'Floating cinematic golden orbs & soft organic lighting across the section' },
+                      { id: 'film-reel-ribbon', name: '2. 35mm Filmstrip Ribbon', desc: 'Moving horizontal reel ribbon stream of authentic film frames at the top' },
+                      { id: 'cyber-grid', name: '3. 3D Cyber Wireframe Floor', desc: 'High-tech perspective grid surface flowing underneath the workflow steps' },
+                      { id: 'equalizer-wave', name: '4. Studio Equalizer Waveform', desc: 'Sound design audio frequency bars undulating along the section bottom' },
+                      { id: 'chroma-drift', name: '5. Multi-Chroma Color Grading', desc: 'Ambient atmospheric blend shifting between Gold, Cyan & Dark Velvet' },
+                      { id: 'classic-road', name: '6. Classic Animated Highway', desc: 'Continuous golden dotted road track loop connecting all six cards' }
                     ].map((anim) => {
-                      const isSelected = (homeData.process?.animationStyle || 'classic-road') === anim.id;
+                      const isSelected = (homeData.process?.animationStyle || 'golden-bokeh') === anim.id;
                       return (
                         <div
                           key={anim.id}
@@ -976,7 +972,7 @@ export default function HomePageBuilder() {
                             </span>
                             {isSelected && <span className="w-2 h-2 rounded-full bg-[#FFE379] animate-ping" />}
                           </div>
-                          <p className="text-[9px] text-neutral-400 leading-snug">
+                          <p className="text-[10px] text-neutral-400 leading-snug">
                             {anim.desc}
                           </p>
                         </div>
