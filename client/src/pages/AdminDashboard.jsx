@@ -53,7 +53,11 @@ import {
   ListPlus,
   MousePointer,
   CheckSquare,
-  Square
+  Square,
+  CreditCard,
+  Share2,
+  Phone,
+  MapPin
 } from 'lucide-react';
 
 export default function AdminDashboard() {
@@ -161,11 +165,45 @@ export default function AdminDashboard() {
       size: 'medium',
       customColor: '#FFE379',
       textColor: '#101010'
+    },
+
+    footer: {
+      aboutText: 'Transform your footage into high-impact cinematic stories. Professional video editing, color grading, and visual storytelling that captivates audiences.',
+      licenceNo: 'TRAD/DNCC/008721/2025',
+      companyTitle: 'Company',
+      companyLinks: [
+        { id: 'fl-1', label: 'About Us', path: '/about' },
+        { id: 'fl-2', label: 'Portfolio', path: '/portfolio' },
+        { id: 'fl-3', label: 'Our Services', path: '/services/cinematic-wedding-video-editing' },
+        { id: 'fl-4', label: 'Privacy Policy', path: '#' },
+        { id: 'fl-5', label: 'Terms & Conditions', path: '#' },
+        { id: 'fl-6', label: 'Refund Policy', path: '#' }
+      ],
+      contactTitle: 'Get In Touch',
+      address: 'Shyamoli, Mohammadpur, Dhaka 1207',
+      phone: '+880 1885 000118',
+      email: 'flipthelense@gmail.com',
+      socials: [
+        { id: 'soc-1', name: 'Facebook', iconType: 'text', iconText: 'f', iconUrl: '', link: 'https://facebook.com' },
+        { id: 'soc-2', name: 'YouTube', iconType: 'text', iconText: '▶', iconUrl: '', link: 'https://youtube.com' },
+        { id: 'soc-3', name: 'Instagram', iconType: 'text', iconText: 'IG', iconUrl: '', link: 'https://instagram.com' }
+      ],
+      copyrightText: '© {year} FlipTheLense. All Rights Reserved.',
+      paymentGateways: [
+        { id: 'pg-1', name: 'Visa', logoUrl: 'https://raw.githubusercontent.com/aaronfagan/svg-credit-card-payment-icons/main/flat/visa.svg' },
+        { id: 'pg-2', name: 'Mastercard', logoUrl: 'https://raw.githubusercontent.com/aaronfagan/svg-credit-card-payment-icons/main/flat/mastercard.svg' },
+        { id: 'pg-3', name: 'Amex', logoUrl: 'https://raw.githubusercontent.com/aaronfagan/svg-credit-card-payment-icons/main/flat/amex.svg' },
+        { id: 'pg-4', name: 'bKash', logoUrl: 'https://raw.githubusercontent.com/tariqul-islam/bangladesh-payment-icons/master/svg/bkash.svg' },
+        { id: 'pg-5', name: 'Nagad', logoUrl: 'https://raw.githubusercontent.com/tariqul-islam/bangladesh-payment-icons/master/svg/nagad.svg' }
+      ]
     }
   });
 
-  // Menu Management State
+  // Menu & Footer Management State
   const [editingMenuId, setEditingMenuId] = useState('main-nav');
+  const [newCompanyLink, setNewCompanyLink] = useState({ label: '', path: '' });
+  const [newSocialItem, setNewSocialItem] = useState({ name: '', iconType: 'text', iconText: '', iconUrl: '', link: '' });
+  const [newPaymentGateway, setNewPaymentGateway] = useState({ name: '', logoUrl: '' });
   const [newMenuTitle, setNewMenuTitle] = useState('');
   const [newMenuItem, setNewMenuItem] = useState({ label: '', path: '' });
   const [uploadingTarget, setUploadingTarget] = useState(null); // 'frontendFavicon' | 'adminFavicon' | 'frontendLogo' | 'footerLogo' | 'adminLogo'
@@ -382,7 +420,21 @@ export default function AdminDashboard() {
       // 5. Fetch Settings
       const settingsRes = await axios.get('/api/settings');
       if (settingsRes.data) {
-        setSettings(prev => ({ ...prev, ...settingsRes.data }));
+        setSettings(prev => ({
+          ...prev,
+          ...settingsRes.data,
+          headerCta: {
+            ...(prev.headerCta || {}),
+            ...(settingsRes.data.headerCta || {})
+          },
+          footer: {
+            ...(prev.footer || {}),
+            ...(settingsRes.data.footer || {}),
+            companyLinks: settingsRes.data.footer?.companyLinks || prev.footer?.companyLinks || [],
+            socials: settingsRes.data.footer?.socials || prev.footer?.socials || [],
+            paymentGateways: settingsRes.data.footer?.paymentGateways || prev.footer?.paymentGateways || []
+          }
+        }));
       }
 
       // 6. Fetch Reviews
@@ -2948,6 +3000,651 @@ export default function AdminDashboard() {
                     )}
                   </div>
                 </div>
+              </div>
+
+              {/* ================= SECTION 4: FOOTER CUSTOMIZER ================= */}
+              <div className="rounded-2xl bg-[#141414]/85 backdrop-blur-xl border border-[#232323] p-6 sm:p-8 shadow-xl space-y-8">
+                <div>
+                  <div className="flex items-center space-x-2.5">
+                    <Sliders className="w-5 h-5 text-[#FFE379]" />
+                    <h2 
+                      className="text-xl font-black text-white uppercase tracking-tight"
+                      style={{ fontFamily: "'Oswald', sans-serif" }}
+                    >
+                      Footer Customizer
+                    </h2>
+                  </div>
+                  <p className="text-xs text-neutral-400 mt-1">
+                    Manage all textual content, business licence, Company links, Get In Touch contact information, social links, and accepted payment gateway logos (up to 7 items).
+                  </p>
+                </div>
+
+                {/* --- 4.1 BRAND SUMMARY & LICENCE NUMBER --- */}
+                <div className="pt-4 border-t border-[#232323] space-y-4">
+                  <h3 className="text-sm font-bold text-[#FFE379] uppercase tracking-wider" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                    1. Brand Mission & Licence Number
+                  </h3>
+                  <div className="space-y-4 bg-[#181818]/60 p-5 rounded-2xl border border-[#262626]">
+                    <div>
+                      <label className="block text-xs uppercase font-semibold text-neutral-300 mb-1.5">
+                        Brand Text / Description (After Logo)
+                      </label>
+                      <textarea
+                        rows={3}
+                        value={settings.footer?.aboutText || ''}
+                        onChange={(e) => setSettings({
+                          ...settings,
+                          footer: { ...settings.footer, aboutText: e.target.value }
+                        })}
+                        placeholder="Transform your footage into high-impact cinematic stories..."
+                        className="w-full px-4 py-2.5 bg-[#141414] border border-[#2E2E2E] rounded-xl text-white text-xs focus:border-[#FFE379] focus:outline-none resize-y"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs uppercase font-semibold text-neutral-300 mb-1.5">
+                        Trade / Business Licence Number
+                      </label>
+                      <input
+                        type="text"
+                        value={settings.footer?.licenceNo || ''}
+                        onChange={(e) => setSettings({
+                          ...settings,
+                          footer: { ...settings.footer, licenceNo: e.target.value }
+                        })}
+                        placeholder="e.g. TRAD/DNCC/008721/2025"
+                        className="w-full px-4 py-2 bg-[#141414] border border-[#2E2E2E] rounded-xl text-white font-mono text-xs focus:border-[#FFE379] focus:outline-none"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* --- 4.2 COMPANY LINKS SECTION --- */}
+                <div className="pt-4 border-t border-[#232323] space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-sm font-bold text-[#FFE379] uppercase tracking-wider" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                      2. "Company" Column Section
+                    </h3>
+                    <span className="text-xs text-neutral-500 font-mono">
+                      {(settings.footer?.companyLinks || []).length} Links
+                    </span>
+                  </div>
+
+                  <div className="space-y-4 bg-[#181818]/60 p-5 rounded-2xl border border-[#262626]">
+                    <div>
+                      <label className="block text-xs uppercase font-semibold text-neutral-300 mb-1.5">
+                        Column Heading Title
+                      </label>
+                      <input
+                        type="text"
+                        value={settings.footer?.companyTitle || 'Company'}
+                        onChange={(e) => setSettings({
+                          ...settings,
+                          footer: { ...settings.footer, companyTitle: e.target.value }
+                        })}
+                        className="w-full max-w-sm px-4 py-2 bg-[#141414] border border-[#2E2E2E] rounded-xl text-white text-xs focus:border-[#FFE379] focus:outline-none"
+                      />
+                    </div>
+
+                    {/* Company Links List */}
+                    <div className="space-y-2 pt-2">
+                      <label className="block text-xs uppercase font-semibold text-neutral-400">
+                        Links List
+                      </label>
+                      {(settings.footer?.companyLinks || []).map((link, idx) => (
+                        <div key={link.id || idx} className="flex items-center gap-2 p-2.5 bg-[#141414] border border-[#282828] rounded-xl">
+                          <span className="w-6 h-6 rounded bg-[#202020] text-neutral-400 text-xs font-mono flex items-center justify-center shrink-0">
+                            {idx + 1}
+                          </span>
+                          <input
+                            type="text"
+                            value={link.label || ''}
+                            onChange={(e) => {
+                              const updated = [...(settings.footer?.companyLinks || [])];
+                              updated[idx] = { ...updated[idx], label: e.target.value };
+                              setSettings({ ...settings, footer: { ...settings.footer, companyLinks: updated } });
+                            }}
+                            placeholder="Link Label"
+                            className="flex-1 px-3 py-1.5 bg-[#1C1C1C] border border-[#2C2C2C] rounded-lg text-xs text-white focus:border-[#FFE379] focus:outline-none"
+                          />
+                          <input
+                            type="text"
+                            value={link.path || ''}
+                            onChange={(e) => {
+                              const updated = [...(settings.footer?.companyLinks || [])];
+                              updated[idx] = { ...updated[idx], path: e.target.value };
+                              setSettings({ ...settings, footer: { ...settings.footer, companyLinks: updated } });
+                            }}
+                            placeholder="URL / Route (e.g. /about)"
+                            className="flex-1 px-3 py-1.5 bg-[#1C1C1C] border border-[#2C2C2C] rounded-lg text-xs font-mono text-neutral-300 focus:border-[#FFE379] focus:outline-none"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const updated = (settings.footer?.companyLinks || []).filter((_, i) => i !== idx);
+                              setSettings({ ...settings, footer: { ...settings.footer, companyLinks: updated } });
+                            }}
+                            className="p-2 text-neutral-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      ))}
+
+                      {/* Add New Company Link */}
+                      <div className="flex flex-col sm:flex-row items-center gap-2 pt-2">
+                        <input
+                          type="text"
+                          placeholder="Label (e.g. FAQ, Careers)"
+                          value={newCompanyLink.label}
+                          onChange={(e) => setNewCompanyLink({ ...newCompanyLink, label: e.target.value })}
+                          className="flex-1 w-full px-3.5 py-2 bg-[#141414] border border-[#2E2E2E] rounded-xl text-xs text-white placeholder-neutral-500 focus:border-[#FFE379] focus:outline-none"
+                        />
+                        <input
+                          type="text"
+                          placeholder="Path (e.g. /faq, #)"
+                          value={newCompanyLink.path}
+                          onChange={(e) => setNewCompanyLink({ ...newCompanyLink, path: e.target.value })}
+                          className="flex-1 w-full px-3.5 py-2 bg-[#141414] border border-[#2E2E2E] rounded-xl text-xs font-mono text-white placeholder-neutral-500 focus:border-[#FFE379] focus:outline-none"
+                        />
+                        <button
+                          type="button"
+                          disabled={!newCompanyLink.label.trim()}
+                          onClick={() => {
+                            if (!newCompanyLink.label.trim()) return;
+                            const updated = [
+                              ...(settings.footer?.companyLinks || []),
+                              { id: 'fl-' + Date.now(), label: newCompanyLink.label.trim(), path: newCompanyLink.path.trim() || '#' }
+                            ];
+                            setSettings({ ...settings, footer: { ...settings.footer, companyLinks: updated } });
+                            setNewCompanyLink({ label: '', path: '' });
+                          }}
+                          className="w-full sm:w-auto px-4 py-2 rounded-xl bg-[#FFE379] hover:bg-[#F2D76B] text-[#101010] text-xs font-bold uppercase transition shadow disabled:opacity-40 shrink-0"
+                          style={{ fontFamily: "'Oswald', sans-serif" }}
+                        >
+                          <Plus className="w-4 h-4 inline mr-1" /> Add Link
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* --- 4.3 GET IN TOUCH SECTION --- */}
+                <div className="pt-4 border-t border-[#232323] space-y-4">
+                  <h3 className="text-sm font-bold text-[#FFE379] uppercase tracking-wider" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                    3. "Get In Touch" Contact Details
+                  </h3>
+                  <div className="space-y-4 bg-[#181818]/60 p-5 rounded-2xl border border-[#262626]">
+                    <div>
+                      <label className="block text-xs uppercase font-semibold text-neutral-300 mb-1.5">
+                        Section Heading Title
+                      </label>
+                      <input
+                        type="text"
+                        value={settings.footer?.contactTitle || 'Get In Touch'}
+                        onChange={(e) => setSettings({
+                          ...settings,
+                          footer: { ...settings.footer, contactTitle: e.target.value }
+                        })}
+                        className="w-full max-w-sm px-4 py-2 bg-[#141414] border border-[#2E2E2E] rounded-xl text-white text-xs focus:border-[#FFE379] focus:outline-none"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      <div>
+                        <label className="block text-xs uppercase font-semibold text-neutral-300 mb-1.5">
+                          Address Text
+                        </label>
+                        <input
+                          type="text"
+                          value={settings.footer?.address || ''}
+                          onChange={(e) => setSettings({
+                            ...settings,
+                            footer: { ...settings.footer, address: e.target.value }
+                          })}
+                          placeholder="Shyamoli, Mohammadpur, Dhaka 1207"
+                          className="w-full px-3.5 py-2 bg-[#141414] border border-[#2E2E2E] rounded-xl text-white text-xs focus:border-[#FFE379] focus:outline-none"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs uppercase font-semibold text-neutral-300 mb-1.5">
+                          Phone Number
+                        </label>
+                        <input
+                          type="text"
+                          value={settings.footer?.phone || ''}
+                          onChange={(e) => setSettings({
+                            ...settings,
+                            footer: { ...settings.footer, phone: e.target.value }
+                          })}
+                          placeholder="+880 1885 000118"
+                          className="w-full px-3.5 py-2 bg-[#141414] border border-[#2E2E2E] rounded-xl text-white font-mono text-xs focus:border-[#FFE379] focus:outline-none"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs uppercase font-semibold text-neutral-300 mb-1.5">
+                          Contact Email
+                        </label>
+                        <input
+                          type="text"
+                          value={settings.footer?.email || ''}
+                          onChange={(e) => setSettings({
+                            ...settings,
+                            footer: { ...settings.footer, email: e.target.value }
+                          })}
+                          placeholder="flipthelense@gmail.com"
+                          className="w-full px-3.5 py-2 bg-[#141414] border border-[#2E2E2E] rounded-xl text-white text-xs focus:border-[#FFE379] focus:outline-none"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* --- 4.4 SOCIAL ICONS CUSTOMIZER --- */}
+                <div className="pt-4 border-t border-[#232323] space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-sm font-bold text-[#FFE379] uppercase tracking-wider" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                      4. Social Icons & Buttons
+                    </h3>
+                    <span className="text-xs text-neutral-500 font-mono">
+                      {(settings.footer?.socials || []).length} Social Platforms
+                    </span>
+                  </div>
+
+                  <div className="space-y-4 bg-[#181818]/60 p-5 rounded-2xl border border-[#262626]">
+                    <p className="text-xs text-neutral-400">
+                      Customize social icons. You can use standard text (e.g. <span className="text-[#FFE379] font-mono">f</span>, <span className="text-[#FFE379] font-mono">▶</span>, <span className="text-[#FFE379] font-mono">IG</span>, <span className="text-[#FFE379] font-mono">in</span>, <span className="text-[#FFE379] font-mono">X</span>) or upload a custom image/icon.
+                    </p>
+
+                    <div className="space-y-3">
+                      {(settings.footer?.socials || []).map((soc, idx) => (
+                        <div key={soc.id || idx} className="p-3.5 bg-[#141414] border border-[#282828] rounded-xl space-y-3">
+                          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                            <span className="w-8 h-8 rounded bg-[#FFE379] text-[#101010] text-xs font-black flex items-center justify-center shrink-0 shadow overflow-hidden">
+                              {soc.iconType === 'image' && soc.iconUrl ? (
+                                <img src={soc.iconUrl} alt="icon" className="w-5 h-5 object-contain" />
+                              ) : (
+                                soc.iconText || soc.name?.substring(0, 2) || '★'
+                              )}
+                            </span>
+                            <input
+                              type="text"
+                              value={soc.name || ''}
+                              onChange={(e) => {
+                                const updated = [...(settings.footer?.socials || [])];
+                                updated[idx] = { ...updated[idx], name: e.target.value };
+                                setSettings({ ...settings, footer: { ...settings.footer, socials: updated } });
+                              }}
+                              placeholder="Platform Name (e.g. Facebook)"
+                              className="w-36 px-3 py-1.5 bg-[#1C1C1C] border border-[#2C2C2C] rounded-lg text-xs text-white focus:border-[#FFE379] focus:outline-none"
+                            />
+                            <select
+                              value={soc.iconType || 'text'}
+                              onChange={(e) => {
+                                const updated = [...(settings.footer?.socials || [])];
+                                updated[idx] = { ...updated[idx], iconType: e.target.value };
+                                setSettings({ ...settings, footer: { ...settings.footer, socials: updated } });
+                              }}
+                              className="px-3 py-1.5 bg-[#1C1C1C] border border-[#2C2C2C] rounded-lg text-xs text-neutral-300 focus:border-[#FFE379] focus:outline-none"
+                            >
+                              <option value="text">Text Symbol</option>
+                              <option value="image">Custom Uploaded Image</option>
+                            </select>
+
+                            {soc.iconType === 'image' ? (
+                              <div className="flex-1 flex items-center gap-2">
+                                <input
+                                  type="text"
+                                  value={soc.iconUrl || ''}
+                                  onChange={(e) => {
+                                    const updated = [...(settings.footer?.socials || [])];
+                                    updated[idx] = { ...updated[idx], iconUrl: e.target.value };
+                                    setSettings({ ...settings, footer: { ...settings.footer, socials: updated } });
+                                  }}
+                                  placeholder="Image URL or upload..."
+                                  className="flex-1 px-3 py-1.5 bg-[#1C1C1C] border border-[#2C2C2C] rounded-lg text-xs font-mono text-neutral-300 focus:border-[#FFE379] focus:outline-none"
+                                />
+                                <label className="cursor-pointer px-3 py-1.5 bg-[#252525] hover:bg-[#303030] text-white text-xs rounded-lg transition shrink-0 flex items-center gap-1">
+                                  <Upload className="w-3.5 h-3.5 text-[#FFE379]" />
+                                  <span>Upload</span>
+                                  <input
+                                    type="file"
+                                    accept="image/*"
+                                    className="hidden"
+                                    onChange={async (e) => {
+                                      const file = e.target.files?.[0];
+                                      if (!file) return;
+                                      const formData = new FormData();
+                                      formData.append('file', file);
+                                      try {
+                                        const res = await axios.post('/api/upload', formData, {
+                                          headers: { 'Content-Type': 'multipart/form-data' }
+                                        });
+                                        if (res.data?.url) {
+                                          const updated = [...(settings.footer?.socials || [])];
+                                          updated[idx] = { ...updated[idx], iconUrl: res.data.url };
+                                          setSettings({ ...settings, footer: { ...settings.footer, socials: updated } });
+                                        }
+                                      } catch (err) {
+                                        const reader = new FileReader();
+                                        reader.onload = (loadEvt) => {
+                                          const updated = [...(settings.footer?.socials || [])];
+                                          updated[idx] = { ...updated[idx], iconUrl: loadEvt.target.result };
+                                          setSettings({ ...settings, footer: { ...settings.footer, socials: updated } });
+                                        };
+                                        reader.readAsDataURL(file);
+                                      }
+                                    }}
+                                  />
+                                </label>
+                              </div>
+                            ) : (
+                              <input
+                                type="text"
+                                value={soc.iconText || ''}
+                                onChange={(e) => {
+                                  const updated = [...(settings.footer?.socials || [])];
+                                  updated[idx] = { ...updated[idx], iconText: e.target.value };
+                                  setSettings({ ...settings, footer: { ...settings.footer, socials: updated } });
+                                }}
+                                placeholder="Symbol (e.g. f, IG, ▶, in, X)"
+                                className="w-28 px-3 py-1.5 bg-[#1C1C1C] border border-[#2C2C2C] rounded-lg text-xs font-mono text-center text-[#FFE379] focus:border-[#FFE379] focus:outline-none"
+                              />
+                            )}
+
+                            <input
+                              type="text"
+                              value={soc.link || ''}
+                              onChange={(e) => {
+                                const updated = [...(settings.footer?.socials || [])];
+                                updated[idx] = { ...updated[idx], link: e.target.value };
+                                setSettings({ ...settings, footer: { ...settings.footer, socials: updated } });
+                              }}
+                              placeholder="https://..."
+                              className="flex-1 px-3 py-1.5 bg-[#1C1C1C] border border-[#2C2C2C] rounded-lg text-xs font-mono text-neutral-300 focus:border-[#FFE379] focus:outline-none"
+                            />
+
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const updated = (settings.footer?.socials || []).filter((_, i) => i !== idx);
+                                setSettings({ ...settings, footer: { ...settings.footer, socials: updated } });
+                              }}
+                              className="p-1.5 text-neutral-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition shrink-0"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+
+                      {/* Add Social Item Form */}
+                      <div className="flex flex-col sm:flex-row items-center gap-2 pt-2">
+                        <input
+                          type="text"
+                          placeholder="Platform (e.g. LinkedIn, Twitter)"
+                          value={newSocialItem.name}
+                          onChange={(e) => setNewSocialItem({ ...newSocialItem, name: e.target.value })}
+                          className="w-full sm:w-36 px-3.5 py-2 bg-[#141414] border border-[#2E2E2E] rounded-xl text-xs text-white placeholder-neutral-500 focus:border-[#FFE379] focus:outline-none"
+                        />
+                        <input
+                          type="text"
+                          placeholder="Symbol (e.g. in, X, ✉)"
+                          value={newSocialItem.iconText}
+                          onChange={(e) => setNewSocialItem({ ...newSocialItem, iconText: e.target.value })}
+                          className="w-full sm:w-28 px-3.5 py-2 bg-[#141414] border border-[#2E2E2E] rounded-xl text-xs font-mono text-[#FFE379] placeholder-neutral-500 focus:border-[#FFE379] focus:outline-none"
+                        />
+                        <input
+                          type="text"
+                          placeholder="Destination URL (https://...)"
+                          value={newSocialItem.link}
+                          onChange={(e) => setNewSocialItem({ ...newSocialItem, link: e.target.value })}
+                          className="flex-1 w-full px-3.5 py-2 bg-[#141414] border border-[#2E2E2E] rounded-xl text-xs font-mono text-white placeholder-neutral-500 focus:border-[#FFE379] focus:outline-none"
+                        />
+                        <button
+                          type="button"
+                          disabled={!newSocialItem.name.trim()}
+                          onClick={() => {
+                            if (!newSocialItem.name.trim()) return;
+                            const updated = [
+                              ...(settings.footer?.socials || []),
+                              {
+                                id: 'soc-' + Date.now(),
+                                name: newSocialItem.name.trim(),
+                                iconType: 'text',
+                                iconText: newSocialItem.iconText.trim() || newSocialItem.name.substring(0, 2),
+                                iconUrl: '',
+                                link: newSocialItem.link.trim() || '#'
+                              }
+                            ];
+                            setSettings({ ...settings, footer: { ...settings.footer, socials: updated } });
+                            setNewSocialItem({ name: '', iconType: 'text', iconText: '', iconUrl: '', link: '' });
+                          }}
+                          className="w-full sm:w-auto px-4 py-2 rounded-xl bg-[#FFE379] hover:bg-[#F2D76B] text-[#101010] text-xs font-bold uppercase transition shadow disabled:opacity-40 shrink-0"
+                          style={{ fontFamily: "'Oswald', sans-serif" }}
+                        >
+                          <Plus className="w-4 h-4 inline mr-1" /> Add Social
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* --- 4.5 PAYMENT GATEWAYS ACCEPTED SECTION (LIMIT 7) --- */}
+                <div className="pt-4 border-t border-[#232323] space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-sm font-bold text-[#FFE379] uppercase tracking-wider" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                        5. Payment Gateways Accepted
+                      </h3>
+                      <p className="text-xs text-neutral-400 mt-0.5">
+                        Uploaded icons/logos dynamically replace the static image. Maximum limit is 7 payment providers.
+                      </p>
+                    </div>
+                    <span className="text-xs font-mono font-bold px-2.5 py-1 rounded-lg bg-[#202020] border border-[#303030] text-[#FFE379]">
+                      {(settings.footer?.paymentGateways || []).length} / 7 Maximum
+                    </span>
+                  </div>
+
+                  <div className="space-y-4 bg-[#181818]/60 p-5 rounded-2xl border border-[#262626]">
+                    {/* Payment Gateways List */}
+                    <div className="space-y-2.5">
+                      {(settings.footer?.paymentGateways || []).map((gw, idx) => (
+                        <div key={gw.id || idx} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 p-3 bg-[#141414] border border-[#282828] rounded-xl">
+                          <span className="w-6 h-6 rounded bg-[#202020] text-neutral-400 text-xs font-mono flex items-center justify-center shrink-0">
+                            {idx + 1}
+                          </span>
+
+                          {/* Preview Badge */}
+                          <div className="w-14 h-8 bg-[#222] border border-[#333] rounded flex items-center justify-center shrink-0 overflow-hidden px-1">
+                            {gw.logoUrl ? (
+                              <img src={gw.logoUrl} alt={gw.name} className="max-h-5 max-w-[45px] object-contain" />
+                            ) : (
+                              <span className="text-[10px] font-bold text-neutral-400 font-mono">{gw.name?.substring(0, 4)}</span>
+                            )}
+                          </div>
+
+                          {/* Gateway Name */}
+                          <input
+                            type="text"
+                            value={gw.name || ''}
+                            onChange={(e) => {
+                              const updated = [...(settings.footer?.paymentGateways || [])];
+                              updated[idx] = { ...updated[idx], name: e.target.value };
+                              setSettings({ ...settings, footer: { ...settings.footer, paymentGateways: updated } });
+                            }}
+                            placeholder="Name (e.g. Visa, bKash)"
+                            className="w-full sm:w-40 px-3 py-1.5 bg-[#1C1C1C] border border-[#2C2C2C] rounded-lg text-xs text-white focus:border-[#FFE379] focus:outline-none"
+                          />
+
+                          {/* Gateway Logo URL */}
+                          <input
+                            type="text"
+                            value={gw.logoUrl || ''}
+                            onChange={(e) => {
+                              const updated = [...(settings.footer?.paymentGateways || [])];
+                              updated[idx] = { ...updated[idx], logoUrl: e.target.value };
+                              setSettings({ ...settings, footer: { ...settings.footer, paymentGateways: updated } });
+                            }}
+                            placeholder="Upload logo file or paste image/SVG URL..."
+                            className="flex-1 px-3 py-1.5 bg-[#1C1C1C] border border-[#2C2C2C] rounded-lg text-xs font-mono text-neutral-300 focus:border-[#FFE379] focus:outline-none"
+                          />
+
+                          {/* Upload File Button */}
+                          <label className="cursor-pointer px-3 py-1.5 bg-[#252525] hover:bg-[#303030] text-white text-xs rounded-lg transition shrink-0 flex items-center gap-1.5">
+                            <Upload className="w-3.5 h-3.5 text-[#FFE379]" />
+                            <span>Upload Icon</span>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              className="hidden"
+                              onChange={async (e) => {
+                                const file = e.target.files?.[0];
+                                if (!file) return;
+                                const formData = new FormData();
+                                formData.append('file', file);
+                                try {
+                                  const res = await axios.post('/api/upload', formData, {
+                                    headers: { 'Content-Type': 'multipart/form-data' }
+                                  });
+                                  if (res.data?.url) {
+                                    const updated = [...(settings.footer?.paymentGateways || [])];
+                                    updated[idx] = { ...updated[idx], logoUrl: res.data.url };
+                                    setSettings({ ...settings, footer: { ...settings.footer, paymentGateways: updated } });
+                                  }
+                                } catch (err) {
+                                  const reader = new FileReader();
+                                  reader.onload = (loadEvt) => {
+                                    const updated = [...(settings.footer?.paymentGateways || [])];
+                                    updated[idx] = { ...updated[idx], logoUrl: loadEvt.target.result };
+                                    setSettings({ ...settings, footer: { ...settings.footer, paymentGateways: updated } });
+                                  };
+                                  reader.readAsDataURL(file);
+                                }
+                              }}
+                            />
+                          </label>
+
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const updated = (settings.footer?.paymentGateways || []).filter((_, i) => i !== idx);
+                              setSettings({ ...settings, footer: { ...settings.footer, paymentGateways: updated } });
+                            }}
+                            className="p-1.5 text-neutral-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition shrink-0"
+                            title="Remove payment provider"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Add Payment Gateway Form (Strict Limit of 7) */}
+                    {(settings.footer?.paymentGateways || []).length < 7 ? (
+                      <div className="flex flex-col sm:flex-row items-center gap-2 pt-2 border-t border-[#262626]">
+                        <input
+                          type="text"
+                          placeholder="Provider Name (e.g. Stripe, Rocket)"
+                          value={newPaymentGateway.name}
+                          onChange={(e) => setNewPaymentGateway({ ...newPaymentGateway, name: e.target.value })}
+                          className="w-full sm:w-48 px-3.5 py-2 bg-[#141414] border border-[#2E2E2E] rounded-xl text-xs text-white placeholder-neutral-500 focus:border-[#FFE379] focus:outline-none"
+                        />
+                        <input
+                          type="text"
+                          placeholder="Logo / Icon URL (or leave blank to upload below)"
+                          value={newPaymentGateway.logoUrl}
+                          onChange={(e) => setNewPaymentGateway({ ...newPaymentGateway, logoUrl: e.target.value })}
+                          className="flex-1 w-full px-3.5 py-2 bg-[#141414] border border-[#2E2E2E] rounded-xl text-xs font-mono text-white placeholder-neutral-500 focus:border-[#FFE379] focus:outline-none"
+                        />
+                        
+                        <label className="cursor-pointer px-3.5 py-2 bg-[#202020] hover:bg-[#2A2A2A] text-white text-xs rounded-xl transition shrink-0 flex items-center gap-1.5 border border-[#333]">
+                          <Upload className="w-3.5 h-3.5 text-[#FFE379]" />
+                          <span>Browse File</span>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={async (e) => {
+                              const file = e.target.files?.[0];
+                              if (!file) return;
+                              const formData = new FormData();
+                              formData.append('file', file);
+                              try {
+                                const res = await axios.post('/api/upload', formData, {
+                                  headers: { 'Content-Type': 'multipart/form-data' }
+                                });
+                                if (res.data?.url) {
+                                  setNewPaymentGateway(prev => ({ ...prev, logoUrl: res.data.url, name: prev.name || file.name.split('.')[0] }));
+                                }
+                              } catch (err) {
+                                const reader = new FileReader();
+                                reader.onload = (loadEvt) => {
+                                  setNewPaymentGateway(prev => ({ ...prev, logoUrl: loadEvt.target.result, name: prev.name || file.name.split('.')[0] }));
+                                };
+                                reader.readAsDataURL(file);
+                              }
+                            }}
+                          />
+                        </label>
+
+                        <button
+                          type="button"
+                          disabled={!newPaymentGateway.name.trim() && !newPaymentGateway.logoUrl.trim()}
+                          onClick={() => {
+                            if (!newPaymentGateway.name.trim() && !newPaymentGateway.logoUrl.trim()) return;
+                            if ((settings.footer?.paymentGateways || []).length >= 7) {
+                              alert('Maximum 7 payment providers allowed!');
+                              return;
+                            }
+                            const updated = [
+                              ...(settings.footer?.paymentGateways || []),
+                              {
+                                id: 'pg-' + Date.now(),
+                                name: newPaymentGateway.name.trim() || 'Payment Gateway',
+                                logoUrl: newPaymentGateway.logoUrl.trim()
+                              }
+                            ];
+                            setSettings({ ...settings, footer: { ...settings.footer, paymentGateways: updated } });
+                            setNewPaymentGateway({ name: '', logoUrl: '' });
+                          }}
+                          className="w-full sm:w-auto px-4 py-2 rounded-xl bg-[#FFE379] hover:bg-[#F2D76B] text-[#101010] text-xs font-bold uppercase transition shadow disabled:opacity-40 shrink-0"
+                          style={{ fontFamily: "'Oswald', sans-serif" }}
+                        >
+                          <Plus className="w-4 h-4 inline mr-1" /> Add Gateway
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="p-3 rounded-xl bg-[#202020] border border-[#2D2D2D] text-center text-xs text-neutral-400 font-mono">
+                        Payment Gateways limit reached (7 providers maximum). Remove one to add another.
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* --- 4.6 COPYRIGHT BAR CUSTOMIZER --- */}
+                <div className="pt-4 border-t border-[#232323] space-y-4">
+                  <h3 className="text-sm font-bold text-[#FFE379] uppercase tracking-wider" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                    6. Copyright Bar Text
+                  </h3>
+                  <div className="space-y-2 bg-[#181818]/60 p-5 rounded-2xl border border-[#262626]">
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="text-xs uppercase font-semibold text-neutral-300">
+                        Copyright Notice
+                      </label>
+                      <span className="text-[10px] text-neutral-500 font-mono">Use {'{year}'} to automatically insert current year</span>
+                    </div>
+                    <input
+                      type="text"
+                      value={settings.footer?.copyrightText || '© {year} FlipTheLense. All Rights Reserved.'}
+                      onChange={(e) => setSettings({
+                        ...settings,
+                        footer: { ...settings.footer, copyrightText: e.target.value }
+                      })}
+                      className="w-full px-4 py-2.5 bg-[#141414] border border-[#2E2E2E] rounded-xl text-white text-xs focus:border-[#FFE379] focus:outline-none"
+                    />
+                  </div>
+                </div>
+
               </div>
 
               {/* Compact Floating Save Button (Pinned to Bottom-Right) */}

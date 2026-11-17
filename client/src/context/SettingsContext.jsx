@@ -40,6 +40,38 @@ const defaultSettings = {
     size: 'medium', // 'small' | 'medium' | 'large'
     customColor: '#FFE379',
     textColor: '#101010'
+  },
+
+  // Footer Dynamic Customizer
+  footer: {
+    aboutText: 'Transform your footage into high-impact cinematic stories. Professional video editing, color grading, and visual storytelling that captivates audiences.',
+    licenceNo: 'TRAD/DNCC/008721/2025',
+    companyTitle: 'Company',
+    companyLinks: [
+      { id: 'fl-1', label: 'About Us', path: '/about' },
+      { id: 'fl-2', label: 'Portfolio', path: '/portfolio' },
+      { id: 'fl-3', label: 'Our Services', path: '/services/cinematic-wedding-video-editing' },
+      { id: 'fl-4', label: 'Privacy Policy', path: '#' },
+      { id: 'fl-5', label: 'Terms & Conditions', path: '#' },
+      { id: 'fl-6', label: 'Refund Policy', path: '#' }
+    ],
+    contactTitle: 'Get In Touch',
+    address: 'Shyamoli, Mohammadpur, Dhaka 1207',
+    phone: '+880 1885 000118',
+    email: 'flipthelense@gmail.com',
+    socials: [
+      { id: 'soc-1', name: 'Facebook', iconType: 'text', iconText: 'f', iconUrl: '', link: 'https://facebook.com' },
+      { id: 'soc-2', name: 'YouTube', iconType: 'text', iconText: '▶', iconUrl: '', link: 'https://youtube.com' },
+      { id: 'soc-3', name: 'Instagram', iconType: 'text', iconText: 'IG', iconUrl: '', link: 'https://instagram.com' }
+    ],
+    copyrightText: '© {year} FlipTheLense. All Rights Reserved.',
+    paymentGateways: [
+      { id: 'pg-1', name: 'Visa', logoUrl: 'https://raw.githubusercontent.com/aaronfagan/svg-credit-card-payment-icons/main/flat/visa.svg' },
+      { id: 'pg-2', name: 'Mastercard', logoUrl: 'https://raw.githubusercontent.com/aaronfagan/svg-credit-card-payment-icons/main/flat/mastercard.svg' },
+      { id: 'pg-3', name: 'Amex', logoUrl: 'https://raw.githubusercontent.com/aaronfagan/svg-credit-card-payment-icons/main/flat/amex.svg' },
+      { id: 'pg-4', name: 'bKash', logoUrl: 'https://raw.githubusercontent.com/tariqul-islam/bangladesh-payment-icons/master/svg/bkash.svg' },
+      { id: 'pg-5', name: 'Nagad', logoUrl: 'https://raw.githubusercontent.com/tariqul-islam/bangladesh-payment-icons/master/svg/nagad.svg' }
+    ]
   }
 };
 
@@ -63,6 +95,13 @@ export function SettingsProvider({ children }) {
           headerCta: {
             ...defaultSettings.headerCta,
             ...(res.data.headerCta || {})
+          },
+          footer: {
+            ...defaultSettings.footer,
+            ...(res.data.footer || {}),
+            companyLinks: res.data.footer?.companyLinks || defaultSettings.footer.companyLinks,
+            socials: res.data.footer?.socials || defaultSettings.footer.socials,
+            paymentGateways: res.data.footer?.paymentGateways || defaultSettings.footer.paymentGateways
           },
           menus: res.data.menus && res.data.menus.length > 0 ? res.data.menus : defaultSettings.menus
         });
