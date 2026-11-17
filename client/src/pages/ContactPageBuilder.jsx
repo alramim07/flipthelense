@@ -10,7 +10,8 @@ import {
   Mail, 
   Globe, 
   MessageSquare, 
-  Megaphone 
+  Megaphone,
+  Upload
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -24,9 +25,40 @@ export default function ContactPageBuilder() {
 
   useEffect(() => {
     if (settings && settings.contactContent) {
-      setContactData(JSON.parse(JSON.stringify(settings.contactContent)));
+      const cloned = JSON.parse(JSON.stringify(settings.contactContent));
+      if (!cloned.bottomCta) cloned.bottomCta = {};
+      if (!cloned.bottomCta.bgImage) cloned.bottomCta.bgImage = 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=1920&q=80';
+      if (!cloned.bottomCta.buttonText) cloned.bottomCta.buttonText = cloned.bottomCta.btnText || 'VIEW PORTFOLIO';
+      if (!cloned.bottomCta.buttonLink) cloned.bottomCta.buttonLink = cloned.bottomCta.btnLink || '/portfolio';
+      if (!cloned.bottomCta.buttonStyle) cloned.bottomCta.buttonStyle = cloned.bottomCta.btnStyle || 'outline-white';
+      setContactData(cloned);
     }
   }, [settings]);
+
+  const handleUpload = async (e, callback) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('image', file);
+
+    try {
+      const res = await axios.post('/api/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      if (res.data?.url) {
+        callback(res.data.url);
+      }
+    } catch (err) {
+      console.error('Upload error:', err);
+      const reader = new FileReader();
+      reader.onload = (loadEvt) => {
+        if (loadEvt.target?.result) callback(loadEvt.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleSave = async () => {
     if (!contactData) return;
@@ -390,6 +422,40 @@ export default function ContactPageBuilder() {
           </div>
 
           <div className="mt-2 space-y-4">
+            {/* Background Image URL or Upload */}
+            <div>
+              <label className="block text-[11px] uppercase font-bold text-[#FFE379] mb-1">
+                Background Image URL or Upload
+              </label>
+              <div className="flex items-center space-x-2">
+                <input
+                  type="text"
+                  value={contactData.bottomCta?.bgImage || ''}
+                  onChange={(e) => setContactData({
+                    ...contactData,
+                    bottomCta: { ...contactData.bottomCta, bgImage: e.target.value }
+                  })}
+                  placeholder="https://... or upload below..."
+                  className="flex-1 px-3.5 py-2 bg-[#1A1A1A] border border-[#2D2D2D] rounded-xl text-xs text-neutral-300 focus:border-[#FFE379] focus:outline-none"
+                />
+                <label className="cursor-pointer px-4 py-2 bg-[#262626] hover:bg-[#333] border border-white/10 rounded-xl text-xs font-bold text-white flex items-center space-x-1.5 transition-all">
+                  <Upload className="w-3.5 h-3.5 text-[#FFE379]" />
+                  <span>Upload</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => handleUpload(e, (url) => {
+                      setContactData({
+                        ...contactData,
+                        bottomCta: { ...contactData.bottomCta, bgImage: url }
+                      });
+                    })}
+                  />
+                </label>
+              </div>
+            </div>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-[11px] uppercase font-bold text-[#FFE379] mb-1">
@@ -397,7 +463,7 @@ export default function ContactPageBuilder() {
                 </label>
                 <input
                   type="text"
-                  value={contactData.bottomCta?.badge || 'VIDEEN PROMOTION'}
+                  value={contactData.bottomCta?.badge || 'COLLABORATE'}
                   onChange={(e) => setContactData({
                     ...contactData,
                     bottomCta: { ...contactData.bottomCta, badge: e.target.value }
@@ -423,35 +489,73 @@ export default function ContactPageBuilder() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-[11px] uppercase font-bold text-neutral-400 mb-1">
-                  Button Text
-                </label>
-                <input
-                  type="text"
-                  value={contactData.bottomCta?.buttonText || 'VIEW PORTFOLIO'}
-                  onChange={(e) => setContactData({
-                    ...contactData,
-                    bottomCta: { ...contactData.bottomCta, buttonText: e.target.value }
-                  })}
-                  className="w-full px-3.5 py-2 bg-[#1A1A1A] border border-[#2D2D2D] rounded-xl text-xs text-white uppercase focus:border-[#FFE379] focus:outline-none"
-                />
-              </div>
+            {/* CTA Button Settings: Text, Link, Style Preset */}
+            <div className="p-4 rounded-2xl bg-[#1A1A1A] border border-[#262626] space-y-3">
+              <span className="text-[11px] uppercase tracking-wider font-bold text-[#FFE379] block">
+                CTA Action Button Settings
+              </span>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label className="block text-[10px] uppercase font-bold text-neutral-400 mb-1">
+                    Button Text
+                  </label>
+                  <input
+                    type="text"
+                    value={contactData.bottomCta?.buttonText || 'VIEW PORTFOLIO'}
+                    onChange={(e) => setContactData({
+                      ...contactData,
+                      bottomCta: { 
+                        ...contactData.bottomCta, 
+                        buttonText: e.target.value,
+                        btnText: e.target.value 
+                      }
+                    })}
+                    className="w-full px-3 py-2 bg-[#111] border border-[#333] rounded-xl text-xs text-white uppercase font-bold focus:border-[#FFE379] focus:outline-none"
+                  />
+                </div>
 
-              <div>
-                <label className="block text-[11px] uppercase font-bold text-neutral-400 mb-1">
-                  Button Target Destination
-                </label>
-                <input
-                  type="text"
-                  value={contactData.bottomCta?.buttonLink || '/portfolio'}
-                  onChange={(e) => setContactData({
-                    ...contactData,
-                    bottomCta: { ...contactData.bottomCta, buttonLink: e.target.value }
-                  })}
-                  className="w-full px-3.5 py-2 bg-[#1A1A1A] border border-[#2D2D2D] rounded-xl text-xs font-mono text-neutral-300 focus:border-[#FFE379] focus:outline-none"
-                />
+                <div>
+                  <label className="block text-[10px] uppercase font-bold text-neutral-400 mb-1">
+                    Button Target Destination
+                  </label>
+                  <input
+                    type="text"
+                    value={contactData.bottomCta?.buttonLink || '/portfolio'}
+                    onChange={(e) => setContactData({
+                      ...contactData,
+                      bottomCta: { 
+                        ...contactData.bottomCta, 
+                        buttonLink: e.target.value,
+                        btnLink: e.target.value 
+                      }
+                    })}
+                    className="w-full px-3 py-2 bg-[#111] border border-[#333] rounded-xl text-xs font-mono text-neutral-300 focus:border-[#FFE379] focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] uppercase font-bold text-neutral-400 mb-1">
+                    Button Style Preset
+                  </label>
+                  <select
+                    value={contactData.bottomCta?.buttonStyle || 'outline-white'}
+                    onChange={(e) => setContactData({
+                      ...contactData,
+                      bottomCta: { 
+                        ...contactData.bottomCta, 
+                        buttonStyle: e.target.value,
+                        btnStyle: e.target.value 
+                      }
+                    })}
+                    className="w-full px-3 py-2 bg-[#111] border border-[#333] rounded-xl text-xs text-white focus:border-[#FFE379] focus:outline-none"
+                  >
+                    <option value="outline-white">White Minimalist Outline</option>
+                    <option value="solid-gold">Sharp Luxury Gold (Square)</option>
+                    <option value="rounded-smooth">Rounded Smooth Gold</option>
+                    <option value="pill">Pill Full Curve Gold</option>
+                    <option value="cyber-cut">Cyber Cut Edges</option>
+                  </select>
+                </div>
               </div>
             </div>
           </div>

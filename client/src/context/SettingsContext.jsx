@@ -467,11 +467,13 @@ const defaultSettings = {
       submitBtnText: 'Send Message'
     },
     bottomCta: {
+      bgImage: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=1920&q=80',
       badge: 'COLLABORATE',
       title: 'READY TO START YOUR NEXT CINEMATIC PROJECT?',
       desc: 'Whether it is a luxury wedding film, TVC commercial, or viral short series, we bring cinematic polish to your raw vision.',
-      btnText: 'View Portfolio',
-      btnLink: '/portfolio'
+      btnText: 'VIEW PORTFOLIO',
+      btnLink: '/portfolio',
+      btnStyle: 'outline-white' // 'outline-white' | 'solid-gold' | 'rounded-smooth' | 'pill' | 'cyber-cut'
     }
   },
 

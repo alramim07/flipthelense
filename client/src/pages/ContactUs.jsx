@@ -40,10 +40,12 @@ export default function ContactUs() {
   };
 
   const bottomCta = contact.bottomCta || {
-    badge: 'VIDEEN PROMOTION',
-    title: 'Explore resources for creating successful video ads.',
+    bgImage: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=1920&q=80',
+    badge: 'COLLABORATE',
+    title: 'READY TO START YOUR NEXT CINEMATIC PROJECT?',
     buttonText: 'VIEW PORTFOLIO',
-    buttonLink: '/portfolio'
+    buttonLink: '/portfolio',
+    buttonStyle: 'outline-white'
   };
 
   const [formData, setFormData] = useState({
@@ -344,7 +346,7 @@ export default function ContactUs() {
           <div 
             className="absolute inset-0 bg-cover bg-center"
             style={{
-              backgroundImage: 'url("https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=1920&q=80")',
+              backgroundImage: `url('${bottomCta.bgImage || 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=1920&q=80'}')`,
             }}
           />
           <div className="absolute inset-0 bg-black/75 backdrop-blur-[2px]" />
@@ -368,10 +370,20 @@ export default function ContactUs() {
             <div className="pt-2">
               <Link
                 to={bottomCta.buttonLink || '/portfolio'}
-                className="inline-flex items-center space-x-2 border border-white hover:border-[#FFE379] text-white hover:text-[#FFE379] px-7 py-3 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-300 hover:scale-105"
+                className={`inline-flex items-center justify-center px-8 py-3 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-300 hover:scale-105 shadow-xl ${
+                  (bottomCta.buttonStyle || bottomCta.btnStyle) === 'solid-gold'
+                    ? 'bg-[#FFE379] hover:bg-[#ebd074] text-black rounded-none'
+                    : (bottomCta.buttonStyle || bottomCta.btnStyle) === 'rounded-smooth'
+                    ? 'bg-[#FFE379] hover:bg-[#ebd074] text-black rounded-xl'
+                    : (bottomCta.buttonStyle || bottomCta.btnStyle) === 'pill'
+                    ? 'bg-[#FFE379] hover:bg-[#ebd074] text-black rounded-full'
+                    : (bottomCta.buttonStyle || bottomCta.btnStyle) === 'cyber-cut'
+                    ? 'bg-[#FFE379] hover:bg-[#ebd074] text-black clip-diagonal'
+                    : 'bg-transparent border border-white hover:border-[#FFE379] text-white hover:text-[#FFE379] rounded-none'
+                }`}
                 style={{ fontFamily: "'Oswald', sans-serif" }}
               >
-                <span>→ {bottomCta.buttonText || 'VIEW PORTFOLIO'}</span>
+                <span>{bottomCta.buttonText || bottomCta.btnText || 'VIEW PORTFOLIO'}</span>
               </Link>
             </div>
           </div>
