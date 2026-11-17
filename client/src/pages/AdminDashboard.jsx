@@ -202,7 +202,7 @@ export default function AdminDashboard() {
   // Menu & Footer Management State
   const [editingMenuId, setEditingMenuId] = useState('main-nav');
   const [newCompanyLink, setNewCompanyLink] = useState({ label: '', path: '' });
-  const [newSocialItem, setNewSocialItem] = useState({ name: '', iconType: 'text', iconText: '', iconUrl: '', link: '' });
+  const [newSocialItem, setNewSocialItem] = useState({ iconUrl: '', link: '' });
   const [newPaymentGateway, setNewPaymentGateway] = useState({ name: '', logoUrl: '' });
   const [newMenuTitle, setNewMenuTitle] = useState('');
   const [newMenuItem, setNewMenuItem] = useState({ label: '', path: '' });
@@ -2122,7 +2122,7 @@ export default function AdminDashboard() {
                       className="text-xl font-bold text-white uppercase tracking-tight"
                       style={{ fontFamily: "'Oswald', sans-serif" }}
                     >
-                      Contact Inquiries & Work Messages ({inquiries.length})
+                      Contact Inquiries & Work Messages
                     </h2>
                   </div>
                   <p className="text-xs text-neutral-400 mt-1">
@@ -2163,7 +2163,7 @@ export default function AdminDashboard() {
                             : 'text-neutral-400 hover:text-white'
                         }`}
                       >
-                        {statusKey === 'all' ? `All (${inquiries.length})` : statusKey}
+                        {statusKey}
                       </button>
                     ))}
                   </div>
@@ -3252,105 +3252,71 @@ export default function AdminDashboard() {
 
                   <div className="space-y-4 bg-[#181818]/60 p-5 rounded-2xl border border-[#262626]">
                     <p className="text-xs text-neutral-400">
-                      Customize social icons. You can use standard text (e.g. <span className="text-[#FFE379] font-mono">f</span>, <span className="text-[#FFE379] font-mono">▶</span>, <span className="text-[#FFE379] font-mono">IG</span>, <span className="text-[#FFE379] font-mono">in</span>, <span className="text-[#FFE379] font-mono">X</span>) or upload a custom image/icon.
+                      Upload your social icon (SVG or PNG) and paste the profile destination URL.
                     </p>
 
                     <div className="space-y-3">
                       {(settings.footer?.socials || []).map((soc, idx) => (
-                        <div key={soc.id || idx} className="p-3.5 bg-[#141414] border border-[#282828] rounded-xl space-y-3">
-                          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                            <span className="w-8 h-8 rounded bg-[#FFE379] text-[#101010] text-xs font-black flex items-center justify-center shrink-0 shadow overflow-hidden">
-                              {soc.iconType === 'image' && soc.iconUrl ? (
-                                <img src={soc.iconUrl} alt="icon" className="w-5 h-5 object-contain" />
-                              ) : (
-                                soc.iconText || soc.name?.substring(0, 2) || '★'
-                              )}
-                            </span>
+                        <div key={soc.id || idx} className="p-3 bg-[#141414] border border-[#282828] rounded-xl flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                          {/* Icon Preview */}
+                          <div className="w-9 h-9 rounded bg-[#FFE379] text-[#101010] text-xs font-black flex items-center justify-center shrink-0 shadow overflow-hidden p-1.5">
+                            {soc.iconUrl ? (
+                              <img src={soc.iconUrl} alt="social icon" className="w-full h-full object-contain" />
+                            ) : (
+                              <span className="font-mono text-xs">{soc.iconText || '★'}</span>
+                            )}
+                          </div>
+
+                          {/* Icon URL / Upload Path */}
+                          <div className="flex-1 flex items-center gap-2">
                             <input
                               type="text"
-                              value={soc.name || ''}
+                              value={soc.iconUrl || ''}
                               onChange={(e) => {
                                 const updated = [...(settings.footer?.socials || [])];
-                                updated[idx] = { ...updated[idx], name: e.target.value };
+                                updated[idx] = { ...updated[idx], iconUrl: e.target.value };
                                 setSettings({ ...settings, footer: { ...settings.footer, socials: updated } });
                               }}
-                              placeholder="Platform Name (e.g. Facebook)"
-                              className="w-36 px-3 py-1.5 bg-[#1C1C1C] border border-[#2C2C2C] rounded-lg text-xs text-white focus:border-[#FFE379] focus:outline-none"
+                              placeholder="Upload icon file or paste image/SVG URL..."
+                              className="flex-1 px-3 py-2 bg-[#1C1C1C] border border-[#2C2C2C] rounded-lg text-xs font-mono text-neutral-300 focus:border-[#FFE379] focus:outline-none"
                             />
-                            <select
-                              value={soc.iconType || 'text'}
-                              onChange={(e) => {
-                                const updated = [...(settings.footer?.socials || [])];
-                                updated[idx] = { ...updated[idx], iconType: e.target.value };
-                                setSettings({ ...settings, footer: { ...settings.footer, socials: updated } });
-                              }}
-                              className="px-3 py-1.5 bg-[#1C1C1C] border border-[#2C2C2C] rounded-lg text-xs text-neutral-300 focus:border-[#FFE379] focus:outline-none"
-                            >
-                              <option value="text">Text Symbol</option>
-                              <option value="image">Custom Uploaded Image</option>
-                            </select>
-
-                            {soc.iconType === 'image' ? (
-                              <div className="flex-1 flex items-center gap-2">
-                                <input
-                                  type="text"
-                                  value={soc.iconUrl || ''}
-                                  onChange={(e) => {
-                                    const updated = [...(settings.footer?.socials || [])];
-                                    updated[idx] = { ...updated[idx], iconUrl: e.target.value };
-                                    setSettings({ ...settings, footer: { ...settings.footer, socials: updated } });
-                                  }}
-                                  placeholder="Image URL or upload..."
-                                  className="flex-1 px-3 py-1.5 bg-[#1C1C1C] border border-[#2C2C2C] rounded-lg text-xs font-mono text-neutral-300 focus:border-[#FFE379] focus:outline-none"
-                                />
-                                <label className="cursor-pointer px-3 py-1.5 bg-[#252525] hover:bg-[#303030] text-white text-xs rounded-lg transition shrink-0 flex items-center gap-1">
-                                  <Upload className="w-3.5 h-3.5 text-[#FFE379]" />
-                                  <span>Upload</span>
-                                  <input
-                                    type="file"
-                                    accept="image/*"
-                                    className="hidden"
-                                    onChange={async (e) => {
-                                      const file = e.target.files?.[0];
-                                      if (!file) return;
-                                      const formData = new FormData();
-                                      formData.append('file', file);
-                                      try {
-                                        const res = await axios.post('/api/upload', formData, {
-                                          headers: { 'Content-Type': 'multipart/form-data' }
-                                        });
-                                        if (res.data?.url) {
-                                          const updated = [...(settings.footer?.socials || [])];
-                                          updated[idx] = { ...updated[idx], iconUrl: res.data.url };
-                                          setSettings({ ...settings, footer: { ...settings.footer, socials: updated } });
-                                        }
-                                      } catch (err) {
-                                        const reader = new FileReader();
-                                        reader.onload = (loadEvt) => {
-                                          const updated = [...(settings.footer?.socials || [])];
-                                          updated[idx] = { ...updated[idx], iconUrl: loadEvt.target.result };
-                                          setSettings({ ...settings, footer: { ...settings.footer, socials: updated } });
-                                        };
-                                        reader.readAsDataURL(file);
-                                      }
-                                    }}
-                                  />
-                                </label>
-                              </div>
-                            ) : (
+                            <label className="cursor-pointer px-3.5 py-2 bg-[#252525] hover:bg-[#303030] text-white text-xs rounded-lg transition shrink-0 flex items-center gap-1.5 border border-[#353535]">
+                              <Upload className="w-3.5 h-3.5 text-[#FFE379]" />
+                              <span>Upload Icon</span>
                               <input
-                                type="text"
-                                value={soc.iconText || ''}
-                                onChange={(e) => {
-                                  const updated = [...(settings.footer?.socials || [])];
-                                  updated[idx] = { ...updated[idx], iconText: e.target.value };
-                                  setSettings({ ...settings, footer: { ...settings.footer, socials: updated } });
+                                type="file"
+                                accept="image/*"
+                                className="hidden"
+                                onChange={async (e) => {
+                                  const file = e.target.files?.[0];
+                                  if (!file) return;
+                                  const formData = new FormData();
+                                  formData.append('file', file);
+                                  try {
+                                    const res = await axios.post('/api/upload', formData, {
+                                      headers: { 'Content-Type': 'multipart/form-data' }
+                                    });
+                                    if (res.data?.url) {
+                                      const updated = [...(settings.footer?.socials || [])];
+                                      updated[idx] = { ...updated[idx], iconUrl: res.data.url };
+                                      setSettings({ ...settings, footer: { ...settings.footer, socials: updated } });
+                                    }
+                                  } catch (err) {
+                                    const reader = new FileReader();
+                                    reader.onload = (loadEvt) => {
+                                      const updated = [...(settings.footer?.socials || [])];
+                                      updated[idx] = { ...updated[idx], iconUrl: loadEvt.target.result };
+                                      setSettings({ ...settings, footer: { ...settings.footer, socials: updated } });
+                                    };
+                                    reader.readAsDataURL(file);
+                                  }
                                 }}
-                                placeholder="Symbol (e.g. f, IG, ▶, in, X)"
-                                className="w-28 px-3 py-1.5 bg-[#1C1C1C] border border-[#2C2C2C] rounded-lg text-xs font-mono text-center text-[#FFE379] focus:border-[#FFE379] focus:outline-none"
                               />
-                            )}
+                            </label>
+                          </div>
 
+                          {/* Profile Destination URL */}
+                          <div className="flex-1">
                             <input
                               type="text"
                               value={soc.link || ''}
@@ -3359,40 +3325,69 @@ export default function AdminDashboard() {
                                 updated[idx] = { ...updated[idx], link: e.target.value };
                                 setSettings({ ...settings, footer: { ...settings.footer, socials: updated } });
                               }}
-                              placeholder="https://..."
-                              className="flex-1 px-3 py-1.5 bg-[#1C1C1C] border border-[#2C2C2C] rounded-lg text-xs font-mono text-neutral-300 focus:border-[#FFE379] focus:outline-none"
+                              placeholder="Profile URL (e.g. https://facebook.com/...)"
+                              className="w-full px-3 py-2 bg-[#1C1C1C] border border-[#2C2C2C] rounded-lg text-xs font-mono text-white focus:border-[#FFE379] focus:outline-none"
                             />
-
-                            <button
-                              type="button"
-                              onClick={() => {
-                                const updated = (settings.footer?.socials || []).filter((_, i) => i !== idx);
-                                setSettings({ ...settings, footer: { ...settings.footer, socials: updated } });
-                              }}
-                              className="p-1.5 text-neutral-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition shrink-0"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </button>
                           </div>
+
+                          {/* Delete Item */}
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const updated = (settings.footer?.socials || []).filter((_, i) => i !== idx);
+                              setSettings({ ...settings, footer: { ...settings.footer, socials: updated } });
+                            }}
+                            className="p-2 text-neutral-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition shrink-0"
+                            title="Remove icon"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
                         </div>
                       ))}
 
-                      {/* Add Social Item Form */}
-                      <div className="flex flex-col sm:flex-row items-center gap-2 pt-2">
-                        <input
-                          type="text"
-                          placeholder="Platform (e.g. LinkedIn, Twitter)"
-                          value={newSocialItem.name}
-                          onChange={(e) => setNewSocialItem({ ...newSocialItem, name: e.target.value })}
-                          className="w-full sm:w-36 px-3.5 py-2 bg-[#141414] border border-[#2E2E2E] rounded-xl text-xs text-white placeholder-neutral-500 focus:border-[#FFE379] focus:outline-none"
-                        />
-                        <input
-                          type="text"
-                          placeholder="Symbol (e.g. in, X, ✉)"
-                          value={newSocialItem.iconText}
-                          onChange={(e) => setNewSocialItem({ ...newSocialItem, iconText: e.target.value })}
-                          className="w-full sm:w-28 px-3.5 py-2 bg-[#141414] border border-[#2E2E2E] rounded-xl text-xs font-mono text-[#FFE379] placeholder-neutral-500 focus:border-[#FFE379] focus:outline-none"
-                        />
+                      {/* Add Social Item Form: Just Icon Upload & Link */}
+                      <div className="flex flex-col sm:flex-row items-center gap-2 pt-2 border-t border-[#262626]">
+                        {/* Icon input + Browse */}
+                        <div className="flex-1 w-full flex items-center gap-2">
+                          <input
+                            type="text"
+                            placeholder="Upload icon or enter SVG/image URL..."
+                            value={newSocialItem.iconUrl}
+                            onChange={(e) => setNewSocialItem({ ...newSocialItem, iconUrl: e.target.value })}
+                            className="flex-1 px-3.5 py-2 bg-[#141414] border border-[#2E2E2E] rounded-xl text-xs font-mono text-white placeholder-neutral-500 focus:border-[#FFE379] focus:outline-none"
+                          />
+                          <label className="cursor-pointer px-3.5 py-2 bg-[#202020] hover:bg-[#2A2A2A] text-white text-xs rounded-xl transition shrink-0 flex items-center gap-1.5 border border-[#333]">
+                            <Upload className="w-3.5 h-3.5 text-[#FFE379]" />
+                            <span>Browse Icon</span>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              className="hidden"
+                              onChange={async (e) => {
+                                const file = e.target.files?.[0];
+                                if (!file) return;
+                                const formData = new FormData();
+                                formData.append('file', file);
+                                try {
+                                  const res = await axios.post('/api/upload', formData, {
+                                    headers: { 'Content-Type': 'multipart/form-data' }
+                                  });
+                                  if (res.data?.url) {
+                                    setNewSocialItem(prev => ({ ...prev, iconUrl: res.data.url }));
+                                  }
+                                } catch (err) {
+                                  const reader = new FileReader();
+                                  reader.onload = (loadEvt) => {
+                                    setNewSocialItem(prev => ({ ...prev, iconUrl: loadEvt.target.result }));
+                                  };
+                                  reader.readAsDataURL(file);
+                                }
+                              }}
+                            />
+                          </label>
+                        </div>
+
+                        {/* Destination Link */}
                         <input
                           type="text"
                           placeholder="Destination URL (https://...)"
@@ -3400,24 +3395,23 @@ export default function AdminDashboard() {
                           onChange={(e) => setNewSocialItem({ ...newSocialItem, link: e.target.value })}
                           className="flex-1 w-full px-3.5 py-2 bg-[#141414] border border-[#2E2E2E] rounded-xl text-xs font-mono text-white placeholder-neutral-500 focus:border-[#FFE379] focus:outline-none"
                         />
+
+                        {/* Add Button */}
                         <button
                           type="button"
-                          disabled={!newSocialItem.name.trim()}
+                          disabled={!newSocialItem.iconUrl.trim() && !newSocialItem.link.trim()}
                           onClick={() => {
-                            if (!newSocialItem.name.trim()) return;
+                            if (!newSocialItem.iconUrl.trim() && !newSocialItem.link.trim()) return;
                             const updated = [
                               ...(settings.footer?.socials || []),
                               {
                                 id: 'soc-' + Date.now(),
-                                name: newSocialItem.name.trim(),
-                                iconType: 'text',
-                                iconText: newSocialItem.iconText.trim() || newSocialItem.name.substring(0, 2),
-                                iconUrl: '',
+                                iconUrl: newSocialItem.iconUrl.trim(),
                                 link: newSocialItem.link.trim() || '#'
                               }
                             ];
                             setSettings({ ...settings, footer: { ...settings.footer, socials: updated } });
-                            setNewSocialItem({ name: '', iconType: 'text', iconText: '', iconUrl: '', link: '' });
+                            setNewSocialItem({ iconUrl: '', link: '' });
                           }}
                           className="w-full sm:w-auto px-4 py-2 rounded-xl bg-[#FFE379] hover:bg-[#F2D76B] text-[#101010] text-xs font-bold uppercase transition shadow disabled:opacity-40 shrink-0"
                           style={{ fontFamily: "'Oswald', sans-serif" }}
