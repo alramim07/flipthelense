@@ -150,7 +150,6 @@ export default function AdminDashboard() {
         items: [
           { id: 'item-1', label: 'Home', path: '/' },
           { id: 'item-2', label: 'About', path: '/about' },
-          { id: 'item-3', label: 'Services', path: '/services/cinematic-wedding-video-editing' },
           { id: 'item-4', label: 'Portfolio', path: '/portfolio' },
           { id: 'item-5', label: 'Contact', path: '/contact' }
         ]
@@ -174,7 +173,6 @@ export default function AdminDashboard() {
       companyLinks: [
         { id: 'fl-1', label: 'About Us', path: '/about' },
         { id: 'fl-2', label: 'Portfolio', path: '/portfolio' },
-        { id: 'fl-3', label: 'Our Services', path: '/services/cinematic-wedding-video-editing' },
         { id: 'fl-4', label: 'Privacy Policy', path: '#' },
         { id: 'fl-5', label: 'Terms & Conditions', path: '#' },
         { id: 'fl-6', label: 'Refund Policy', path: '#' }
@@ -379,12 +377,6 @@ export default function AdminDashboard() {
       title: 'Contact Us',
       slug: '/contact',
       description: 'Interactive contact form, embedded studio map, direct phone/email, and promotion banner.',
-      status: 'Live & Active'
-    },
-    {
-      title: 'Service Detail: Wedding Film Editing',
-      slug: '/services/cinematic-wedding-video-editing',
-      description: 'Tiered packages (Basic, Standard, Premium), client reviews, and direct booking form.',
       status: 'Live & Active'
     }
   ];
@@ -2082,7 +2074,17 @@ export default function AdminDashboard() {
                     <div className="flex items-center space-x-2.5 shrink-0">
                       {/* Edit Page Button */}
                       <Link
-                        to={page.slug === '/' ? '/admin/pages/home-builder' : `/admin/pages/builder?page=${encodeURIComponent(page.slug)}`}
+                        to={
+                          page.slug === '/' 
+                            ? '/admin/pages/home-builder' 
+                            : page.slug === '/about'
+                              ? '/admin/pages/about-builder'
+                              : page.slug === '/contact'
+                                ? '/admin/pages/contact-builder'
+                                : page.slug === '/portfolio'
+                                  ? '/admin/pages/portfolio-builder'
+                                  : `/admin/pages/builder?page=${encodeURIComponent(page.slug)}`
+                        }
                         className="inline-flex items-center space-x-1.5 px-4 py-2 rounded-xl bg-[#222222] hover:bg-[#2C2C2C] text-[#FFE379] border border-[#3A3A3A] hover:border-[#FFE379]/50 font-black uppercase text-xs tracking-wider transition-all shadow-md hover:scale-105"
                         style={{ fontFamily: "'Oswald', sans-serif" }}
                       >

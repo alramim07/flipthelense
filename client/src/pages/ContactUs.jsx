@@ -7,13 +7,45 @@ import {
   MapPin, 
   ArrowRight, 
   CheckCircle2, 
-  Send, 
-  Sparkles,
-  MessageSquare
+  Sparkles 
 } from 'lucide-react';
 import axios from 'axios';
+import { useSiteSettings } from '../context/SettingsContext';
 
 export default function ContactUs() {
+  const { settings } = useSiteSettings();
+  const contact = settings?.contactContent || {};
+
+  const hero = contact.hero || {
+    badge: 'GET IN TOUCH',
+    titleLine1: 'Contact',
+    titleLine2: 'Us',
+    subtitle: "Let's discuss your next cinematic video project or commercial campaign."
+  };
+
+  const info = contact.info || {
+    phone: '+880 1885 000118',
+    email: 'flipthelense@gmail.com',
+    website: 'www.flipthelense.com',
+    address: 'Shyamoli, Mohammadpur,\nDhaka 1207, Bangladesh',
+    studioName: 'FlipTheLense Studio',
+    mapEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14606.06992648784!2d90.3582451!3d23.7645851!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c09f9ba3d447%3A0x1bab85212fb32a76!2sShyamoli%2C%20Dhaka!5e0!3m2!1sen!2sbd!4v1700000000000!5m2!1sen!2sbd'
+  };
+
+  const form = contact.form || {
+    tagline: 'CONTACT US',
+    title: 'HELLO, HAVE ANY QUESTION?',
+    description: 'Have a raw footage bundle or a vision you want to bring to life? Send us a message and our team will get back to you within 24 hours.',
+    buttonText: 'SUBMIT BUTTON'
+  };
+
+  const bottomCta = contact.bottomCta || {
+    badge: 'VIDEEN PROMOTION',
+    title: 'Explore resources for creating successful video ads.',
+    buttonText: 'VIEW PORTFOLIO',
+    buttonLink: '/portfolio'
+  };
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -34,7 +66,6 @@ export default function ContactUs() {
     setError('');
 
     try {
-      // Send inquiry to backend API
       await axios.post('/api/inquiries', {
         name: formData.name,
         email: formData.email,
@@ -45,7 +76,6 @@ export default function ContactUs() {
       setSubmitted(true);
       setFormData({ name: '', email: '', message: '' });
     } catch (err) {
-      // Graceful fallback for offline / mock testing
       setSubmitted(true);
       setFormData({ name: '', email: '', message: '' });
     } finally {
@@ -58,7 +88,6 @@ export default function ContactUs() {
       
       {/* ================= HERO HEADER ================= */}
       <div className="relative pt-24 pb-16 px-4 sm:px-8 border-b border-[#232323] overflow-hidden bg-[#141414]">
-        {/* Subtle background glow */}
         <div className="absolute top-0 right-1/4 w-96 h-96 rounded-full bg-[#FFE379]/5 blur-[120px] pointer-events-none" />
         
         <div className="max-w-6xl mx-auto text-center relative z-10">
@@ -68,7 +97,7 @@ export default function ContactUs() {
               className="text-xs uppercase tracking-widest text-[#FFE379] font-semibold"
               style={{ fontFamily: "'Raleway', sans-serif" }}
             >
-              GET IN TOUCH
+              {hero.badge}
             </span>
           </div>
 
@@ -76,29 +105,29 @@ export default function ContactUs() {
             className="text-4xl sm:text-6xl font-black uppercase text-white tracking-tight"
             style={{ fontFamily: "'Oswald', sans-serif" }}
           >
-            Contact <span className="text-[#FFE379]">Us</span>
+            {hero.titleLine1} <span className="text-[#FFE379]">{hero.titleLine2}</span>
           </h1>
           <p 
             className="text-xs sm:text-sm text-neutral-400 uppercase tracking-[0.25em] mt-3 font-medium max-w-xl mx-auto"
             style={{ fontFamily: "'Raleway', sans-serif" }}
           >
-            Let's discuss your next cinematic video project or commercial campaign.
+            {hero.subtitle}
           </p>
         </div>
       </div>
 
-      {/* ================= MAIN CONTACT SECTION (Matches Image 1) ================= */}
+      {/* ================= MAIN CONTACT SECTION ================= */}
       <section className="py-20 px-4 sm:px-8 lg:px-12 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-stretch">
           
-          {/* LEFT COLUMN: Map + 4 Contact Info Blocks (Cols 1-6) */}
+          {/* LEFT COLUMN: Map + 4 Contact Info Blocks */}
           <div className="lg:col-span-6 flex flex-col justify-between space-y-10">
             
             {/* Grayscale Map Container */}
             <div className="relative w-full h-[320px] rounded-2xl overflow-hidden border border-[#232323] shadow-2xl bg-[#1A1A1A]">
               <iframe
                 title="Office Location Map"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14606.06992648784!2d90.3582451!3d23.7645851!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c09f9ba3d447%3A0x1bab85212fb32a76!2sShyamoli%2C%20Dhaka!5e0!3m2!1sen!2sbd!4v1700000000000!5m2!1sen!2sbd"
+                src={info.mapEmbedUrl}
                 width="100%"
                 height="100%"
                 style={{ 
@@ -116,8 +145,8 @@ export default function ContactUs() {
                   <MapPin className="w-4 h-4" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-bold text-white uppercase tracking-wider">FlipTheLense Studio</h4>
-                  <p className="text-[11px] text-neutral-400">Shyamoli, Mohammadpur, Dhaka</p>
+                  <h4 className="text-xs font-bold text-white uppercase tracking-wider">{info.studioName}</h4>
+                  <p className="text-[11px] text-neutral-400 whitespace-pre-line">{info.address?.split('\n')[0]}</p>
                 </div>
               </div>
             </div>
@@ -137,9 +166,12 @@ export default function ContactUs() {
                   >
                     Phone Number
                   </h4>
-                  <p className="text-xs sm:text-sm text-[#FFE379] font-mono mt-0.5">
-                    +880 1885 000118
-                  </p>
+                  <a 
+                    href={`tel:${info.phone}`} 
+                    className="text-xs sm:text-sm text-[#FFE379] font-mono mt-0.5 block hover:underline"
+                  >
+                    {info.phone}
+                  </a>
                 </div>
               </div>
 
@@ -155,9 +187,12 @@ export default function ContactUs() {
                   >
                     Email Address
                   </h4>
-                  <p className="text-xs sm:text-sm text-neutral-400 hover:text-[#FFE379] transition mt-0.5">
-                    flipthelense@gmail.com
-                  </p>
+                  <a 
+                    href={`mailto:${info.email}`}
+                    className="text-xs sm:text-sm text-neutral-400 hover:text-[#FFE379] transition mt-0.5 block"
+                  >
+                    {info.email}
+                  </a>
                 </div>
               </div>
 
@@ -174,7 +209,7 @@ export default function ContactUs() {
                     Websites
                   </h4>
                   <p className="text-xs sm:text-sm text-neutral-400 font-mono mt-0.5">
-                    www.flipthelense.com
+                    {info.website}
                   </p>
                 </div>
               </div>
@@ -191,8 +226,8 @@ export default function ContactUs() {
                   >
                     Address
                   </h4>
-                  <p className="text-xs sm:text-sm text-neutral-400 leading-snug mt-0.5">
-                    Shyamoli, Mohammadpur,<br />Dhaka 1207, Bangladesh
+                  <p className="text-xs sm:text-sm text-neutral-400 leading-snug mt-0.5 whitespace-pre-line">
+                    {info.address}
                   </p>
                 </div>
               </div>
@@ -201,31 +236,28 @@ export default function ContactUs() {
 
           </div>
 
-          {/* RIGHT COLUMN: Contact Form Card (Cols 7-12) */}
+          {/* RIGHT COLUMN: Contact Form Card */}
           <div className="lg:col-span-6 bg-[#161616] border border-[#232323] rounded-3xl p-8 sm:p-12 shadow-2xl relative">
             
-            {/* Top Tagline */}
             <span 
               className="text-xs uppercase tracking-[0.2em] text-[#FFE379] font-bold block mb-2"
               style={{ fontFamily: "'Raleway', sans-serif" }}
             >
-              CONTACT US
+              {form.tagline}
             </span>
 
-            {/* Main Heading */}
             <h2 
               className="text-3xl sm:text-4xl lg:text-[42px] font-black uppercase text-white tracking-tight leading-none mb-4"
               style={{ fontFamily: "'Oswald', sans-serif" }}
             >
-              HELLO, HAVE ANY QUESTION?
+              {form.title}
             </h2>
 
-            {/* Subtitle Description */}
             <p 
               className="text-xs sm:text-[13px] text-neutral-400 leading-relaxed mb-8 font-normal"
               style={{ fontFamily: "'Raleway', sans-serif" }}
             >
-              Have a raw footage bundle or a vision you want to bring to life? Send us a message and our team will get back to you within 24 hours.
+              {form.description}
             </p>
 
             {submitted ? (
@@ -254,7 +286,6 @@ export default function ContactUs() {
                   </div>
                 )}
 
-                {/* 2 Inputs Row: Your Name + Your Email */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <input
@@ -278,7 +309,6 @@ export default function ContactUs() {
                   </div>
                 </div>
 
-                {/* Textarea: Your Message */}
                 <div>
                   <textarea
                     required
@@ -290,14 +320,13 @@ export default function ContactUs() {
                   />
                 </div>
 
-                {/* Submit Button in exact Videen Gold */}
                 <button
                   type="submit"
                   disabled={loading}
                   className="bg-[#FFE379] hover:bg-[#F2D76B] text-[#101010] font-black uppercase text-xs sm:text-sm tracking-wider px-8 py-3.5 transition-all shadow-md hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60 flex items-center justify-center space-x-2"
                   style={{ fontFamily: "'Oswald', sans-serif" }}
                 >
-                  <span>{loading ? 'SENDING...' : 'SUBMIT BUTTON'}</span>
+                  <span>{loading ? 'SENDING...' : (form.buttonText || 'SUBMIT BUTTON')}</span>
                   {!loading && <ArrowRight className="w-4 h-4 ml-1" />}
                 </button>
               </form>
@@ -308,11 +337,10 @@ export default function ContactUs() {
         </div>
       </section>
 
-      {/* ================= PROMOTION CTA BANNER (Matches Image 2) ================= */}
+      {/* ================= PROMOTION CTA BANNER ================= */}
       <section className="py-12 px-4 sm:px-8 max-w-7xl mx-auto pb-24">
         <div className="relative rounded-3xl overflow-hidden border border-[#232323] shadow-2xl min-h-[380px] sm:min-h-[420px] flex items-center justify-center text-center p-8 sm:p-14">
           
-          {/* Background Image with Dark Vignette Overlay */}
           <div 
             className="absolute inset-0 bg-cover bg-center"
             style={{
@@ -322,29 +350,28 @@ export default function ContactUs() {
           <div className="absolute inset-0 bg-black/75 backdrop-blur-[2px]" />
           <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/60" />
 
-          {/* Banner Content */}
           <div className="relative z-10 max-w-2xl mx-auto space-y-5">
             <span 
               className="text-xs uppercase tracking-[0.25em] text-[#FFE379] font-bold block"
               style={{ fontFamily: "'Raleway', sans-serif" }}
             >
-              VIDEEN PROMOTION
+              {bottomCta.badge}
             </span>
 
             <h2 
               className="text-3xl sm:text-5xl font-black text-white uppercase tracking-tight leading-tight"
               style={{ fontFamily: "'Oswald', sans-serif" }}
             >
-              Explore resources for creating successful video ads.
+              {bottomCta.title}
             </h2>
 
             <div className="pt-2">
               <Link
-                to="/services/cinematic-wedding-video-editing"
+                to={bottomCta.buttonLink || '/portfolio'}
                 className="inline-flex items-center space-x-2 border border-white hover:border-[#FFE379] text-white hover:text-[#FFE379] px-7 py-3 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-300 hover:scale-105"
                 style={{ fontFamily: "'Oswald', sans-serif" }}
               >
-                <span>→ GET STARTED</span>
+                <span>→ {bottomCta.buttonText || 'VIEW PORTFOLIO'}</span>
               </Link>
             </div>
           </div>

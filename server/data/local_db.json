@@ -566,6 +566,33 @@
       "device": "Tablet",
       "timestamp": "2026-11-17T09:12:58.321Z",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.7977.167 Safari/537.36 Antigravity/2.32.1"
+    },
+    {
+      "id": "hit_1794907690788_lbth4",
+      "visitorId": "vid_1794834903395_ubmy3zo",
+      "path": "/",
+      "referrer": "Direct",
+      "device": "Tablet",
+      "timestamp": "2026-11-17T09:28:10.788Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.7977.167 Safari/537.36 Antigravity/2.32.1"
+    },
+    {
+      "id": "hit_1794911137516_l6pyw",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/portfolio",
+      "referrer": "http://localhost:5173/",
+      "device": "Desktop",
+      "timestamp": "2026-11-17T10:25:37.516Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794911158609_70jn6",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/services/cinematic-wedding-video-editing",
+      "referrer": "Direct",
+      "device": "Desktop",
+      "timestamp": "2026-11-17T10:25:58.609Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
     }
   ],
   "inquiries": [
@@ -1530,7 +1557,7 @@
         "titleLine2": "Editing Process",
         "subtitle": "FROM RAW FOOTAGE TO A COMPELLING FINAL VIDEO.",
         "animationEnabled": true,
-        "animationStyle": "film-reel-ribbon",
+        "animationStyle": "equalizer-wave",
         "bottomBannerText": "A structured, creative and detail-focused process that turns your raw footage into engaging, viral video content.",
         "steps": [
           {

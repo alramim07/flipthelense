@@ -19,7 +19,6 @@ export default function Footer() {
   const companyLinks = footerData.companyLinks || [
     { id: 'fl-1', label: 'About Us', path: '/about' },
     { id: 'fl-2', label: 'Portfolio', path: '/portfolio' },
-    { id: 'fl-3', label: 'Our Services', path: '/services/cinematic-wedding-video-editing' },
     { id: 'fl-4', label: 'Privacy Policy', path: '#' },
     { id: 'fl-5', label: 'Terms & Conditions', path: '#' },
     { id: 'fl-6', label: 'Refund Policy', path: '#' }

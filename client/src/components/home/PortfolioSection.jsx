@@ -65,19 +65,19 @@ export default function PortfolioSection({ onOpenVideo }) {
                 </span>
               </div>
               <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-                <div className="w-10 h-10 rounded-full bg-[#F59E0B] text-black flex items-center justify-center">
+                <Link to="/portfolio" className="w-10 h-10 rounded-full bg-[#F59E0B] text-black flex items-center justify-center">
                   <Play className="w-5 h-5 fill-current ml-0.5" />
-                </div>
+                </Link>
               </div>
             </div>
             <div className="p-3">
-              <Link to="/services/cinematic-wedding-video-editing" className="block">
+              <Link to="/portfolio" className="block">
                 <h4 className="text-xs font-bold text-white hover:text-[#F59E0B] transition line-clamp-1">{item.title}</h4>
               </Link>
               <div className="flex items-center justify-between mt-2 pt-2 border-t border-neutral-800/80">
                 <span className="text-[10px] text-neutral-400 capitalize">{item.category.replace('_', ' ')}</span>
-                <Link to="/services/cinematic-wedding-video-editing" className="text-[10px] font-bold text-[#F59E0B] hover:underline flex items-center">
-                  View Gig / Book →
+                <Link to="/portfolio" className="text-[10px] font-bold text-[#F59E0B] hover:underline flex items-center">
+                  View Work →
                 </Link>
               </div>
             </div>

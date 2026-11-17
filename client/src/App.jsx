@@ -13,6 +13,9 @@ import AdminDashboard from './pages/AdminDashboard';
 import AdminLogin from './pages/AdminLogin';
 import ProjectVisualBuilder from './pages/ProjectVisualBuilder';
 import HomePageBuilder from './pages/HomePageBuilder';
+import AboutPageBuilder from './pages/AboutPageBuilder';
+import ContactPageBuilder from './pages/ContactPageBuilder';
+import PortfolioPageBuilder from './pages/PortfolioPageBuilder';
 
 function AppContent() {
   const location = useLocation();
@@ -59,13 +62,15 @@ function AppContent() {
           <Route path="/portfolio" element={<Portfolio />} />
           <Route path="/contact" element={<ContactUs />} />
           <Route path="/contact-us" element={<ContactUs />} />
-          <Route path="/services/:slug" element={<ServiceDetail />} />
           
           {/* Dedicated Admin Portal URLs */}
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/pages/home-builder" element={<HomePageBuilder />} />
+          <Route path="/admin/pages/about-builder" element={<AboutPageBuilder />} />
+          <Route path="/admin/pages/contact-builder" element={<ContactPageBuilder />} />
+          <Route path="/admin/pages/portfolio-builder" element={<PortfolioPageBuilder />} />
           <Route path="/admin/portfolio/builder" element={<ProjectVisualBuilder />} />
           <Route path="/admin/portfolio/builder/:slug" element={<ProjectVisualBuilder />} />
           <Route path="/admin/:tab" element={<AdminDashboard />} />

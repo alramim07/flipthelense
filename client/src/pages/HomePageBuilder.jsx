@@ -264,7 +264,7 @@ export default function HomePageBuilder() {
       headlineLine2: 'Videos to the next level?',
       subtitle: "Let's collaborate and craft high-impact cinematic films and dynamic viral reels that captivate audiences and elevate your brand.",
       buttonText: 'Get Started',
-      buttonLink: '/services/cinematic-wedding-video-editing'
+      buttonLink: '/contact'
     }
   });
 
@@ -1679,7 +1679,7 @@ export default function HomePageBuilder() {
                     ...homeData,
                     cta: { ...homeData.cta, buttonLink: e.target.value }
                   })}
-                  placeholder="/services/cinematic-wedding-video-editing"
+                  placeholder="/contact"
                   className="w-full px-3.5 py-2 bg-[#1A1A1A] border border-[#2D2D2D] rounded-xl text-xs font-mono text-neutral-300 focus:border-[#FFE379] focus:outline-none"
                 />
               </div>

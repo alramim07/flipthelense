@@ -24,7 +24,6 @@ const defaultSettings = {
       items: [
         { id: 'item-1', label: 'Home', path: '/' },
         { id: 'item-2', label: 'About', path: '/about' },
-        { id: 'item-3', label: 'Services', path: '/services/cinematic-wedding-video-editing' },
         { id: 'item-4', label: 'Portfolio', path: '/portfolio' },
         { id: 'item-5', label: 'Contact', path: '/contact' }
       ]
@@ -50,7 +49,6 @@ const defaultSettings = {
     companyLinks: [
       { id: 'fl-1', label: 'About Us', path: '/about' },
       { id: 'fl-2', label: 'Portfolio', path: '/portfolio' },
-      { id: 'fl-3', label: 'Our Services', path: '/services/cinematic-wedding-video-editing' },
       { id: 'fl-4', label: 'Privacy Policy', path: '#' },
       { id: 'fl-5', label: 'Terms & Conditions', path: '#' },
       { id: 'fl-6', label: 'Refund Policy', path: '#' }
@@ -317,10 +315,185 @@ const defaultSettings = {
       headlineLine2: 'Videos to the next level?',
       subtitle: "Let's collaborate and craft high-impact cinematic films and dynamic viral reels that captivate audiences and elevate your brand.",
       buttonText: 'Get Started',
-      buttonLink: '/services/cinematic-wedding-video-editing',
+      buttonLink: '/contact',
       buttonStyle: 'sharp-gold', // 'sharp-gold' | 'rounded-gold' | 'pill-gold' | 'outline-gold' | 'glass-gold' | 'cyber-cut'
       showArrow: true
     }
+  },
+
+  // About Page Dynamic Content Model
+  aboutContent: {
+    hero: {
+      titleLine1: 'MY',
+      titleLine2: 'RESUME',
+      breadcrumb: 'Home / Resume',
+      bgImage: 'https://images.unsplash.com/photo-1518133910546-b6c2fb7d79e3?auto=format&fit=crop&w=1600&q=80'
+    },
+    quote: {
+      text: '"Every frame is a chance to move an audience. Filmmaking isn\'t just about putting clips together—it is about rhythm, emotional timing, and sculpting light so memories can live forever."',
+      authorName: 'PARVEJ MOSHARROF POLLOB',
+      authorTitle: 'Videography / Editor',
+      signature: 'Parvej Mosharrof'
+    },
+    profile: {
+      badge: 'SINCE 2022',
+      heading: "HELLO, I'M PARVEJ MOSHARROF POLLOB",
+      bio: 'For the past 4.5+ years, I have worked across full production pipelines—from shooting on set with cinema gear to final master delivery. My goal is to deliver clean visual clarity, immersive color profiles, and punchy edits that stand out in any feed or theatre screen.',
+      image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80',
+      skills: [
+        { name: 'ADOBE PREMIERE PRO', percent: 95 },
+        { name: 'ADOBE AFTER EFFECT', percent: 85 },
+        { name: '3D MODELLING', percent: 50 },
+        { name: 'POST-PRODUCTION TECHNIQUES', percent: 100 }
+      ]
+    },
+    specialties: {
+      badge: 'FLIPTHELENSE STUDIO',
+      title: 'MY SPECIALTIES',
+      bgImage: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=80',
+      items: [
+        {
+          id: 'sp-1',
+          title: 'CINEMATIC WEDDING FILMS',
+          subtitle: 'Emotional Storytelling',
+          desc: 'Crafting non-linear, emotionally captivating wedding teasers and full-length feature films with bespoke pacing, speed ramps, and high-fidelity soundscapes.'
+        },
+        {
+          id: 'sp-2',
+          title: 'COMMERCIALS & BRAND REELS',
+          subtitle: 'High-Conversion Media',
+          desc: 'Dynamic pacing, punchy typography, and trending motion design tailored to capture instant attention on Instagram Reels, YouTube Shorts, and TVC campaigns.'
+        },
+        {
+          id: 'sp-3',
+          title: 'COLOR SCIENCE & LOOK DEV',
+          subtitle: 'ACES & DaVinci Resolve',
+          desc: 'Creating custom film-emulation LUTs, preserving organic skin tones, balancing multi-camera sensor variance, and delivering consistent cinematic mood.'
+        },
+        {
+          id: 'sp-4',
+          title: 'POST-PRODUCTION & VFX',
+          subtitle: 'Seamless Audio/Visual Sync',
+          desc: 'Audio restoration, foley effects, rhythmic montage cuts, object masking, smooth warp transitions, and sophisticated visual enhancements.'
+        }
+      ]
+    },
+    experience: {
+      badge: 'CAREER TIMELINE',
+      title: 'WORK EXPERIENCE',
+      items: [
+        {
+          id: 'exp-1',
+          period: '2022 - PRESENT',
+          role: 'Senior Cinematographer & Lead Video Editor',
+          company: 'FlipTheLense Studio / Freelance',
+          location: 'Dhaka, Bangladesh',
+          achievements: [
+            'Directed and finalized over 80+ high-end wedding films and 150+ commercial reels.',
+            'Established high-speed proxy workflows and automated post-production pipelines.',
+            'Achieved a 99% 5-star client satisfaction rating across domestic and global productions.'
+          ]
+        },
+        {
+          id: 'exp-2',
+          period: '2020 - 2022',
+          role: 'Commercial Video Editor & Colorist',
+          company: 'Creative Media Agency',
+          location: 'Dhaka, Bangladesh',
+          achievements: [
+            'Edited narrative commercials for fashion, corporate, and culinary brands.',
+            'Managed color grading workflows for multi-cam shoots using DaVinci Resolve and Premiere Pro.',
+            'Collaborated closely with directors and audio engineers to hit strict broadcast deadlines.'
+          ]
+        },
+        {
+          id: 'exp-3',
+          period: '2019 - 2020',
+          role: 'Assistant Cinematographer & DIT',
+          company: 'Independent Film Group',
+          location: 'Dhaka, Bangladesh',
+          achievements: [
+            'Handled on-location camera rigs, lighting setups, gimbal tracking, and dual-system audio recording.',
+            'Organized and ingested raw footage, created rough cut assemblies, and delivered daily rushes.'
+          ]
+        }
+      ]
+    },
+    tools: {
+      badge: 'PRODUCTION ARSENAL',
+      title: 'GEAR & SOFTWARE',
+      categories: [
+        { category: 'EDITING & COLOR', items: ['Adobe Premiere Pro', 'Adobe After Effects', 'DaVinci Resolve Studio', 'Wondershare Filmora', 'CapCut Pro'] },
+        { category: 'DESIGN & GRAPHICS', items: ['Adobe Photoshop', 'Adobe Illustrator', 'Motion Graphics Templates', 'Blender 3D Basics'] },
+        { category: 'AUDIO SUITE', items: ['Adobe Audition', 'iZotope RX Noise Reduction', 'Foley Sound Design', 'Spatial Audio Mixing'] },
+        { category: 'CAMERA & HARDWARE', items: ['Sony Alpha Series (4K 10-bit)', 'DJI Ronin Gimbal Stabilizers', 'Anamorphic & Prime Glass', 'Wireless Audio Transmitters'] }
+      ]
+    },
+    cta: {
+      title: "LET'S CRAFT YOUR NEXT CINEMATIC PROJECT",
+      subtitle: "Ready to collaborate on weddings, high-converting commercials, or creative short-form videos? Let's turn your concept into reality.",
+      primaryBtnText: 'Contact Me Now',
+      primaryBtnLink: '/contact',
+      secondaryBtnText: 'Explore Portfolio',
+      secondaryBtnLink: '/portfolio'
+    }
+  },
+
+  // Contact Page Dynamic Content Model
+  contactContent: {
+    hero: {
+      badge: 'GET IN TOUCH',
+      titleLine1: 'Contact',
+      titleLine2: 'Us',
+      subtitle: "Let's discuss your next cinematic video project or commercial campaign."
+    },
+    info: {
+      mapEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14606.07007788484!2d90.3541893!3d23.7645164!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c0a373307659%3A0x6e26217436f56193!2sShyamoli%2C%20Dhaka!5e0!3m2!1sen!2sbd!4v1700000000000!5m2!1sen!2sbd',
+      phone: '+880 1885 000118',
+      phoneSub: 'Sunday - Thursday: 10AM - 8PM',
+      email: 'flipthelense@gmail.com',
+      emailSub: 'Online support 24/7',
+      address: 'Shyamoli, Mohammadpur',
+      addressSub: 'Dhaka 1207, Bangladesh',
+      studio: 'FlipTheLense Creative Hub',
+      studioSub: 'Production & Post-Production Suite'
+    },
+    form: {
+      badge: 'QUICK INQUIRY',
+      title: 'SEND US A MESSAGE',
+      desc: 'Fill out the form below and we will get back to you within 24 hours with package details and availability.',
+      submitBtnText: 'Send Message'
+    },
+    bottomCta: {
+      badge: 'COLLABORATE',
+      title: 'READY TO START YOUR NEXT CINEMATIC PROJECT?',
+      desc: 'Whether it is a luxury wedding film, TVC commercial, or viral short series, we bring cinematic polish to your raw vision.',
+      btnText: 'View Portfolio',
+      btnLink: '/portfolio'
+    }
+  },
+
+  // Portfolio Page Dynamic Content Model
+  portfolioContent: {
+    hero: {
+      bgImage: '/videen_hero_bg_real.jpg',
+      badge: 'WELCOME TO VIDEEN STUDIO',
+      titleLine1: "LET'S MAKE YOUR VIDEO",
+      titleLine2: 'LOOKS MORE COOL',
+      desc: 'Transform raw footage into dynamic visual masterpieces with high-end color grading, sound design, and narrative editing.',
+      btnText: 'GET STARTED',
+      btnLink: '/contact',
+      experienceYears: '18+',
+      experienceText: 'Years Experience',
+      awardsCount: '15+',
+      awardsText: 'Best Award',
+      projectsCount: '523+',
+      projectsText: 'Project Done',
+      heroImage: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=900&q=80'
+    },
+    filterBadge: 'CREATIVE WORK ARCHIVE',
+    filterTitle: 'PORTFOLIO SHOWCASE',
+    filterSubtitle: 'Filter by category to explore commercials, wedding films, reels and music videos.'
   }
 };
 
@@ -384,6 +557,54 @@ export function SettingsProvider({ children }) {
                 : defaultSettings.homeContent.reviews.items
             },
             cta: { ...defaultSettings.homeContent.cta, ...(res.data.homeContent?.cta || {}) }
+          },
+          aboutContent: {
+            ...defaultSettings.aboutContent,
+            ...(res.data.aboutContent || {}),
+            hero: { ...defaultSettings.aboutContent.hero, ...(res.data.aboutContent?.hero || {}) },
+            quote: { ...defaultSettings.aboutContent.quote, ...(res.data.aboutContent?.quote || {}) },
+            profile: {
+              ...defaultSettings.aboutContent.profile,
+              ...(res.data.aboutContent?.profile || {}),
+              skills: res.data.aboutContent?.profile?.skills && res.data.aboutContent.profile.skills.length > 0
+                ? res.data.aboutContent.profile.skills
+                : defaultSettings.aboutContent.profile.skills
+            },
+            specialties: {
+              ...defaultSettings.aboutContent.specialties,
+              ...(res.data.aboutContent?.specialties || {}),
+              items: res.data.aboutContent?.specialties?.items && res.data.aboutContent.specialties.items.length > 0
+                ? res.data.aboutContent.specialties.items
+                : defaultSettings.aboutContent.specialties.items
+            },
+            experience: {
+              ...defaultSettings.aboutContent.experience,
+              ...(res.data.aboutContent?.experience || {}),
+              items: res.data.aboutContent?.experience?.items && res.data.aboutContent.experience.items.length > 0
+                ? res.data.aboutContent.experience.items
+                : defaultSettings.aboutContent.experience.items
+            },
+            tools: {
+              ...defaultSettings.aboutContent.tools,
+              ...(res.data.aboutContent?.tools || {}),
+              categories: res.data.aboutContent?.tools?.categories && res.data.aboutContent.tools.categories.length > 0
+                ? res.data.aboutContent.tools.categories
+                : defaultSettings.aboutContent.tools.categories
+            },
+            cta: { ...defaultSettings.aboutContent.cta, ...(res.data.aboutContent?.cta || {}) }
+          },
+          contactContent: {
+            ...defaultSettings.contactContent,
+            ...(res.data.contactContent || {}),
+            hero: { ...defaultSettings.contactContent.hero, ...(res.data.contactContent?.hero || {}) },
+            info: { ...defaultSettings.contactContent.info, ...(res.data.contactContent?.info || {}) },
+            form: { ...defaultSettings.contactContent.form, ...(res.data.contactContent?.form || {}) },
+            bottomCta: { ...defaultSettings.contactContent.bottomCta, ...(res.data.contactContent?.bottomCta || {}) }
+          },
+          portfolioContent: {
+            ...defaultSettings.portfolioContent,
+            ...(res.data.portfolioContent || {}),
+            hero: { ...defaultSettings.portfolioContent.hero, ...(res.data.portfolioContent?.hero || {}) }
           },
           menus: res.data.menus && res.data.menus.length > 0 ? res.data.menus : defaultSettings.menus
         });

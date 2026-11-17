@@ -45,7 +45,7 @@ export default function CtaSection() {
   const line2 = ctaData.headlineLine2 || 'Videos to the next level?';
   const subtitle = ctaData.subtitle || "Let's collaborate and craft high-impact cinematic films and dynamic viral reels that captivate audiences and elevate your brand.";
   const buttonText = ctaData.buttonText || 'Get Started';
-  const buttonLink = ctaData.buttonLink || '/services/cinematic-wedding-video-editing';
+  const buttonLink = ctaData.buttonLink || '/contact';
   const buttonStyleKey = ctaData.buttonStyle || 'sharp-gold';
   const showArrow = ctaData.showArrow !== false;
 
