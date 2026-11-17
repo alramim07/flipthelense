@@ -12,6 +12,7 @@ import ContactUs from './pages/ContactUs';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminLogin from './pages/AdminLogin';
 import ProjectVisualBuilder from './pages/ProjectVisualBuilder';
+import HomePageBuilder from './pages/HomePageBuilder';
 
 function AppContent() {
   const location = useLocation();
@@ -64,6 +65,7 @@ function AppContent() {
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/pages/home-builder" element={<HomePageBuilder />} />
           <Route path="/admin/portfolio/builder" element={<ProjectVisualBuilder />} />
           <Route path="/admin/portfolio/builder/:slug" element={<ProjectVisualBuilder />} />
           <Route path="/admin/:tab" element={<AdminDashboard />} />

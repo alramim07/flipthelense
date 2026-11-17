@@ -72,6 +72,42 @@ const defaultSettings = {
       { id: 'pg-4', name: 'bKash', logoUrl: 'https://raw.githubusercontent.com/tariqul-islam/bangladesh-payment-icons/master/svg/bkash.svg' },
       { id: 'pg-5', name: 'Nagad', logoUrl: 'https://raw.githubusercontent.com/tariqul-islam/bangladesh-payment-icons/master/svg/nagad.svg' }
     ]
+  },
+
+  // Homepage Dynamic Content Model
+  homeContent: {
+    hero: {
+      badge: 'Cinematography. Video Editing. Visual Storytelling',
+      titleLine1: 'Crafting',
+      titleLine2: 'Stories Through',
+      titleLine3: 'Cinematic Videos.',
+      previewImage: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=900&q=80',
+      videoUrl: 'https://www.youtube.com/embed/ScMzIvxBSi4'
+    },
+    reels: [
+      { id: 'r-1', title: 'Wedding Teaser', url: 'https://www.youtube.com/embed/ScMzIvxBSi4', img: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80' },
+      { id: 'r-2', title: 'Dream Car Reel', url: 'https://www.youtube.com/embed/ScMzIvxBSi4', img: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80' },
+      { id: 'r-3', title: 'Street Pacing Edit', url: 'https://www.youtube.com/embed/ScMzIvxBSi4', img: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=600&q=80' },
+      { id: 'r-4', title: 'Commercial Audio', url: 'https://www.youtube.com/embed/ScMzIvxBSi4', img: 'https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=600&q=80' },
+      { id: 'r-5', title: 'Cyberpunk Grade', url: 'https://www.youtube.com/embed/ScMzIvxBSi4', img: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80' },
+      { id: 'r-6', title: 'Nature Doc', url: 'https://www.youtube.com/embed/ScMzIvxBSi4', img: 'https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=600&q=80' },
+      { id: 'r-7', title: 'Energy Commercial', url: 'https://www.youtube.com/embed/ScMzIvxBSi4', img: 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80' },
+      { id: 'r-8', title: 'Fashion Model', url: 'https://www.youtube.com/embed/ScMzIvxBSi4', img: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=600&q=80' }
+    ],
+    about: {
+      subtitle: 'Since 2022',
+      nameHeading: "HELLO, I'M PARVEJ MOSHARROF POLLOB",
+      bio1: 'For the past 4.5+ years, I have dedicated myself to the art of visual storytelling. Currently working as a Senior Cinematographer and Video Editor, I lead production workflows and collaborate with a talented team of creatives to deliver high-impact media for weddings and commercial clients.',
+      bio2: 'My approach to editing is both technical and emotional. Whether I am crafting a fast-paced real estate promo, a heartfelt wedding trailer, or executing complex motion graphics and speed ramps, my goal is always to keep the audience engaged from the first frame to the last.'
+    },
+    cta: {
+      tagline: "LET'S CREATE CINEMATIC MAGIC",
+      headlineLine1: 'Ready to take your',
+      headlineLine2: 'Videos to the next level?',
+      subtitle: "Let's collaborate and craft high-impact cinematic films and dynamic viral reels that captivate audiences and elevate your brand.",
+      buttonText: 'Get Started',
+      buttonLink: '/services/cinematic-wedding-video-editing'
+    }
   }
 };
 
@@ -102,6 +138,12 @@ export function SettingsProvider({ children }) {
             companyLinks: res.data.footer?.companyLinks || defaultSettings.footer.companyLinks,
             socials: res.data.footer?.socials || defaultSettings.footer.socials,
             paymentGateways: res.data.footer?.paymentGateways || defaultSettings.footer.paymentGateways
+          },
+          homeContent: {
+            hero: { ...defaultSettings.homeContent.hero, ...(res.data.homeContent?.hero || {}) },
+            reels: res.data.homeContent?.reels && res.data.homeContent.reels.length > 0 ? res.data.homeContent.reels : defaultSettings.homeContent.reels,
+            about: { ...defaultSettings.homeContent.about, ...(res.data.homeContent?.about || {}) },
+            cta: { ...defaultSettings.homeContent.cta, ...(res.data.homeContent?.cta || {}) }
           },
           menus: res.data.menus && res.data.menus.length > 0 ? res.data.menus : defaultSettings.menus
         });

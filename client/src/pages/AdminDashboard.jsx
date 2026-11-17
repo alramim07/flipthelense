@@ -2079,7 +2079,18 @@ export default function AdminDashboard() {
                       </h3>
                     </div>
 
-                    <div className="flex items-center shrink-0">
+                    <div className="flex items-center space-x-2.5 shrink-0">
+                      {/* Edit Page Button */}
+                      <Link
+                        to={page.slug === '/' ? '/admin/pages/home-builder' : `/admin/pages/builder?page=${encodeURIComponent(page.slug)}`}
+                        className="inline-flex items-center space-x-1.5 px-4 py-2 rounded-xl bg-[#222222] hover:bg-[#2C2C2C] text-[#FFE379] border border-[#3A3A3A] hover:border-[#FFE379]/50 font-black uppercase text-xs tracking-wider transition-all shadow-md hover:scale-105"
+                        style={{ fontFamily: "'Oswald', sans-serif" }}
+                      >
+                        <Edit3 className="w-3.5 h-3.5" />
+                        <span>Edit</span>
+                      </Link>
+
+                      {/* Preview Button */}
                       <a
                         href={page.slug}
                         target="_blank"

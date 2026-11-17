@@ -121,7 +121,7 @@ export default function Footer() {
             {/* Social Icons in Exact Brand Gold / Custom Uploaded */}
             <div className="flex items-center flex-wrap gap-2.5 pt-3">
               {socials.map((soc, idx) => {
-                const isImage = soc.iconType === 'image' && soc.iconUrl;
+                const hasImage = Boolean(soc.iconUrl);
                 return (
                   <a 
                     key={soc.id || idx}
@@ -129,12 +129,12 @@ export default function Footer() {
                     target="_blank" 
                     rel="noreferrer"
                     title={soc.name || 'Social Link'}
-                    className="w-8 h-8 bg-[#FFE379] hover:bg-white text-[#101010] flex items-center justify-center text-xs font-black transition-all shadow-md hover:scale-105 overflow-hidden"
+                    className="w-8 h-8 bg-[#FFE379] hover:bg-white text-[#101010] flex items-center justify-center text-xs font-black transition-all shadow-md hover:scale-105 overflow-hidden p-1"
                   >
-                    {isImage ? (
-                      <img src={soc.iconUrl} alt={soc.name || 'Icon'} className="w-5 h-5 object-contain" />
+                    {hasImage ? (
+                      <img src={soc.iconUrl} alt={soc.name || 'Social Icon'} className="w-full h-full object-contain" />
                     ) : (
-                      <span>{soc.iconText || soc.name?.substring(0, 2) || '★'}</span>
+                      <span>{soc.iconText || '★'}</span>
                     )}
                   </a>
                 );

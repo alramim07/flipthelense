@@ -1,8 +1,19 @@
 import React, { useState } from 'react';
 import { Play } from 'lucide-react';
+import { useSiteSettings } from '../../context/SettingsContext';
 
 export default function HeroSection() {
   const [isGigVideoPlaying, setIsGigVideoPlaying] = useState(false);
+  const { settings } = useSiteSettings();
+
+  const heroData = settings.homeContent?.hero || {};
+
+  const badgeText = heroData.badge || 'Cinematography. Video Editing. Visual Storytelling';
+  const line1 = heroData.titleLine1 || 'Crafting';
+  const line2 = heroData.titleLine2 || 'Stories Through';
+  const line3 = heroData.titleLine3 || 'Cinematic Videos.';
+  const previewImg = heroData.previewImage || 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=900&q=80';
+  const videoSrc = heroData.videoUrl || 'https://www.youtube.com/embed/ScMzIvxBSi4';
 
   return (
     <section id="hero" className="mb-5 animate-fade-in-up">
@@ -12,12 +23,12 @@ export default function HeroSection() {
         <div className="md:col-span-7 space-y-3 pt-1">
           <div className="inline-flex items-center space-x-2 text-neutral-400 text-xs sm:text-sm tracking-normal">
             <span className="w-2 h-2 rounded-full bg-[#F59E0B] animate-ping" />
-            <span>Cinematography. Video Editing. Visual Storytelling</span>
+            <span>{badgeText}</span>
           </div>
           <h1 className="text-4xl sm:text-5xl lg:text-[54px] hero-title text-white">
-            Crafting<br />
-            Stories Through<br />
-            Cinematic Videos.
+            {line1}<br />
+            {line2}<br />
+            {line3}
           </h1>
         </div>
 
@@ -30,7 +41,7 @@ export default function HeroSection() {
             {!isGigVideoPlaying ? (
               <div className="relative w-full h-full overflow-hidden">
                 <img 
-                  src="https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=900&q=80" 
+                  src={previewImg} 
                   alt="Gig Video Preview" 
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-108" 
                 />
@@ -44,7 +55,7 @@ export default function HeroSection() {
             ) : (
               <iframe 
                 className="w-full h-full" 
-                src="https://www.youtube.com/embed/ScMzIvxBSi4?autoplay=1" 
+                src={videoSrc.includes('autoplay') ? videoSrc : `${videoSrc}?autoplay=1`} 
                 frameBorder="0" 
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                 allowFullScreen 

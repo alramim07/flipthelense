@@ -1,7 +1,28 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useSiteSettings } from '../../context/SettingsContext';
 
 export default function ReelsSection({ onOpenVideo }) {
+  const { settings } = useSiteSettings();
+  const reels = settings.homeContent?.reels || [];
+
+  const getReel = (idx, fallbackTitle, fallbackImg) => {
+    return reels[idx] || {
+      title: fallbackTitle,
+      url: 'https://www.youtube.com/embed/ScMzIvxBSi4',
+      img: fallbackImg
+    };
+  };
+
+  const r1 = getReel(0, 'Wedding Teaser', 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80');
+  const r2 = getReel(1, 'Dream Car Reel', 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80');
+  const r3 = getReel(2, 'Street Pacing Edit', 'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=600&q=80');
+  const r4 = getReel(3, 'Commercial Audio', 'https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=600&q=80');
+  const r5 = getReel(4, 'Cyberpunk Grade', 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80');
+  const r6 = getReel(5, 'Nature Doc', 'https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=600&q=80');
+  const r7 = getReel(6, 'Energy Commercial', 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80');
+  const r8 = getReel(7, 'Fashion Model', 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=600&q=80');
+
   return (
     <section className="mb-32 relative pt-28 pb-4">
       {/* Light Gray Horizontal Band (#C5D0DC) */}
@@ -14,15 +35,15 @@ export default function ReelsSection({ onOpenVideo }) {
           <div className="flex flex-col gap-3 animate-reel-col-1">
             <div 
               className="reel-card aspect-[9/13]" 
-              onClick={() => onOpenVideo('Wedding Teaser', 'https://www.youtube.com/embed/ScMzIvxBSi4')}
+              onClick={() => onOpenVideo(r1.title, r1.url || 'https://www.youtube.com/embed/ScMzIvxBSi4')}
             >
-              <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover" alt="Reel 1" />
+              <img src={r1.img} className="w-full h-full object-cover" alt={r1.title} />
             </div>
             <div 
               className="reel-card aspect-[9/13] translate-y-14" 
-              onClick={() => onOpenVideo('Dream Car Reel', 'https://www.youtube.com/embed/ScMzIvxBSi4')}
+              onClick={() => onOpenVideo(r2.title, r2.url || 'https://www.youtube.com/embed/ScMzIvxBSi4')}
             >
-              <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover" alt="Reel 2" />
+              <img src={r2.img} className="w-full h-full object-cover" alt={r2.title} />
             </div>
           </div>
 
@@ -30,15 +51,15 @@ export default function ReelsSection({ onOpenVideo }) {
           <div className="flex flex-col gap-3 -translate-y-24 animate-reel-col-2">
             <div 
               className="reel-card aspect-[9/13]" 
-              onClick={() => onOpenVideo('Street Pacing Edit', 'https://www.youtube.com/embed/ScMzIvxBSi4')}
+              onClick={() => onOpenVideo(r3.title, r3.url || 'https://www.youtube.com/embed/ScMzIvxBSi4')}
             >
-              <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover" alt="Reel 3" />
+              <img src={r3.img} className="w-full h-full object-cover" alt={r3.title} />
             </div>
             <div 
               className="reel-card aspect-[9/13]" 
-              onClick={() => onOpenVideo('Commercial Audio', 'https://www.youtube.com/embed/ScMzIvxBSi4')}
+              onClick={() => onOpenVideo(r4.title, r4.url || 'https://www.youtube.com/embed/ScMzIvxBSi4')}
             >
-              <img src="https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover" alt="Reel 4" />
+              <img src={r4.img} className="w-full h-full object-cover" alt={r4.title} />
             </div>
           </div>
 
@@ -46,15 +67,15 @@ export default function ReelsSection({ onOpenVideo }) {
           <div className="flex flex-col gap-3 animate-reel-col-3">
             <div 
               className="reel-card aspect-[9/13]" 
-              onClick={() => onOpenVideo('Cyberpunk Grade', 'https://www.youtube.com/embed/ScMzIvxBSi4')}
+              onClick={() => onOpenVideo(r5.title, r5.url || 'https://www.youtube.com/embed/ScMzIvxBSi4')}
             >
-              <img src="https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover" alt="Reel 5" />
+              <img src={r5.img} className="w-full h-full object-cover" alt={r5.title} />
             </div>
             <div 
               className="reel-card aspect-[9/13] translate-y-14" 
-              onClick={() => onOpenVideo('Nature Doc', 'https://www.youtube.com/embed/ScMzIvxBSi4')}
+              onClick={() => onOpenVideo(r6.title, r6.url || 'https://www.youtube.com/embed/ScMzIvxBSi4')}
             >
-              <img src="https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover" alt="Reel 6" />
+              <img src={r6.img} className="w-full h-full object-cover" alt={r6.title} />
             </div>
           </div>
 
@@ -62,15 +83,15 @@ export default function ReelsSection({ onOpenVideo }) {
           <div className="flex flex-col gap-3 -translate-y-14 animate-reel-col-4">
             <div 
               className="reel-card aspect-[9/13]" 
-              onClick={() => onOpenVideo('Energy Commercial', 'https://www.youtube.com/embed/ScMzIvxBSi4')}
+              onClick={() => onOpenVideo(r7.title, r7.url || 'https://www.youtube.com/embed/ScMzIvxBSi4')}
             >
-              <img src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover" alt="Reel 7" />
+              <img src={r7.img} className="w-full h-full object-cover" alt={r7.title} />
             </div>
             <div 
               className="reel-card aspect-[9/13]" 
-              onClick={() => onOpenVideo('Fashion Model', 'https://www.youtube.com/embed/ScMzIvxBSi4')}
+              onClick={() => onOpenVideo(r8.title, r8.url || 'https://www.youtube.com/embed/ScMzIvxBSi4')}
             >
-              <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover" alt="Reel 8" />
+              <img src={r8.img} className="w-full h-full object-cover" alt={r8.title} />
             </div>
           </div>
 

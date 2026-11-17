@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSiteSettings } from '../../context/SettingsContext';
 
 // Dynamic Skill / Software Data
 const SOFTWARE_SKILLS = [
@@ -45,6 +46,14 @@ const SOFTWARE_SKILLS = [
 ];
 
 export default function AboutSection() {
+  const { settings } = useSiteSettings();
+  const aboutData = settings.homeContent?.about || {};
+
+  const subtitle = aboutData.subtitle || 'Since 2022';
+  const nameHeading = aboutData.nameHeading || "HELLO, I'M PARVEJ MOSHARROF POLLOB";
+  const bio1 = aboutData.bio1 || 'For the past 4.5+ years, I have dedicated myself to the art of visual storytelling. Currently working as a Senior Cinematographer and Video Editor, I lead production workflows and collaborate with a talented team of creatives to deliver high-impact media for weddings and commercial clients.';
+  const bio2 = aboutData.bio2 || 'My approach to editing is both technical and emotional. Whether I am crafting a fast-paced real estate promo, a heartfelt wedding trailer, or executing complex motion graphics and speed ramps, my goal is always to keep the audience engaged from the first frame to the last.';
+
   return (
     <section id="about" className="mb-28 pt-8">
       <div className="max-w-4xl mx-auto">
@@ -56,25 +65,21 @@ export default function AboutSection() {
         
         {/* Subtitle */}
         <div className="text-neutral-400 text-xs sm:text-sm font-sans mt-2 tracking-wide">
-          Since 2022
+          {subtitle}
         </div>
 
         {/* Name Title: Sharp, clean, legible uppercase */}
         <h3 
-          className="text-2xl sm:text-3xl lg:text-[32px] tracking-wider text-white mt-3 mb-6" 
+          className="text-2xl sm:text-3xl lg:text-[32px] tracking-wider text-white mt-3 mb-6 uppercase" 
           style={{ fontFamily: "'Bebas Neue', 'Oswald', sans-serif', letterSpacing: '0.04em" }}
         >
-          HELLO, I'M PARVEJ MOSHARROF POLLOB
+          {nameHeading}
         </h3>
 
         {/* Bio paragraphs */}
-        <div className="space-y-5 text-neutral-300 text-sm sm:text-[15px] leading-relaxed text-left max-w-3xl">
-          <p>
-            For the past 4.5+ years, I have dedicated myself to the art of visual storytelling. Currently working as a Senior Cinematographer and Video Editor, I lead production workflows and collaborate with a talented team of creatives to deliver high-impact media for weddings and commercial clients.
-          </p>
-          <p>
-            My approach to editing is both technical and emotional. Whether I am crafting a fast-paced real estate promo, a heartfelt wedding trailer, or executing complex motion graphics and speed ramps, my goal is always to keep the audience engaged from the first frame to the last.
-          </p>
+        <div className="space-y-5 text-neutral-300 text-sm sm:text-[15px] leading-relaxed text-left max-w-3xl whitespace-pre-line">
+          <p>{bio1}</p>
+          <p>{bio2}</p>
         </div>
 
         {/* 
