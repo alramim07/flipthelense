@@ -937,20 +937,24 @@ export default function HomePageBuilder() {
                 </label>
               </div>
 
-              {/* 6 Preset Animation Types */}
+              {/* Creative Video Editing Animation Presets */}
               {homeData.process?.animationEnabled !== false && (
                 <div className="pt-2 border-t border-[#262626]">
                   <label className="block text-[10px] uppercase font-bold text-neutral-400 mb-2">
-                    Select Animation Style Preset (6 Suitable Options)
+                    Select Creative Animation Preset (10 Tailored Video Editing Animations)
                   </label>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
                     {[
-                      { id: 'classic-road', name: '1. Classic Golden Highway', desc: 'Continuous steady road track (1.2s seamless loop)' },
-                      { id: 'neon-cyber', name: '2. Neon Cyber Pulse', desc: 'Glowing amber laser stream with dynamic pulsing aura' },
-                      { id: 'filmstrip-sprocket', name: '3. Filmstrip Sprocket Rhythm', desc: 'Cinematic 24 FPS stepped rhythmic frame movement' },
-                      { id: 'electric-pulse', name: '4. Electric Multi-Color Wave', desc: 'Electrifying chroma flow cycling Gold, Cyan & Purple' },
-                      { id: 'cosmic-drift', name: '5. Luxury Cosmic Drift', desc: 'Slow, elegant velvet ease flow for a premium feel' },
-                      { id: 'hyperspeed-warp', name: '6. High-Retention Warp Dash', desc: 'Fast, high-energy dash for high viewer retention' }
+                      { id: 'classic-road', name: '1. Golden Highway', desc: 'Continuous steady road track with seamless loop' },
+                      { id: 'timeline-playhead', name: '2. Razor Playhead Sweep', desc: 'Sweeping video timeline needle with keyframe diamond' },
+                      { id: 'audio-beats', name: '3. Soundwave Beat Radar', desc: 'Pulsing sonic waves synced to high-energy audio tracks' },
+                      { id: 'chroma-glitch', name: '4. RGB Split Glitch', desc: 'Subtle chromatic aberration glitch transition effect' },
+                      { id: 'film-grain-dust', name: '5. 35mm Film Grain', desc: 'Cinematic dust, grain & vintage sprocket flicker' },
+                      { id: 'golden-bokeh', name: '6. Luxury Golden Bokeh', desc: 'Floating cinematic lens flare orbs & soft light leaks' },
+                      { id: 'neon-cyber', name: '7. Neon Laser Pulse', desc: 'Amber cyber laser beam with high dynamic range glow' },
+                      { id: 'filmstrip-sprocket', name: '8. 24 FPS Sprockets', desc: 'Stepped rhythmic 24 FPS cinema shutter gate motion' },
+                      { id: 'electric-pulse', name: '9. Multi-Chroma Wave', desc: 'Electrifying chroma flow cycling Gold, Cyan & Purple' },
+                      { id: 'hyperspeed-warp', name: '10. Speed Ramp Warp', desc: 'Viral reels speed-ramp rush for maximum viewer retention' }
                     ].map((anim) => {
                       const isSelected = (homeData.process?.animationStyle || 'classic-road') === anim.id;
                       return (
@@ -962,17 +966,17 @@ export default function HomePageBuilder() {
                           })}
                           className={`p-3 rounded-xl border cursor-pointer transition-all ${
                             isSelected
-                              ? 'bg-[#FFE379]/10 border-[#FFE379] shadow-[0_0_15px_rgba(255,227,121,0.2)]'
+                              ? 'bg-[#FFE379]/15 border-[#FFE379] shadow-[0_0_15px_rgba(255,227,121,0.25)]'
                               : 'bg-[#121212] border-[#282828] hover:border-[#383838]'
                           }`}
                         >
                           <div className="flex items-center justify-between mb-1">
-                            <span className={`text-xs font-bold ${isSelected ? 'text-[#FFE379]' : 'text-white'}`}>
+                            <span className={`text-[11px] font-bold ${isSelected ? 'text-[#FFE379]' : 'text-white'}`}>
                               {anim.name}
                             </span>
                             {isSelected && <span className="w-2 h-2 rounded-full bg-[#FFE379] animate-ping" />}
                           </div>
-                          <p className="text-[10px] text-neutral-400 leading-snug">
+                          <p className="text-[9px] text-neutral-400 leading-snug">
                             {anim.desc}
                           </p>
                         </div>

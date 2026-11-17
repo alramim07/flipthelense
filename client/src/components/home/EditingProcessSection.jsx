@@ -110,6 +110,16 @@ export default function EditingProcessSection() {
         return 'animate-cosmic-drift';
       case 'hyperspeed-warp':
         return 'animate-hyperspeed-warp';
+      case 'timeline-playhead':
+        return 'animate-neon-cyber';
+      case 'audio-beats':
+        return 'animate-electric-pulse';
+      case 'chroma-glitch':
+        return 'animate-road-middle-track animate-chroma-glitch';
+      case 'film-grain-dust':
+        return 'animate-filmstrip-sprocket';
+      case 'golden-bokeh':
+        return 'animate-cosmic-drift';
       case 'classic-road':
       default:
         return 'animate-road-middle-track';
@@ -118,7 +128,9 @@ export default function EditingProcessSection() {
 
   return (
     <section id="process" className="mb-24 pt-4">
-      <div className="relative w-full rounded-3xl overflow-hidden border border-[#232323] shadow-2xl bg-[#121212] p-6 sm:p-12 lg:p-14">
+      <div className={`relative w-full rounded-3xl overflow-hidden border border-[#232323] shadow-2xl bg-[#121212] p-6 sm:p-12 lg:p-14 ${
+        animationEnabled && animationStyle === 'chroma-glitch' ? 'animate-chroma-glitch' : ''
+      }`}>
         
         {/* Subtle background grid pattern */}
         <div 
@@ -128,6 +140,46 @@ export default function EditingProcessSection() {
             backgroundSize: '24px 24px'
           }}
         />
+
+        {/* Dynamic Creative Overlay Layer based on Selected Animation */}
+        {animationEnabled && (
+          <>
+            {/* 1. Timecode Playhead Scanline (Sweeping razor line across timeline) */}
+            {(animationStyle === 'timeline-playhead' || animationStyle === 'neon-cyber') && (
+              <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+                <div className="absolute top-0 bottom-0 w-[2px] bg-gradient-to-b from-transparent via-[#FFE379] to-transparent shadow-[0_0_12px_#FFE379] animate-timeline-playhead">
+                  <div className="w-2.5 h-2.5 -ml-1 bg-[#FFE379] rounded-sm transform rotate-45 shadow" />
+                </div>
+              </div>
+            )}
+
+            {/* 2. Audio Wave Beats Radar Glow */}
+            {(animationStyle === 'audio-beats' || animationStyle === 'electric-pulse') && (
+              <div className="absolute -inset-10 pointer-events-none rounded-3xl animate-audio-beats z-0" />
+            )}
+
+            {/* 3. Golden Bokeh Particle Spheres */}
+            {(animationStyle === 'golden-bokeh' || animationStyle === 'cosmic-drift') && (
+              <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+                <div className="absolute top-1/4 left-1/6 w-48 h-48 rounded-full bg-[#FFE379]/10 blur-2xl animate-bokeh-1" />
+                <div className="absolute bottom-1/4 right-1/6 w-64 h-64 rounded-full bg-[#FFE379]/8 blur-3xl animate-bokeh-2" />
+                <div className="absolute top-2/3 left-1/2 w-36 h-36 rounded-full bg-amber-500/10 blur-xl animate-bokeh-1" />
+              </div>
+            )}
+
+            {/* 4. Film Grain & Cinematic Dust Flicker */}
+            {animationStyle === 'film-grain-dust' && (
+              <div 
+                className="absolute inset-0 pointer-events-none opacity-20 z-0 animate-film-grain"
+                style={{
+                  backgroundImage: 'radial-gradient(circle, #FFE379 0.8px, transparent 0.8px), radial-gradient(circle, #FFFFFF 0.5px, transparent 0.5px)',
+                  backgroundSize: '16px 16px, 24px 24px',
+                  backgroundPosition: '0 0, 8px 8px'
+                }}
+              />
+            )}
+          </>
+        )}
 
         {/* 1. Floating Video Editor Monitor UI (Top-Left) */}
         <div className="absolute top-6 left-6 w-48 bg-[#161616]/85 backdrop-blur-md border border-[#2e2e2e] rounded-xl p-2.5 shadow-2xl opacity-75 pointer-events-none transform -rotate-6 hidden lg:block">
