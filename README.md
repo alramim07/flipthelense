@@ -197,6 +197,22 @@ flipthelense/
 
 ---
 
+## 💳 Payment Gateway Architecture & Multi-Provider Settings
+
+The platform features an enterprise-grade payment settings management hub situated inside **Admin Dashboard > Website Settings > Payment Gateways**. Administrators can independently configure and toggle between global and domestic payment providers:
+
+| Provider | Type | Supported Channels & Features | Configuration Parameters |
+| :--- | :--- | :--- | :--- |
+| **Stripe** | Global Cards & Wallets | Visa, Mastercard, Amex, Apple Pay, Google Pay | Publishable Key (`pk_...`), Secret Key (`sk_...`), Webhook Secret (`whsec_...`), Default Currency (USD, EUR, GBP, AUD, BDT), Test/Live Mode toggle |
+| **FastSpring** | Merchant of Record (MoR) | International Invoicing, Global VAT/GST Compliance, Wire Transfers | Storefront Identifier, API Username, API Password, Webhook HMAC Verification Key, Sandbox/Live toggle |
+| **bKash** | Bangladesh MFS | Instant Direct Tokenized Checkout (PGW API v1.2.0) | App Key, App Secret, API Username, API Password, Merchant Wallet Number, Execute Callback Listener |
+| **Nagad** | Bangladesh Post MFS | RSA 2048-bit Encrypted Checkout | Merchant ID, Merchant RSA Private Key, PGW Public Key, Verify Callback Listener, Sandbox/Production toggle |
+| **Rocket** | DBBL Mobile Banking | Direct Biller & Terminal Gateway | Biller ID, Merchant/Terminal ID, Sub-Account ID, API Hash Secret, IPN Callback Listener |
+
+All sensitive keys are secured with UI mask/reveal toggles, persistent database state synchronization, and one-click clipboard webhooks.
+
+---
+
 ## 🚢 Production Deployment
 
 ### Building the Client:

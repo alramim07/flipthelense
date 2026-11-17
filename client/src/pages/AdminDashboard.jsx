@@ -57,7 +57,14 @@ import {
   CreditCard,
   Share2,
   Phone,
-  MapPin
+  MapPin,
+  Key,
+  ShieldCheck,
+  EyeOff,
+  Copy,
+  Zap,
+  Globe,
+  Radio
 } from 'lucide-react';
 
 export default function AdminDashboard() {
@@ -194,8 +201,59 @@ export default function AdminDashboard() {
         { id: 'pg-4', name: 'bKash', logoUrl: 'https://raw.githubusercontent.com/tariqul-islam/bangladesh-payment-icons/master/svg/bkash.svg' },
         { id: 'pg-5', name: 'Nagad', logoUrl: 'https://raw.githubusercontent.com/tariqul-islam/bangladesh-payment-icons/master/svg/nagad.svg' }
       ]
+    },
+
+    paymentGateways: {
+      activeGatewayTab: 'stripe',
+      stripe: {
+        enabled: false,
+        mode: 'test',
+        publishableKey: '',
+        secretKey: '',
+        webhookSecret: '',
+        currency: 'USD'
+      },
+      fastspring: {
+        enabled: false,
+        mode: 'test',
+        storefront: '',
+        apiUsername: '',
+        apiPassword: '',
+        privateKey: '',
+        webhookKey: ''
+      },
+      bkash: {
+        enabled: false,
+        mode: 'sandbox',
+        appKey: '',
+        appSecret: '',
+        username: '',
+        password: '',
+        merchantNumber: ''
+      },
+      nagad: {
+        enabled: false,
+        mode: 'sandbox',
+        merchantId: '',
+        merchantPrivateKey: '',
+        pgwPublicKey: '',
+        callbackUrl: ''
+      },
+      rocket: {
+        enabled: false,
+        mode: 'sandbox',
+        merchantId: '',
+        secretKey: '',
+        billerId: '',
+        subAccountId: ''
+      }
     }
   });
+
+  // Website Settings Sub-Tab Navigation
+  const [settingsSubTab, setSettingsSubTab] = useState('general'); // 'general' | 'gateways'
+  const [activeGatewayTab, setActiveGatewayTab] = useState('stripe'); // 'stripe' | 'fastspring' | 'bkash' | 'nagad' | 'rocket'
+  const [showGatewaySecrets, setShowGatewaySecrets] = useState({}); // toggle visibility for secret keys
 
   // Menu & Footer Management State
   const [editingMenuId, setEditingMenuId] = useState('main-nav');
@@ -2377,8 +2435,80 @@ export default function AdminDashboard() {
             setSettings({ ...settings, menus: updatedMenus });
           };
 
+          const currentGateways = settings.paymentGateways || {
+            activeGatewayTab: 'stripe',
+            stripe: { enabled: false, mode: 'test', publishableKey: '', secretKey: '', webhookSecret: '', currency: 'USD' },
+            fastspring: { enabled: false, mode: 'test', storefront: '', apiUsername: '', apiPassword: '', privateKey: '', webhookKey: '' },
+            bkash: { enabled: false, mode: 'sandbox', appKey: '', appSecret: '', username: '', password: '', merchantNumber: '' },
+            nagad: { enabled: false, mode: 'sandbox', merchantId: '', merchantPrivateKey: '', pgwPublicKey: '', callbackUrl: '' },
+            rocket: { enabled: false, mode: 'sandbox', merchantId: '', secretKey: '', billerId: '', subAccountId: '' }
+          };
+
+          const updateGatewayField = (gatewayName, field, value) => {
+            setSettings({
+              ...settings,
+              paymentGateways: {
+                ...currentGateways,
+                [gatewayName]: {
+                  ...(currentGateways[gatewayName] || {}),
+                  [field]: value
+                }
+              }
+            });
+          };
+
+          const toggleSecretVisibility = (key) => {
+            setShowGatewaySecrets(prev => ({ ...prev, [key]: !prev[key] }));
+          };
+
           return (
-            <div className="max-w-4xl animate-fade-in-up space-y-8">
+            <div className="max-w-5xl animate-fade-in-up space-y-6">
+              {/* Header Title & Sub-Tab Bar */}
+              <div className="rounded-2xl bg-[#141414]/90 backdrop-blur-xl border border-[#232323] p-5 sm:p-6 shadow-xl flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                  <h1 className="text-2xl font-black text-white uppercase tracking-tight flex items-center gap-2.5" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                    <Settings className="w-6 h-6 text-[#FFE379]" />
+                    <span>Website Settings</span>
+                  </h1>
+                  <p className="text-xs text-neutral-400 mt-1">
+                    Manage global branding, navigation menus, footer details, and multi-currency payment gateways.
+                  </p>
+                </div>
+
+                {/* Sub-Tabs: General & Branding vs Payment Gateways */}
+                <div className="flex items-center bg-[#101010] p-1.5 rounded-xl border border-[#282828] shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => setSettingsSubTab('general')}
+                    className={`px-4 py-2 rounded-lg text-xs font-bold uppercase transition-all flex items-center gap-2 ${
+                      settingsSubTab === 'general'
+                        ? 'bg-[#FFE379] text-[#101010] shadow-md shadow-[#FFE379]/10'
+                        : 'text-neutral-400 hover:text-white hover:bg-[#1a1a1a]'
+                    }`}
+                    style={{ fontFamily: "'Oswald', sans-serif" }}
+                  >
+                    <Sliders className="w-3.5 h-3.5" />
+                    <span>General & Branding</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setSettingsSubTab('gateways')}
+                    className={`px-4 py-2 rounded-lg text-xs font-bold uppercase transition-all flex items-center gap-2 ${
+                      settingsSubTab === 'gateways'
+                        ? 'bg-[#FFE379] text-[#101010] shadow-md shadow-[#FFE379]/10'
+                        : 'text-neutral-400 hover:text-white hover:bg-[#1a1a1a]'
+                    }`}
+                    style={{ fontFamily: "'Oswald', sans-serif" }}
+                  >
+                    <CreditCard className="w-3.5 h-3.5" />
+                    <span>Payment Gateways</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* ================= SUB-TAB 1: GENERAL & BRANDING ================= */}
+              {settingsSubTab === 'general' && (
+                <div className="space-y-8">
               {/* ================= SECTION 1: LOGO & FAVICON CONFIGURATION ================= */}
               <div className="rounded-2xl bg-[#141414]/85 backdrop-blur-xl border border-[#232323] p-6 sm:p-8 shadow-xl space-y-6">
                 <div>
@@ -3653,6 +3783,886 @@ export default function AdminDashboard() {
                 </div>
 
               </div>
+              </div>
+              )}
+
+              {/* ================= SUB-TAB 2: PAYMENT GATEWAYS (STRIPE, FASTSPRING, BKASH, NAGAD, ROCKET) ================= */}
+              {settingsSubTab === 'gateways' && (
+                <div className="space-y-6">
+                  {/* Gateway Navigation Tabs */}
+                  <div className="bg-[#141414]/90 backdrop-blur-xl border border-[#232323] p-3 rounded-2xl shadow-xl">
+                    <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+                      {[
+                        {
+                          id: 'stripe',
+                          name: 'Stripe',
+                          icon: '💳',
+                          badge: 'Global Cards',
+                          active: currentGateways.stripe?.enabled
+                        },
+                        {
+                          id: 'fastspring',
+                          name: 'FastSpring',
+                          icon: '🌐',
+                          badge: 'Global MoR',
+                          active: currentGateways.fastspring?.enabled
+                        },
+                        {
+                          id: 'bkash',
+                          name: 'bKash',
+                          icon: '📱',
+                          badge: 'Bangladesh MFS',
+                          active: currentGateways.bkash?.enabled
+                        },
+                        {
+                          id: 'nagad',
+                          name: 'Nagad',
+                          icon: '⚡',
+                          badge: 'Bangladesh MFS',
+                          active: currentGateways.nagad?.enabled
+                        },
+                        {
+                          id: 'rocket',
+                          name: 'Rocket',
+                          icon: '🚀',
+                          badge: 'DBBL MFS',
+                          active: currentGateways.rocket?.enabled
+                        }
+                      ].map((gw) => {
+                        const isSelected = activeGatewayTab === gw.id;
+                        return (
+                          <button
+                            key={gw.id}
+                            type="button"
+                            onClick={() => setActiveGatewayTab(gw.id)}
+                            className={`p-3.5 rounded-xl border text-left transition-all flex flex-col justify-between relative overflow-hidden group ${
+                              isSelected
+                                ? 'bg-gradient-to-br from-[#1C1C1C] to-[#161616] border-[#FFE379] shadow-lg shadow-[#FFE379]/10'
+                                : 'bg-[#181818]/60 border-[#262626] hover:border-[#383838] hover:bg-[#1C1C1C]/80'
+                            }`}
+                          >
+                            <div className="flex items-center justify-between">
+                              <span className="text-xl">{gw.icon}</span>
+                              <span
+                                className={`w-2 h-2 rounded-full ${
+                                  gw.active ? 'bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]' : 'bg-neutral-600'
+                                }`}
+                                title={gw.active ? 'Active & Live' : 'Disabled'}
+                              />
+                            </div>
+                            <div className="mt-2">
+                              <h4
+                                className={`text-sm font-black uppercase tracking-tight ${
+                                  isSelected ? 'text-[#FFE379]' : 'text-white'
+                                }`}
+                                style={{ fontFamily: "'Oswald', sans-serif" }}
+                              >
+                                {gw.name}
+                              </h4>
+                              <p className="text-[10px] text-neutral-400 font-mono mt-0.5">{gw.badge}</p>
+                            </div>
+                            {isSelected && (
+                              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#FFE379]" />
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* 1. STRIPE GATEWAY CONFIGURATION */}
+                  {activeGatewayTab === 'stripe' && (
+                    <div className="rounded-2xl bg-[#141414]/90 backdrop-blur-xl border border-[#232323] p-6 sm:p-8 shadow-xl space-y-6">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-5 border-b border-[#232323]">
+                        <div className="flex items-center gap-3">
+                          <div className="w-12 h-12 rounded-xl bg-[#635BFF]/10 border border-[#635BFF]/30 flex items-center justify-center text-xl text-[#635BFF] font-black">
+                            S
+                          </div>
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <h3 className="text-lg font-black text-white uppercase tracking-tight" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                                Stripe Payment Gateway
+                              </h3>
+                              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#635BFF]/20 text-[#9B95FF] border border-[#635BFF]/30">
+                                Credit / Debit Card & Apple Pay
+                              </span>
+                            </div>
+                            <p className="text-xs text-neutral-400 mt-0.5">
+                              Accept worldwide payments via Visa, Mastercard, American Express, and mobile wallets.
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Enable Toggle Switch */}
+                        <div className="flex items-center gap-3 bg-[#181818] px-4 py-2 rounded-xl border border-[#2A2A2A]">
+                          <span className="text-xs font-bold text-neutral-300 uppercase tracking-wide" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                            {currentGateways.stripe?.enabled ? 'Gateway Active' : 'Gateway Inactive'}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => updateGatewayField('stripe', 'enabled', !currentGateways.stripe?.enabled)}
+                            className={`w-12 h-6 rounded-full transition-colors relative p-0.5 ${
+                              currentGateways.stripe?.enabled ? 'bg-emerald-500' : 'bg-neutral-700'
+                            }`}
+                          >
+                            <div
+                              className={`w-5 h-5 rounded-full bg-white transition-transform ${
+                                currentGateways.stripe?.enabled ? 'translate-x-6' : 'translate-x-0'
+                              }`}
+                            />
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        {/* Environment Mode */}
+                        <div>
+                          <label className="block text-xs uppercase font-semibold text-neutral-300 mb-1.5">
+                            Environment Mode
+                          </label>
+                          <select
+                            value={currentGateways.stripe?.mode || 'test'}
+                            onChange={(e) => updateGatewayField('stripe', 'mode', e.target.value)}
+                            className="w-full px-4 py-2.5 bg-[#181818] border border-[#2E2E2E] rounded-xl text-white text-xs focus:border-[#FFE379] focus:outline-none"
+                          >
+                            <option value="test">Test Mode (Sandbox)</option>
+                            <option value="live">Live Mode (Production)</option>
+                          </select>
+                          <p className="text-[11px] text-neutral-500 mt-1">Switch between test card simulation and live payments.</p>
+                        </div>
+
+                        {/* Default Currency */}
+                        <div>
+                          <label className="block text-xs uppercase font-semibold text-neutral-300 mb-1.5">
+                            Default Currency
+                          </label>
+                          <select
+                            value={currentGateways.stripe?.currency || 'USD'}
+                            onChange={(e) => updateGatewayField('stripe', 'currency', e.target.value)}
+                            className="w-full px-4 py-2.5 bg-[#181818] border border-[#2E2E2E] rounded-xl text-white text-xs focus:border-[#FFE379] focus:outline-none font-mono"
+                          >
+                            <option value="USD">USD ($ - US Dollar)</option>
+                            <option value="EUR">EUR (€ - Euro)</option>
+                            <option value="GBP">GBP (£ - British Pound)</option>
+                            <option value="CAD">CAD ($ - Canadian Dollar)</option>
+                            <option value="AUD">AUD ($ - Australian Dollar)</option>
+                            <option value="BDT">BDT (৳ - Bangladeshi Taka)</option>
+                          </select>
+                          <p className="text-[11px] text-neutral-500 mt-1">Primary settlement and charge currency.</p>
+                        </div>
+
+                        {/* Publishable Key */}
+                        <div className="md:col-span-2">
+                          <label className="block text-xs uppercase font-semibold text-neutral-300 mb-1.5">
+                            Publishable Key <span className="text-neutral-500 font-mono text-[10px]">(pk_test_... or pk_live_...)</span>
+                          </label>
+                          <div className="relative">
+                            <Key className="w-4 h-4 text-neutral-500 absolute left-3.5 top-3" />
+                            <input
+                              type="text"
+                              value={currentGateways.stripe?.publishableKey || ''}
+                              onChange={(e) => updateGatewayField('stripe', 'publishableKey', e.target.value)}
+                              placeholder="pk_test_51Mz..."
+                              className="w-full pl-10 pr-4 py-2.5 bg-[#181818] border border-[#2E2E2E] rounded-xl text-white font-mono text-xs focus:border-[#FFE379] focus:outline-none"
+                            />
+                          </div>
+                        </div>
+
+                        {/* Secret Key */}
+                        <div className="md:col-span-2">
+                          <div className="flex items-center justify-between mb-1.5">
+                            <label className="text-xs uppercase font-semibold text-neutral-300">
+                              Secret Key <span className="text-neutral-500 font-mono text-[10px]">(sk_test_... or sk_live_...)</span>
+                            </label>
+                            <button
+                              type="button"
+                              onClick={() => toggleSecretVisibility('stripe_secret')}
+                              className="text-[11px] text-[#FFE379] hover:underline flex items-center gap-1"
+                            >
+                              {showGatewaySecrets['stripe_secret'] ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                              <span>{showGatewaySecrets['stripe_secret'] ? 'Hide' : 'Reveal'}</span>
+                            </button>
+                          </div>
+                          <div className="relative">
+                            <Key className="w-4 h-4 text-neutral-500 absolute left-3.5 top-3" />
+                            <input
+                              type={showGatewaySecrets['stripe_secret'] ? 'text' : 'password'}
+                              value={currentGateways.stripe?.secretKey || ''}
+                              onChange={(e) => updateGatewayField('stripe', 'secretKey', e.target.value)}
+                              placeholder="sk_test_51Mz..."
+                              className="w-full pl-10 pr-4 py-2.5 bg-[#181818] border border-[#2E2E2E] rounded-xl text-white font-mono text-xs focus:border-[#FFE379] focus:outline-none"
+                            />
+                          </div>
+                        </div>
+
+                        {/* Webhook Signing Secret */}
+                        <div className="md:col-span-2">
+                          <div className="flex items-center justify-between mb-1.5">
+                            <label className="text-xs uppercase font-semibold text-neutral-300">
+                              Webhook Signing Secret <span className="text-neutral-500 font-mono text-[10px]">(whsec_...)</span>
+                            </label>
+                            <button
+                              type="button"
+                              onClick={() => toggleSecretVisibility('stripe_whsec')}
+                              className="text-[11px] text-[#FFE379] hover:underline flex items-center gap-1"
+                            >
+                              {showGatewaySecrets['stripe_whsec'] ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                              <span>{showGatewaySecrets['stripe_whsec'] ? 'Hide' : 'Reveal'}</span>
+                            </button>
+                          </div>
+                          <div className="relative">
+                            <ShieldCheck className="w-4 h-4 text-neutral-500 absolute left-3.5 top-3" />
+                            <input
+                              type={showGatewaySecrets['stripe_whsec'] ? 'text' : 'password'}
+                              value={currentGateways.stripe?.webhookSecret || ''}
+                              onChange={(e) => updateGatewayField('stripe', 'webhookSecret', e.target.value)}
+                              placeholder="whsec_..."
+                              className="w-full pl-10 pr-4 py-2.5 bg-[#181818] border border-[#2E2E2E] rounded-xl text-white font-mono text-xs focus:border-[#FFE379] focus:outline-none"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Webhook Endpoint Helper Box */}
+                      <div className="p-4 rounded-xl bg-[#181818] border border-[#282828] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div className="space-y-0.5">
+                          <span className="text-[10px] uppercase font-bold text-neutral-400 tracking-wider">Stripe Webhook Listener URL</span>
+                          <p className="text-xs font-mono text-[#FFE379] break-all">
+                            {window.location.origin}/api/payments/stripe/webhook
+                          </p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            navigator.clipboard.writeText(`${window.location.origin}/api/payments/stripe/webhook`);
+                            alert('Copied Stripe Webhook URL to clipboard!');
+                          }}
+                          className="px-3 py-1.5 rounded-lg bg-[#222] hover:bg-[#2A2A2A] text-neutral-300 hover:text-white text-xs border border-[#333] transition flex items-center gap-1.5 shrink-0 self-start sm:self-center"
+                        >
+                          <Copy className="w-3.5 h-3.5" />
+                          <span>Copy Webhook</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* 2. FASTSPRING GATEWAY CONFIGURATION */}
+                  {activeGatewayTab === 'fastspring' && (
+                    <div className="rounded-2xl bg-[#141414]/90 backdrop-blur-xl border border-[#232323] p-6 sm:p-8 shadow-xl space-y-6">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-5 border-b border-[#232323]">
+                        <div className="flex items-center gap-3">
+                          <div className="w-12 h-12 rounded-xl bg-[#00A1E0]/10 border border-[#00A1E0]/30 flex items-center justify-center text-xl text-[#00A1E0] font-black">
+                            FS
+                          </div>
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <h3 className="text-lg font-black text-white uppercase tracking-tight" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                                FastSpring Merchant of Record (MoR)
+                              </h3>
+                              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#00A1E0]/20 text-[#70D2FA] border border-[#00A1E0]/30">
+                                Global Tax Compliance & Invoicing
+                              </span>
+                            </div>
+                            <p className="text-xs text-neutral-400 mt-0.5">
+                              Handles global VAT/GST taxes, enterprise wire transfers, and embedded checkout storefronts.
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Enable Toggle Switch */}
+                        <div className="flex items-center gap-3 bg-[#181818] px-4 py-2 rounded-xl border border-[#2A2A2A]">
+                          <span className="text-xs font-bold text-neutral-300 uppercase tracking-wide" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                            {currentGateways.fastspring?.enabled ? 'Gateway Active' : 'Gateway Inactive'}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => updateGatewayField('fastspring', 'enabled', !currentGateways.fastspring?.enabled)}
+                            className={`w-12 h-6 rounded-full transition-colors relative p-0.5 ${
+                              currentGateways.fastspring?.enabled ? 'bg-emerald-500' : 'bg-neutral-700'
+                            }`}
+                          >
+                            <div
+                              className={`w-5 h-5 rounded-full bg-white transition-transform ${
+                                currentGateways.fastspring?.enabled ? 'translate-x-6' : 'translate-x-0'
+                              }`}
+                            />
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        {/* Storefront Path */}
+                        <div className="md:col-span-2">
+                          <label className="block text-xs uppercase font-semibold text-neutral-300 mb-1.5">
+                            Storefront Identifier / Path
+                          </label>
+                          <div className="relative">
+                            <Globe className="w-4 h-4 text-neutral-500 absolute left-3.5 top-3" />
+                            <input
+                              type="text"
+                              value={currentGateways.fastspring?.storefront || ''}
+                              onChange={(e) => updateGatewayField('fastspring', 'storefront', e.target.value)}
+                              placeholder="e.g. flipthelense.onfastspring.com/popup-flipthelense"
+                              className="w-full pl-10 pr-4 py-2.5 bg-[#181818] border border-[#2E2E2E] rounded-xl text-white font-mono text-xs focus:border-[#FFE379] focus:outline-none"
+                            />
+                          </div>
+                          <p className="text-[11px] text-neutral-500 mt-1">Found in your FastSpring Storefront settings.</p>
+                        </div>
+
+                        {/* Environment Mode */}
+                        <div>
+                          <label className="block text-xs uppercase font-semibold text-neutral-300 mb-1.5">
+                            Environment Mode
+                          </label>
+                          <select
+                            value={currentGateways.fastspring?.mode || 'test'}
+                            onChange={(e) => updateGatewayField('fastspring', 'mode', e.target.value)}
+                            className="w-full px-4 py-2.5 bg-[#181818] border border-[#2E2E2E] rounded-xl text-white text-xs focus:border-[#FFE379] focus:outline-none"
+                          >
+                            <option value="test">Test Mode (Sandbox / Whitelist Orders)</option>
+                            <option value="live">Live Mode (Production)</option>
+                          </select>
+                        </div>
+
+                        {/* API Username */}
+                        <div>
+                          <label className="block text-xs uppercase font-semibold text-neutral-300 mb-1.5">
+                            API Username
+                          </label>
+                          <input
+                            type="text"
+                            value={currentGateways.fastspring?.apiUsername || ''}
+                            onChange={(e) => updateGatewayField('fastspring', 'apiUsername', e.target.value)}
+                            placeholder="api_user_..."
+                            className="w-full px-4 py-2.5 bg-[#181818] border border-[#2E2E2E] rounded-xl text-white font-mono text-xs focus:border-[#FFE379] focus:outline-none"
+                          />
+                        </div>
+
+                        {/* API Password */}
+                        <div className="md:col-span-2">
+                          <div className="flex items-center justify-between mb-1.5">
+                            <label className="text-xs uppercase font-semibold text-neutral-300">
+                              API Password / Secret
+                            </label>
+                            <button
+                              type="button"
+                              onClick={() => toggleSecretVisibility('fs_password')}
+                              className="text-[11px] text-[#FFE379] hover:underline flex items-center gap-1"
+                            >
+                              {showGatewaySecrets['fs_password'] ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                              <span>{showGatewaySecrets['fs_password'] ? 'Hide' : 'Reveal'}</span>
+                            </button>
+                          </div>
+                          <input
+                            type={showGatewaySecrets['fs_password'] ? 'text' : 'password'}
+                            value={currentGateways.fastspring?.apiPassword || ''}
+                            onChange={(e) => updateGatewayField('fastspring', 'apiPassword', e.target.value)}
+                            placeholder="FastSpring API secret password..."
+                            className="w-full px-4 py-2.5 bg-[#181818] border border-[#2E2E2E] rounded-xl text-white font-mono text-xs focus:border-[#FFE379] focus:outline-none"
+                          />
+                        </div>
+
+                        {/* FastSpring Webhook HMAC Key */}
+                        <div className="md:col-span-2">
+                          <label className="block text-xs uppercase font-semibold text-neutral-300 mb-1.5">
+                            FastSpring Webhook HMAC Key / Secret
+                          </label>
+                          <input
+                            type="text"
+                            value={currentGateways.fastspring?.webhookKey || ''}
+                            onChange={(e) => updateGatewayField('fastspring', 'webhookKey', e.target.value)}
+                            placeholder="HMAC SHA-256 verification key..."
+                            className="w-full px-4 py-2.5 bg-[#181818] border border-[#2E2E2E] rounded-xl text-white font-mono text-xs focus:border-[#FFE379] focus:outline-none"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Webhook Endpoint Helper Box */}
+                      <div className="p-4 rounded-xl bg-[#181818] border border-[#282828] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div className="space-y-0.5">
+                          <span className="text-[10px] uppercase font-bold text-neutral-400 tracking-wider">FastSpring Webhook Event URL</span>
+                          <p className="text-xs font-mono text-[#FFE379] break-all">
+                            {window.location.origin}/api/payments/fastspring/webhook
+                          </p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            navigator.clipboard.writeText(`${window.location.origin}/api/payments/fastspring/webhook`);
+                            alert('Copied FastSpring Webhook URL to clipboard!');
+                          }}
+                          className="px-3 py-1.5 rounded-lg bg-[#222] hover:bg-[#2A2A2A] text-neutral-300 hover:text-white text-xs border border-[#333] transition flex items-center gap-1.5 shrink-0 self-start sm:self-center"
+                        >
+                          <Copy className="w-3.5 h-3.5" />
+                          <span>Copy Webhook</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* 3. BKASH GATEWAY CONFIGURATION */}
+                  {activeGatewayTab === 'bkash' && (
+                    <div className="rounded-2xl bg-[#141414]/90 backdrop-blur-xl border border-[#232323] p-6 sm:p-8 shadow-xl space-y-6">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-5 border-b border-[#232323]">
+                        <div className="flex items-center gap-3">
+                          <div className="w-12 h-12 rounded-xl bg-[#E2136E]/10 border border-[#E2136E]/30 flex items-center justify-center text-xl text-[#E2136E] font-black">
+                            bK
+                          </div>
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <h3 className="text-lg font-black text-white uppercase tracking-tight" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                                bKash Direct Checkout (Tokenized API)
+                              </h3>
+                              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#E2136E]/20 text-[#FF63A6] border border-[#E2136E]/30">
+                                Mobile Financial Service (MFS)
+                              </span>
+                            </div>
+                            <p className="text-xs text-neutral-400 mt-0.5">
+                              Seamless instant payments for Bangladesh clients via bKash Checkout API v1.2.0.
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Enable Toggle Switch */}
+                        <div className="flex items-center gap-3 bg-[#181818] px-4 py-2 rounded-xl border border-[#2A2A2A]">
+                          <span className="text-xs font-bold text-neutral-300 uppercase tracking-wide" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                            {currentGateways.bkash?.enabled ? 'Gateway Active' : 'Gateway Inactive'}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => updateGatewayField('bkash', 'enabled', !currentGateways.bkash?.enabled)}
+                            className={`w-12 h-6 rounded-full transition-colors relative p-0.5 ${
+                              currentGateways.bkash?.enabled ? 'bg-emerald-500' : 'bg-neutral-700'
+                            }`}
+                          >
+                            <div
+                              className={`w-5 h-5 rounded-full bg-white transition-transform ${
+                                currentGateways.bkash?.enabled ? 'translate-x-6' : 'translate-x-0'
+                              }`}
+                            />
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        {/* Environment Mode */}
+                        <div>
+                          <label className="block text-xs uppercase font-semibold text-neutral-300 mb-1.5">
+                            Environment Mode
+                          </label>
+                          <select
+                            value={currentGateways.bkash?.mode || 'sandbox'}
+                            onChange={(e) => updateGatewayField('bkash', 'mode', e.target.value)}
+                            className="w-full px-4 py-2.5 bg-[#181818] border border-[#2E2E2E] rounded-xl text-white text-xs focus:border-[#FFE379] focus:outline-none"
+                          >
+                            <option value="sandbox">Sandbox (PGW Test Simulator)</option>
+                            <option value="production">Production (Live Merchant)</option>
+                          </select>
+                        </div>
+
+                        {/* Merchant Number */}
+                        <div>
+                          <label className="block text-xs uppercase font-semibold text-neutral-300 mb-1.5">
+                            Merchant Wallet Number
+                          </label>
+                          <input
+                            type="text"
+                            value={currentGateways.bkash?.merchantNumber || ''}
+                            onChange={(e) => updateGatewayField('bkash', 'merchantNumber', e.target.value)}
+                            placeholder="01XXXXXXXXX"
+                            className="w-full px-4 py-2.5 bg-[#181818] border border-[#2E2E2E] rounded-xl text-white font-mono text-xs focus:border-[#FFE379] focus:outline-none"
+                          />
+                        </div>
+
+                        {/* App Key */}
+                        <div>
+                          <label className="block text-xs uppercase font-semibold text-neutral-300 mb-1.5">
+                            bKash App Key
+                          </label>
+                          <div className="relative">
+                            <Key className="w-4 h-4 text-neutral-500 absolute left-3.5 top-3" />
+                            <input
+                              type="text"
+                              value={currentGateways.bkash?.appKey || ''}
+                              onChange={(e) => updateGatewayField('bkash', 'appKey', e.target.value)}
+                              placeholder="App Key provided by bKash..."
+                              className="w-full pl-10 pr-4 py-2.5 bg-[#181818] border border-[#2E2E2E] rounded-xl text-white font-mono text-xs focus:border-[#FFE379] focus:outline-none"
+                            />
+                          </div>
+                        </div>
+
+                        {/* App Secret */}
+                        <div>
+                          <div className="flex items-center justify-between mb-1.5">
+                            <label className="text-xs uppercase font-semibold text-neutral-300">
+                              bKash App Secret
+                            </label>
+                            <button
+                              type="button"
+                              onClick={() => toggleSecretVisibility('bkash_secret')}
+                              className="text-[11px] text-[#FFE379] hover:underline flex items-center gap-1"
+                            >
+                              {showGatewaySecrets['bkash_secret'] ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                              <span>{showGatewaySecrets['bkash_secret'] ? 'Hide' : 'Reveal'}</span>
+                            </button>
+                          </div>
+                          <div className="relative">
+                            <Key className="w-4 h-4 text-neutral-500 absolute left-3.5 top-3" />
+                            <input
+                              type={showGatewaySecrets['bkash_secret'] ? 'text' : 'password'}
+                              value={currentGateways.bkash?.appSecret || ''}
+                              onChange={(e) => updateGatewayField('bkash', 'appSecret', e.target.value)}
+                              placeholder="App Secret provided by bKash..."
+                              className="w-full pl-10 pr-4 py-2.5 bg-[#181818] border border-[#2E2E2E] rounded-xl text-white font-mono text-xs focus:border-[#FFE379] focus:outline-none"
+                            />
+                          </div>
+                        </div>
+
+                        {/* Merchant Username */}
+                        <div>
+                          <label className="block text-xs uppercase font-semibold text-neutral-300 mb-1.5">
+                            API Username
+                          </label>
+                          <input
+                            type="text"
+                            value={currentGateways.bkash?.username || ''}
+                            onChange={(e) => updateGatewayField('bkash', 'username', e.target.value)}
+                            placeholder="sandboxTestUser or merchant user"
+                            className="w-full px-4 py-2.5 bg-[#181818] border border-[#2E2E2E] rounded-xl text-white font-mono text-xs focus:border-[#FFE379] focus:outline-none"
+                          />
+                        </div>
+
+                        {/* Merchant Password */}
+                        <div>
+                          <div className="flex items-center justify-between mb-1.5">
+                            <label className="text-xs uppercase font-semibold text-neutral-300">
+                              API Password
+                            </label>
+                            <button
+                              type="button"
+                              onClick={() => toggleSecretVisibility('bkash_password')}
+                              className="text-[11px] text-[#FFE379] hover:underline flex items-center gap-1"
+                            >
+                              {showGatewaySecrets['bkash_password'] ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                              <span>{showGatewaySecrets['bkash_password'] ? 'Hide' : 'Reveal'}</span>
+                            </button>
+                          </div>
+                          <input
+                            type={showGatewaySecrets['bkash_password'] ? 'text' : 'password'}
+                            value={currentGateways.bkash?.password || ''}
+                            onChange={(e) => updateGatewayField('bkash', 'password', e.target.value)}
+                            placeholder="Merchant API password..."
+                            className="w-full px-4 py-2.5 bg-[#181818] border border-[#2E2E2E] rounded-xl text-white font-mono text-xs focus:border-[#FFE379] focus:outline-none"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Callback URL Notice */}
+                      <div className="p-4 rounded-xl bg-[#181818] border border-[#282828] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div className="space-y-0.5">
+                          <span className="text-[10px] uppercase font-bold text-neutral-400 tracking-wider">bKash Execute Callback URL</span>
+                          <p className="text-xs font-mono text-[#FFE379] break-all">
+                            {window.location.origin}/api/payments/bkash/callback
+                          </p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            navigator.clipboard.writeText(`${window.location.origin}/api/payments/bkash/callback`);
+                            alert('Copied bKash Callback URL to clipboard!');
+                          }}
+                          className="px-3 py-1.5 rounded-lg bg-[#222] hover:bg-[#2A2A2A] text-neutral-300 hover:text-white text-xs border border-[#333] transition flex items-center gap-1.5 shrink-0 self-start sm:self-center"
+                        >
+                          <Copy className="w-3.5 h-3.5" />
+                          <span>Copy Callback</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* 4. NAGAD GATEWAY CONFIGURATION */}
+                  {activeGatewayTab === 'nagad' && (
+                    <div className="rounded-2xl bg-[#141414]/90 backdrop-blur-xl border border-[#232323] p-6 sm:p-8 shadow-xl space-y-6">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-5 border-b border-[#232323]">
+                        <div className="flex items-center gap-3">
+                          <div className="w-12 h-12 rounded-xl bg-[#F7941D]/10 border border-[#F7941D]/30 flex items-center justify-center text-xl text-[#F7941D] font-black">
+                            না
+                          </div>
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <h3 className="text-lg font-black text-white uppercase tracking-tight" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                                Nagad Online Payment Gateway
+                              </h3>
+                              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#F7941D]/20 text-[#FFAE4B] border border-[#F7941D]/30">
+                                Bangladesh Post Office Digital MFS
+                              </span>
+                            </div>
+                            <p className="text-xs text-neutral-400 mt-0.5">
+                              RSA-encrypted secure checkout for instant Nagad wallet payments.
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Enable Toggle Switch */}
+                        <div className="flex items-center gap-3 bg-[#181818] px-4 py-2 rounded-xl border border-[#2A2A2A]">
+                          <span className="text-xs font-bold text-neutral-300 uppercase tracking-wide" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                            {currentGateways.nagad?.enabled ? 'Gateway Active' : 'Gateway Inactive'}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => updateGatewayField('nagad', 'enabled', !currentGateways.nagad?.enabled)}
+                            className={`w-12 h-6 rounded-full transition-colors relative p-0.5 ${
+                              currentGateways.nagad?.enabled ? 'bg-emerald-500' : 'bg-neutral-700'
+                            }`}
+                          >
+                            <div
+                              className={`w-5 h-5 rounded-full bg-white transition-transform ${
+                                currentGateways.nagad?.enabled ? 'translate-x-6' : 'translate-x-0'
+                              }`}
+                            />
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        {/* Environment Mode */}
+                        <div>
+                          <label className="block text-xs uppercase font-semibold text-neutral-300 mb-1.5">
+                            Environment Mode
+                          </label>
+                          <select
+                            value={currentGateways.nagad?.mode || 'sandbox'}
+                            onChange={(e) => updateGatewayField('nagad', 'mode', e.target.value)}
+                            className="w-full px-4 py-2.5 bg-[#181818] border border-[#2E2E2E] rounded-xl text-white text-xs focus:border-[#FFE379] focus:outline-none"
+                          >
+                            <option value="sandbox">Sandbox (Testing Gateway)</option>
+                            <option value="production">Production (Live Merchant)</option>
+                          </select>
+                        </div>
+
+                        {/* Merchant ID */}
+                        <div>
+                          <label className="block text-xs uppercase font-semibold text-neutral-300 mb-1.5">
+                            Nagad Merchant ID
+                          </label>
+                          <input
+                            type="text"
+                            value={currentGateways.nagad?.merchantId || ''}
+                            onChange={(e) => updateGatewayField('nagad', 'merchantId', e.target.value)}
+                            placeholder="e.g. 68XXXXXXXXX"
+                            className="w-full px-4 py-2.5 bg-[#181818] border border-[#2E2E2E] rounded-xl text-white font-mono text-xs focus:border-[#FFE379] focus:outline-none"
+                          />
+                        </div>
+
+                        {/* Merchant Private Key */}
+                        <div className="md:col-span-2">
+                          <div className="flex items-center justify-between mb-1.5">
+                            <label className="text-xs uppercase font-semibold text-neutral-300">
+                              Merchant RSA Private Key
+                            </label>
+                            <span className="text-[10px] text-neutral-500 font-mono">PEM / RSA format</span>
+                          </div>
+                          <textarea
+                            rows={3}
+                            value={currentGateways.nagad?.merchantPrivateKey || ''}
+                            onChange={(e) => updateGatewayField('nagad', 'merchantPrivateKey', e.target.value)}
+                            placeholder="-----BEGIN RSA PRIVATE KEY-----&#10;...&#10;-----END RSA PRIVATE KEY-----"
+                            className="w-full px-4 py-2.5 bg-[#181818] border border-[#2E2E2E] rounded-xl text-white font-mono text-xs focus:border-[#FFE379] focus:outline-none"
+                          />
+                        </div>
+
+                        {/* Nagad PGW Public Key */}
+                        <div className="md:col-span-2">
+                          <div className="flex items-center justify-between mb-1.5">
+                            <label className="text-xs uppercase font-semibold text-neutral-300">
+                              Nagad PGW Public Key
+                            </label>
+                            <span className="text-[10px] text-neutral-500 font-mono">Provided by Nagad</span>
+                          </div>
+                          <textarea
+                            rows={3}
+                            value={currentGateways.nagad?.pgwPublicKey || ''}
+                            onChange={(e) => updateGatewayField('nagad', 'pgwPublicKey', e.target.value)}
+                            placeholder="-----BEGIN PUBLIC KEY-----&#10;...&#10;-----END PUBLIC KEY-----"
+                            className="w-full px-4 py-2.5 bg-[#181818] border border-[#2E2E2E] rounded-xl text-white font-mono text-xs focus:border-[#FFE379] focus:outline-none"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Callback URL Box */}
+                      <div className="p-4 rounded-xl bg-[#181818] border border-[#282828] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div className="space-y-0.5">
+                          <span className="text-[10px] uppercase font-bold text-neutral-400 tracking-wider">Nagad Verify Callback URL</span>
+                          <p className="text-xs font-mono text-[#FFE379] break-all">
+                            {window.location.origin}/api/payments/nagad/callback
+                          </p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            navigator.clipboard.writeText(`${window.location.origin}/api/payments/nagad/callback`);
+                            alert('Copied Nagad Callback URL to clipboard!');
+                          }}
+                          className="px-3 py-1.5 rounded-lg bg-[#222] hover:bg-[#2A2A2A] text-neutral-300 hover:text-white text-xs border border-[#333] transition flex items-center gap-1.5 shrink-0 self-start sm:self-center"
+                        >
+                          <Copy className="w-3.5 h-3.5" />
+                          <span>Copy Callback</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* 5. ROCKET GATEWAY CONFIGURATION */}
+                  {activeGatewayTab === 'rocket' && (
+                    <div className="rounded-2xl bg-[#141414]/90 backdrop-blur-xl border border-[#232323] p-6 sm:p-8 shadow-xl space-y-6">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-5 border-b border-[#232323]">
+                        <div className="flex items-center gap-3">
+                          <div className="w-12 h-12 rounded-xl bg-[#8B2384]/10 border border-[#8B2384]/30 flex items-center justify-center text-xl text-[#BA36B1] font-black">
+                            🚀
+                          </div>
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <h3 className="text-lg font-black text-white uppercase tracking-tight" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                                Dutch-Bangla Bank Rocket Payment
+                              </h3>
+                              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#8B2384]/20 text-[#D868D0] border border-[#8B2384]/30">
+                                DBBL Mobile Banking
+                              </span>
+                            </div>
+                            <p className="text-xs text-neutral-400 mt-0.5">
+                              Accept payments directly via DBBL Rocket biller ID and merchant checkout.
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Enable Toggle Switch */}
+                        <div className="flex items-center gap-3 bg-[#181818] px-4 py-2 rounded-xl border border-[#2A2A2A]">
+                          <span className="text-xs font-bold text-neutral-300 uppercase tracking-wide" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                            {currentGateways.rocket?.enabled ? 'Gateway Active' : 'Gateway Inactive'}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => updateGatewayField('rocket', 'enabled', !currentGateways.rocket?.enabled)}
+                            className={`w-12 h-6 rounded-full transition-colors relative p-0.5 ${
+                              currentGateways.rocket?.enabled ? 'bg-emerald-500' : 'bg-neutral-700'
+                            }`}
+                          >
+                            <div
+                              className={`w-5 h-5 rounded-full bg-white transition-transform ${
+                                currentGateways.rocket?.enabled ? 'translate-x-6' : 'translate-x-0'
+                              }`}
+                            />
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        {/* Environment Mode */}
+                        <div>
+                          <label className="block text-xs uppercase font-semibold text-neutral-300 mb-1.5">
+                            Environment Mode
+                          </label>
+                          <select
+                            value={currentGateways.rocket?.mode || 'sandbox'}
+                            onChange={(e) => updateGatewayField('rocket', 'mode', e.target.value)}
+                            className="w-full px-4 py-2.5 bg-[#181818] border border-[#2E2E2E] rounded-xl text-white text-xs focus:border-[#FFE379] focus:outline-none"
+                          >
+                            <option value="sandbox">Sandbox (Testing / UAT)</option>
+                            <option value="production">Production (DBBL Live)</option>
+                          </select>
+                        </div>
+
+                        {/* Rocket Biller ID */}
+                        <div>
+                          <label className="block text-xs uppercase font-semibold text-neutral-300 mb-1.5">
+                            DBBL Biller ID
+                          </label>
+                          <input
+                            type="text"
+                            value={currentGateways.rocket?.billerId || ''}
+                            onChange={(e) => updateGatewayField('rocket', 'billerId', e.target.value)}
+                            placeholder="e.g. 2910"
+                            className="w-full px-4 py-2.5 bg-[#181818] border border-[#2E2E2E] rounded-xl text-white font-mono text-xs focus:border-[#FFE379] focus:outline-none"
+                          />
+                        </div>
+
+                        {/* Merchant ID */}
+                        <div>
+                          <label className="block text-xs uppercase font-semibold text-neutral-300 mb-1.5">
+                            Merchant ID / Terminal ID
+                          </label>
+                          <input
+                            type="text"
+                            value={currentGateways.rocket?.merchantId || ''}
+                            onChange={(e) => updateGatewayField('rocket', 'merchantId', e.target.value)}
+                            placeholder="DBBL assigned terminal ID..."
+                            className="w-full px-4 py-2.5 bg-[#181818] border border-[#2E2E2E] rounded-xl text-white font-mono text-xs focus:border-[#FFE379] focus:outline-none"
+                          />
+                        </div>
+
+                        {/* Sub Account ID */}
+                        <div>
+                          <label className="block text-xs uppercase font-semibold text-neutral-300 mb-1.5">
+                            Sub Account ID (Optional)
+                          </label>
+                          <input
+                            type="text"
+                            value={currentGateways.rocket?.subAccountId || ''}
+                            onChange={(e) => updateGatewayField('rocket', 'subAccountId', e.target.value)}
+                            placeholder="Default 0 or sub-merchant ID"
+                            className="w-full px-4 py-2.5 bg-[#181818] border border-[#2E2E2E] rounded-xl text-white font-mono text-xs focus:border-[#FFE379] focus:outline-none"
+                          />
+                        </div>
+
+                        {/* Secret Key */}
+                        <div className="md:col-span-2">
+                          <div className="flex items-center justify-between mb-1.5">
+                            <label className="text-xs uppercase font-semibold text-neutral-300">
+                              Secret API / Hash Key
+                            </label>
+                            <button
+                              type="button"
+                              onClick={() => toggleSecretVisibility('rocket_secret')}
+                              className="text-[11px] text-[#FFE379] hover:underline flex items-center gap-1"
+                            >
+                              {showGatewaySecrets['rocket_secret'] ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                              <span>{showGatewaySecrets['rocket_secret'] ? 'Hide' : 'Reveal'}</span>
+                            </button>
+                          </div>
+                          <input
+                            type={showGatewaySecrets['rocket_secret'] ? 'text' : 'password'}
+                            value={currentGateways.rocket?.secretKey || ''}
+                            onChange={(e) => updateGatewayField('rocket', 'secretKey', e.target.value)}
+                            placeholder="Rocket merchant secret key..."
+                            className="w-full px-4 py-2.5 bg-[#181818] border border-[#2E2E2E] rounded-xl text-white font-mono text-xs focus:border-[#FFE379] focus:outline-none"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Callback URL Box */}
+                      <div className="p-4 rounded-xl bg-[#181818] border border-[#282828] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div className="space-y-0.5">
+                          <span className="text-[10px] uppercase font-bold text-neutral-400 tracking-wider">Rocket IPN Callback URL</span>
+                          <p className="text-xs font-mono text-[#FFE379] break-all">
+                            {window.location.origin}/api/payments/rocket/callback
+                          </p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            navigator.clipboard.writeText(`${window.location.origin}/api/payments/rocket/callback`);
+                            alert('Copied Rocket Callback URL to clipboard!');
+                          }}
+                          className="px-3 py-1.5 rounded-lg bg-[#222] hover:bg-[#2A2A2A] text-neutral-300 hover:text-white text-xs border border-[#333] transition flex items-center gap-1.5 shrink-0 self-start sm:self-center"
+                        >
+                          <Copy className="w-3.5 h-3.5" />
+                          <span>Copy Callback</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
 
               {/* Compact Floating Save Button (Pinned to Bottom-Right) */}
               <div className="sticky bottom-6 z-30 flex justify-end pointer-events-none pb-2">

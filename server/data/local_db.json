@@ -674,9 +674,109 @@
       "device": "Tablet",
       "timestamp": "2026-11-17T11:08:41.376Z",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.7977.167 Safari/537.36 Antigravity/2.32.1"
+    },
+    {
+      "id": "hit_1794914139964_hki9w",
+      "visitorId": "vid_1794834903395_ubmy3zo",
+      "path": "/about",
+      "referrer": "Direct",
+      "device": "Tablet",
+      "timestamp": "2026-11-17T11:15:39.964Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.7977.167 Safari/537.36 Antigravity/2.32.1"
+    },
+    {
+      "id": "hit_1794916446125_u0nh4",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/portfolio",
+      "referrer": "http://localhost:5173/portfolio",
+      "device": "Desktop",
+      "timestamp": "2026-11-17T11:54:06.126Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794916460837_6e7kz",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/portfolio",
+      "referrer": "http://localhost:5173/admin/pages/portfolio-builder",
+      "device": "Desktop",
+      "timestamp": "2026-11-17T11:54:20.837Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794916604931_pmr1o",
+      "visitorId": "vid_1794834903395_ubmy3zo",
+      "path": "/portfolio",
+      "referrer": "Direct",
+      "device": "Tablet",
+      "timestamp": "2026-11-17T11:56:44.931Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.7977.167 Safari/537.36 Antigravity/2.32.1"
+    },
+    {
+      "id": "hit_1794917185559_1jonw",
+      "visitorId": "vid_1794834903395_ubmy3zo",
+      "path": "/portfolio",
+      "referrer": "Direct",
+      "device": "Tablet",
+      "timestamp": "2026-11-17T12:06:25.559Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.7977.167 Safari/537.36 Antigravity/2.32.1"
+    },
+    {
+      "id": "hit_1794920709922_jbw8u",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/contact",
+      "referrer": "http://localhost:5173/portfolio",
+      "device": "Desktop",
+      "timestamp": "2026-11-17T13:05:09.922Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794921428074_cii7o",
+      "visitorId": "vid_1794834903395_ubmy3zo",
+      "path": "/contact",
+      "referrer": "Direct",
+      "device": "Tablet",
+      "timestamp": "2026-11-17T13:17:08.074Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.7977.167 Safari/537.36 Antigravity/2.32.1"
+    },
+    {
+      "id": "hit_1794921995948_rx6wx",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/",
+      "referrer": "http://localhost:5173/portfolio",
+      "device": "Desktop",
+      "timestamp": "2026-11-17T13:26:35.948Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794922576851_5fft8",
+      "visitorId": "vid_1794834903395_ubmy3zo",
+      "path": "/",
+      "referrer": "Direct",
+      "device": "Tablet",
+      "timestamp": "2026-11-17T13:36:16.851Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.7977.167 Safari/537.36 Antigravity/2.32.1"
+    },
+    {
+      "id": "hit_1794922881146_33og6",
+      "visitorId": "vid_1794834903395_ubmy3zo",
+      "path": "/",
+      "referrer": "Direct",
+      "device": "Tablet",
+      "timestamp": "2026-11-17T13:41:21.146Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.7977.167 Safari/537.36 Antigravity/2.32.1"
     }
   ],
   "inquiries": [
+    {
+      "_id": "inq_1794924823378",
+      "name": "Valid Client",
+      "email": "client@studio.com",
+      "serviceType": "General Inquiry",
+      "packageChosen": "Standard",
+      "notes": "Real project",
+      "status": "New Inquiry",
+      "createdAt": "Nov 17, 08:13 PM"
+    },
     {
       "_id": "inq_1794838438128",
       "name": "Zubair Rahman",
@@ -1820,26 +1920,26 @@
     "aboutContent": {
       "hero": {
         "titleLine1": "MY",
-        "titleLine2": "PORTFOLIO & RESUME",
+        "titleLine2": "RESUME",
         "breadcrumb": "Home / Resume",
-        "bgImage": "https://images.unsplash.com/photo-1518133910546-b6c2fb7d79e3?auto=format&fit=crop&w=1600&q=80"
+        "bgImage": "/uploads/Gemini_Generated_Image_9jnxeq9jnxeq9jnx_1794916318502.jpg"
       },
       "quote": {
         "text": "\"Every frame is a chance to move an audience. Filmmaking isn't just about putting clips together—it is about rhythm, emotional timing, and sculpting light so memories can live forever.\"",
         "authorName": "PARVEJ MOSHARROF POLLOB",
         "authorTitle": "Videography / Editor",
         "signature": "Parvej Mosharrof",
-        "statement": "Framing emotions, sculpting light, and crafting stories that resonate forever."
+        "authorScript": "Parvej Mosharrof"
       },
       "profile": {
         "badge": "SINCE 2022",
-        "heading": "HELLO, I AM POLLOB (TEST EDIT)",
+        "heading": "HELLO, I'M PARVEJ MOSHARROF POLLOB",
         "bio": "For the past 4.5+ years, I have worked across full production pipelines—from shooting on set with cinema gear to final master delivery. My goal is to deliver clean visual clarity, immersive color profiles, and punchy edits that stand out in any feed or theatre screen.",
         "image": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80",
         "skills": [
           {
             "name": "ADOBE PREMIERE PRO",
-            "percent": 99
+            "percent": 95
           },
           {
             "name": "ADOBE AFTER EFFECT",
@@ -1853,7 +1953,8 @@
             "name": "POST-PRODUCTION TECHNIQUES",
             "percent": 100
           }
-        ]
+        ],
+        "img": "/uploads/Hala_Madrid__Sakib_Islam_1794916392589.png"
       },
       "specialties": {
         "badge": "FLIPTHELENSE STUDIO",
@@ -1975,10 +2076,10 @@
         "subtitle": "Ready to collaborate on weddings, high-converting commercials, or creative short-form videos? Let's turn your concept into reality.",
         "primaryBtnText": "Contact Me Now",
         "primaryBtnLink": "/contact",
-        "primaryBtnStyle": "solid-gold",
+        "primaryBtnStyle": "rounded-smooth",
         "secondaryBtnText": "Explore Portfolio",
         "secondaryBtnLink": "/portfolio",
-        "secondaryBtnStyle": "outline-white"
+        "secondaryBtnStyle": "rounded-smooth"
       },
       "tools": {
         "badge": "PRODUCTION ARSENAL",
@@ -2033,7 +2134,7 @@
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.",
         "buttonText": "GET STARTED",
         "buttonLink": "#my-work-section",
-        "buttonStyle": "sharp-gold",
+        "buttonStyle": "rounded-gold",
         "showArrow": true,
         "filmmakerImage": "/F1-1.png",
         "statYears": "18",
@@ -2047,6 +2148,92 @@
         "tagline": "MY WORK",
         "title": "EXPLORE OUR RECENT PROJECTS",
         "description": "Bespoke video editing, high-end commercial grading, and story-driven post production across global client productions."
+      },
+      "bottomCta": {
+        "bgImage": "/videen_cta_bg.jpg",
+        "badge": "WORK WITH US",
+        "title": "HAVE A PROJECT IN MIND?",
+        "description": "Ready to produce high-end wedding films, viral reels, or cinematic TV commercials? Let's discuss your timeline and vision.",
+        "buttonText": "BOOK A CONSULTATION",
+        "buttonLink": "/contact",
+        "buttonStyle": "sharp-gold"
+      }
+    },
+    "contactContent": {
+      "hero": {
+        "badge": "GET IN TOUCH",
+        "titleLine1": "Contact",
+        "titleLine2": "Us",
+        "subtitle": "Let's discuss your next cinematic video project or commercial campaign."
+      },
+      "info": {
+        "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14606.07007788484!2d90.3541893!3d23.7645164!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c0a373307659%3A0x6e26217436f56193!2sShyamoli%2C%20Dhaka!5e0!3m2!1sen!2sbd!4v1700000000000!5m2!1sen!2sbd",
+        "phone": "+880 1885 000118",
+        "phoneSub": "Sunday - Thursday: 10AM - 8PM",
+        "email": "flipthelense@gmail.com",
+        "emailSub": "Online support 24/7",
+        "address": "Shyamoli, Mohammadpur",
+        "addressSub": "Dhaka 1207, Bangladesh",
+        "studio": "FlipTheLense Creative Hub",
+        "studioSub": "Production & Post-Production Suite"
+      },
+      "form": {
+        "badge": "QUICK INQUIRY",
+        "title": "SEND US A MESSAGE",
+        "desc": "Fill out the form below and we will get back to you within 24 hours with package details and availability.",
+        "submitBtnText": "Send Message"
+      },
+      "bottomCta": {
+        "badge": "COLLABORATE",
+        "title": "READY TO START YOUR NEXT CINEMATIC PROJECT?",
+        "desc": "Whether it is a luxury wedding film, TVC commercial, or viral short series, we bring cinematic polish to your raw vision.",
+        "btnText": "View Portfolio",
+        "btnLink": "/portfolio"
+      }
+    },
+    "paymentGateways": {
+      "activeGatewayTab": "stripe",
+      "stripe": {
+        "enabled": false,
+        "mode": "test",
+        "publishableKey": "",
+        "secretKey": "",
+        "webhookSecret": "",
+        "currency": "USD"
+      },
+      "fastspring": {
+        "enabled": false,
+        "mode": "test",
+        "storefront": "",
+        "apiUsername": "",
+        "apiPassword": "",
+        "privateKey": "",
+        "webhookKey": ""
+      },
+      "bkash": {
+        "enabled": false,
+        "mode": "sandbox",
+        "appKey": "",
+        "appSecret": "",
+        "username": "",
+        "password": "",
+        "merchantNumber": ""
+      },
+      "nagad": {
+        "enabled": false,
+        "mode": "sandbox",
+        "merchantId": "",
+        "merchantPrivateKey": "",
+        "pgwPublicKey": "",
+        "callbackUrl": ""
+      },
+      "rocket": {
+        "enabled": false,
+        "mode": "sandbox",
+        "merchantId": "",
+        "secretKey": "",
+        "billerId": "",
+        "subAccountId": ""
       }
     }
   },

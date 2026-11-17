@@ -511,6 +511,53 @@ const defaultSettings = {
       buttonLink: '/contact',
       buttonStyle: 'sharp-gold' // 'sharp-gold' | 'rounded-gold' | 'pill-gold' | 'outline-gold' | 'glass-gold' | 'cyber-cut'
     }
+  },
+
+  // Payment Gateways Settings Model
+  paymentGateways: {
+    activeGatewayTab: 'stripe',
+    stripe: {
+      enabled: false,
+      mode: 'test', // 'test' | 'live'
+      publishableKey: '',
+      secretKey: '',
+      webhookSecret: '',
+      currency: 'USD'
+    },
+    fastspring: {
+      enabled: false,
+      mode: 'test', // 'test' | 'live'
+      storefront: '',
+      apiUsername: '',
+      apiPassword: '',
+      privateKey: '',
+      webhookKey: ''
+    },
+    bkash: {
+      enabled: false,
+      mode: 'sandbox', // 'sandbox' | 'production'
+      appKey: '',
+      appSecret: '',
+      username: '',
+      password: '',
+      merchantNumber: ''
+    },
+    nagad: {
+      enabled: false,
+      mode: 'sandbox', // 'sandbox' | 'production'
+      merchantId: '',
+      merchantPrivateKey: '',
+      pgwPublicKey: '',
+      callbackUrl: ''
+    },
+    rocket: {
+      enabled: false,
+      mode: 'sandbox', // 'sandbox' | 'production'
+      merchantId: '',
+      secretKey: '',
+      billerId: '',
+      subAccountId: ''
+    }
   }
 };
 
@@ -629,6 +676,15 @@ export function SettingsProvider({ children }) {
             hero: { ...defaultSettings.portfolioContent.hero, ...(res.data.portfolioContent?.hero || {}) },
             filterSection: { ...defaultSettings.portfolioContent.filterSection, ...(res.data.portfolioContent?.filterSection || {}) },
             bottomCta: { ...defaultSettings.portfolioContent.bottomCta, ...(res.data.portfolioContent?.bottomCta || {}) }
+          },
+          paymentGateways: {
+            ...defaultSettings.paymentGateways,
+            ...(res.data.paymentGateways || {}),
+            stripe: { ...defaultSettings.paymentGateways.stripe, ...(res.data.paymentGateways?.stripe || {}) },
+            fastspring: { ...defaultSettings.paymentGateways.fastspring, ...(res.data.paymentGateways?.fastspring || {}) },
+            bkash: { ...defaultSettings.paymentGateways.bkash, ...(res.data.paymentGateways?.bkash || {}) },
+            nagad: { ...defaultSettings.paymentGateways.nagad, ...(res.data.paymentGateways?.nagad || {}) },
+            rocket: { ...defaultSettings.paymentGateways.rocket, ...(res.data.paymentGateways?.rocket || {}) }
           },
           menus: res.data.menus && res.data.menus.length > 0 ? res.data.menus : defaultSettings.menus
         });
