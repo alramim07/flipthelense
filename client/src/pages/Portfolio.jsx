@@ -226,7 +226,7 @@ export default function Portfolio() {
               <div className="pt-4">
                 <a 
                   href={hero.buttonLink || '#my-work-section'} 
-                  className={`inline-flex items-center space-x-2 text-sm sm:text-base px-7 py-3.5 uppercase tracking-wider transition-all duration-300 shadow-xl ${
+                  className={`inline-flex items-center justify-center text-sm sm:text-base px-7 py-3.5 uppercase tracking-wider transition-all duration-300 shadow-xl ${
                     hero.buttonStyle === 'rounded-gold'
                       ? 'bg-[#FFE379] hover:bg-[#F5D766] text-[#101010] font-black rounded-xl'
                       : hero.buttonStyle === 'pill-gold'
@@ -239,7 +239,6 @@ export default function Portfolio() {
                   }`}
                   style={{ fontFamily: "'Oswald', sans-serif" }}
                 >
-                  {hero.showArrow !== false && <span className="text-base font-bold">→</span>}
                   <span>{hero.buttonText || 'GET STARTED'}</span>
                 </a>
               </div>
