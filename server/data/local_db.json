@@ -350,6 +350,213 @@
       "device": "Mobile",
       "timestamp": "2026-11-16T15:34:40.888Z",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.7977.167 Safari/537.36 Antigravity/2.32.1"
+    },
+    {
+      "id": "hit_1794843794627_q6034",
+      "visitorId": "vid_1794834903395_ubmy3zo",
+      "path": "/",
+      "referrer": "Direct",
+      "device": "Tablet",
+      "timestamp": "2026-11-16T15:43:14.628Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.7977.167 Safari/537.36 Antigravity/2.32.1"
+    },
+    {
+      "id": "hit_1794888115211_gwv1r",
+      "visitorId": "vid_1794834903395_ubmy3zo",
+      "path": "/",
+      "referrer": "Direct",
+      "device": "Tablet",
+      "timestamp": "2026-11-17T04:01:55.211Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.7977.167 Safari/537.36 Antigravity/2.32.1"
+    },
+    {
+      "id": "hit_1794889743580_prmru",
+      "visitorId": "vid_1794834903395_ubmy3zo",
+      "path": "/",
+      "referrer": "Direct",
+      "device": "Tablet",
+      "timestamp": "2026-11-17T04:29:03.580Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.7977.167 Safari/537.36 Antigravity/2.32.1"
+    },
+    {
+      "id": "hit_1794890313116_z4wss",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/portfolio",
+      "referrer": "http://localhost:5173/",
+      "device": "Desktop",
+      "timestamp": "2026-11-17T04:38:33.116Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794890319197_14sdo",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/about",
+      "referrer": "http://localhost:5173/",
+      "device": "Desktop",
+      "timestamp": "2026-11-17T04:38:39.198Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794890327045_hcacu",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/contact",
+      "referrer": "http://localhost:5173/",
+      "device": "Desktop",
+      "timestamp": "2026-11-17T04:38:47.045Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794890328854_v8yoq",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/portfolio",
+      "referrer": "http://localhost:5173/",
+      "device": "Desktop",
+      "timestamp": "2026-11-17T04:38:48.855Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794890330347_7a06p",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/about",
+      "referrer": "http://localhost:5173/",
+      "device": "Desktop",
+      "timestamp": "2026-11-17T04:38:50.347Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794890332258_8x2gv",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/",
+      "referrer": "http://localhost:5173/",
+      "device": "Desktop",
+      "timestamp": "2026-11-17T04:38:52.258Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794890585662_ej8k4",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/",
+      "referrer": "Direct",
+      "device": "Desktop",
+      "timestamp": "2026-11-17T04:43:05.662Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794898481011_kq3dy",
+      "visitorId": "vid_1794834903395_ubmy3zo",
+      "path": "/",
+      "referrer": "Direct",
+      "device": "Tablet",
+      "timestamp": "2026-11-17T06:54:41.012Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.7977.167 Safari/537.36 Antigravity/2.32.1"
+    },
+    {
+      "id": "hit_1794901996919_n13q6",
+      "visitorId": "vid_1794834903395_ubmy3zo",
+      "path": "/",
+      "referrer": "Direct",
+      "device": "Tablet",
+      "timestamp": "2026-11-17T07:53:16.919Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.7977.167 Safari/537.36 Antigravity/2.32.1"
+    },
+    {
+      "id": "hit_1794903847698_6rtie",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/portfolio",
+      "referrer": "http://localhost:5173/",
+      "device": "Desktop",
+      "timestamp": "2026-11-17T08:24:07.698Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794903851124_m346u",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/amalfi-coast-romance",
+      "referrer": "http://localhost:5173/",
+      "device": "Desktop",
+      "timestamp": "2026-11-17T08:24:11.124Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794903855707_1bdtl",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/contact",
+      "referrer": "http://localhost:5173/",
+      "device": "Desktop",
+      "timestamp": "2026-11-17T08:24:15.707Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794903858361_39xq3",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/amalfi-coast-romance",
+      "referrer": "http://localhost:5173/",
+      "device": "Desktop",
+      "timestamp": "2026-11-17T08:24:18.361Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794903889063_hkewa",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/",
+      "referrer": "http://localhost:5173/",
+      "device": "Desktop",
+      "timestamp": "2026-11-17T08:24:49.063Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794904426976_dszhg",
+      "visitorId": "vid_1794834903395_ubmy3zo",
+      "path": "/",
+      "referrer": "Direct",
+      "device": "Tablet",
+      "timestamp": "2026-11-17T08:33:46.976Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.7977.167 Safari/537.36 Antigravity/2.32.1"
+    },
+    {
+      "id": "hit_1794904446751_ob8pa",
+      "visitorId": "vid_1794834903395_ubmy3zo",
+      "path": "/",
+      "referrer": "Direct",
+      "device": "Tablet",
+      "timestamp": "2026-11-17T08:34:06.751Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.7977.167 Safari/537.36 Antigravity/2.32.1"
+    },
+    {
+      "id": "hit_1794904469996_k6bsy",
+      "visitorId": "vid_1794834903395_ubmy3zo",
+      "path": "/",
+      "referrer": "Direct",
+      "device": "Tablet",
+      "timestamp": "2026-11-17T08:34:29.997Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.7977.167 Safari/537.36 Antigravity/2.32.1"
+    },
+    {
+      "id": "hit_1794904495207_7jmd9",
+      "visitorId": "vid_1794834903395_ubmy3zo",
+      "path": "/",
+      "referrer": "Direct",
+      "device": "Tablet",
+      "timestamp": "2026-11-17T08:34:55.207Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.7977.167 Safari/537.36 Antigravity/2.32.1"
+    },
+    {
+      "id": "hit_1794904516114_i647s",
+      "visitorId": "vid_1794834903395_ubmy3zo",
+      "path": "/",
+      "referrer": "Direct",
+      "device": "Tablet",
+      "timestamp": "2026-11-17T08:35:16.114Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.7977.167 Safari/537.36 Antigravity/2.32.1"
+    },
+    {
+      "id": "hit_1794904532253_hkjn5",
+      "visitorId": "vid_1794834903395_ubmy3zo",
+      "path": "/",
+      "referrer": "Direct",
+      "device": "Tablet",
+      "timestamp": "2026-11-17T08:35:32.253Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.7977.167 Safari/537.36 Antigravity/2.32.1"
     }
   ],
   "inquiries": [
@@ -1110,7 +1317,389 @@
       "customColor": "#FFE379",
       "textColor": "#101010"
     },
-    "logoHeight": 52
+    "logoHeight": 80,
+    "footer": {
+      "aboutText": "Transform your footage into high-impact cinematic stories. Professional video editing, color grading, and visual storytelling that captivates audiences.",
+      "licenceNo": "TRAD/DNCC/008721/2025",
+      "companyTitle": "Company",
+      "companyLinks": [
+        {
+          "id": "fl-1",
+          "label": "About Us",
+          "path": "/about"
+        },
+        {
+          "id": "fl-2",
+          "label": "Portfolio",
+          "path": "/portfolio"
+        },
+        {
+          "id": "fl-3",
+          "label": "Our Services",
+          "path": "/services/cinematic-wedding-video-editing"
+        },
+        {
+          "id": "fl-4",
+          "label": "Privacy Policy",
+          "path": "#"
+        },
+        {
+          "id": "fl-5",
+          "label": "Terms & Conditions",
+          "path": "#"
+        },
+        {
+          "id": "fl-6",
+          "label": "Refund Policy",
+          "path": "#"
+        }
+      ],
+      "contactTitle": "Get In Touch",
+      "address": "Shyamoli, Mohammadpur, Dhaka 1207",
+      "phone": "+880 1885 000118",
+      "email": "flipthelense@gmail.com",
+      "socials": [
+        {
+          "id": "soc-1",
+          "name": "Facebook",
+          "iconType": "text",
+          "iconText": "f",
+          "iconUrl": "",
+          "link": "https://facebook.com"
+        },
+        {
+          "id": "soc-2",
+          "name": "YouTube",
+          "iconType": "text",
+          "iconText": "▶",
+          "iconUrl": "",
+          "link": "https://youtube.com"
+        },
+        {
+          "id": "soc-3",
+          "name": "Instagram",
+          "iconType": "text",
+          "iconText": "IG",
+          "iconUrl": "",
+          "link": "https://instagram.com"
+        }
+      ],
+      "copyrightText": "© {year} FlipTheLense. All Rights Reserved.",
+      "paymentGateways": [
+        {
+          "id": "pg-1",
+          "name": "Visa",
+          "logoUrl": "https://raw.githubusercontent.com/aaronfagan/svg-credit-card-payment-icons/main/flat/visa.svg"
+        },
+        {
+          "id": "pg-2",
+          "name": "Mastercard",
+          "logoUrl": "https://raw.githubusercontent.com/aaronfagan/svg-credit-card-payment-icons/main/flat/mastercard.svg"
+        },
+        {
+          "id": "pg-3",
+          "name": "Amex",
+          "logoUrl": "https://raw.githubusercontent.com/aaronfagan/svg-credit-card-payment-icons/main/flat/amex.svg"
+        },
+        {
+          "id": "pg-4",
+          "name": "bKash",
+          "logoUrl": "https://raw.githubusercontent.com/tariqul-islam/bangladesh-payment-icons/master/svg/bkash.svg"
+        },
+        {
+          "id": "pg-5",
+          "name": "Nagad",
+          "logoUrl": "https://raw.githubusercontent.com/tariqul-islam/bangladesh-payment-icons/master/svg/nagad.svg"
+        }
+      ]
+    },
+    "homeContent": {
+      "hero": {
+        "badge": "Cinematography. Video Editing. Visual Storytelling",
+        "titleLine1": "Crafting",
+        "titleLine2": "Stories Through",
+        "titleLine3": "Cinematic Videos.",
+        "previewImage": "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=900&q=80",
+        "videoUrl": "https://www.youtube.com/embed/ScMzIvxBSi4"
+      },
+      "reels": [
+        {
+          "id": "r-1",
+          "title": "Wedding Teaser",
+          "url": "https://www.youtube.com/embed/ScMzIvxBSi4",
+          "img": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "id": "r-2",
+          "title": "Dream Car Reel",
+          "url": "https://www.youtube.com/embed/ScMzIvxBSi4",
+          "img": "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "id": "r-3",
+          "title": "Street Pacing Edit",
+          "url": "https://www.youtube.com/embed/ScMzIvxBSi4",
+          "img": "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "id": "r-4",
+          "title": "Commercial Audio",
+          "url": "https://www.youtube.com/embed/ScMzIvxBSi4",
+          "img": "https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "id": "r-5",
+          "title": "Cyberpunk Grade",
+          "url": "https://www.youtube.com/embed/ScMzIvxBSi4",
+          "img": "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "id": "r-6",
+          "title": "Nature Doc",
+          "url": "https://www.youtube.com/embed/ScMzIvxBSi4",
+          "img": "https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "id": "r-7",
+          "title": "Energy Commercial",
+          "url": "https://www.youtube.com/embed/ScMzIvxBSi4",
+          "img": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "id": "r-8",
+          "title": "Fashion Model",
+          "url": "https://www.youtube.com/embed/ScMzIvxBSi4",
+          "img": "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=600&q=80"
+        }
+      ],
+      "about": {
+        "subtitle": "Since 2022",
+        "nameHeading": "HELLO, I'M PARVEJ MOSHARROF POLLOB",
+        "bio1": "For the past 4.5+ years, I have dedicated myself to the art of visual storytelling. Currently working as a Senior Cinematographer and Video Editor, I lead production workflows and collaborate with a talented team of creatives to deliver high-impact media for weddings and commercial clients.",
+        "bio2": "My approach to editing is both technical and emotional. Whether I am crafting a fast-paced real estate promo, a heartfelt wedding trailer, or executing complex motion graphics and speed ramps, my goal is always to keep the audience engaged from the first frame to the last.",
+        "skills": [
+          {
+            "id": "ps",
+            "name": "Adobe Photoshop",
+            "icon": "/icon_ps_floppy.png",
+            "level": "INTERMEDIATE",
+            "barColor": "from-[#00c8ff] to-[#0072ff]"
+          },
+          {
+            "id": "ai",
+            "name": "Adobe Illustrator",
+            "icon": "/icon_ai.png",
+            "level": "INTERMEDIATE",
+            "barColor": "from-[#ff9a00] to-[#e65100]"
+          },
+          {
+            "id": "pr",
+            "name": "Adobe Premiere Pro",
+            "icon": "/icon_pr.png",
+            "level": "INTERMEDIATE",
+            "barColor": "from-[#3b82f6] to-[#1d4ed8]"
+          },
+          {
+            "id": "ae",
+            "name": "Adobe After Effects",
+            "icon": "/icon_ae.png",
+            "level": "INTERMEDIATE",
+            "barColor": "from-[#c084fc] to-[#7e22ce]"
+          },
+          {
+            "id": "filmora",
+            "name": "Wondershare Filmora",
+            "icon": "/icon_filmora.png",
+            "level": "INTERMEDIATE",
+            "barColor": "from-[#2dd4bf] to-[#0f766e]"
+          }
+        ]
+      },
+      "process": {
+        "badge": "MY WORKFLOW",
+        "titleLine1": "My",
+        "titleLine2": "Editing Process",
+        "subtitle": "FROM RAW FOOTAGE TO A COMPELLING FINAL VIDEO.",
+        "animationEnabled": true,
+        "animationStyle": "golden-bokeh",
+        "bottomBannerText": "A structured, creative and detail-focused process that turns your raw footage into engaging, viral video content.",
+        "steps": [
+          {
+            "step": "01",
+            "title": "Discovery & Planning",
+            "desc": "Understand your goals, audience and creative vision.",
+            "icon": "",
+            "iconType": "default",
+            "position": "top",
+            "nodeIndex": 0
+          },
+          {
+            "step": "02",
+            "title": "Footage Organization",
+            "desc": "Ingest, back up and organize all raw footage for a smooth editing workflow.",
+            "icon": "",
+            "iconType": "default",
+            "position": "bottom",
+            "nodeIndex": 1
+          },
+          {
+            "step": "03",
+            "title": "Rough Cut & Story Build",
+            "desc": "Arrange the best shots and craft the initial flow of the story.",
+            "icon": "",
+            "iconType": "default",
+            "position": "top",
+            "nodeIndex": 2
+          },
+          {
+            "step": "04",
+            "title": "Editing & Polishing",
+            "desc": "Refine the cut, add transitions, graphics and maintain a strong narrative.",
+            "icon": "",
+            "iconType": "default",
+            "position": "bottom",
+            "nodeIndex": 3
+          },
+          {
+            "step": "05",
+            "title": "Color, Sound & Refinement",
+            "desc": "Enhance the visuals with color grading, sound design and motion graphics.",
+            "icon": "",
+            "iconType": "default",
+            "position": "top",
+            "nodeIndex": 4
+          },
+          {
+            "step": "06",
+            "title": "Final Review & Delivery",
+            "desc": "Review, make necessary revisions and deliver a ready-to-publish video.",
+            "icon": "",
+            "iconType": "default",
+            "position": "bottom",
+            "nodeIndex": 5
+          }
+        ]
+      },
+      "brands": {
+        "badge": "BRANDS I'VE WORKED WITH",
+        "titleLine1": "Trusted",
+        "titleLine2": "Collaborations.",
+        "bottomText": "Proven track record across commercials, cricket leagues, academic institutions & fashion brands.",
+        "featuredBadgeText": "8+ Featured Partners",
+        "items": [
+          {
+            "id": "b-1",
+            "name": "Bio-Xin",
+            "subtitle": "cosmetics",
+            "logoUrl": "",
+            "iconEmoji": "",
+            "color": "#F59E0B"
+          },
+          {
+            "id": "b-2",
+            "name": "Quince",
+            "subtitle": "PASTRY SHOP",
+            "logoUrl": "",
+            "iconEmoji": "",
+            "color": "#EF4444"
+          },
+          {
+            "id": "b-3",
+            "name": "RAIMA RANGERS",
+            "subtitle": "CRICKET TEAM",
+            "logoUrl": "",
+            "iconEmoji": "",
+            "color": "#3B82F6"
+          },
+          {
+            "id": "b-4",
+            "name": "Bioscope",
+            "subtitle": "wedding",
+            "logoUrl": "",
+            "iconEmoji": "",
+            "color": "#F97316"
+          },
+          {
+            "id": "b-5",
+            "name": "BCS Confidence",
+            "subtitle": "Education Academy",
+            "logoUrl": "",
+            "iconEmoji": "",
+            "color": "#EF4444"
+          },
+          {
+            "id": "b-6",
+            "name": "Ordinary IT",
+            "subtitle": "Software & Technology",
+            "logoUrl": "",
+            "iconEmoji": "",
+            "color": "#FFE379"
+          },
+          {
+            "id": "b-7",
+            "name": "Ordinary Coaching",
+            "subtitle": "Coaching Center",
+            "logoUrl": "",
+            "iconEmoji": "",
+            "color": "#38BDF8"
+          },
+          {
+            "id": "b-8",
+            "name": "Alliance Mart",
+            "subtitle": "E-Commerce & Retail",
+            "logoUrl": "",
+            "iconEmoji": "",
+            "color": "#F97316"
+          }
+        ]
+      },
+      "reviews": {
+        "badge": "TESTIMONIAL",
+        "titleLine1": "Client Reviews",
+        "titleLine2": "What They Say",
+        "autoplayInterval": 3800,
+        "items": [
+          {
+            "id": "rev-1",
+            "username": "@tanvir_cinematics",
+            "rating": 5,
+            "text": "Working with Parvej was an absolute game changer for our brand commercial. His pacing, color science, and sound design brought the video to life far beyond our expectations. Delivery was super fast and communication was top tier!",
+            "project": "Commercial Video Campaign"
+          },
+          {
+            "id": "rev-2",
+            "username": "@samira_weddings",
+            "rating": 5,
+            "text": "The cinematic wedding film Pollob edited for us made everyone in our family tear up! The emotional build-up, seamless transitions, and song choice were 10/10 perfection. I couldn't recommend his video editing skills enough.",
+            "project": "Cinematic Wedding Film"
+          },
+          {
+            "id": "rev-3",
+            "username": "@lifestyle_creators",
+            "rating": 5,
+            "text": "Our Instagram Reels and YouTube Shorts retention increased by over 300% after Parvej took over our editing workflows. His speed ramps and sound effects are unmatched in this industry. Truly an elite video editor!",
+            "project": "Viral Reels & Shorts Series"
+          },
+          {
+            "id": "rev-4",
+            "username": "@bengal_documentaries",
+            "rating": 5,
+            "text": "Exceptional storytelling capabilities! He turned over 12 hours of raw nature and cultural footage into an engaging 15-minute documentary that won awards at our local film fest. Highly reliable and creative.",
+            "project": "Cultural Documentary Film"
+          }
+        ]
+      },
+      "cta": {
+        "tagline": "LET'S CREATE CINEMATIC MAGIC",
+        "headlineLine1": "Ready to take your",
+        "headlineLine2": "Videos to the next level?",
+        "subtitle": "Let's collaborate and craft high-impact cinematic films and dynamic viral reels that captivate audiences and elevate your brand.",
+        "buttonText": "Get Started",
+        "buttonLink": "/services/cinematic-wedding-video-editing",
+        "buttonStyle": "pill-gold",
+        "showArrow": true
+      }
+    }
   },
   "categories": [
     {
