@@ -479,23 +479,27 @@ const defaultSettings = {
   portfolioContent: {
     hero: {
       bgImage: '/videen_hero_bg_real.jpg',
-      badge: 'WELCOME TO VIDEEN STUDIO',
-      titleLine1: "LET'S MAKE YOUR VIDEO",
-      titleLine2: 'LOOKS MORE COOL',
-      desc: 'Transform raw footage into dynamic visual masterpieces with high-end color grading, sound design, and narrative editing.',
-      btnText: 'GET STARTED',
-      btnLink: '/contact',
-      experienceYears: '18+',
-      experienceText: 'Years Experience',
-      awardsCount: '15+',
-      awardsText: 'Best Award',
-      projectsCount: '523+',
-      projectsText: 'Project Done',
-      heroImage: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=900&q=80'
+      tagline: 'WELCOME TO VIDEEN STUDIO',
+      headlineLine1: "LET'S MAKE",
+      headlineLine2: 'YOUR VIDEO LOOKS MORE COOL',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.',
+      buttonText: 'GET STARTED',
+      buttonLink: '#my-work-section',
+      buttonStyle: 'sharp-gold', // 'sharp-gold' | 'rounded-gold' | 'pill-gold' | 'outline-gold' | 'cyber-cut'
+      showArrow: true,
+      filmmakerImage: '/F1-1.png',
+      statYears: '18',
+      statYearsLabel: 'Years Experience',
+      statAwards: '15',
+      statAwardsLabel: 'Best Award',
+      statProjects: '523',
+      statProjectsLabel: 'Project Done'
     },
-    filterBadge: 'CREATIVE WORK ARCHIVE',
-    filterTitle: 'PORTFOLIO SHOWCASE',
-    filterSubtitle: 'Filter by category to explore commercials, wedding films, reels and music videos.'
+    filterSection: {
+      tagline: 'MY WORK',
+      title: 'EXPLORE OUR RECENT PROJECTS',
+      description: 'Bespoke video editing, high-end commercial grading, and story-driven post production across global client productions.'
+    }
   }
 };
 
@@ -606,7 +610,8 @@ export function SettingsProvider({ children }) {
           portfolioContent: {
             ...defaultSettings.portfolioContent,
             ...(res.data.portfolioContent || {}),
-            hero: { ...defaultSettings.portfolioContent.hero, ...(res.data.portfolioContent?.hero || {}) }
+            hero: { ...defaultSettings.portfolioContent.hero, ...(res.data.portfolioContent?.hero || {}) },
+            filterSection: { ...defaultSettings.portfolioContent.filterSection, ...(res.data.portfolioContent?.filterSection || {}) }
           },
           menus: res.data.menus && res.data.menus.length > 0 ? res.data.menus : defaultSettings.menus
         });

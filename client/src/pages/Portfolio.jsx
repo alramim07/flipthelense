@@ -205,31 +205,41 @@ export default function Portfolio() {
                 className="text-xs sm:text-sm lg:text-[15px] uppercase font-medium tracking-[4.5px] text-[#FFE379]"
                 style={{ fontFamily: "'Raleway', sans-serif" }}
               >
-                {hero.tagline}
+                {hero.tagline || 'WELCOME TO VIDEEN STUDIO'}
               </h1>
 
               <h2 
                 className="text-4xl sm:text-6xl lg:text-[76px] font-extrabold uppercase leading-[1.08] text-[#F4F4F4] tracking-normal"
                 style={{ fontFamily: "'Oswald', sans-serif" }}
               >
-                {hero.headlineLine1}<br />
-                <span className="text-[#FFE379]">{hero.headlineLine2}</span>
+                {hero.headlineLine1 || "LET'S MAKE"}<br />
+                <span className="text-[#FFE379]">{hero.headlineLine2 || 'YOUR VIDEO LOOKS MORE COOL'}</span>
               </h2>
 
               <p 
                 className="text-neutral-300 text-xs sm:text-sm lg:text-[15px] leading-[1.8em] sm:leading-[2em] max-w-lg font-normal pt-1"
                 style={{ fontFamily: "'Raleway', sans-serif" }}
               >
-                {hero.description}
+                {hero.description || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.'}
               </p>
 
               <div className="pt-4">
                 <a 
-                  href="#my-work-section" 
-                  className="inline-flex items-center space-x-3 bg-[#FFE379] hover:bg-transparent text-[#101010] hover:text-[#F4F4F4] border border-transparent hover:border-[#FFE379] font-semibold text-sm sm:text-base px-7 py-3.5 uppercase tracking-wider transition-all duration-300 shadow-xl"
+                  href={hero.buttonLink || '#my-work-section'} 
+                  className={`inline-flex items-center space-x-2 text-sm sm:text-base px-7 py-3.5 uppercase tracking-wider transition-all duration-300 shadow-xl ${
+                    hero.buttonStyle === 'rounded-gold'
+                      ? 'bg-[#FFE379] hover:bg-[#F5D766] text-[#101010] font-black rounded-xl'
+                      : hero.buttonStyle === 'pill-gold'
+                      ? 'bg-[#FFE379] hover:bg-[#F5D766] text-[#101010] font-black rounded-full'
+                      : hero.buttonStyle === 'outline-gold'
+                      ? 'bg-transparent hover:bg-[#FFE379] text-[#FFE379] hover:text-[#101010] border-2 border-[#FFE379] font-bold rounded-none'
+                      : hero.buttonStyle === 'cyber-cut'
+                      ? 'bg-[#FFE379] hover:bg-[#F5D766] text-[#101010] font-black [clip-path:polygon(10px_0%,100%_0%,calc(100%-10px)_100%,0%_100%)] rounded-none'
+                      : 'bg-[#FFE379] hover:bg-transparent text-[#101010] hover:text-[#F4F4F4] border border-transparent hover:border-[#FFE379] font-semibold rounded-none'
+                  }`}
                   style={{ fontFamily: "'Oswald', sans-serif" }}
                 >
-                  <span className="text-base font-bold">→</span>
+                  {hero.showArrow !== false && <span className="text-base font-bold">→</span>}
                   <span>{hero.buttonText || 'GET STARTED'}</span>
                 </a>
               </div>

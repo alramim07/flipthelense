@@ -23,7 +23,25 @@ export default function PortfolioPageBuilder() {
 
   useEffect(() => {
     if (settings && settings.portfolioContent) {
-      setPortfolioData(JSON.parse(JSON.stringify(settings.portfolioContent)));
+      const cloned = JSON.parse(JSON.stringify(settings.portfolioContent));
+      if (!cloned.hero) cloned.hero = {};
+      if (!cloned.hero.tagline) cloned.hero.tagline = cloned.hero.badge || 'WELCOME TO VIDEEN STUDIO';
+      if (!cloned.hero.headlineLine1) cloned.hero.headlineLine1 = "LET'S MAKE";
+      if (!cloned.hero.headlineLine2) cloned.hero.headlineLine2 = 'YOUR VIDEO LOOKS MORE COOL';
+      if (!cloned.hero.description) cloned.hero.description = cloned.hero.desc || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.';
+      if (!cloned.hero.buttonText) cloned.hero.buttonText = cloned.hero.btnText || 'GET STARTED';
+      if (!cloned.hero.buttonLink) cloned.hero.buttonLink = cloned.hero.btnLink || '#my-work-section';
+      if (!cloned.hero.buttonStyle) cloned.hero.buttonStyle = 'sharp-gold';
+      if (cloned.hero.showArrow === undefined) cloned.hero.showArrow = true;
+      if (!cloned.hero.bgImage) cloned.hero.bgImage = '/videen_hero_bg_real.jpg';
+      if (!cloned.hero.filmmakerImage) cloned.hero.filmmakerImage = '/F1-1.png';
+      if (!cloned.hero.statYears) cloned.hero.statYears = '18';
+      if (!cloned.hero.statYearsLabel) cloned.hero.statYearsLabel = 'Years Experience';
+      if (!cloned.hero.statAwards) cloned.hero.statAwards = '15';
+      if (!cloned.hero.statAwardsLabel) cloned.hero.statAwardsLabel = 'Best Award';
+      if (!cloned.hero.statProjects) cloned.hero.statProjects = '523';
+      if (!cloned.hero.statProjectsLabel) cloned.hero.statProjectsLabel = 'Project Done';
+      setPortfolioData(cloned);
     }
   }, [settings]);
 
@@ -253,6 +271,59 @@ export default function PortfolioPageBuilder() {
                 })}
                 className="w-full px-3.5 py-2 bg-[#1A1A1A] border border-[#2D2D2D] rounded-xl text-xs text-neutral-300 focus:border-[#FFE379] focus:outline-none resize-y"
               />
+            </div>
+
+            {/* Target Destination Link & Button Style Customizer */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2 border-t border-[#232323]">
+              <div>
+                <label className="block text-[11px] uppercase font-bold text-[#FFE379] mb-1">
+                  Button Action Label
+                </label>
+                <input
+                  type="text"
+                  value={portfolioData.hero?.buttonText || 'GET STARTED'}
+                  onChange={(e) => setPortfolioData({
+                    ...portfolioData,
+                    hero: { ...portfolioData.hero, buttonText: e.target.value }
+                  })}
+                  className="w-full px-3.5 py-2 bg-[#1A1A1A] border border-[#2D2D2D] rounded-xl text-xs font-bold text-white uppercase focus:border-[#FFE379] focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[11px] uppercase font-bold text-neutral-400 mb-1">
+                  Button Target Destination URL
+                </label>
+                <input
+                  type="text"
+                  value={portfolioData.hero?.buttonLink || '#my-work-section'}
+                  onChange={(e) => setPortfolioData({
+                    ...portfolioData,
+                    hero: { ...portfolioData.hero, buttonLink: e.target.value }
+                  })}
+                  className="w-full px-3.5 py-2 bg-[#1A1A1A] border border-[#2D2D2D] rounded-xl text-xs font-mono text-neutral-300 focus:border-[#FFE379] focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[11px] uppercase font-bold text-[#FFE379] mb-1">
+                  Button Design / Style Preset
+                </label>
+                <select
+                  value={portfolioData.hero?.buttonStyle || 'sharp-gold'}
+                  onChange={(e) => setPortfolioData({
+                    ...portfolioData,
+                    hero: { ...portfolioData.hero, buttonStyle: e.target.value }
+                  })}
+                  className="w-full px-3.5 py-2 bg-[#1A1A1A] border border-[#2D2D2D] rounded-xl text-xs font-bold text-[#FFE379] focus:border-[#FFE379] focus:outline-none uppercase"
+                >
+                  <option value="sharp-gold">Sharp Luxury Gold (Rectangular Sharp)</option>
+                  <option value="rounded-gold">Rounded Smooth Gold (Modern Curved)</option>
+                  <option value="pill-gold">Pill Curvature Gold (Ultra Rounded Pill)</option>
+                  <option value="outline-gold">Minimal Golden Outline (Dark Glass Fill)</option>
+                  <option value="cyber-cut">Cyberpunk Angled Cut (Geometric Video Edits)</option>
+                </select>
+              </div>
             </div>
 
             {/* Media Uploads: Background + Filmmaker Cutout */}
