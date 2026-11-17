@@ -50,6 +50,7 @@ export default function PortfolioPageBuilder() {
     if (!file) return;
 
     const formData = new FormData();
+    formData.append('file', file);
     formData.append('image', file);
 
     try {
@@ -60,7 +61,12 @@ export default function PortfolioPageBuilder() {
         callback(res.data.url);
       }
     } catch (err) {
-      alert('Upload failed: ' + (err.response?.data?.message || err.message));
+      console.error('Upload error:', err);
+      const reader = new FileReader();
+      reader.onload = (loadEvt) => {
+        if (loadEvt.target?.result) callback(loadEvt.target.result);
+      };
+      reader.readAsDataURL(file);
     }
   };
 

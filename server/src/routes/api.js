@@ -37,21 +37,29 @@ const upload = multer({
 const router = express.Router();
 
 // ================= FILE UPLOAD ENDPOINT (Logos & Favicons) =================
-router.post('/upload', upload.single('file'), (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ error: 'No file provided' });
+// Accept any field name (e.g. 'file', 'image', 'photo') and handle errors gracefully
+router.post('/upload', (req, res) => {
+  upload.any()(req, res, (err) => {
+    if (err) {
+      if (err instanceof multer.MulterError) {
+        return res.status(400).json({ error: `Upload error: ${err.message}` });
+      }
+      return res.status(500).json({ error: err.message || 'File upload failed' });
     }
-    const fileUrl = `/uploads/${req.file.filename}`;
+
+    const file = req.files && req.files.length > 0 ? req.files[0] : req.file;
+    if (!file) {
+      return res.status(400).json({ error: 'No file provided in form data' });
+    }
+
+    const fileUrl = `/uploads/${file.filename}`;
     res.json({
       success: true,
       url: fileUrl,
-      filename: req.file.filename,
-      size: req.file.size
+      filename: file.filename,
+      size: file.size
     });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  });
 });
 
 // ================= 1. LIGHTWEIGHT BUILT-IN REAL ANALYTICS =================

@@ -13,7 +13,9 @@ import {
   Award, 
   Briefcase, 
   Cpu, 
-  Link as LinkIcon 
+  Link as LinkIcon,
+  AlertCircle,
+  X
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -25,6 +27,14 @@ export default function AboutPageBuilder() {
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [uploadingField, setUploadingField] = useState(null);
+  const [toast, setToast] = useState(null); // { type: 'success' | 'error', message: string }
+
+  const showToast = (type, message) => {
+    setToast({ type, message });
+    setTimeout(() => {
+      setToast(null);
+    }, 4000);
+  };
 
   // Initialize local state from context settings
   useEffect(() => {
@@ -77,7 +87,14 @@ export default function AboutPageBuilder() {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    // Validate size (max 10MB)
+    if (file.size > 10 * 1024 * 1024) {
+      showToast('error', 'File size exceeds 10MB limit. Please choose a smaller image.');
+      return;
+    }
+
     const formData = new FormData();
+    formData.append('file', file);
     formData.append('image', file);
 
     try {
@@ -86,9 +103,23 @@ export default function AboutPageBuilder() {
       });
       if (res.data?.url) {
         callback(res.data.url);
+        showToast('success', 'Image uploaded successfully!');
+      } else {
+        throw new Error('Server did not return file URL');
       }
     } catch (err) {
-      alert('Upload failed: ' + (err.response?.data?.message || err.message));
+      const errMsg = err.response?.data?.error || err.response?.data?.message || err.message || 'Image upload failed';
+      showToast('error', `Upload failed: ${errMsg}`);
+      
+      // Fallback: read as base64 data URL so user is never blocked
+      const reader = new FileReader();
+      reader.onload = (loadEvt) => {
+        if (loadEvt.target?.result) {
+          callback(loadEvt.target.result);
+          showToast('success', 'Image loaded locally (fallback)');
+        }
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -106,10 +137,12 @@ export default function AboutPageBuilder() {
       if (res.data) {
         updateSectionSettings('aboutContent', aboutData);
         setSaveSuccess(true);
+        showToast('success', 'All About Page changes saved successfully!');
         setTimeout(() => setSaveSuccess(false), 3000);
       }
     } catch (err) {
-      alert('Error saving About Page changes: ' + (err.response?.data?.message || err.message));
+      const errMsg = err.response?.data?.message || err.message;
+      showToast('error', `Error saving About Page changes: ${errMsg}`);
     } finally {
       setIsSaving(false);
     }
@@ -186,6 +219,30 @@ export default function AboutPageBuilder() {
           </button>
         </div>
       </header>
+
+      {/* Floating Modern Toast Notification */}
+      {toast && (
+        <div className="fixed top-20 right-6 z-50 animate-bounce">
+          <div className={`flex items-center space-x-3 px-4 py-3 rounded-2xl shadow-2xl border text-xs font-bold ${
+            toast.type === 'error'
+              ? 'bg-[#1C1212] border-red-500/50 text-red-300'
+              : 'bg-[#121A14] border-emerald-500/50 text-emerald-300'
+          }`}>
+            {toast.type === 'error' ? (
+              <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
+            ) : (
+              <Check className="w-4 h-4 text-emerald-400 shrink-0" />
+            )}
+            <span className="font-mono">{toast.message}</span>
+            <button
+              onClick={() => setToast(null)}
+              className="p-1 hover:bg-white/10 rounded-lg transition"
+            >
+              <X className="w-3.5 h-3.5 text-neutral-400" />
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Main Content Sections Builder */}
       <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8 space-y-8">
