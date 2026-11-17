@@ -9,6 +9,8 @@ import ServiceGig from '../models/ServiceGig.js';
 import SiteSettings from '../models/SiteSettings.js';
 import Inquiry from '../models/Inquiry.js';
 import { getLocalStore, saveLocalStore } from '../store/localStore.js';
+import { validateEmail, sanitizeText } from '../utils/validator.js';
+import { generateToken, requireAdminAuth } from '../middleware/auth.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -459,21 +461,72 @@ router.get('/inquiries', async (req, res) => {
   }
 });
 
-// POST Inquiry (Public submit)
+// ================= AUTHENTICATION ENDPOINTS =================
+// POST /api/auth/login - Issues signed JWT
+router.post('/auth/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email and password are required.' });
+    }
+
+    const cleanEmail = email.trim().toLowerCase();
+    const cleanPassword = password.trim();
+
+    // Check credentials against admin credentials
+    if (
+      (cleanEmail === 'admin@flipthelense.com' || cleanEmail === 'admin') &&
+      (cleanPassword === 'admin123' || cleanPassword === 'flipthelense2026')
+    ) {
+      const user = { email: 'admin@flipthelense.com', role: 'Super Admin' };
+      const token = generateToken(user, '7d');
+      return res.json({
+        success: true,
+        token,
+        user
+      });
+    }
+
+    return res.status(401).json({ error: 'Invalid administrative email or password.' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// POST Inquiry (Public submit with rigorous anti-spam validation)
 router.post('/inquiries', async (req, res) => {
   try {
-    const { name, email, serviceType, packageChosen, notes } = req.body;
-    if (!name || !email) {
-      return res.status(400).json({ error: 'Name and email are required' });
+    const { name, email, serviceType, packageChosen, notes, honeypot } = req.body;
+
+    // 1. Silent Honeypot anti-bot check: if invisible honeypot field is populated, silently reject bot
+    if (honeypot) {
+      return res.status(200).json({ success: true, message: 'Inquiry received' });
     }
+
+    if (!name || !name.trim()) {
+      return res.status(400).json({ error: 'Full name is required.' });
+    }
+
+    // 2. Strict RFC email & disposable spam provider validation
+    const emailValidation = validateEmail(email);
+    if (!emailValidation.valid) {
+      return res.status(400).json({ error: emailValidation.error });
+    }
+
+    // 3. Text sanitization against XSS/payload injection
+    const cleanName = sanitizeText(name, 100);
+    const cleanNotes = sanitizeText(notes, 3000);
+    const cleanService = sanitizeText(serviceType || 'General Inquiry', 100);
+    const cleanPackage = sanitizeText(packageChosen || 'Standard', 100);
+
     const store = getLocalStore();
     const newInquiry = {
       _id: 'inq_' + Date.now(),
-      name,
-      email,
-      serviceType: serviceType || 'General Inquiry',
-      packageChosen: packageChosen || 'Standard',
-      notes: notes || '',
+      name: cleanName,
+      email: emailValidation.cleanEmail,
+      serviceType: cleanService,
+      packageChosen: cleanPackage,
+      notes: cleanNotes,
       status: 'New Inquiry',
       createdAt: new Date().toLocaleDateString('en-US', {
         month: 'short',
@@ -560,9 +613,12 @@ router.post('/reviews', async (req, res) => {
       status // 'pending' or 'accepted'
     } = req.body;
 
-    if (!name || !comment) {
-      return res.status(400).json({ error: 'Name and comment are required' });
+    if (!name || !name.trim() || !comment || !comment.trim()) {
+      return res.status(400).json({ error: 'Name and comment are required.' });
     }
+
+    const cleanName = sanitizeText(name, 80);
+    const cleanComment = sanitizeText(comment, 1500);
 
     const store = getLocalStore();
     if (!store.reviews) store.reviews = [];
@@ -571,11 +627,11 @@ router.post('/reviews', async (req, res) => {
       _id: 'rev_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
       projectSlug: projectSlug || 'all',
       projectName: projectName || 'All Projects',
-      name: name.trim(),
+      name: cleanName,
       country: country || 'United States',
       flag: flag || '🇺🇸',
-      rating: Number(rating) || 5,
-      comment: comment.trim(),
+      rating: Math.min(5, Math.max(1, Number(rating) || 5)),
+      comment: cleanComment,
       pricePaid: pricePaid || 'US$150-US$300',
       duration: duration || '3-5 days',
       status: status || 'pending', // 'pending' | 'accepted' | 'rejected'

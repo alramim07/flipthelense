@@ -59,7 +59,7 @@ export default function ContactUs() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.message) {
+    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
       setError('Please fill out all fields before submitting.');
       return;
     }
@@ -73,13 +73,13 @@ export default function ContactUs() {
         email: formData.email,
         serviceType: 'Contact Page Inquiry',
         packageChosen: 'General Contact',
-        notes: formData.message
+        notes: formData.message,
+        honeypot: formData.websiteBotField || ''
       });
       setSubmitted(true);
       setFormData({ name: '', email: '', message: '' });
     } catch (err) {
-      setSubmitted(true);
-      setFormData({ name: '', email: '', message: '' });
+      setError(err.response?.data?.error || 'Failed to send your message. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -289,6 +289,18 @@ export default function ContactUs() {
                 )}
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* Invisible Honeypot Field for Spam Bots */}
+                  <div className="hidden" aria-hidden="true">
+                    <input 
+                      type="text" 
+                      name="website_url_check" 
+                      tabIndex="-1" 
+                      autoComplete="off"
+                      value={formData.websiteBotField || ''}
+                      onChange={(e) => setFormData({ ...formData, websiteBotField: e.target.value })}
+                    />
+                  </div>
+
                   <div>
                     <input
                       type="text"

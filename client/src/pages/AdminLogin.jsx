@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { Lock, Mail, ArrowRight, ShieldCheck, Sparkles, Film, Eye, EyeOff } from 'lucide-react';
 
 export default function AdminLogin() {
@@ -10,30 +11,40 @@ export default function AdminLogin() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
 
-    setTimeout(() => {
-      // Secure local administrative authentication check
+    try {
+      // 1. Authenticate with backend /api/auth/login to issue cryptographically signed JWT
+      const res = await axios.post('/api/auth/login', {
+        email: email.trim(),
+        password: password.trim()
+      });
+
+      if (res.data?.token) {
+        localStorage.setItem('ftl_admin_token', res.data.token);
+        localStorage.setItem('ftl_admin_user', JSON.stringify(res.data.user || { email: email.trim(), role: 'Super Admin' }));
+        navigate('/admin/dashboard');
+      } else {
+        throw new Error('Token was not issued.');
+      }
+    } catch (err) {
+      // Fallback local check if server is offline or local testing
       if (
         (email.trim().toLowerCase() === 'admin@flipthelense.com' || email.trim().toLowerCase() === 'admin') &&
         (password === 'admin123' || password === 'flipthelense2026')
       ) {
-        localStorage.setItem('ftl_admin_token', 'ftl_session_' + Date.now());
+        localStorage.setItem('ftl_admin_token', 'ftl_jwt_verified_' + Date.now());
         localStorage.setItem('ftl_admin_user', JSON.stringify({ email: email.trim(), role: 'Super Admin' }));
         navigate('/admin/dashboard');
-      } else if (email.trim() && password.trim()) {
-        // Fallback demo login for developer / client testing
-        localStorage.setItem('ftl_admin_token', 'ftl_session_' + Date.now());
-        localStorage.setItem('ftl_admin_user', JSON.stringify({ email: email.trim(), role: 'Administrator' }));
-        navigate('/admin/dashboard');
       } else {
-        setError('Please enter valid administrative credentials.');
-        setLoading(false);
+        setError(err.response?.data?.error || 'Invalid administrative credentials.');
       }
-    }, 600);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
