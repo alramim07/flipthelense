@@ -419,7 +419,7 @@ const defaultSettings = {
         }
       ]
     },
-    tools: {
+    toolsGear: {
       badge: 'PRODUCTION ARSENAL',
       title: 'GEAR & SOFTWARE',
       categories: [
@@ -434,8 +434,10 @@ const defaultSettings = {
       subtitle: "Ready to collaborate on weddings, high-converting commercials, or creative short-form videos? Let's turn your concept into reality.",
       primaryBtnText: 'Contact Me Now',
       primaryBtnLink: '/contact',
+      primaryBtnStyle: 'solid-gold', // 'solid-gold' | 'outline-gold' | 'rounded-smooth' | 'cyber-cut'
       secondaryBtnText: 'Explore Portfolio',
-      secondaryBtnLink: '/portfolio'
+      secondaryBtnLink: '/portfolio',
+      secondaryBtnStyle: 'outline-white' // 'outline-white' | 'solid-dark' | 'glass' | 'solid-gold'
     }
   },
 
@@ -584,12 +586,12 @@ export function SettingsProvider({ children }) {
                 ? res.data.aboutContent.experience.items
                 : defaultSettings.aboutContent.experience.items
             },
-            tools: {
-              ...defaultSettings.aboutContent.tools,
-              ...(res.data.aboutContent?.tools || {}),
-              categories: res.data.aboutContent?.tools?.categories && res.data.aboutContent.tools.categories.length > 0
-                ? res.data.aboutContent.tools.categories
-                : defaultSettings.aboutContent.tools.categories
+            toolsGear: {
+              ...defaultSettings.aboutContent.toolsGear,
+              ...(res.data.aboutContent?.toolsGear || res.data.aboutContent?.tools || {}),
+              categories: (res.data.aboutContent?.toolsGear?.categories || res.data.aboutContent?.tools?.categories || []).length > 0
+                ? (res.data.aboutContent?.toolsGear?.categories || res.data.aboutContent?.tools?.categories)
+                : defaultSettings.aboutContent.toolsGear.categories
             },
             cta: { ...defaultSettings.aboutContent.cta, ...(res.data.aboutContent?.cta || {}) }
           },

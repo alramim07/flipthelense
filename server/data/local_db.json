@@ -620,6 +620,51 @@
       "device": "Tablet",
       "timestamp": "2026-11-17T10:57:11.913Z",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.7977.167 Safari/537.36 Antigravity/2.32.1"
+    },
+    {
+      "id": "hit_1794913321573_dj9id",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/portfolio",
+      "referrer": "http://localhost:5173/portfolio",
+      "device": "Desktop",
+      "timestamp": "2026-11-17T11:02:01.573Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794913357848_6cza3",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/portfolio",
+      "referrer": "http://localhost:5173/admin/pages/portfolio-builder",
+      "device": "Desktop",
+      "timestamp": "2026-11-17T11:02:37.848Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794913436270_614w2",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/contact",
+      "referrer": "http://localhost:5173/admin/pages/portfolio-builder",
+      "device": "Desktop",
+      "timestamp": "2026-11-17T11:03:56.270Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794913479319_5wc1e",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/about",
+      "referrer": "http://localhost:5173/portfolio",
+      "device": "Desktop",
+      "timestamp": "2026-11-17T11:04:39.319Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794913498046_18wxg",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/about",
+      "referrer": "http://localhost:5173/admin/pages/portfolio-builder",
+      "device": "Desktop",
+      "timestamp": "2026-11-17T11:04:58.046Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
     }
   ],
   "inquiries": [
@@ -1873,7 +1918,7 @@
           }
         ]
       },
-      "tools": {
+      "toolsGear": {
         "badge": "PRODUCTION ARSENAL",
         "title": "GEAR & SOFTWARE",
         "categories": [
@@ -1921,9 +1966,75 @@
         "subtitle": "Ready to collaborate on weddings, high-converting commercials, or creative short-form videos? Let's turn your concept into reality.",
         "primaryBtnText": "Contact Me Now",
         "primaryBtnLink": "/contact",
+        "primaryBtnStyle": "solid-gold",
         "secondaryBtnText": "Explore Portfolio",
-        "secondaryBtnLink": "/portfolio"
+        "secondaryBtnLink": "/portfolio",
+        "secondaryBtnStyle": "outline-white"
+      },
+      "tools": {
+        "badge": "PRODUCTION ARSENAL",
+        "title": "GEAR & SOFTWARE",
+        "categories": [
+          {
+            "category": "EDITING & COLOR",
+            "items": [
+              "Adobe Premiere Pro",
+              "Adobe After Effects",
+              "DaVinci Resolve Studio",
+              "Wondershare Filmora",
+              "CapCut Pro"
+            ]
+          },
+          {
+            "category": "DESIGN & GRAPHICS",
+            "items": [
+              "Adobe Photoshop",
+              "Adobe Illustrator",
+              "Motion Graphics Templates",
+              "Blender 3D Basics"
+            ]
+          },
+          {
+            "category": "AUDIO SUITE",
+            "items": [
+              "Adobe Audition",
+              "iZotope RX Noise Reduction",
+              "Foley Sound Design",
+              "Spatial Audio Mixing"
+            ]
+          },
+          {
+            "category": "CAMERA & HARDWARE",
+            "items": [
+              "Sony Alpha Series (4K 10-bit)",
+              "DJI Ronin Gimbal Stabilizers",
+              "Anamorphic & Prime Glass",
+              "Wireless Audio Transmitters"
+            ]
+          }
+        ]
       }
+    },
+    "portfolioContent": {
+      "hero": {
+        "bgImage": "/videen_hero_bg_real.jpg",
+        "badge": "WELCOME TO VIDEEN STUDIO",
+        "titleLine1": "LET'S MAKE YOUR VIDEO",
+        "titleLine2": "LOOKS MORE COOL",
+        "desc": "Transform raw footage into dynamic visual masterpieces with high-end color grading, sound design, and narrative editing.",
+        "btnText": "GET STARTED",
+        "btnLink": "/contact",
+        "experienceYears": "18+",
+        "experienceText": "Years Experience",
+        "awardsCount": "15+",
+        "awardsText": "Best Award",
+        "projectsCount": "523+",
+        "projectsText": "Project Done",
+        "heroImage": "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=900&q=80"
+      },
+      "filterBadge": "CREATIVE WORK ARCHIVE",
+      "filterTitle": "PORTFOLIO SHOWCASE",
+      "filterSubtitle": "Filter by category to explore commercials, wedding films, reels and music videos."
     }
   },
   "categories": [

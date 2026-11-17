@@ -111,7 +111,7 @@ export default function AboutUs() {
     ]
   };
 
-  const toolsGear = about.toolsGear || {
+  const toolsGear = about.toolsGear || about.tools || {
     badge: 'PRODUCTION ARSENAL',
     title: 'GEAR & SOFTWARE',
     categories: [
@@ -125,8 +125,12 @@ export default function AboutUs() {
   const cta = about.cta || {
     title: "LET'S CRAFT YOUR NEXT CINEMATIC PROJECT",
     subtitle: "Ready to collaborate on weddings, high-converting commercials, or creative short-form videos? Let's turn your concept into reality.",
-    buttonText: 'Contact Me Now',
-    buttonLink: '/contact'
+    primaryBtnText: 'Contact Me Now',
+    primaryBtnLink: '/contact',
+    primaryBtnStyle: 'solid-gold',
+    secondaryBtnText: 'Explore Portfolio',
+    secondaryBtnLink: '/portfolio',
+    secondaryBtnStyle: 'outline-white'
   };
 
   return (
@@ -414,17 +418,42 @@ export default function AboutUs() {
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
+            {/* Primary Button with dynamic styles */}
             <Link 
-              to={cta.buttonLink || '/contact'} 
-              className="bg-[#f5d77f] hover:bg-[#ebd074] text-black font-extrabold text-xs sm:text-sm px-8 py-3 rounded-none transition-all shadow-xl hover:scale-105 uppercase tracking-wider"
+              to={cta.primaryBtnLink || cta.buttonLink || '/contact'} 
+              className={`font-extrabold text-xs sm:text-sm px-8 py-3 transition-all shadow-xl hover:scale-105 uppercase tracking-wider inline-flex items-center justify-center ${
+                cta.primaryBtnStyle === 'rounded-smooth'
+                  ? 'bg-[#FFE379] hover:bg-[#ebd074] text-black rounded-xl'
+                  : cta.primaryBtnStyle === 'pill'
+                  ? 'bg-[#FFE379] hover:bg-[#ebd074] text-black rounded-full'
+                  : cta.primaryBtnStyle === 'outline-gold'
+                  ? 'bg-transparent hover:bg-[#FFE379] text-[#FFE379] hover:text-black border-2 border-[#FFE379] rounded-none'
+                  : cta.primaryBtnStyle === 'cyber-cut'
+                  ? 'bg-[#FFE379] hover:bg-[#ebd074] text-black [clip-path:polygon(10px_0%,100%_0%,calc(100%-10px)_100%,0%_100%)] rounded-none'
+                  : 'bg-[#f5d77f] hover:bg-[#ebd074] text-black rounded-none'
+              }`}
             >
-              {cta.buttonText || 'Contact Me Now'}
+              {cta.primaryBtnText || cta.buttonText || 'Contact Me Now'}
             </Link>
+
+            {/* Secondary Button with dynamic styles */}
             <Link 
-              to="/portfolio" 
-              className="bg-transparent hover:bg-white/5 text-white font-bold text-xs sm:text-sm px-8 py-3 rounded-none border border-neutral-700 transition-all hover:scale-105 uppercase tracking-wider"
+              to={cta.secondaryBtnLink || '/portfolio'} 
+              className={`font-bold text-xs sm:text-sm px-8 py-3 transition-all hover:scale-105 uppercase tracking-wider inline-flex items-center justify-center ${
+                cta.secondaryBtnStyle === 'solid-gold'
+                  ? 'bg-[#FFE379] hover:bg-[#ebd074] text-black rounded-none shadow-lg'
+                  : cta.secondaryBtnStyle === 'rounded-smooth'
+                  ? 'bg-transparent hover:bg-white/10 text-white border border-neutral-700 rounded-xl'
+                  : cta.secondaryBtnStyle === 'pill'
+                  ? 'bg-transparent hover:bg-white/10 text-white border border-neutral-700 rounded-full'
+                  : cta.secondaryBtnStyle === 'solid-dark'
+                  ? 'bg-[#181818] hover:bg-[#222] text-[#FFE379] border border-[#333] rounded-none'
+                  : cta.secondaryBtnStyle === 'glass'
+                  ? 'bg-white/5 hover:bg-white/10 backdrop-blur text-white border border-white/20 rounded-xl'
+                  : 'bg-transparent hover:bg-white/5 text-white border border-neutral-700 rounded-none'
+              }`}
             >
-              Explore Portfolio
+              {cta.secondaryBtnText || 'Explore Portfolio'}
             </Link>
           </div>
         </div>

@@ -29,7 +29,40 @@ export default function AboutPageBuilder() {
   // Initialize local state from context settings
   useEffect(() => {
     if (settings && settings.aboutContent) {
-      setAboutData(JSON.parse(JSON.stringify(settings.aboutContent)));
+      const cloned = JSON.parse(JSON.stringify(settings.aboutContent));
+      // Ensure toolsGear exists and has categories
+      if (!cloned.toolsGear) {
+        cloned.toolsGear = cloned.tools || {
+          badge: 'PRODUCTION ARSENAL',
+          title: 'GEAR & SOFTWARE',
+          categories: [
+            { category: 'EDITING & COLOR', items: ['Adobe Premiere Pro', 'Adobe After Effects', 'DaVinci Resolve Studio', 'Wondershare Filmora', 'CapCut Pro'] },
+            { category: 'DESIGN & GRAPHICS', items: ['Adobe Photoshop', 'Adobe Illustrator', 'Motion Graphics Templates', 'Blender 3D Basics'] },
+            { category: 'AUDIO SUITE', items: ['Adobe Audition', 'iZotope RX Noise Reduction', 'Foley Sound Design', 'Spatial Audio Mixing'] },
+            { category: 'CAMERA & HARDWARE', items: ['Sony Alpha Series (4K 10-bit)', 'DJI Ronin Gimbal Stabilizers', 'Anamorphic & Prime Glass', 'Wireless Audio Transmitters'] }
+          ]
+        };
+      } else if (!cloned.toolsGear.categories || cloned.toolsGear.categories.length === 0) {
+        cloned.toolsGear.categories = [
+          { category: 'EDITING & COLOR', items: ['Adobe Premiere Pro', 'Adobe After Effects', 'DaVinci Resolve Studio', 'Wondershare Filmora', 'CapCut Pro'] },
+          { category: 'DESIGN & GRAPHICS', items: ['Adobe Photoshop', 'Adobe Illustrator', 'Motion Graphics Templates', 'Blender 3D Basics'] },
+          { category: 'AUDIO SUITE', items: ['Adobe Audition', 'iZotope RX Noise Reduction', 'Foley Sound Design', 'Spatial Audio Mixing'] },
+          { category: 'CAMERA & HARDWARE', items: ['Sony Alpha Series (4K 10-bit)', 'DJI Ronin Gimbal Stabilizers', 'Anamorphic & Prime Glass', 'Wireless Audio Transmitters'] }
+        ];
+      }
+
+      // Ensure CTA has both buttons and styles
+      if (!cloned.cta) {
+        cloned.cta = {};
+      }
+      if (!cloned.cta.primaryBtnText) cloned.cta.primaryBtnText = cloned.cta.buttonText || 'Contact Me Now';
+      if (!cloned.cta.primaryBtnLink) cloned.cta.primaryBtnLink = cloned.cta.buttonLink || '/contact';
+      if (!cloned.cta.primaryBtnStyle) cloned.cta.primaryBtnStyle = 'solid-gold';
+      if (!cloned.cta.secondaryBtnText) cloned.cta.secondaryBtnText = 'Explore Portfolio';
+      if (!cloned.cta.secondaryBtnLink) cloned.cta.secondaryBtnLink = '/portfolio';
+      if (!cloned.cta.secondaryBtnStyle) cloned.cta.secondaryBtnStyle = 'outline-white';
+
+      setAboutData(cloned);
     }
   }, [settings]);
 
@@ -742,8 +775,81 @@ export default function AboutPageBuilder() {
 
           <div className="mt-2 space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-[11px] uppercase font-bold text-neutral-400 mb-1">
+                  Tagline Badge
+                </label>
+                <input
+                  type="text"
+                  value={aboutData.toolsGear?.badge || 'PRODUCTION ARSENAL'}
+                  onChange={(e) => setAboutData({
+                    ...aboutData,
+                    toolsGear: { ...aboutData.toolsGear, badge: e.target.value }
+                  })}
+                  className="w-full px-3.5 py-2 bg-[#1A1A1A] border border-[#2D2D2D] rounded-xl text-xs text-white uppercase focus:border-[#FFE379] focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[11px] uppercase font-bold text-[#FFE379] mb-1">
+                  Section Title
+                </label>
+                <input
+                  type="text"
+                  value={aboutData.toolsGear?.title || 'GEAR & SOFTWARE'}
+                  onChange={(e) => setAboutData({
+                    ...aboutData,
+                    toolsGear: { ...aboutData.toolsGear, title: e.target.value }
+                  })}
+                  className="w-full px-3.5 py-2 bg-[#1A1A1A] border border-[#2D2D2D] rounded-xl text-xs font-bold text-white uppercase focus:border-[#FFE379] focus:outline-none"
+                  style={{ fontFamily: "'Oswald', sans-serif" }}
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between pt-2">
+              <span className="text-xs font-bold text-neutral-300 uppercase">
+                Categories ({(aboutData.toolsGear?.categories || []).length})
+              </span>
+              <button
+                type="button"
+                onClick={() => {
+                  const updated = [
+                    ...(aboutData.toolsGear?.categories || []),
+                    { category: 'NEW CATEGORY', items: ['Tool 1', 'Tool 2'] }
+                  ];
+                  setAboutData({
+                    ...aboutData,
+                    toolsGear: { ...aboutData.toolsGear, categories: updated }
+                  });
+                }}
+                className="px-3 py-1.5 bg-[#222] hover:bg-[#2C2C2C] text-[#FFE379] border border-[#333] rounded-xl text-xs font-bold uppercase flex items-center space-x-1"
+              >
+                <Plus className="w-3.5 h-3.5" />
+                <span>Add Category</span>
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {(aboutData.toolsGear?.categories || []).map((cat, idx) => (
-                <div key={idx} className="p-4 bg-[#1A1A1A] border border-[#2D2D2D] rounded-2xl space-y-2">
+                <div key={idx} className="p-4 bg-[#1A1A1A] border border-[#2D2D2D] rounded-2xl space-y-2 relative">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-mono text-[#FFE379] font-bold">Category #{idx + 1}</span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const updated = (aboutData.toolsGear?.categories || []).filter((_, i) => i !== idx);
+                        setAboutData({
+                          ...aboutData,
+                          toolsGear: { ...aboutData.toolsGear, categories: updated }
+                        });
+                      }}
+                      className="text-neutral-500 hover:text-red-400 p-1"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+
                   <input
                     type="text"
                     value={cat.category || ''}
@@ -784,10 +890,10 @@ export default function AboutPageBuilder() {
         <div className="relative group rounded-3xl p-6 sm:p-8 bg-[#141414]/90 border-2 border-[#262626] hover:border-[#FFE379]/50 transition-all shadow-xl">
           <div className="absolute -top-3.5 left-6 px-3 py-0.5 rounded-full bg-[#FFE379] text-[#101010] text-[10px] font-black uppercase tracking-wider flex items-center space-x-1 shadow">
             <LinkIcon className="w-3 h-3" />
-            <span>Section 7: Bottom Call To Action</span>
+            <span>Section 7: Bottom Call To Action & 2 Action Buttons</span>
           </div>
 
-          <div className="mt-2 space-y-4">
+          <div className="mt-2 space-y-6">
             <div>
               <label className="block text-[11px] uppercase font-bold text-[#FFE379] mb-1">
                 Headline
@@ -819,35 +925,138 @@ export default function AboutPageBuilder() {
               />
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-[11px] uppercase font-bold text-neutral-400 mb-1">
-                  Primary Button Label
-                </label>
-                <input
-                  type="text"
-                  value={aboutData.cta?.buttonText || 'Contact Me Now'}
-                  onChange={(e) => setAboutData({
-                    ...aboutData,
-                    cta: { ...aboutData.cta, buttonText: e.target.value }
-                  })}
-                  className="w-full px-3.5 py-2 bg-[#1A1A1A] border border-[#2D2D2D] rounded-xl text-xs text-white focus:border-[#FFE379] focus:outline-none uppercase"
-                />
+            {/* BUTTON 1 (PRIMARY) CONFIGURATION */}
+            <div className="p-4 bg-[#1A1A1A] border border-[#2D2D2D] rounded-2xl space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold uppercase text-[#FFE379] flex items-center space-x-1.5">
+                  <span className="w-2 h-2 rounded-full bg-[#FFE379]" />
+                  <span>Button 1 (Primary Action)</span>
+                </span>
+                <span className="text-[10px] font-mono text-neutral-400">e.g. Contact Me Now</span>
               </div>
 
-              <div>
-                <label className="block text-[11px] uppercase font-bold text-neutral-400 mb-1">
-                  Primary Button Link
-                </label>
-                <input
-                  type="text"
-                  value={aboutData.cta?.buttonLink || '/contact'}
-                  onChange={(e) => setAboutData({
-                    ...aboutData,
-                    cta: { ...aboutData.cta, buttonLink: e.target.value }
-                  })}
-                  className="w-full px-3.5 py-2 bg-[#1A1A1A] border border-[#2D2D2D] rounded-xl text-xs font-mono text-neutral-300 focus:border-[#FFE379] focus:outline-none"
-                />
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label className="block text-[10px] uppercase font-bold text-neutral-400 mb-1">
+                    Label Text
+                  </label>
+                  <input
+                    type="text"
+                    value={aboutData.cta?.primaryBtnText || aboutData.cta?.buttonText || 'Contact Me Now'}
+                    onChange={(e) => setAboutData({
+                      ...aboutData,
+                      cta: { 
+                        ...aboutData.cta, 
+                        primaryBtnText: e.target.value,
+                        buttonText: e.target.value 
+                      }
+                    })}
+                    className="w-full px-3 py-1.5 bg-[#121212] border border-[#262626] rounded-xl text-xs font-bold text-white uppercase focus:border-[#FFE379] focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] uppercase font-bold text-neutral-400 mb-1">
+                    Target Link / Route
+                  </label>
+                  <input
+                    type="text"
+                    value={aboutData.cta?.primaryBtnLink || aboutData.cta?.buttonLink || '/contact'}
+                    onChange={(e) => setAboutData({
+                      ...aboutData,
+                      cta: { 
+                        ...aboutData.cta, 
+                        primaryBtnLink: e.target.value,
+                        buttonLink: e.target.value 
+                      }
+                    })}
+                    className="w-full px-3 py-1.5 bg-[#121212] border border-[#262626] rounded-xl text-xs font-mono text-neutral-300 focus:border-[#FFE379] focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] uppercase font-bold text-neutral-400 mb-1">
+                    Button Style Preset
+                  </label>
+                  <select
+                    value={aboutData.cta?.primaryBtnStyle || 'solid-gold'}
+                    onChange={(e) => setAboutData({
+                      ...aboutData,
+                      cta: { ...aboutData.cta, primaryBtnStyle: e.target.value }
+                    })}
+                    className="w-full px-3 py-1.5 bg-[#121212] border border-[#262626] rounded-xl text-xs font-bold text-[#FFE379] focus:border-[#FFE379] focus:outline-none uppercase"
+                  >
+                    <option value="solid-gold">Sharp Luxury Gold (Default)</option>
+                    <option value="rounded-smooth">Rounded Modern Gold</option>
+                    <option value="pill">Pill Curvature Gold</option>
+                    <option value="outline-gold">Minimal Golden Outline</option>
+                    <option value="cyber-cut">Cyberpunk Angled Cut</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            {/* BUTTON 2 (SECONDARY) CONFIGURATION */}
+            <div className="p-4 bg-[#1A1A1A] border border-[#2D2D2D] rounded-2xl space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold uppercase text-white flex items-center space-x-1.5">
+                  <span className="w-2 h-2 rounded-full bg-white" />
+                  <span>Button 2 (Secondary Action)</span>
+                </span>
+                <span className="text-[10px] font-mono text-neutral-400">e.g. Explore Portfolio</span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label className="block text-[10px] uppercase font-bold text-neutral-400 mb-1">
+                    Label Text
+                  </label>
+                  <input
+                    type="text"
+                    value={aboutData.cta?.secondaryBtnText || 'Explore Portfolio'}
+                    onChange={(e) => setAboutData({
+                      ...aboutData,
+                      cta: { ...aboutData.cta, secondaryBtnText: e.target.value }
+                    })}
+                    className="w-full px-3 py-1.5 bg-[#121212] border border-[#262626] rounded-xl text-xs font-bold text-white uppercase focus:border-[#FFE379] focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] uppercase font-bold text-neutral-400 mb-1">
+                    Target Link / Route
+                  </label>
+                  <input
+                    type="text"
+                    value={aboutData.cta?.secondaryBtnLink || '/portfolio'}
+                    onChange={(e) => setAboutData({
+                      ...aboutData,
+                      cta: { ...aboutData.cta, secondaryBtnLink: e.target.value }
+                    })}
+                    className="w-full px-3 py-1.5 bg-[#121212] border border-[#262626] rounded-xl text-xs font-mono text-neutral-300 focus:border-[#FFE379] focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] uppercase font-bold text-neutral-400 mb-1">
+                    Button Style Preset
+                  </label>
+                  <select
+                    value={aboutData.cta?.secondaryBtnStyle || 'outline-white'}
+                    onChange={(e) => setAboutData({
+                      ...aboutData,
+                      cta: { ...aboutData.cta, secondaryBtnStyle: e.target.value }
+                    })}
+                    className="w-full px-3 py-1.5 bg-[#121212] border border-[#262626] rounded-xl text-xs font-bold text-neutral-300 focus:border-[#FFE379] focus:outline-none uppercase"
+                  >
+                    <option value="outline-white">Minimal White Outline (Default)</option>
+                    <option value="rounded-smooth">Rounded Border White</option>
+                    <option value="pill">Pill Border White</option>
+                    <option value="solid-dark">Solid Charcoal Dark with Gold Text</option>
+                    <option value="solid-gold">Solid Luxury Gold</option>
+                    <option value="glass">Frosted Glass with Border</option>
+                  </select>
+                </div>
               </div>
             </div>
           </div>
