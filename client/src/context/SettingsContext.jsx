@@ -202,6 +202,79 @@ const defaultSettings = {
         }
       ]
     },
+    brands: {
+      badge: "BRANDS I'VE WORKED WITH",
+      titleLine1: 'Trusted',
+      titleLine2: 'Collaborations.',
+      bottomText: 'Proven track record across commercials, cricket leagues, academic institutions & fashion brands.',
+      featuredBadgeText: '8+ Featured Partners',
+      items: [
+        {
+          id: 'b-1',
+          name: 'Bio-Xin',
+          subtitle: 'cosmetics',
+          logoUrl: '',
+          iconEmoji: '🪷',
+          color: '#F59E0B'
+        },
+        {
+          id: 'b-2',
+          name: 'Quince',
+          subtitle: 'PASTRY SHOP',
+          logoUrl: '',
+          iconEmoji: '',
+          color: '#EF4444'
+        },
+        {
+          id: 'b-3',
+          name: 'RAIMA RANGERS',
+          subtitle: 'CRICKET TEAM',
+          logoUrl: '',
+          iconEmoji: '',
+          color: '#3B82F6'
+        },
+        {
+          id: 'b-4',
+          name: 'Bioscope',
+          subtitle: 'wedding',
+          logoUrl: '',
+          iconEmoji: '',
+          color: '#F97316'
+        },
+        {
+          id: 'b-5',
+          name: 'BCS Confidence',
+          subtitle: 'Education Academy',
+          logoUrl: '',
+          iconEmoji: '',
+          color: '#EF4444'
+        },
+        {
+          id: 'b-6',
+          name: 'Ordinary IT',
+          subtitle: 'Software & Technology',
+          logoUrl: '',
+          iconEmoji: '',
+          color: '#FFE379'
+        },
+        {
+          id: 'b-7',
+          name: 'Ordinary Coaching',
+          subtitle: 'Coaching Center',
+          logoUrl: '',
+          iconEmoji: 'C',
+          color: '#38BDF8'
+        },
+        {
+          id: 'b-8',
+          name: 'Alliance Mart',
+          subtitle: 'E-Commerce & Retail',
+          logoUrl: '',
+          iconEmoji: '🛍️',
+          color: '#F97316'
+        }
+      ]
+    },
     cta: {
       tagline: "LET'S CREATE CINEMATIC MAGIC",
       headlineLine1: 'Ready to take your',
@@ -257,6 +330,13 @@ export function SettingsProvider({ children }) {
               steps: res.data.homeContent?.process?.steps && res.data.homeContent.process.steps.length > 0
                 ? res.data.homeContent.process.steps
                 : defaultSettings.homeContent.process.steps
+            },
+            brands: {
+              ...defaultSettings.homeContent.brands,
+              ...(res.data.homeContent?.brands || {}),
+              items: res.data.homeContent?.brands?.items && res.data.homeContent.brands.items.length > 0
+                ? res.data.homeContent.brands.items
+                : defaultSettings.homeContent.brands.items
             },
             cta: { ...defaultSettings.homeContent.cta, ...(res.data.homeContent?.cta || {}) }
           },

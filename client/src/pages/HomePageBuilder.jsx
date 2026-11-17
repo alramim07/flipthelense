@@ -149,6 +149,79 @@ export default function HomePageBuilder() {
         }
       ]
     },
+    brands: {
+      badge: "BRANDS I'VE WORKED WITH",
+      titleLine1: 'Trusted',
+      titleLine2: 'Collaborations.',
+      bottomText: 'Proven track record across commercials, cricket leagues, academic institutions & fashion brands.',
+      featuredBadgeText: '8+ Featured Partners',
+      items: [
+        {
+          id: 'b-1',
+          name: 'Bio-Xin',
+          subtitle: 'cosmetics',
+          logoUrl: '',
+          iconEmoji: '🪷',
+          color: '#F59E0B'
+        },
+        {
+          id: 'b-2',
+          name: 'Quince',
+          subtitle: 'PASTRY SHOP',
+          logoUrl: '',
+          iconEmoji: '',
+          color: '#EF4444'
+        },
+        {
+          id: 'b-3',
+          name: 'RAIMA RANGERS',
+          subtitle: 'CRICKET TEAM',
+          logoUrl: '',
+          iconEmoji: '',
+          color: '#3B82F6'
+        },
+        {
+          id: 'b-4',
+          name: 'Bioscope',
+          subtitle: 'wedding',
+          logoUrl: '',
+          iconEmoji: '',
+          color: '#F97316'
+        },
+        {
+          id: 'b-5',
+          name: 'BCS Confidence',
+          subtitle: 'Education Academy',
+          logoUrl: '',
+          iconEmoji: '',
+          color: '#EF4444'
+        },
+        {
+          id: 'b-6',
+          name: 'Ordinary IT',
+          subtitle: 'Software & Technology',
+          logoUrl: '',
+          iconEmoji: '',
+          color: '#FFE379'
+        },
+        {
+          id: 'b-7',
+          name: 'Ordinary Coaching',
+          subtitle: 'Coaching Center',
+          logoUrl: '',
+          iconEmoji: 'C',
+          color: '#38BDF8'
+        },
+        {
+          id: 'b-8',
+          name: 'Alliance Mart',
+          subtitle: 'E-Commerce & Retail',
+          logoUrl: '',
+          iconEmoji: '🛍️',
+          color: '#F97316'
+        }
+      ]
+    },
     cta: {
       tagline: "LET'S CREATE CINEMATIC MAGIC",
       headlineLine1: 'Ready to take your',
@@ -986,11 +1059,283 @@ export default function HomePageBuilder() {
           </div>
         </div>
 
-        {/* ================= 5. CTA BANNER BUILDER ================= */}
+        {/* ================= 5. TRUSTED COLLABORATIONS (BRANDS I'VE WORKED WITH) BUILDER ================= */}
         <div className="relative group rounded-3xl p-6 sm:p-8 bg-[#141414]/90 border-2 border-[#262626] hover:border-[#FFE379]/50 transition-all shadow-xl">
           <div className="absolute -top-3.5 left-6 px-3 py-0.5 rounded-full bg-[#FFE379] text-[#101010] text-[10px] font-black uppercase tracking-wider flex items-center space-x-1 shadow">
             <Sparkles className="w-3 h-3" />
-            <span>Section 5: Call To Action (Bottom Banner)</span>
+            <span>Section 5: Brands I've Worked With (Trusted Collaborations)</span>
+          </div>
+
+          <div className="mt-2 space-y-6">
+            {/* Headers & Text Customizer */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-[11px] uppercase font-bold text-[#FFE379] mb-1">
+                  Tagline Sparkle Badge
+                </label>
+                <input
+                  type="text"
+                  value={homeData.brands?.badge || "BRANDS I'VE WORKED WITH"}
+                  onChange={(e) => setHomeData({
+                    ...homeData,
+                    brands: { ...homeData.brands, badge: e.target.value }
+                  })}
+                  className="w-full px-3.5 py-2 bg-[#1A1A1A] border border-[#2D2D2D] rounded-xl text-xs text-white focus:border-[#FFE379] focus:outline-none uppercase"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[11px] uppercase font-bold text-neutral-400 mb-1">
+                  Title Line 1 (White)
+                </label>
+                <input
+                  type="text"
+                  value={homeData.brands?.titleLine1 || 'Trusted'}
+                  onChange={(e) => setHomeData({
+                    ...homeData,
+                    brands: { ...homeData.brands, titleLine1: e.target.value }
+                  })}
+                  className="w-full px-3.5 py-2 bg-[#1A1A1A] border border-[#2D2D2D] rounded-xl text-xs font-bold text-white focus:border-[#FFE379] focus:outline-none uppercase"
+                  style={{ fontFamily: "'Oswald', sans-serif" }}
+                />
+              </div>
+
+              <div>
+                <label className="block text-[11px] uppercase font-bold text-[#FFE379] mb-1">
+                  Title Line 2 (Golden Highlight)
+                </label>
+                <input
+                  type="text"
+                  value={homeData.brands?.titleLine2 || 'Collaborations.'}
+                  onChange={(e) => setHomeData({
+                    ...homeData,
+                    brands: { ...homeData.brands, titleLine2: e.target.value }
+                  })}
+                  className="w-full px-3.5 py-2 bg-[#1A1A1A] border border-[#2D2D2D] rounded-xl text-xs font-bold text-[#FFE379] focus:border-[#FFE379] focus:outline-none uppercase"
+                  style={{ fontFamily: "'Oswald', sans-serif" }}
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="sm:col-span-2">
+                <label className="block text-[11px] uppercase font-bold text-neutral-400 mb-1">
+                  Bottom Trust Track Description
+                </label>
+                <input
+                  type="text"
+                  value={homeData.brands?.bottomText || ''}
+                  onChange={(e) => setHomeData({
+                    ...homeData,
+                    brands: { ...homeData.brands, bottomText: e.target.value }
+                  })}
+                  placeholder="Proven track record across commercials, cricket leagues, academic institutions & fashion brands."
+                  className="w-full px-3.5 py-2 bg-[#1A1A1A] border border-[#2D2D2D] rounded-xl text-xs text-neutral-300 focus:border-[#FFE379] focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[11px] uppercase font-bold text-[#FFE379] mb-1">
+                  Featured Counter Badge
+                </label>
+                <input
+                  type="text"
+                  value={homeData.brands?.featuredBadgeText || '8+ Featured Partners'}
+                  onChange={(e) => setHomeData({
+                    ...homeData,
+                    brands: { ...homeData.brands, featuredBadgeText: e.target.value }
+                  })}
+                  className="w-full px-3.5 py-2 bg-[#1A1A1A] border border-[#2D2D2D] rounded-xl text-xs font-mono font-bold text-[#FFE379] focus:border-[#FFE379] focus:outline-none"
+                />
+              </div>
+            </div>
+
+            {/* --- Brand Logos & Items Editor (Grid 2x4) --- */}
+            <div className="space-y-3 pt-2 border-t border-[#262626]">
+              <div className="flex items-center justify-between">
+                <div>
+                  <label className="block text-xs uppercase font-bold text-[#FFE379]">
+                    Brand Collaborations Grid ({homeData.brands?.items?.length || 0} Brands)
+                  </label>
+                  <p className="text-[11px] text-neutral-400 mt-0.5">
+                    Upload official brand logo files (PNG with transparent background or SVG) or customize the name & subtitle.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const newBrand = {
+                      id: 'b-' + Date.now(),
+                      name: 'Brand Name',
+                      subtitle: 'Category',
+                      logoUrl: '',
+                      iconEmoji: '✨',
+                      color: '#FFE379'
+                    };
+                    const updated = [...(homeData.brands?.items || []), newBrand];
+                    setHomeData({
+                      ...homeData,
+                      brands: { ...homeData.brands, items: updated }
+                    });
+                  }}
+                  className="px-3 py-1.5 rounded-xl bg-[#222] hover:bg-[#2C2C2C] text-[#FFE379] border border-[#3A3A3A] hover:border-[#FFE379]/50 text-xs font-bold uppercase transition flex items-center space-x-1"
+                  style={{ fontFamily: "'Oswald', sans-serif" }}
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>Add Brand</span>
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3.5">
+                {(homeData.brands?.items || []).map((brand, bIdx) => (
+                  <div key={brand.id || bIdx} className="p-3.5 bg-[#181818] border border-[#282828] rounded-2xl space-y-2.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-mono text-[#FFE379] font-bold">
+                        Brand #{bIdx + 1}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const updated = (homeData.brands?.items || []).filter((_, i) => i !== bIdx);
+                          setHomeData({
+                            ...homeData,
+                            brands: { ...homeData.brands, items: updated }
+                          });
+                        }}
+                        className="text-neutral-500 hover:text-red-400 p-1 rounded transition"
+                        title="Remove brand"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+
+                    {/* Logo Preview & Upload */}
+                    <div className="h-16 rounded-xl bg-[#121212] border border-[#303030] flex items-center justify-center p-2 relative overflow-hidden group/logo">
+                      {brand.logoUrl ? (
+                        <img src={brand.logoUrl} alt={brand.name} className="max-h-full max-w-full object-contain" />
+                      ) : (
+                        <div className="text-center leading-none">
+                          <span className="text-xs font-black text-white block uppercase" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                            {brand.iconEmoji} {brand.name || 'Brand'}
+                          </span>
+                          {brand.subtitle && (
+                            <span className="text-[8px] font-mono block mt-1" style={{ color: brand.color || '#FFE379' }}>
+                              {brand.subtitle}
+                            </span>
+                          )}
+                        </div>
+                      )}
+
+                      <label className="absolute inset-0 bg-black/70 opacity-0 group-hover/logo:opacity-100 flex items-center justify-center cursor-pointer transition text-[#FFE379] text-[10px] font-bold uppercase gap-1">
+                        <Upload className="w-3 h-3" />
+                        <span>Upload Logo</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => handleUpload(e, (url) => {
+                            const updated = [...(homeData.brands?.items || [])];
+                            updated[bIdx] = { ...updated[bIdx], logoUrl: url };
+                            setHomeData({
+                              ...homeData,
+                              brands: { ...homeData.brands, items: updated }
+                            });
+                          })}
+                        />
+                      </label>
+                    </div>
+
+                    {/* Direct Logo URL Input */}
+                    <input
+                      type="text"
+                      value={brand.logoUrl || ''}
+                      onChange={(e) => {
+                        const updated = [...(homeData.brands?.items || [])];
+                        updated[bIdx] = { ...updated[bIdx], logoUrl: e.target.value };
+                        setHomeData({
+                          ...homeData,
+                          brands: { ...homeData.brands, items: updated }
+                        });
+                      }}
+                      placeholder="Upload logo file or paste URL..."
+                      className="w-full px-2 py-1 bg-[#121212] border border-[#282828] rounded text-[10px] font-mono text-neutral-400 focus:border-[#FFE379] focus:outline-none"
+                    />
+
+                    {/* Brand Name */}
+                    <div>
+                      <label className="block text-[9px] uppercase font-bold text-neutral-500 mb-0.5">
+                        Brand Name
+                      </label>
+                      <input
+                        type="text"
+                        value={brand.name || ''}
+                        onChange={(e) => {
+                          const updated = [...(homeData.brands?.items || [])];
+                          updated[bIdx] = { ...updated[bIdx], name: e.target.value };
+                          setHomeData({
+                            ...homeData,
+                            brands: { ...homeData.brands, items: updated }
+                          });
+                        }}
+                        placeholder="e.g. Bio-Xin"
+                        className="w-full px-2.5 py-1.5 bg-[#121212] border border-[#282828] rounded-lg text-xs font-bold text-white focus:border-[#FFE379] focus:outline-none"
+                      />
+                    </div>
+
+                    {/* Subtitle / Category & Icon Emoji */}
+                    <div className="grid grid-cols-3 gap-2">
+                      <div className="col-span-2">
+                        <label className="block text-[9px] uppercase font-bold text-neutral-500 mb-0.5">
+                          Subtitle
+                        </label>
+                        <input
+                          type="text"
+                          value={brand.subtitle || ''}
+                          onChange={(e) => {
+                            const updated = [...(homeData.brands?.items || [])];
+                            updated[bIdx] = { ...updated[bIdx], subtitle: e.target.value };
+                            setHomeData({
+                              ...homeData,
+                              brands: { ...homeData.brands, items: updated }
+                            });
+                          }}
+                          placeholder="e.g. cosmetics"
+                          className="w-full px-2 py-1 bg-[#121212] border border-[#282828] rounded text-[11px] text-neutral-300 focus:border-[#FFE379] focus:outline-none"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[9px] uppercase font-bold text-neutral-500 mb-0.5">
+                          Icon / Emoji
+                        </label>
+                        <input
+                          type="text"
+                          value={brand.iconEmoji || ''}
+                          onChange={(e) => {
+                            const updated = [...(homeData.brands?.items || [])];
+                            updated[bIdx] = { ...updated[bIdx], iconEmoji: e.target.value };
+                            setHomeData({
+                              ...homeData,
+                              brands: { ...homeData.brands, items: updated }
+                            });
+                          }}
+                          placeholder="🪷"
+                          className="w-full px-2 py-1 bg-[#121212] border border-[#282828] rounded text-center text-xs text-white focus:border-[#FFE379] focus:outline-none"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        {/* ================= 6. CTA BANNER BUILDER ================= */}
+        <div className="relative group rounded-3xl p-6 sm:p-8 bg-[#141414]/90 border-2 border-[#262626] hover:border-[#FFE379]/50 transition-all shadow-xl">
+          <div className="absolute -top-3.5 left-6 px-3 py-0.5 rounded-full bg-[#FFE379] text-[#101010] text-[10px] font-black uppercase tracking-wider flex items-center space-x-1 shadow">
+            <Sparkles className="w-3 h-3" />
+            <span>Section 6: Call To Action (Bottom Banner)</span>
           </div>
 
           <div className="mt-2 space-y-4">
