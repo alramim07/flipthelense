@@ -593,6 +593,33 @@
       "device": "Desktop",
       "timestamp": "2026-11-17T10:25:58.609Z",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794912778748_5tsyl",
+      "visitorId": "vid_1794808639420_zbu0s4l",
+      "path": "/about",
+      "referrer": "http://localhost:5173/portfolio",
+      "device": "Desktop",
+      "timestamp": "2026-11-17T10:52:58.748Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "id": "hit_1794912915741_ar4ec",
+      "visitorId": "vid_1794834903395_ubmy3zo",
+      "path": "/about",
+      "referrer": "Direct",
+      "device": "Tablet",
+      "timestamp": "2026-11-17T10:55:15.741Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.7977.167 Safari/537.36 Antigravity/2.32.1"
+    },
+    {
+      "id": "hit_1794913031913_q9awr",
+      "visitorId": "vid_1794834903395_ubmy3zo",
+      "path": "/about",
+      "referrer": "Direct",
+      "device": "Tablet",
+      "timestamp": "2026-11-17T10:57:11.913Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.7977.167 Safari/537.36 Antigravity/2.32.1"
     }
   ],
   "inquiries": [
@@ -1734,6 +1761,168 @@
         "buttonLink": "/services/cinematic-wedding-video-editing",
         "buttonStyle": "pill-gold",
         "showArrow": true
+      }
+    },
+    "aboutContent": {
+      "hero": {
+        "titleLine1": "MY",
+        "titleLine2": "PORTFOLIO & RESUME",
+        "breadcrumb": "Home / Resume",
+        "bgImage": "https://images.unsplash.com/photo-1518133910546-b6c2fb7d79e3?auto=format&fit=crop&w=1600&q=80"
+      },
+      "quote": {
+        "text": "\"Every frame is a chance to move an audience. Filmmaking isn't just about putting clips together—it is about rhythm, emotional timing, and sculpting light so memories can live forever.\"",
+        "authorName": "PARVEJ MOSHARROF POLLOB",
+        "authorTitle": "Videography / Editor",
+        "signature": "Parvej Mosharrof",
+        "statement": "Framing emotions, sculpting light, and crafting stories that resonate forever."
+      },
+      "profile": {
+        "badge": "SINCE 2022",
+        "heading": "HELLO, I AM POLLOB (TEST EDIT)",
+        "bio": "For the past 4.5+ years, I have worked across full production pipelines—from shooting on set with cinema gear to final master delivery. My goal is to deliver clean visual clarity, immersive color profiles, and punchy edits that stand out in any feed or theatre screen.",
+        "image": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80",
+        "skills": [
+          {
+            "name": "ADOBE PREMIERE PRO",
+            "percent": 99
+          },
+          {
+            "name": "ADOBE AFTER EFFECT",
+            "percent": 85
+          },
+          {
+            "name": "3D MODELLING",
+            "percent": 50
+          },
+          {
+            "name": "POST-PRODUCTION TECHNIQUES",
+            "percent": 100
+          }
+        ]
+      },
+      "specialties": {
+        "badge": "FLIPTHELENSE STUDIO",
+        "title": "MY SPECIALTIES",
+        "bgImage": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=80",
+        "items": [
+          {
+            "id": "sp-1",
+            "title": "CINEMATIC WEDDING FILMS",
+            "subtitle": "Emotional Storytelling",
+            "desc": "Crafting non-linear, emotionally captivating wedding teasers and full-length feature films with bespoke pacing, speed ramps, and high-fidelity soundscapes."
+          },
+          {
+            "id": "sp-2",
+            "title": "COMMERCIALS & BRAND REELS",
+            "subtitle": "High-Conversion Media",
+            "desc": "Dynamic pacing, punchy typography, and trending motion design tailored to capture instant attention on Instagram Reels, YouTube Shorts, and TVC campaigns."
+          },
+          {
+            "id": "sp-3",
+            "title": "COLOR SCIENCE & LOOK DEV",
+            "subtitle": "ACES & DaVinci Resolve",
+            "desc": "Creating custom film-emulation LUTs, preserving organic skin tones, balancing multi-camera sensor variance, and delivering consistent cinematic mood."
+          },
+          {
+            "id": "sp-4",
+            "title": "POST-PRODUCTION & VFX",
+            "subtitle": "Seamless Audio/Visual Sync",
+            "desc": "Audio restoration, foley effects, rhythmic montage cuts, object masking, smooth warp transitions, and sophisticated visual enhancements."
+          }
+        ]
+      },
+      "experience": {
+        "badge": "CAREER TIMELINE",
+        "title": "WORK EXPERIENCE",
+        "items": [
+          {
+            "id": "exp-1",
+            "period": "2022 - PRESENT",
+            "role": "Senior Cinematographer & Lead Video Editor",
+            "company": "FlipTheLense Studio / Freelance",
+            "location": "Dhaka, Bangladesh",
+            "achievements": [
+              "Directed and finalized over 80+ high-end wedding films and 150+ commercial reels.",
+              "Established high-speed proxy workflows and automated post-production pipelines.",
+              "Achieved a 99% 5-star client satisfaction rating across domestic and global productions."
+            ]
+          },
+          {
+            "id": "exp-2",
+            "period": "2020 - 2022",
+            "role": "Commercial Video Editor & Colorist",
+            "company": "Creative Media Agency",
+            "location": "Dhaka, Bangladesh",
+            "achievements": [
+              "Edited narrative commercials for fashion, corporate, and culinary brands.",
+              "Managed color grading workflows for multi-cam shoots using DaVinci Resolve and Premiere Pro.",
+              "Collaborated closely with directors and audio engineers to hit strict broadcast deadlines."
+            ]
+          },
+          {
+            "id": "exp-3",
+            "period": "2019 - 2020",
+            "role": "Assistant Cinematographer & DIT",
+            "company": "Independent Film Group",
+            "location": "Dhaka, Bangladesh",
+            "achievements": [
+              "Handled on-location camera rigs, lighting setups, gimbal tracking, and dual-system audio recording.",
+              "Organized and ingested raw footage, created rough cut assemblies, and delivered daily rushes."
+            ]
+          }
+        ]
+      },
+      "tools": {
+        "badge": "PRODUCTION ARSENAL",
+        "title": "GEAR & SOFTWARE",
+        "categories": [
+          {
+            "category": "EDITING & COLOR",
+            "items": [
+              "Adobe Premiere Pro",
+              "Adobe After Effects",
+              "DaVinci Resolve Studio",
+              "Wondershare Filmora",
+              "CapCut Pro"
+            ]
+          },
+          {
+            "category": "DESIGN & GRAPHICS",
+            "items": [
+              "Adobe Photoshop",
+              "Adobe Illustrator",
+              "Motion Graphics Templates",
+              "Blender 3D Basics"
+            ]
+          },
+          {
+            "category": "AUDIO SUITE",
+            "items": [
+              "Adobe Audition",
+              "iZotope RX Noise Reduction",
+              "Foley Sound Design",
+              "Spatial Audio Mixing"
+            ]
+          },
+          {
+            "category": "CAMERA & HARDWARE",
+            "items": [
+              "Sony Alpha Series (4K 10-bit)",
+              "DJI Ronin Gimbal Stabilizers",
+              "Anamorphic & Prime Glass",
+              "Wireless Audio Transmitters"
+            ]
+          }
+        ]
+      },
+      "cta": {
+        "title": "LET'S CRAFT YOUR NEXT CINEMATIC PROJECT",
+        "subtitle": "Ready to collaborate on weddings, high-converting commercials, or creative short-form videos? Let's turn your concept into reality.",
+        "primaryBtnText": "Contact Me Now",
+        "primaryBtnLink": "/contact",
+        "secondaryBtnText": "Explore Portfolio",
+        "secondaryBtnLink": "/portfolio"
       }
     }
   },

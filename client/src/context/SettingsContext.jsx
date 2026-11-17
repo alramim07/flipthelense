@@ -642,8 +642,16 @@ export function SettingsProvider({ children }) {
     }
   }, [settings.frontendFavicon, settings.adminFavicon, settings.mergeFavicon]);
 
+  // Update specific section settings in local context state immediately
+  const updateSectionSettings = (sectionKey, newSectionData) => {
+    setSettings((prev) => ({
+      ...prev,
+      [sectionKey]: newSectionData
+    }));
+  };
+
   return (
-    <SettingsContext.Provider value={{ settings, setSettings, fetchSettings, loading }}>
+    <SettingsContext.Provider value={{ settings, setSettings, updateSectionSettings, fetchSettings, loading }}>
       {children}
     </SettingsContext.Provider>
   );
