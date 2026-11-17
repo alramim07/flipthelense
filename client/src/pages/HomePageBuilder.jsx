@@ -1650,8 +1650,24 @@ export default function HomePageBuilder() {
               />
             </div>
 
-            {/* Target Destination Link & Arrow Toggle */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-[#232323]">
+            {/* Target Destination Link, Button Action Label & Arrow Toggle */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2 border-t border-[#232323]">
+              <div>
+                <label className="block text-[11px] uppercase font-bold text-[#FFE379] mb-1">
+                  Button Action Text
+                </label>
+                <input
+                  type="text"
+                  value={homeData.cta?.buttonText || ''}
+                  onChange={(e) => setHomeData({
+                    ...homeData,
+                    cta: { ...homeData.cta, buttonText: e.target.value }
+                  })}
+                  placeholder="e.g. GET STARTED or BOOK NOW"
+                  className="w-full px-3.5 py-2 bg-[#1A1A1A] border border-[#2D2D2D] rounded-xl text-xs font-bold text-white focus:border-[#FFE379] focus:outline-none uppercase"
+                />
+              </div>
+
               <div>
                 <label className="block text-[11px] uppercase font-bold text-neutral-400 mb-1">
                   Button Target Destination URL / Route
