@@ -499,6 +499,14 @@ const defaultSettings = {
       tagline: 'MY WORK',
       title: 'EXPLORE OUR RECENT PROJECTS',
       description: 'Bespoke video editing, high-end commercial grading, and story-driven post production across global client productions.'
+    },
+    bottomCta: {
+      badge: 'WORK WITH US',
+      title: 'HAVE A PROJECT IN MIND?',
+      description: "Ready to produce high-end wedding films, viral reels, or cinematic TV commercials? Let's discuss your timeline and vision.",
+      buttonText: 'BOOK A CONSULTATION',
+      buttonLink: '/contact',
+      buttonStyle: 'sharp-gold' // 'sharp-gold' | 'rounded-gold' | 'pill-gold' | 'outline-gold' | 'glass-gold' | 'cyber-cut'
     }
   }
 };
@@ -611,7 +619,8 @@ export function SettingsProvider({ children }) {
             ...defaultSettings.portfolioContent,
             ...(res.data.portfolioContent || {}),
             hero: { ...defaultSettings.portfolioContent.hero, ...(res.data.portfolioContent?.hero || {}) },
-            filterSection: { ...defaultSettings.portfolioContent.filterSection, ...(res.data.portfolioContent?.filterSection || {}) }
+            filterSection: { ...defaultSettings.portfolioContent.filterSection, ...(res.data.portfolioContent?.filterSection || {}) },
+            bottomCta: { ...defaultSettings.portfolioContent.bottomCta, ...(res.data.portfolioContent?.bottomCta || {}) }
           },
           menus: res.data.menus && res.data.menus.length > 0 ? res.data.menus : defaultSettings.menus
         });

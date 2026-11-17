@@ -41,6 +41,13 @@ export default function PortfolioPageBuilder() {
       if (!cloned.hero.statAwardsLabel) cloned.hero.statAwardsLabel = 'Best Award';
       if (!cloned.hero.statProjects) cloned.hero.statProjects = '523';
       if (!cloned.hero.statProjectsLabel) cloned.hero.statProjectsLabel = 'Project Done';
+      if (!cloned.bottomCta) cloned.bottomCta = {};
+      if (!cloned.bottomCta.badge) cloned.bottomCta.badge = 'WORK WITH US';
+      if (!cloned.bottomCta.title) cloned.bottomCta.title = 'HAVE A PROJECT IN MIND?';
+      if (!cloned.bottomCta.description) cloned.bottomCta.description = "Ready to produce high-end wedding films, viral reels, or cinematic TV commercials? Let's discuss your timeline and vision.";
+      if (!cloned.bottomCta.buttonText) cloned.bottomCta.buttonText = 'BOOK A CONSULTATION';
+      if (!cloned.bottomCta.buttonLink) cloned.bottomCta.buttonLink = '/contact';
+      if (!cloned.bottomCta.buttonStyle) cloned.bottomCta.buttonStyle = 'sharp-gold';
       setPortfolioData(cloned);
     }
   }, [settings]);
@@ -557,6 +564,121 @@ export default function PortfolioPageBuilder() {
                 })}
                 className="w-full px-3.5 py-2 bg-[#1A1A1A] border border-[#2D2D2D] rounded-xl text-xs text-neutral-300 focus:border-[#FFE379] focus:outline-none resize-y"
               />
+            </div>
+          </div>
+        </div>
+
+        {/* ================= 3. BOTTOM CINEMATIC CTA BANNER BUILDER ================= */}
+        <div className="relative group rounded-3xl p-6 sm:p-8 bg-[#141414]/90 border-2 border-[#262626] hover:border-[#FFE379]/50 transition-all shadow-xl">
+          <div className="absolute -top-3.5 left-6 px-3 py-0.5 rounded-full bg-[#FFE379] text-[#101010] text-[10px] font-black uppercase tracking-wider flex items-center space-x-1 shadow">
+            <Sparkles className="w-3 h-3" />
+            <span>Section 3: Bottom Cinematic CTA Banner</span>
+          </div>
+
+          <div className="mt-2 space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-[11px] uppercase font-bold text-[#FFE379] mb-1">
+                  Tagline / Badge
+                </label>
+                <input
+                  type="text"
+                  value={portfolioData.bottomCta?.badge || 'WORK WITH US'}
+                  onChange={(e) => setPortfolioData({
+                    ...portfolioData,
+                    bottomCta: { ...portfolioData.bottomCta, badge: e.target.value }
+                  })}
+                  className="w-full px-3.5 py-2 bg-[#1A1A1A] border border-[#2D2D2D] rounded-xl text-xs text-white uppercase focus:border-[#FFE379] focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[11px] uppercase font-bold text-white mb-1">
+                  Headline Title
+                </label>
+                <input
+                  type="text"
+                  value={portfolioData.bottomCta?.title || 'HAVE A PROJECT IN MIND?'}
+                  onChange={(e) => setPortfolioData({
+                    ...portfolioData,
+                    bottomCta: { ...portfolioData.bottomCta, title: e.target.value }
+                  })}
+                  className="w-full px-3.5 py-2 bg-[#1A1A1A] border border-[#2D2D2D] rounded-xl text-xs font-bold text-white uppercase focus:border-[#FFE379] focus:outline-none"
+                  style={{ fontFamily: "'Oswald', sans-serif" }}
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-[11px] uppercase font-bold text-neutral-400 mb-1">
+                Description Subtitle
+              </label>
+              <textarea
+                rows={2}
+                value={portfolioData.bottomCta?.description || ''}
+                onChange={(e) => setPortfolioData({
+                  ...portfolioData,
+                  bottomCta: { ...portfolioData.bottomCta, description: e.target.value }
+                })}
+                className="w-full px-3.5 py-2 bg-[#1A1A1A] border border-[#2D2D2D] rounded-xl text-xs text-neutral-300 focus:border-[#FFE379] focus:outline-none resize-y"
+              />
+            </div>
+
+            <div className="p-4 rounded-2xl bg-[#1A1A1A] border border-[#262626] space-y-3">
+              <span className="text-[11px] uppercase tracking-wider font-bold text-[#FFE379] block">
+                CTA Action Button Settings
+              </span>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label className="block text-[10px] uppercase font-bold text-neutral-400 mb-1">
+                    Button Text
+                  </label>
+                  <input
+                    type="text"
+                    value={portfolioData.bottomCta?.buttonText || 'BOOK A CONSULTATION'}
+                    onChange={(e) => setPortfolioData({
+                      ...portfolioData,
+                      bottomCta: { ...portfolioData.bottomCta, buttonText: e.target.value }
+                    })}
+                    className="w-full px-3 py-2 bg-[#111] border border-[#333] rounded-xl text-xs text-white focus:border-[#FFE379] focus:outline-none uppercase font-semibold"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] uppercase font-bold text-neutral-400 mb-1">
+                    Button Target Link
+                  </label>
+                  <input
+                    type="text"
+                    value={portfolioData.bottomCta?.buttonLink || '/contact'}
+                    onChange={(e) => setPortfolioData({
+                      ...portfolioData,
+                      bottomCta: { ...portfolioData.bottomCta, buttonLink: e.target.value }
+                    })}
+                    className="w-full px-3 py-2 bg-[#111] border border-[#333] rounded-xl text-xs text-white focus:border-[#FFE379] focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] uppercase font-bold text-neutral-400 mb-1">
+                    Button Style Preset
+                  </label>
+                  <select
+                    value={portfolioData.bottomCta?.buttonStyle || 'sharp-gold'}
+                    onChange={(e) => setPortfolioData({
+                      ...portfolioData,
+                      bottomCta: { ...portfolioData.bottomCta, buttonStyle: e.target.value }
+                    })}
+                    className="w-full px-3 py-2 bg-[#111] border border-[#333] rounded-xl text-xs text-white focus:border-[#FFE379] focus:outline-none"
+                  >
+                    <option value="sharp-gold">Sharp Luxury Gold (Square)</option>
+                    <option value="rounded-gold">Rounded Smooth Gold</option>
+                    <option value="pill-gold">Pill Full Curve Gold</option>
+                    <option value="outline-gold">Gold Outline (Minimalist)</option>
+                    <option value="cyber-cut">Cyber Cut Edges</option>
+                  </select>
+                </div>
+              </div>
             </div>
           </div>
         </div>

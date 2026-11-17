@@ -31,6 +31,15 @@ export default function Portfolio() {
     description: 'Bespoke video editing, high-end commercial grading, and story-driven post production across global client productions.'
   };
 
+  const bottomCta = portfolioSettings.bottomCta || {
+    badge: 'WORK WITH US',
+    title: 'HAVE A PROJECT IN MIND?',
+    description: "Ready to produce high-end wedding films, viral reels, or cinematic TV commercials? Let's discuss your timeline and vision.",
+    buttonText: 'BOOK A CONSULTATION',
+    buttonLink: '/contact',
+    buttonStyle: 'sharp-gold'
+  };
+
   const [activeCategory, setActiveCategory] = useState('all');
   const [modalVideo, setModalVideo] = useState({ isOpen: false, title: '', url: '' });
   const [projects, setProjects] = useState([]);
@@ -381,6 +390,56 @@ export default function Portfolio() {
           </div>
         )}
 
+      </section>
+
+      {/* ================= 3. BOTTOM CINEMATIC CTA BANNER ================= */}
+      <section className="py-20 px-6 text-center bg-gradient-to-b from-[#101010] to-black border-t border-[#232323]">
+        <div className="max-w-2xl mx-auto space-y-5">
+          {bottomCta.badge && (
+            <span 
+              className="text-xs uppercase tracking-[4.5px] text-[#FFE379] font-medium block"
+              style={{ fontFamily: "'Raleway', sans-serif" }}
+            >
+              {bottomCta.badge}
+            </span>
+          )}
+
+          <h2 
+            className="text-3xl sm:text-5xl font-extrabold text-[#F4F4F4] uppercase tracking-normal"
+            style={{ fontFamily: "'Oswald', sans-serif" }}
+          >
+            {bottomCta.title || 'HAVE A PROJECT IN MIND?'}
+          </h2>
+
+          {bottomCta.description && (
+            <p 
+              className="text-neutral-400 text-xs sm:text-sm max-w-md mx-auto leading-relaxed"
+              style={{ fontFamily: "'Raleway', sans-serif" }}
+            >
+              {bottomCta.description}
+            </p>
+          )}
+
+          <div className="pt-3 flex flex-wrap items-center justify-center gap-4">
+            <Link 
+              to={bottomCta.buttonLink || '/contact'} 
+              className={`inline-flex items-center space-x-2 font-semibold text-sm px-8 py-3.5 uppercase tracking-wider transition-all shadow-xl hover:scale-105 active:scale-95 ${
+                bottomCta.buttonStyle === 'rounded-gold' 
+                  ? 'bg-[#FFE379] hover:bg-[#ebd074] text-black rounded-xl' 
+                  : bottomCta.buttonStyle === 'pill-gold'
+                  ? 'bg-[#FFE379] hover:bg-[#ebd074] text-black rounded-full'
+                  : bottomCta.buttonStyle === 'outline-gold'
+                  ? 'bg-transparent border-2 border-[#FFE379] text-[#FFE379] hover:bg-[#FFE379] hover:text-black'
+                  : bottomCta.buttonStyle === 'cyber-cut'
+                  ? 'bg-[#FFE379] hover:bg-[#ebd074] text-black clip-diagonal'
+                  : 'bg-[#FFE379] hover:bg-[#ebd074] text-black'
+              }`}
+              style={{ fontFamily: "'Oswald', sans-serif" }}
+            >
+              <span>{bottomCta.buttonText || 'BOOK A CONSULTATION'}</span>
+            </Link>
+          </div>
+        </div>
       </section>
 
       {/* Video Modal Popup */}
