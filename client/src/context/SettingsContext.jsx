@@ -83,14 +83,14 @@ const defaultSettings = {
       videoUrl: 'https://www.youtube.com/embed/ScMzIvxBSi4'
     },
     reels: [
-      { id: 'r-1', title: 'Wedding Teaser', url: 'https://www.youtube.com/embed/ScMzIvxBSi4', img: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80' },
-      { id: 'r-2', title: 'Dream Car Reel', url: 'https://www.youtube.com/embed/ScMzIvxBSi4', img: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80' },
-      { id: 'r-3', title: 'Street Pacing Edit', url: 'https://www.youtube.com/embed/ScMzIvxBSi4', img: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=600&q=80' },
-      { id: 'r-4', title: 'Commercial Audio', url: 'https://www.youtube.com/embed/ScMzIvxBSi4', img: 'https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=600&q=80' },
-      { id: 'r-5', title: 'Cyberpunk Grade', url: 'https://www.youtube.com/embed/ScMzIvxBSi4', img: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80' },
-      { id: 'r-6', title: 'Nature Doc', url: 'https://www.youtube.com/embed/ScMzIvxBSi4', img: 'https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=600&q=80' },
-      { id: 'r-7', title: 'Energy Commercial', url: 'https://www.youtube.com/embed/ScMzIvxBSi4', img: 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80' },
-      { id: 'r-8', title: 'Fashion Model', url: 'https://www.youtube.com/embed/ScMzIvxBSi4', img: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=600&q=80' }
+      { id: 'r-1', title: 'Wedding Teaser', platform: 'youtube', url: 'https://www.youtube.com/embed/ScMzIvxBSi4', img: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80', views: '1.2M', likes: '95K', comments: '1.4K', shares: '18K' },
+      { id: 'r-2', title: 'Dream Car Reel', platform: 'instagram', url: 'https://www.youtube.com/embed/ScMzIvxBSi4', img: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80', views: '850K', likes: '72K', comments: '980', shares: '12K' },
+      { id: 'r-3', title: 'Street Pacing Edit', platform: 'tiktok', url: 'https://www.youtube.com/embed/ScMzIvxBSi4', img: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=600&q=80', views: '2.4M', likes: '180K', comments: '3.1K', shares: '42K' },
+      { id: 'r-4', title: 'Commercial Audio', platform: 'facebook', url: 'https://www.youtube.com/embed/ScMzIvxBSi4', img: 'https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=600&q=80', views: '450K', likes: '38K', comments: '620', shares: '8.5K' },
+      { id: 'r-5', title: 'Cyberpunk Grade', platform: 'youtube', url: 'https://www.youtube.com/embed/ScMzIvxBSi4', img: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80', views: '980K', likes: '84K', comments: '1.2K', shares: '16K' },
+      { id: 'r-6', title: 'Nature Doc', platform: 'instagram', url: 'https://www.youtube.com/embed/ScMzIvxBSi4', img: 'https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=600&q=80', views: '620K', likes: '54K', comments: '850', shares: '9.2K' },
+      { id: 'r-7', title: 'Energy Commercial', platform: 'tiktok', url: 'https://www.youtube.com/embed/ScMzIvxBSi4', img: 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80', views: '1.8M', likes: '142K', comments: '2.8K', shares: '31K' },
+      { id: 'r-8', title: 'Fashion Model', platform: 'facebook', url: 'https://www.youtube.com/embed/ScMzIvxBSi4', img: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=600&q=80', views: '510K', likes: '42K', comments: '590', shares: '7.8K' }
     ],
     about: {
       subtitle: 'Since 2022',
@@ -544,7 +544,12 @@ export function SettingsProvider({ children }) {
           },
           homeContent: {
             hero: { ...defaultSettings.homeContent.hero, ...(res.data.homeContent?.hero || {}) },
-            reels: res.data.homeContent?.reels && res.data.homeContent.reels.length > 0 ? res.data.homeContent.reels : defaultSettings.homeContent.reels,
+            reels: (res.data.homeContent?.reels && res.data.homeContent.reels.length > 0)
+              ? res.data.homeContent.reels.map((r, i) => ({
+                  ...(defaultSettings.homeContent.reels[i] || {}),
+                  ...r
+                }))
+              : defaultSettings.homeContent.reels,
             about: {
               ...defaultSettings.homeContent.about,
               ...(res.data.homeContent?.about || {}),

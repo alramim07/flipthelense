@@ -617,4 +617,103 @@ router.delete('/reviews/:id', async (req, res) => {
   }
 });
 
+// ================= REEL / VIDEO METADATA & THUMBNAIL RESOLVER =================
+// Automatically detect platform, generate embed URL, and fetch thumbnail for YouTube, Instagram, TikTok, Facebook
+router.post('/reels/resolve-url', async (req, res) => {
+  try {
+    const { url } = req.body;
+    if (!url || typeof url !== 'string') {
+      return res.status(400).json({ error: 'Valid URL is required' });
+    }
+
+    const trimmedUrl = url.trim();
+    let platform = 'custom';
+    let embedUrl = trimmedUrl;
+    let thumbnailUrl = '';
+
+    // 1. YouTube & YouTube Shorts
+    // Match youtube.com/watch?v=ID, youtu.be/ID, youtube.com/shorts/ID, youtube.com/embed/ID
+    const ytMatch = trimmedUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/))([a-zA-Z0-9_-]{11})/);
+    if (ytMatch && ytMatch[1]) {
+      const videoId = ytMatch[1];
+      platform = 'youtube';
+      embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+      thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+      return res.json({
+        platform,
+        embedUrl,
+        thumbnailUrl,
+        videoId
+      });
+    }
+
+    // 2. Instagram & Instagram Reels
+    // Match instagram.com/reel/CODE, instagram.com/p/CODE
+    const instaMatch = trimmedUrl.match(/instagram\.com\/(?:reel|reels|p)\/([a-zA-Z0-9_-]+)/);
+    if (instaMatch) {
+      platform = 'instagram';
+      embedUrl = `https://www.instagram.com/p/${instaMatch[1]}/embed/`;
+      // Try resolving public oEmbed for Instagram thumbnail if possible
+      try {
+        const oembedRes = await fetch(`https://api.instagram.com/oembed/?url=${encodeURIComponent(trimmedUrl)}`, {
+          headers: { 'User-Agent': 'Mozilla/5.0' },
+          signal: AbortSignal.timeout(3000)
+        });
+        if (oembedRes.ok) {
+          const data = await oembedRes.json();
+          if (data.thumbnail_url) thumbnailUrl = data.thumbnail_url;
+        }
+      } catch (e) {}
+
+      return res.json({
+        platform,
+        embedUrl,
+        thumbnailUrl
+      });
+    }
+
+    // 3. TikTok
+    // Match tiktok.com/@user/video/ID, vt.tiktok.com/CODE
+    if (trimmedUrl.includes('tiktok.com')) {
+      platform = 'tiktok';
+      try {
+        const oembedRes = await fetch(`https://www.tiktok.com/oembed?url=${encodeURIComponent(trimmedUrl)}`, {
+          headers: { 'User-Agent': 'Mozilla/5.0' },
+          signal: AbortSignal.timeout(3000)
+        });
+        if (oembedRes.ok) {
+          const data = await oembedRes.json();
+          if (data.thumbnail_url) thumbnailUrl = data.thumbnail_url;
+        }
+      } catch (e) {}
+
+      return res.json({
+        platform,
+        embedUrl: trimmedUrl,
+        thumbnailUrl
+      });
+    }
+
+    // 4. Facebook Watch / Reels
+    if (trimmedUrl.includes('facebook.com') || trimmedUrl.includes('fb.watch')) {
+      platform = 'facebook';
+      embedUrl = `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(trimmedUrl)}&show_text=0`;
+      return res.json({
+        platform,
+        embedUrl,
+        thumbnailUrl
+      });
+    }
+
+    // 5. Fallback for custom / other video links
+    return res.json({
+      platform,
+      embedUrl,
+      thumbnailUrl
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message || 'Failed to resolve URL' });
+  }
+});
+
 export default router;

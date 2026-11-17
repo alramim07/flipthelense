@@ -535,15 +535,17 @@ export default function HomePageBuilder() {
 
           <div className="mt-2 space-y-4">
             <p className="text-xs text-neutral-400">
-              Update vertical thumbnail covers and video embed URLs for all 8 floating cards across the 4 staggered columns.
+              Paste any <strong className="text-white">YouTube, Instagram Reel, TikTok, or Facebook</strong> video link. The platform and video embed are automatically detected! You can also customize viral metrics (Views, Likes, Comments, Shares) and upload custom vertical covers.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
               {(homeData.reels || []).map((reel, idx) => (
-                <div key={reel.id || idx} className="p-3 bg-[#1A1A1A] border border-[#2A2A2A] rounded-2xl space-y-2">
+                <div key={reel.id || idx} className="p-3.5 bg-[#1A1A1A] border border-[#2A2A2A] rounded-2xl space-y-2.5">
                   <div className="flex items-center justify-between text-xs text-neutral-400">
                     <span className="font-mono text-[#FFE379] font-bold">Reel #{idx + 1}</span>
-                    <span className="text-[10px] font-mono">Column {Math.floor(idx / 2) + 1}</span>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#242424] text-neutral-300 uppercase">
+                      {reel.platform || 'Auto'}
+                    </span>
                   </div>
 
                   {/* Thumbnail Preview */}
@@ -568,28 +570,139 @@ export default function HomePageBuilder() {
                     </label>
                   </div>
 
-                  <input
-                    type="text"
-                    value={reel.title || ''}
-                    onChange={(e) => {
-                      const updated = [...homeData.reels];
-                      updated[idx] = { ...updated[idx], title: e.target.value };
-                      setHomeData({ ...homeData, reels: updated });
-                    }}
-                    placeholder="Title (e.g. Wedding Teaser)"
-                    className="w-full px-2.5 py-1.5 bg-[#121212] border border-[#282828] rounded-lg text-xs text-white focus:border-[#FFE379] focus:outline-none"
-                  />
-                  <input
-                    type="text"
-                    value={reel.url || ''}
-                    onChange={(e) => {
-                      const updated = [...homeData.reels];
-                      updated[idx] = { ...updated[idx], url: e.target.value };
-                      setHomeData({ ...homeData, reels: updated });
-                    }}
-                    placeholder="YouTube Embed URL..."
-                    className="w-full px-2.5 py-1 bg-[#121212] border border-[#282828] rounded-lg text-[10px] font-mono text-neutral-400 focus:border-[#FFE379] focus:outline-none"
-                  />
+                  {/* Title */}
+                  <div>
+                    <label className="block text-[9px] uppercase font-bold text-neutral-400 mb-0.5">Reel Title</label>
+                    <input
+                      type="text"
+                      value={reel.title || ''}
+                      onChange={(e) => {
+                        const updated = [...homeData.reels];
+                        updated[idx] = { ...updated[idx], title: e.target.value };
+                        setHomeData({ ...homeData, reels: updated });
+                      }}
+                      placeholder="Title (e.g. Wedding Teaser)"
+                      className="w-full px-2.5 py-1.5 bg-[#121212] border border-[#282828] rounded-lg text-xs text-white focus:border-[#FFE379] focus:outline-none"
+                    />
+                  </div>
+
+                  {/* Video URL with Instant Auto-Resolver */}
+                  <div>
+                    <label className="block text-[9px] uppercase font-bold text-[#FFE379] mb-0.5">
+                      Video Link (YouTube, IG, TikTok, FB)
+                    </label>
+                    <input
+                      type="text"
+                      value={reel.url || ''}
+                      onChange={async (e) => {
+                        const rawUrl = e.target.value;
+                        const updated = [...homeData.reels];
+                        updated[idx] = { ...updated[idx], url: rawUrl };
+                        setHomeData({ ...homeData, reels: updated });
+
+                        // Call resolver if looks like a link
+                        if (rawUrl.includes('http://') || rawUrl.includes('https://')) {
+                          try {
+                            const res = await axios.post('/api/reels/resolve-url', { url: rawUrl });
+                            if (res.data) {
+                              const latest = [...homeData.reels];
+                              latest[idx] = {
+                                ...latest[idx],
+                                url: res.data.embedUrl || rawUrl,
+                                platform: res.data.platform || latest[idx].platform || 'custom',
+                                img: res.data.thumbnailUrl || latest[idx].img
+                              };
+                              setHomeData({ ...homeData, reels: latest });
+                            }
+                          } catch (err) {}
+                        }
+                      }}
+                      placeholder="Paste reel link here..."
+                      className="w-full px-2.5 py-1.5 bg-[#121212] border border-[#282828] rounded-lg text-[10px] font-mono text-neutral-300 focus:border-[#FFE379] focus:outline-none"
+                    />
+                  </div>
+
+                  {/* Platform & Views Row */}
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <label className="block text-[9px] uppercase font-bold text-neutral-400 mb-0.5">Platform</label>
+                      <select
+                        value={reel.platform || 'youtube'}
+                        onChange={(e) => {
+                          const updated = [...homeData.reels];
+                          updated[idx] = { ...updated[idx], platform: e.target.value };
+                          setHomeData({ ...homeData, reels: updated });
+                        }}
+                        className="w-full px-2 py-1 bg-[#121212] border border-[#282828] rounded-lg text-[10px] text-white focus:border-[#FFE379] focus:outline-none"
+                      >
+                        <option value="youtube">YouTube</option>
+                        <option value="instagram">Instagram</option>
+                        <option value="tiktok">TikTok</option>
+                        <option value="facebook">Facebook</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-[9px] uppercase font-bold text-neutral-400 mb-0.5">Views (👁️)</label>
+                      <input
+                        type="text"
+                        value={reel.views || ''}
+                        onChange={(e) => {
+                          const updated = [...homeData.reels];
+                          updated[idx] = { ...updated[idx], views: e.target.value };
+                          setHomeData({ ...homeData, reels: updated });
+                        }}
+                        placeholder="e.g. 1.2M"
+                        className="w-full px-2 py-1 bg-[#121212] border border-[#282828] rounded-lg text-[10px] font-bold text-[#FFE379] focus:border-[#FFE379] focus:outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Viral Engagement: Likes, Comments, Shares */}
+                  <div className="grid grid-cols-3 gap-1.5 pt-1 border-t border-[#252525]">
+                    <div>
+                      <label className="block text-[8px] uppercase font-bold text-neutral-400 mb-0.5">Likes ❤️</label>
+                      <input
+                        type="text"
+                        value={reel.likes || ''}
+                        onChange={(e) => {
+                          const updated = [...homeData.reels];
+                          updated[idx] = { ...updated[idx], likes: e.target.value };
+                          setHomeData({ ...homeData, reels: updated });
+                        }}
+                        placeholder="95K"
+                        className="w-full px-1.5 py-1 bg-[#121212] border border-[#282828] rounded-lg text-[10px] text-neutral-200 focus:border-[#FFE379] focus:outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[8px] uppercase font-bold text-neutral-400 mb-0.5">Comments 💬</label>
+                      <input
+                        type="text"
+                        value={reel.comments || ''}
+                        onChange={(e) => {
+                          const updated = [...homeData.reels];
+                          updated[idx] = { ...updated[idx], comments: e.target.value };
+                          setHomeData({ ...homeData, reels: updated });
+                        }}
+                        placeholder="1.2K"
+                        className="w-full px-1.5 py-1 bg-[#121212] border border-[#282828] rounded-lg text-[10px] text-neutral-200 focus:border-[#FFE379] focus:outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[8px] uppercase font-bold text-neutral-400 mb-0.5">Shares ↗️</label>
+                      <input
+                        type="text"
+                        value={reel.shares || ''}
+                        onChange={(e) => {
+                          const updated = [...homeData.reels];
+                          updated[idx] = { ...updated[idx], shares: e.target.value };
+                          setHomeData({ ...homeData, reels: updated });
+                        }}
+                        placeholder="15K"
+                        className="w-full px-1.5 py-1 bg-[#121212] border border-[#282828] rounded-lg text-[10px] text-neutral-200 focus:border-[#FFE379] focus:outline-none"
+                      />
+                    </div>
+                  </div>
+
                 </div>
               ))}
             </div>
