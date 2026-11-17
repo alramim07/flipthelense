@@ -376,6 +376,13 @@ export function SettingsProvider({ children }) {
                 ? res.data.homeContent.brands.items
                 : defaultSettings.homeContent.brands.items
             },
+            reviews: {
+              ...defaultSettings.homeContent.reviews,
+              ...(res.data.homeContent?.reviews || {}),
+              items: res.data.homeContent?.reviews?.items && res.data.homeContent.reviews.items.length > 0
+                ? res.data.homeContent.reviews.items
+                : defaultSettings.homeContent.reviews.items
+            },
             cta: { ...defaultSettings.homeContent.cta, ...(res.data.homeContent?.cta || {}) }
           },
           menus: res.data.menus && res.data.menus.length > 0 ? res.data.menus : defaultSettings.menus
