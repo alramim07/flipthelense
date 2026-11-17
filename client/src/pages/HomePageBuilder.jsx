@@ -1649,6 +1649,154 @@ export default function HomePageBuilder() {
                 className="w-full px-3.5 py-2 bg-[#1A1A1A] border border-[#2D2D2D] rounded-xl text-xs text-neutral-300 focus:border-[#FFE379] focus:outline-none resize-y"
               />
             </div>
+
+            {/* Target Destination Link & Arrow Toggle */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-[#232323]">
+              <div>
+                <label className="block text-[11px] uppercase font-bold text-neutral-400 mb-1">
+                  Button Target Destination URL / Route
+                </label>
+                <input
+                  type="text"
+                  value={homeData.cta?.buttonLink || ''}
+                  onChange={(e) => setHomeData({
+                    ...homeData,
+                    cta: { ...homeData.cta, buttonLink: e.target.value }
+                  })}
+                  placeholder="/services/cinematic-wedding-video-editing"
+                  className="w-full px-3.5 py-2 bg-[#1A1A1A] border border-[#2D2D2D] rounded-xl text-xs font-mono text-neutral-300 focus:border-[#FFE379] focus:outline-none"
+                />
+              </div>
+
+              <div className="flex items-center space-x-3 pt-6">
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={homeData.cta?.showArrow !== false}
+                    onChange={(e) => setHomeData({
+                      ...homeData,
+                      cta: { ...homeData.cta, showArrow: e.target.checked }
+                    })}
+                    className="sr-only peer"
+                  />
+                  <div className="w-11 h-6 bg-[#252525] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#FFE379]"></div>
+                </label>
+                <span className="text-xs font-bold text-neutral-300 uppercase">
+                  Show Arrow Icon (→) in Button
+                </span>
+              </div>
+            </div>
+
+            {/* Button Style Selector with Live Preview */}
+            <div className="pt-4 border-t border-[#232323] space-y-3">
+              <div>
+                <label className="block text-[11px] uppercase font-bold text-[#FFE379] mb-1">
+                  Button Style Preset (Dropdown & Visual Previews)
+                </label>
+                <p className="text-[11px] text-neutral-400 mb-3">
+                  Choose a tailored button style for your Call to Action. See real-time previews below.
+                </p>
+                <select
+                  value={homeData.cta?.buttonStyle || 'sharp-gold'}
+                  onChange={(e) => setHomeData({
+                    ...homeData,
+                    cta: { ...homeData.cta, buttonStyle: e.target.value }
+                  })}
+                  className="w-full px-3.5 py-2.5 bg-[#1A1A1A] border border-[#2D2D2D] rounded-xl text-xs font-bold text-[#FFE379] focus:border-[#FFE379] focus:outline-none uppercase"
+                >
+                  <option value="sharp-gold">Sharp Luxury Gold (Rectangular Sharp)</option>
+                  <option value="rounded-gold">Rounded Smooth Gold (Modern Curved)</option>
+                  <option value="pill-gold">Pill Curvature Gold (Ultra Rounded Pill)</option>
+                  <option value="outline-gold">Minimal Golden Outline (Dark Glass Fill)</option>
+                  <option value="glass-gold">Frosted Glass with Golden Rim (High-Tech)</option>
+                  <option value="cyber-cut">Cyberpunk Angled Cut (Geometric Video Edits)</option>
+                </select>
+              </div>
+
+              {/* Visual Interactive Preview Cards */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
+                {[
+                  {
+                    id: 'sharp-gold',
+                    title: 'Sharp Luxury Gold',
+                    badge: 'Current',
+                    previewClass: 'bg-[#FFE379] text-[#101010] font-black rounded-none shadow-md'
+                  },
+                  {
+                    id: 'rounded-gold',
+                    title: 'Rounded Smooth',
+                    badge: 'Modern',
+                    previewClass: 'bg-[#FFE379] text-[#101010] font-black rounded-xl shadow-md border border-amber-300/40'
+                  },
+                  {
+                    id: 'pill-gold',
+                    title: 'Pill Curvature',
+                    badge: 'Trending',
+                    previewClass: 'bg-gradient-to-r from-[#FFE379] via-[#F5D766] to-[#FFE379] text-[#101010] font-black rounded-full shadow-md'
+                  },
+                  {
+                    id: 'outline-gold',
+                    title: 'Golden Outline',
+                    badge: 'Minimal',
+                    previewClass: 'bg-[#141414] text-[#FFE379] font-black rounded-xl border-2 border-[#FFE379]'
+                  },
+                  {
+                    id: 'glass-gold',
+                    title: 'Frosted Glass',
+                    badge: 'Clean',
+                    previewClass: 'bg-[#181818]/70 text-white font-black rounded-2xl border border-[#FFE379]/50 backdrop-blur'
+                  },
+                  {
+                    id: 'cyber-cut',
+                    title: 'Cyberpunk Cut',
+                    badge: 'Creative',
+                    previewClass: 'bg-[#FFE379] text-[#101010] font-black [clip-path:polygon(10px_0%,100%_0%,calc(100%-10px)_100%,0%_100%)]'
+                  }
+                ].map((preset) => {
+                  const isSelected = (homeData.cta?.buttonStyle || 'sharp-gold') === preset.id;
+                  return (
+                    <div
+                      key={preset.id}
+                      onClick={() => setHomeData({
+                        ...homeData,
+                        cta: { ...homeData.cta, buttonStyle: preset.id }
+                      })}
+                      className={`p-3 rounded-2xl border cursor-pointer transition-all flex flex-col items-center justify-between text-center relative ${
+                        isSelected 
+                          ? 'bg-[#1C1C1C] border-[#FFE379] shadow-[0_0_15px_rgba(255,227,121,0.2)] scale-[1.02]' 
+                          : 'bg-[#121212] border-[#262626] hover:border-neutral-500 hover:bg-[#161616]'
+                      }`}
+                    >
+                      <div className="w-full flex items-center justify-between mb-2">
+                        <span className="text-[10px] font-mono text-neutral-400 uppercase">
+                          {preset.title}
+                        </span>
+                        {isSelected && (
+                          <span className="w-2 h-2 rounded-full bg-[#FFE379] animate-pulse" />
+                        )}
+                      </div>
+
+                      {/* Interactive Button Specimen */}
+                      <div className="py-2 w-full flex items-center justify-center">
+                        <div
+                          className={`px-4 py-2 text-[10px] tracking-wider uppercase transition-transform inline-flex items-center space-x-1 ${preset.previewClass}`}
+                          style={{ fontFamily: "'Oswald', sans-serif" }}
+                        >
+                          <span>{homeData.cta?.buttonText || 'Get Started'}</span>
+                          {homeData.cta?.showArrow !== false && (
+                            <ArrowRight className="w-3 h-3" />
+                          )}
+                        </div>
+                      </div>
+
+                      <span className="text-[9px] font-mono text-neutral-500 mt-1">
+                        {isSelected ? '✓ Selected' : 'Click to Apply'}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
 

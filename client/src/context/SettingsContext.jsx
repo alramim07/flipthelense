@@ -317,7 +317,9 @@ const defaultSettings = {
       headlineLine2: 'Videos to the next level?',
       subtitle: "Let's collaborate and craft high-impact cinematic films and dynamic viral reels that captivate audiences and elevate your brand.",
       buttonText: 'Get Started',
-      buttonLink: '/services/cinematic-wedding-video-editing'
+      buttonLink: '/services/cinematic-wedding-video-editing',
+      buttonStyle: 'sharp-gold', // 'sharp-gold' | 'rounded-gold' | 'pill-gold' | 'outline-gold' | 'glass-gold' | 'cyber-cut'
+      showArrow: true
     }
   }
 };
