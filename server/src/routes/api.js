@@ -23,14 +23,32 @@ const storage = multer.diskStorage({
     cb(null, uploadsDir);
   },
   filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
+    const ext = path.extname(file.originalname).toLowerCase();
     const basename = path.basename(file.originalname, ext).replace(/[^a-zA-Z0-9_-]/g, '_');
     cb(null, `${basename}_${Date.now()}${ext}`);
   }
 });
 
+// File type filter: whitelist safe media only
+const fileFilter = (req, file, cb) => {
+  const allowedExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.svg', '.gif'];
+  const ext = path.extname(file.originalname).toLowerCase();
+  
+  if (!allowedExtensions.includes(ext)) {
+    return cb(new Error(`Security block: File type ${ext} is not allowed. Only images (PNG, JPG, WEBP, SVG) are permitted.`), false);
+  }
+
+  // Also check MIME type
+  if (!file.mimetype.startsWith('image/')) {
+    return cb(new Error('Security block: Uploaded file is not a valid image.'), false);
+  }
+
+  cb(null, true);
+};
+
 const upload = multer({
   storage,
+  fileFilter,
   limits: { fileSize: 10 * 1024 * 1024 } // 10MB limit
 });
 
