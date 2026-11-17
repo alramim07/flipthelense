@@ -191,16 +191,16 @@
   animation: filmReelScroll 22s linear infinite;
 }
 
-/* 5. Audio Equalizer Wave Pulse */
-@keyframes equalizerBarPulse {
-  0%, 100% { transform: scaleY(0.3); opacity: 0.3; }
-  50% { transform: scaleY(1); opacity: 0.95; }
+/* 5. Studio Multi-Track Audio Timeline Pulse */
+@keyframes audioTrackPulse {
+  0%, 100% { opacity: 0.35; transform: scaleY(0.65); }
+  50% { opacity: 0.95; transform: scaleY(1); }
 }
-.animate-equalizer-bar {
-  animation: equalizerBarPulse 1.2s ease-in-out infinite;
+.animate-audio-track-pulse {
+  animation: audioTrackPulse 1.8s ease-in-out infinite;
 }
 
-/* 6. Multi-Chroma Color Grading Wave (Gold -> Cyan -> Purple hue drift) */
+/* 6. Multi-Chroma Color Grading Wave */
 @keyframes chromaGradientDrift {
   0% {
     background-position: 0% 50%;
@@ -217,18 +217,15 @@
   animation: chromaGradientDrift 7s ease-in-out infinite;
 }
 
-/* 7. Hyper Speed Warp Dash (Fast energy road) */
-@keyframes hyperSpeedWarp {
-  0% {
-    stroke-dashoffset: 0;
-  }
-  100% {
-    stroke-dashoffset: -160;
-  }
+/* 7. Timeline Playhead & Razor Cut Scanner */
+@keyframes timelinePlayheadRun {
+  0% { left: 0%; opacity: 0; }
+  8% { opacity: 1; }
+  92% { opacity: 1; }
+  100% { left: 100%; opacity: 0; }
 }
-.animate-hyperspeed-warp {
-  animation: hyperSpeedWarp 0.65s linear infinite;
-  will-change: stroke-dashoffset;
+.animate-timeline-scan-bar {
+  animation: timelinePlayheadRun 5.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
 /* Fluid Brand Color Mixing Gradient Animation */

@@ -557,6 +557,15 @@
       "device": "Tablet",
       "timestamp": "2026-11-17T08:35:32.253Z",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.7977.167 Safari/537.36 Antigravity/2.32.1"
+    },
+    {
+      "id": "hit_1794906778321_3qxgt",
+      "visitorId": "vid_1794906778249_n9bv7hm",
+      "path": "/",
+      "referrer": "Direct",
+      "device": "Tablet",
+      "timestamp": "2026-11-17T09:12:58.321Z",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.7977.167 Safari/537.36 Antigravity/2.32.1"
     }
   ],
   "inquiries": [
@@ -1521,7 +1530,7 @@
         "titleLine2": "Editing Process",
         "subtitle": "FROM RAW FOOTAGE TO A COMPELLING FINAL VIDEO.",
         "animationEnabled": true,
-        "animationStyle": "golden-bokeh",
+        "animationStyle": "film-reel-ribbon",
         "bottomBannerText": "A structured, creative and detail-focused process that turns your raw footage into engaging, viral video content.",
         "steps": [
           {

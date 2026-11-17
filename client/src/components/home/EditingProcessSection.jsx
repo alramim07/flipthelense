@@ -112,14 +112,15 @@ export default function EditingProcessSection() {
 
   return (
     <section id="process" className="mb-24 pt-4">
-      <div className={`relative w-full rounded-3xl overflow-hidden border border-[#232323] shadow-2xl bg-[#121212] p-6 sm:p-12 lg:p-14 ${
-        animationEnabled && animationStyle === 'chroma-drift' ? 'animate-chroma-drift' : ''
-      }`}
-      style={{
-        backgroundImage: animationEnabled && animationStyle === 'chroma-drift'
-          ? 'linear-gradient(-45deg, #121212, #18150c, #0c151a, #16101c, #141414)'
-          : undefined
-      }}
+      <div 
+        className={`relative w-full rounded-3xl overflow-hidden border border-[#232323] shadow-2xl bg-[#121212] p-6 sm:p-12 lg:p-14 transition-all duration-700 ${
+          animationEnabled && animationStyle === 'chroma-drift' ? 'animate-chroma-drift' : ''
+        }`}
+        style={{
+          backgroundImage: animationEnabled && animationStyle === 'chroma-drift'
+            ? 'linear-gradient(-45deg, #121212, #1b160a, #0a171e, #180e1f, #141414)'
+            : undefined
+        }}
       >
         
         {/* Subtle background grid pattern */}
@@ -130,73 +131,6 @@ export default function EditingProcessSection() {
             backgroundSize: '24px 24px'
           }}
         />
-
-        {/* Dynamic Creative Background Environments based on Selected Style */}
-        {animationEnabled && (
-          <>
-            {/* 1. Cyberpunk 3D Wireframe Grid Floor (Perspective depth underneath cards) */}
-            {animationStyle === 'cyber-grid' && (
-              <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 opacity-25">
-                <div 
-                  className="w-full h-full animate-cyber-grid"
-                  style={{
-                    backgroundImage: 'linear-gradient(to right, rgba(255, 227, 121, 0.25) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 227, 121, 0.25) 1px, transparent 1px)',
-                    backgroundSize: '40px 40px',
-                    transformOrigin: '50% 100%'
-                  }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-transparent to-[#121212]" />
-              </div>
-            )}
-
-            {/* 2. Golden Ambient Bokeh Orbs & Cinema Light Leaks */}
-            {animationStyle === 'golden-bokeh' && (
-              <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
-                <div className="absolute top-1/4 left-1/12 w-64 h-64 rounded-full bg-[#FFE379]/15 blur-3xl animate-bokeh-orb-1" />
-                <div className="absolute bottom-1/4 right-1/12 w-80 h-80 rounded-full bg-amber-500/10 blur-3xl animate-bokeh-orb-2" />
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-[#FFE379]/5 blur-[100px]" />
-              </div>
-            )}
-
-            {/* 3. 35mm Film Strip Ribbon Stream (Moving cinematic film frames in background) */}
-            {animationStyle === 'film-reel-ribbon' && (
-              <div className="absolute top-2 left-0 right-0 h-16 pointer-events-none overflow-hidden z-0 opacity-30">
-                <div className="flex space-x-3 w-[200%] animate-film-reel-scroll">
-                  {[...Array(24)].map((_, i) => (
-                    <div key={i} className="w-16 h-12 rounded border border-neutral-700 bg-neutral-900/80 shrink-0 flex flex-col justify-between p-1">
-                      <div className="flex justify-between">
-                        <span className="w-1 h-1 rounded-full bg-[#FFE379]/50" />
-                        <span className="w-1 h-1 rounded-full bg-[#FFE379]/50" />
-                      </div>
-                      <Film className="w-3.5 h-3.5 text-[#FFE379]/60 mx-auto" />
-                      <div className="flex justify-between">
-                        <span className="w-1 h-1 rounded-full bg-[#FFE379]/50" />
-                        <span className="w-1 h-1 rounded-full bg-[#FFE379]/50" />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* 4. Audio Equalizer Waveform Soundstage (Studio editing background) */}
-            {animationStyle === 'equalizer-wave' && (
-              <div className="absolute bottom-0 inset-x-0 h-28 pointer-events-none overflow-hidden z-0 opacity-20 flex items-end justify-center space-x-1 px-4">
-                {[15, 35, 65, 90, 45, 80, 100, 55, 75, 40, 95, 60, 85, 30, 70, 50, 90, 65, 40, 85, 100, 45, 60, 30, 75, 90, 50, 80, 65, 35].map((h, i) => (
-                  <div
-                    key={i}
-                    className="w-1.5 sm:w-2 bg-gradient-to-t from-[#FFE379] via-amber-400 to-transparent rounded-t animate-equalizer-bar"
-                    style={{
-                      height: `${h}%`,
-                      animationDelay: `${(i % 8) * 0.15}s`,
-                      animationDuration: `${1.0 + (i % 5) * 0.2}s`
-                    }}
-                  />
-                ))}
-              </div>
-            )}
-          </>
-        )}
 
         {/* 1. Floating Video Editor Monitor UI (Top-Left) */}
         <div className="absolute top-6 left-6 w-48 bg-[#161616]/85 backdrop-blur-md border border-[#2e2e2e] rounded-xl p-2.5 shadow-2xl opacity-75 pointer-events-none transform -rotate-6 hidden lg:block">
@@ -277,138 +211,315 @@ export default function EditingProcessSection() {
           </p>
         </div>
 
-        {/* ================= INTERACTIVE 6-STEP WORKFLOW TIMELINE WITH S-CURVE HIGHWAY ================= */}
+        {/* ================= INTERACTIVE 6-STEP WORKFLOW TIMELINE CONTAINER ================= */}
         <div className="relative z-10 max-w-5xl mx-auto">
 
-          {/* ===== BACKGROUND HIGHWAY SVG ===== */}
-          <div
-            className="absolute -inset-x-6 -top-6 -bottom-6 pointer-events-none hidden md:block"
-            style={{ zIndex: 0 }}
-          >
-            <svg
-              className="w-full h-full"
-              viewBox="0 0 1020 520"
-              fill="none"
-              preserveAspectRatio="xMidYMid meet"
-              style={{ overflow: 'visible' }}
+          {/* ========================================================
+              DYNAMIC BACKGROUND SCENARIO REPLACING HIGHWAY
+              When an animation style is chosen, highway is REPLACED by that specific scenario!
+             ======================================================== */}
+
+          {/* 1. SCENARIO A: CLASSIC HIGHWAY (Only rendered when classic-road is selected) */}
+          {animationStyle === 'classic-road' && (
+            <div
+              className="absolute -inset-x-6 -top-6 -bottom-6 pointer-events-none hidden md:block"
+              style={{ zIndex: 0 }}
             >
-              <defs>
-                <filter id="roadAtmosphere" x="-30%" y="-30%" width="160%" height="160%">
-                  <feGaussianBlur stdDeviation="12" result="blur" />
-                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                </filter>
-                <filter id="yellowGlow" x="-20%" y="-20%" width="140%" height="140%">
-                  <feGaussianBlur stdDeviation="3.5" result="blur" />
-                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                </filter>
-                <linearGradient id="mountainRoadGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#1E1E1E" />
-                  <stop offset="50%" stopColor="#151515" />
-                  <stop offset="100%" stopColor="#1C1C1C" />
-                </linearGradient>
-              </defs>
+              <svg
+                className="w-full h-full"
+                viewBox="0 0 1020 520"
+                fill="none"
+                preserveAspectRatio="xMidYMid meet"
+                style={{ overflow: 'visible' }}
+              >
+                <defs>
+                  <filter id="roadAtmosphere" x="-30%" y="-30%" width="160%" height="160%">
+                    <feGaussianBlur stdDeviation="12" result="blur" />
+                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                  </filter>
+                  <filter id="yellowGlow" x="-20%" y="-20%" width="140%" height="140%">
+                    <feGaussianBlur stdDeviation="3.5" result="blur" />
+                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                  </filter>
+                  <linearGradient id="mountainRoadGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#1E1E1E" />
+                    <stop offset="50%" stopColor="#151515" />
+                    <stop offset="100%" stopColor="#1C1C1C" />
+                  </linearGradient>
+                </defs>
 
-              {/* 1. Road Deep Shadow */}
-              <path
-                d="M -90 40 
-                   C -20 50, 80 65, 170 95
-                   C 260 125, 275 320, 195 385
-                   C 135 435, 120 480, 215 470
-                   C 310 460, 385 240, 480 120
-                   C 530 60, 610 65, 540 220
-                   C 480 340, 420 450, 520 440
-                   C 630 430, 720 220, 810 115
-                   C 865 50, 970 80, 905 270
-                   C 850 420, 780 445, 875 425
-                   C 960 410, 1020 415, 1110 425"
-                stroke="#050505"
-                strokeWidth="84"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                opacity="0.8"
-              />
+                {/* Road Deep Shadow */}
+                <path
+                  d="M -90 40 
+                     C -20 50, 80 65, 170 95
+                     C 260 125, 275 320, 195 385
+                     C 135 435, 120 480, 215 470
+                     C 310 460, 385 240, 480 120
+                     C 530 60, 610 65, 540 220
+                     C 480 340, 420 450, 520 440
+                     C 630 430, 720 220, 810 115
+                     C 865 50, 970 80, 905 270
+                     C 850 420, 780 445, 875 425
+                     C 960 410, 1020 415, 1110 425"
+                  stroke="#050505"
+                  strokeWidth="84"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  opacity="0.8"
+                />
 
-              {/* 2. Concrete Road Curb */}
-              <path
-                d="M -90 40 
-                   C -20 50, 80 65, 170 95
-                   C 260 125, 275 320, 195 385
-                   C 135 435, 120 480, 215 470
-                   C 310 460, 385 240, 480 120
-                   C 530 60, 610 65, 540 220
-                   C 480 340, 420 450, 520 440
-                   C 630 430, 720 220, 810 115
-                   C 865 50, 970 80, 905 270
-                   C 850 420, 780 445, 875 425
-                   C 960 410, 1020 415, 1110 425"
-                stroke="#2B2B2B"
-                strokeWidth="70"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+                {/* Concrete Road Curb */}
+                <path
+                  d="M -90 40 
+                     C -20 50, 80 65, 170 95
+                     C 260 125, 275 320, 195 385
+                     C 135 435, 120 480, 215 470
+                     C 310 460, 385 240, 480 120
+                     C 530 60, 610 65, 540 220
+                     C 480 340, 420 450, 520 440
+                     C 630 430, 720 220, 810 115
+                     C 865 50, 970 80, 905 270
+                     C 850 420, 780 445, 875 425
+                     C 960 410, 1020 415, 1110 425"
+                  stroke="#2B2B2B"
+                  strokeWidth="70"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
 
-              {/* 3. Outer Road Edge Lines */}
-              <path
-                d="M -90 40 
-                   C -20 50, 80 65, 170 95
-                   C 260 125, 275 320, 195 385
-                   C 135 435, 120 480, 215 470
-                   C 310 460, 385 240, 480 120
-                   C 530 60, 610 65, 540 220
-                   C 480 340, 420 450, 520 440
-                   C 630 430, 720 220, 810 115
-                   C 865 50, 970 80, 905 270
-                   C 850 420, 780 445, 875 425
-                   C 960 410, 1020 415, 1110 425"
-                stroke="#FFFFFF"
-                strokeWidth="62"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                opacity="0.3"
-              />
+                {/* Outer Road Edge Lines */}
+                <path
+                  d="M -90 40 
+                     C -20 50, 80 65, 170 95
+                     C 260 125, 275 320, 195 385
+                     C 135 435, 120 480, 215 470
+                     C 310 460, 385 240, 480 120
+                     C 530 60, 610 65, 540 220
+                     C 480 340, 420 450, 520 440
+                     C 630 430, 720 220, 810 115
+                     C 865 50, 970 80, 905 270
+                     C 850 420, 780 445, 875 425
+                     C 960 410, 1020 415, 1110 425"
+                  stroke="#FFFFFF"
+                  strokeWidth="62"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  opacity="0.3"
+                />
 
-              {/* 4. Smooth Asphalt Paved Surface */}
-              <path
-                d="M -90 40 
-                   C -20 50, 80 65, 170 95
-                   C 260 125, 275 320, 195 385
-                   C 135 435, 120 480, 215 470
-                   C 310 460, 385 240, 480 120
-                   C 530 60, 610 65, 540 220
-                   C 480 340, 420 450, 520 440
-                   C 630 430, 720 220, 810 115
-                   C 865 50, 970 80, 905 270
-                   C 850 420, 780 445, 875 425
-                   C 960 410, 1020 415, 1110 425"
-                stroke="url(#mountainRoadGrad)"
-                strokeWidth="58"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+                {/* Smooth Asphalt Paved Surface */}
+                <path
+                  d="M -90 40 
+                     C -20 50, 80 65, 170 95
+                     C 260 125, 275 320, 195 385
+                     C 135 435, 120 480, 215 470
+                     C 310 460, 385 240, 480 120
+                     C 530 60, 610 65, 540 220
+                     C 480 340, 420 450, 520 440
+                     C 630 430, 720 220, 810 115
+                     C 865 50, 970 80, 905 270
+                     C 850 420, 780 445, 875 425
+                     C 960 410, 1020 415, 1110 425"
+                  stroke="url(#mountainRoadGrad)"
+                  strokeWidth="58"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
 
-              {/* 5. Center Lane Track with Selectable Animation */}
-              <path
-                d="M -90 40 
-                   C -20 50, 80 65, 170 95
-                   C 260 125, 275 320, 195 385
-                   C 135 435, 120 480, 215 470
-                   C 310 460, 385 240, 480 120
-                   C 530 60, 610 65, 540 220
-                   C 480 340, 420 450, 520 440
-                   C 630 430, 720 220, 810 115
-                   C 865 50, 970 80, 905 270
-                   C 850 420, 780 445, 875 425
-                   C 960 410, 1020 415, 1110 425"
-                stroke="#FFE379"
-                strokeWidth="4"
-                strokeDasharray="20 12"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className={getHighwayAnimationClass()}
-                filter="url(#yellowGlow)"
-              />
-            </svg>
-          </div>
+                {/* Center Lane Track */}
+                <path
+                  d="M -90 40 
+                     C -20 50, 80 65, 170 95
+                     C 260 125, 275 320, 195 385
+                     C 135 435, 120 480, 215 470
+                     C 310 460, 385 240, 480 120
+                     C 530 60, 610 65, 540 220
+                     C 480 340, 420 450, 520 440
+                     C 630 430, 720 220, 810 115
+                     C 865 50, 970 80, 905 270
+                     C 850 420, 780 445, 875 425
+                     C 960 410, 1020 415, 1110 425"
+                  stroke="#FFE379"
+                  strokeWidth="4"
+                  strokeDasharray="20 12"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className={animationEnabled ? 'animate-road-middle-track' : ''}
+                  filter="url(#yellowGlow)"
+                />
+              </svg>
+            </div>
+          )}
+
+          {/* 2. SCENARIO B: LUXURY BOKEH & CINEMATIC LIGHT ORBS (Replaces Highway) */}
+          {animationStyle === 'golden-bokeh' && (
+            <div className="absolute -inset-10 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
+              {/* Golden Constellation Connector Lines between steps */}
+              <svg className="w-full h-full absolute inset-0 opacity-40 hidden md:block" viewBox="0 0 1000 480" fill="none">
+                <path
+                  d="M 160 120 Q 330 240 500 120 T 840 120"
+                  stroke="url(#bokehLineGrad)"
+                  strokeWidth="2"
+                  strokeDasharray="6 6"
+                />
+                <path
+                  d="M 160 380 Q 330 260 500 380 T 840 380"
+                  stroke="url(#bokehLineGrad)"
+                  strokeWidth="2"
+                  strokeDasharray="6 6"
+                />
+                <defs>
+                  <linearGradient id="bokehLineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#FFE379" stopOpacity="0.2" />
+                    <stop offset="50%" stopColor="#FFE379" stopOpacity="0.8" />
+                    <stop offset="100%" stopColor="#FFE379" stopOpacity="0.2" />
+                  </linearGradient>
+                </defs>
+              </svg>
+
+              {/* Floating Luminous Golden Orbs */}
+              <div className={`absolute top-1/4 left-1/12 w-72 h-72 rounded-full bg-[#FFE379]/15 blur-3xl ${animationEnabled ? 'animate-bokeh-orb-1' : ''}`} />
+              <div className={`absolute bottom-1/4 right-1/12 w-80 h-80 rounded-full bg-amber-500/15 blur-3xl ${animationEnabled ? 'animate-bokeh-orb-2' : ''}`} />
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[300px] rounded-full bg-[#FFE379]/10 blur-[90px]" />
+            </div>
+          )}
+
+          {/* 3. SCENARIO C: 35MM CONTINUOUS FILMSTRIP STREAM (Replaces Highway) */}
+          {animationStyle === 'film-reel-ribbon' && (
+            <div className="absolute -inset-x-8 -top-4 -bottom-4 pointer-events-none overflow-hidden flex flex-col justify-between py-1" style={{ zIndex: 0 }}>
+              {/* Top Filmstrip Track */}
+              <div className="w-[200%] flex space-x-3 opacity-30 select-none">
+                <div className={`flex space-x-3 w-full ${animationEnabled ? 'animate-film-reel-scroll' : ''}`}>
+                  {[...Array(30)].map((_, i) => (
+                    <div key={i} className="w-20 h-14 rounded-lg border border-neutral-700 bg-neutral-900/90 shrink-0 flex flex-col justify-between p-1 shadow-lg">
+                      <div className="flex justify-between px-0.5">
+                        <span className="w-1.5 h-1.5 rounded-sm bg-[#FFE379]/60" />
+                        <span className="w-1.5 h-1.5 rounded-sm bg-[#FFE379]/60" />
+                        <span className="w-1.5 h-1.5 rounded-sm bg-[#FFE379]/60" />
+                      </div>
+                      <div className="flex items-center justify-center space-x-1">
+                        <Film className="w-3.5 h-3.5 text-[#FFE379]/70" />
+                        <span className="text-[7px] font-mono text-neutral-400">FRAME {i + 1}</span>
+                      </div>
+                      <div className="flex justify-between px-0.5">
+                        <span className="w-1.5 h-1.5 rounded-sm bg-[#FFE379]/60" />
+                        <span className="w-1.5 h-1.5 rounded-sm bg-[#FFE379]/60" />
+                        <span className="w-1.5 h-1.5 rounded-sm bg-[#FFE379]/60" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Connecting Film Ribbon Between Rows */}
+              <div className="w-full h-0.5 bg-gradient-to-r from-transparent via-[#FFE379]/40 to-transparent my-auto" />
+
+              {/* Bottom Filmstrip Track */}
+              <div className="w-[200%] flex space-x-3 opacity-30 select-none">
+                <div className={`flex space-x-3 w-full ${animationEnabled ? 'animate-film-reel-scroll' : ''}`} style={{ animationDirection: 'reverse' }}>
+                  {[...Array(30)].map((_, i) => (
+                    <div key={i} className="w-20 h-14 rounded-lg border border-neutral-700 bg-neutral-900/90 shrink-0 flex flex-col justify-between p-1 shadow-lg">
+                      <div className="flex justify-between px-0.5">
+                        <span className="w-1.5 h-1.5 rounded-sm bg-[#FFE379]/60" />
+                        <span className="w-1.5 h-1.5 rounded-sm bg-[#FFE379]/60" />
+                        <span className="w-1.5 h-1.5 rounded-sm bg-[#FFE379]/60" />
+                      </div>
+                      <div className="flex items-center justify-center space-x-1">
+                        <Play className="w-3 h-3 text-[#FFE379]/70 fill-current" />
+                        <span className="text-[7px] font-mono text-neutral-400">CUT #{i + 1}</span>
+                      </div>
+                      <div className="flex justify-between px-0.5">
+                        <span className="w-1.5 h-1.5 rounded-sm bg-[#FFE379]/60" />
+                        <span className="w-1.5 h-1.5 rounded-sm bg-[#FFE379]/60" />
+                        <span className="w-1.5 h-1.5 rounded-sm bg-[#FFE379]/60" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* 4. SCENARIO D: 3D CYBER WIREFRAME FLOOR & DIGITAL MATRIX (Replaces Highway) */}
+          {animationStyle === 'cyber-grid' && (
+            <div className="absolute -inset-x-8 -inset-y-6 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
+              {/* Flowing 3D Perspective Plane */}
+              <div className="absolute inset-0 opacity-40">
+                <div 
+                  className={`w-full h-full ${animationEnabled ? 'animate-cyber-grid' : ''}`}
+                  style={{
+                    backgroundImage: 'linear-gradient(to right, rgba(255, 227, 121, 0.35) 1.5px, transparent 1.5px), linear-gradient(to bottom, rgba(255, 227, 121, 0.35) 1.5px, transparent 1.5px)',
+                    backgroundSize: '48px 48px',
+                    transformOrigin: '50% 100%'
+                  }}
+                />
+              </div>
+              {/* Top & Bottom Fog Blending */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-transparent to-[#121212]" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#121212] via-transparent to-[#121212]" />
+            </div>
+          )}
+
+          {/* 5. SCENARIO E: MULTI-TRACK AUDIO FREQUENCY STUDIO (Replaces Highway) */}
+          {animationStyle === 'equalizer-wave' && (
+            <div className="absolute -inset-x-6 -inset-y-4 pointer-events-none overflow-hidden flex flex-col justify-center space-y-8 opacity-30" style={{ zIndex: 0 }}>
+              {/* Top Audio Waveform Channel */}
+              <div className="flex items-center justify-between w-full px-2 h-16">
+                {[45, 80, 25, 95, 60, 40, 100, 70, 30, 85, 55, 90, 40, 75, 100, 35, 65, 80, 45, 90, 60, 30, 85, 100, 40, 75, 55, 90, 35, 65, 80, 50].map((h, i) => (
+                  <div
+                    key={`top-${i}`}
+                    className={`w-1 sm:w-1.5 bg-gradient-to-t from-[#FFE379] via-amber-400 to-transparent rounded-full ${animationEnabled ? 'animate-audio-track-pulse' : ''}`}
+                    style={{
+                      height: `${h}%`,
+                      animationDelay: `${(i % 10) * 0.12}s`,
+                      animationDuration: `${1.2 + (i % 6) * 0.18}s`
+                    }}
+                  />
+                ))}
+              </div>
+
+              {/* Center DAW Master Beat Pulse Line */}
+              <div className="w-full h-px bg-gradient-to-r from-transparent via-[#FFE379]/60 to-transparent relative">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-3 py-0.5 rounded-full bg-[#181818] border border-[#FFE379]/40 text-[#FFE379] text-[9px] font-mono">
+                  MASTER AUDIO BUS • 48 kHz / 24-BIT
+                </div>
+              </div>
+
+              {/* Bottom Audio Waveform Channel */}
+              <div className="flex items-center justify-between w-full px-2 h-16">
+                {[30, 65, 90, 50, 75, 100, 40, 85, 60, 35, 95, 70, 45, 80, 55, 100, 35, 75, 60, 40, 90, 65, 30, 85, 50, 100, 45, 75, 60, 35, 80, 55].map((h, i) => (
+                  <div
+                    key={`bot-${i}`}
+                    className={`w-1 sm:w-1.5 bg-gradient-to-b from-[#FFE379] via-amber-400 to-transparent rounded-full ${animationEnabled ? 'animate-audio-track-pulse' : ''}`}
+                    style={{
+                      height: `${h}%`,
+                      animationDelay: `${(i % 8) * 0.14}s`,
+                      animationDuration: `${1.4 + (i % 5) * 0.2}s`
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* 6. SCENARIO F: MULTI-CHROMA COLOR GRADING ATMOSPHERE (Replaces Highway) */}
+          {animationStyle === 'chroma-drift' && (
+            <div className="absolute -inset-10 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
+              {/* Luminous Neon Gradient Nodes connecting the cards */}
+              <div className="absolute top-1/3 left-1/4 w-80 h-80 rounded-full bg-cyan-500/10 blur-[100px]" />
+              <div className="absolute bottom-1/3 right-1/4 w-96 h-96 rounded-full bg-[#FFE379]/15 blur-[100px]" />
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 rounded-full bg-purple-600/10 blur-[120px]" />
+              
+              {/* Subtle Tech Laser Connection Grid */}
+              <svg className="w-full h-full absolute inset-0 opacity-20 hidden md:block" viewBox="0 0 1000 480" fill="none">
+                <line x1="160" y1="120" x2="500" y2="120" stroke="#FFE379" strokeWidth="1" strokeDasharray="4 4" />
+                <line x1="500" y1="120" x2="840" y2="120" stroke="#FFE379" strokeWidth="1" strokeDasharray="4 4" />
+                <line x1="160" y1="380" x2="500" y2="380" stroke="#38BDF8" strokeWidth="1" strokeDasharray="4 4" />
+                <line x1="500" y1="380" x2="840" y2="380" stroke="#38BDF8" strokeWidth="1" strokeDasharray="4 4" />
+                <line x1="500" y1="120" x2="500" y2="380" stroke="#C084FC" strokeWidth="1" strokeDasharray="4 4" />
+              </svg>
+            </div>
+          )}
 
           {/* Top Row Cards (Steps 01, 03, 05) */}
           <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-24">
