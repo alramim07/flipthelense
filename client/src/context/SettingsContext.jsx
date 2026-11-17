@@ -214,7 +214,7 @@ const defaultSettings = {
           name: 'Bio-Xin',
           subtitle: 'cosmetics',
           logoUrl: '',
-          iconEmoji: '🪷',
+          iconEmoji: '',
           color: '#F59E0B'
         },
         {
@@ -262,7 +262,7 @@ const defaultSettings = {
           name: 'Ordinary Coaching',
           subtitle: 'Coaching Center',
           logoUrl: '',
-          iconEmoji: 'C',
+          iconEmoji: '',
           color: '#38BDF8'
         },
         {
@@ -270,8 +270,44 @@ const defaultSettings = {
           name: 'Alliance Mart',
           subtitle: 'E-Commerce & Retail',
           logoUrl: '',
-          iconEmoji: '🛍️',
+          iconEmoji: '',
           color: '#F97316'
+        }
+      ]
+    },
+    reviews: {
+      badge: 'TESTIMONIAL',
+      titleLine1: 'Client Reviews',
+      titleLine2: 'What They Say',
+      autoplayInterval: 3800,
+      items: [
+        {
+          id: 'rev-1',
+          username: '@tanvir_cinematics',
+          rating: 5,
+          text: "Working with Parvej was an absolute game changer for our brand commercial. His pacing, color science, and sound design brought the video to life far beyond our expectations. Delivery was super fast and communication was top tier!",
+          project: "Commercial Video Campaign"
+        },
+        {
+          id: 'rev-2',
+          username: '@samira_weddings',
+          rating: 5,
+          text: "The cinematic wedding film Pollob edited for us made everyone in our family tear up! The emotional build-up, seamless transitions, and song choice were 10/10 perfection. I couldn't recommend his video editing skills enough.",
+          project: "Cinematic Wedding Film"
+        },
+        {
+          id: 'rev-3',
+          username: '@lifestyle_creators',
+          rating: 5,
+          text: "Our Instagram Reels and YouTube Shorts retention increased by over 300% after Parvej took over our editing workflows. His speed ramps and sound effects are unmatched in this industry. Truly an elite video editor!",
+          project: "Viral Reels & Shorts Series"
+        },
+        {
+          id: 'rev-4',
+          username: '@bengal_documentaries',
+          rating: 5,
+          text: "Exceptional storytelling capabilities! He turned over 12 hours of raw nature and cultural footage into an engaging 15-minute documentary that won awards at our local film fest. Highly reliable and creative.",
+          project: "Cultural Documentary Film"
         }
       ]
     },

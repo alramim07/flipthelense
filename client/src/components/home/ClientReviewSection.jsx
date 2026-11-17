@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Star, Heart, MessageCircle, Send, User } from 'lucide-react';
+import { Star, User } from 'lucide-react';
+import { useSiteSettings } from '../../context/SettingsContext';
 
-const REVIEWS = [
+const DEFAULT_REVIEWS = [
   {
     id: 1,
     username: '@tanvir_cinematics',
     rating: 5,
-    likes: 142,
     text: "Working with Parvej was an absolute game changer for our brand commercial. His pacing, color science, and sound design brought the video to life far beyond our expectations. Delivery was super fast and communication was top tier!",
     project: "Commercial Video Campaign"
   },
@@ -14,7 +14,6 @@ const REVIEWS = [
     id: 2,
     username: '@samira_weddings',
     rating: 5,
-    likes: 125,
     text: "The cinematic wedding film Pollob edited for us made everyone in our family tear up! The emotional build-up, seamless transitions, and song choice were 10/10 perfection. I couldn't recommend his video editing skills enough.",
     project: "Cinematic Wedding Film"
   },
@@ -22,7 +21,6 @@ const REVIEWS = [
     id: 3,
     username: '@lifestyle_creators',
     rating: 5,
-    likes: 189,
     text: "Our Instagram Reels and YouTube Shorts retention increased by over 300% after Parvej took over our editing workflows. His speed ramps and sound effects are unmatched in this industry. Truly an elite video editor!",
     project: "Viral Reels & Shorts Series"
   },
@@ -30,29 +28,36 @@ const REVIEWS = [
     id: 4,
     username: '@bengal_documentaries',
     rating: 5,
-    likes: 164,
     text: "Exceptional storytelling capabilities! He turned over 12 hours of raw nature and cultural footage into an engaging 15-minute documentary that won awards at our local film fest. Highly reliable and creative.",
     project: "Cultural Documentary Film"
   }
 ];
 
 export default function ClientReviewSection() {
+  const { settings } = useSiteSettings();
+  const reviewsConfig = settings?.homeContent?.reviews;
+
+  const reviewList = reviewsConfig?.items?.length > 0 ? reviewsConfig.items : DEFAULT_REVIEWS;
+  const badgeText = reviewsConfig?.badge || 'TESTIMONIAL';
+  const title1 = reviewsConfig?.titleLine1 || 'Client Reviews';
+  const title2 = reviewsConfig?.titleLine2 || 'What They Say';
+  const autoInterval = reviewsConfig?.autoplayInterval || 3800;
+
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // Auto-switch carousel: Every 3.8 seconds so user can clearly enjoy the two-stage choreography
+  // Auto-switch carousel
   useEffect(() => {
+    if (!reviewList || reviewList.length <= 1) return;
+
     const timer = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % REVIEWS.length);
-    }, 3800);
+      setActiveIndex((prev) => (prev + 1) % reviewList.length);
+    }, autoInterval);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [reviewList.length, autoInterval]);
 
-  const total = REVIEWS.length;
+  const total = reviewList.length;
 
-  // Staggered transitions aligned with exact Dark & Golden Brand Palette:
-  // Active Card: Deep dark container (#1E1E1E) with subtle golden border (#FFE379/40) & illuminated golden accents
-  // Inactive Cards: Dark container (#161616), subtle border (#232323), muted text
   const getCardStyle = (index) => {
     const diff = (index - activeIndex + total) % total;
 
@@ -130,44 +135,36 @@ export default function ClientReviewSection() {
             className="text-xs uppercase tracking-[4.5px] text-[#FFE379] font-medium block mb-1"
             style={{ fontFamily: "'Raleway', sans-serif" }}
           >
-            TESTIMONIAL
+            {badgeText}
           </span>
           <h2 
             className="text-3xl sm:text-5xl font-extrabold text-[#F4F4F4] uppercase tracking-normal"
             style={{ fontFamily: "'Oswald', sans-serif" }}
           >
-            Client Reviews
+            {title1}
           </h2>
           <div 
             className="text-3xl sm:text-4xl -mt-2 text-[#FFE379] tracking-wide transform -rotate-2 opacity-90"
             style={{ fontFamily: "'Great Vibes', 'Caveat', cursive", fontWeight: 400 }}
           >
-            What They Say
+            {title2}
           </div>
         </div>
 
         {/* 3D Circular Deck Carousel */}
         <div className="relative z-10 max-w-4xl mx-auto h-[410px] flex items-center justify-center [perspective:1000px]">
           
-          {REVIEWS.map((review, index) => {
+          {reviewList.map((review, index) => {
             const isCenter = (index - activeIndex + total) % total === 0;
             const style = getCardStyle(index);
 
             return (
               <div
-                key={review.id}
+                key={review.id || index}
                 onClick={() => setActiveIndex(index)}
                 style={style}
                 className="absolute w-[300px] sm:w-[350px] h-[375px] rounded-[28px] p-6 shadow-2xl flex flex-col justify-between border cursor-pointer overflow-hidden select-none"
               >
-                {/* Floating Like Badge with Fade-In when centered */}
-                {isCenter && (
-                  <div className="absolute top-3.5 right-6 bg-[#161616] text-[#F4F4F4] text-[11px] font-bold px-3 py-1.5 rounded-2xl shadow-xl flex items-center space-x-1.5 border border-[#FFE379]/30 transition-all duration-500 animate-pulse">
-                    <Heart className="w-3.5 h-3.5 fill-[#FFE379] text-[#FFE379]" />
-                    <span className="font-mono text-[#FFE379]">{review.likes}</span>
-                  </div>
-                )}
-
                 {/* Card Top: Quote icon + User Avatar + Stars */}
                 <div className="flex items-start justify-between">
                   <span className={`text-5xl font-serif font-black leading-none transition-colors duration-500 ${isCenter ? 'text-[#FFE379]/60' : 'text-neutral-700'}`}>
@@ -186,7 +183,7 @@ export default function ClientReviewSection() {
 
                     {/* 5 Stars in Brand Golden Yellow */}
                     <div className="flex items-center space-x-0.5 mt-1.5">
-                      {[...Array(5)].map((_, i) => (
+                      {[...Array(Number(review.rating) || 5)].map((_, i) => (
                         <Star key={i} className="w-3.5 h-3.5 fill-[#FFE379] text-[#FFE379]" />
                       ))}
                     </div>
@@ -203,13 +200,8 @@ export default function ClientReviewSection() {
                   </p>
                 </div>
 
-                {/* Card Bottom: Social Actions & Project Tag */}
-                <div className={`pt-3 border-t flex items-center justify-between transition-colors duration-500 ${isCenter ? 'border-[#2e2e2e] text-[#878787]' : 'border-[#232323] text-neutral-600'}`}>
-                  <div className="flex items-center space-x-4">
-                    <Heart className={`w-4 h-4 transition-colors ${isCenter ? 'fill-[#FFE379]/20 text-[#FFE379] hover:fill-[#FFE379]' : 'text-neutral-600'}`} />
-                    <MessageCircle className="w-4 h-4 hover:text-[#FFE379] transition-colors" />
-                    <Send className="w-4 h-4 hover:text-[#FFE379] transition-colors" />
-                  </div>
+                {/* Card Bottom: Project Tag (Cleaned from social buttons) */}
+                <div className={`pt-3 border-t flex items-center justify-end transition-colors duration-500 ${isCenter ? 'border-[#2e2e2e]' : 'border-[#232323]'}`}>
                   <span className={`text-[10px] font-mono tracking-tight uppercase transition-colors duration-500 ${isCenter ? 'text-[#FFE379]' : 'text-neutral-600'}`}>
                     {review.project}
                   </span>
@@ -223,7 +215,7 @@ export default function ClientReviewSection() {
 
         {/* Carousel Indicator Dots */}
         <div className="flex items-center justify-center space-x-2 mt-4 relative z-20">
-          {REVIEWS.map((_, idx) => (
+          {reviewList.map((_, idx) => (
             <button
               key={idx}
               onClick={() => setActiveIndex(idx)}

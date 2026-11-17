@@ -209,7 +209,7 @@ export default function HomePageBuilder() {
           name: 'Ordinary Coaching',
           subtitle: 'Coaching Center',
           logoUrl: '',
-          iconEmoji: 'C',
+          iconEmoji: '',
           color: '#38BDF8'
         },
         {
@@ -217,8 +217,44 @@ export default function HomePageBuilder() {
           name: 'Alliance Mart',
           subtitle: 'E-Commerce & Retail',
           logoUrl: '',
-          iconEmoji: '🛍️',
+          iconEmoji: '',
           color: '#F97316'
+        }
+      ]
+    },
+    reviews: {
+      badge: 'TESTIMONIAL',
+      titleLine1: 'Client Reviews',
+      titleLine2: 'What They Say',
+      autoplayInterval: 3800,
+      items: [
+        {
+          id: 'rev-1',
+          username: '@tanvir_cinematics',
+          rating: 5,
+          text: "Working with Parvej was an absolute game changer for our brand commercial. His pacing, color science, and sound design brought the video to life far beyond our expectations. Delivery was super fast and communication was top tier!",
+          project: "Commercial Video Campaign"
+        },
+        {
+          id: 'rev-2',
+          username: '@samira_weddings',
+          rating: 5,
+          text: "The cinematic wedding film Pollob edited for us made everyone in our family tear up! The emotional build-up, seamless transitions, and song choice were 10/10 perfection. I couldn't recommend his video editing skills enough.",
+          project: "Cinematic Wedding Film"
+        },
+        {
+          id: 'rev-3',
+          username: '@lifestyle_creators',
+          rating: 5,
+          text: "Our Instagram Reels and YouTube Shorts retention increased by over 300% after Parvej took over our editing workflows. His speed ramps and sound effects are unmatched in this industry. Truly an elite video editor!",
+          project: "Viral Reels & Shorts Series"
+        },
+        {
+          id: 'rev-4',
+          username: '@bengal_documentaries',
+          rating: 5,
+          text: "Exceptional storytelling capabilities! He turned over 12 hours of raw nature and cultural footage into an engaging 15-minute documentary that won awards at our local film fest. Highly reliable and creative.",
+          project: "Cultural Documentary Film"
         }
       ]
     },
@@ -1310,11 +1346,226 @@ export default function HomePageBuilder() {
           </div>
         </div>
 
-        {/* ================= 6. CTA BANNER BUILDER ================= */}
+        {/* ================= 6. CLIENT REVIEWS TESTIMONIALS BUILDER ================= */}
         <div className="relative group rounded-3xl p-6 sm:p-8 bg-[#141414]/90 border-2 border-[#262626] hover:border-[#FFE379]/50 transition-all shadow-xl">
           <div className="absolute -top-3.5 left-6 px-3 py-0.5 rounded-full bg-[#FFE379] text-[#101010] text-[10px] font-black uppercase tracking-wider flex items-center space-x-1 shadow">
             <Sparkles className="w-3 h-3" />
-            <span>Section 6: Call To Action (Bottom Banner)</span>
+            <span>Section 6: Client Reviews & Testimonials</span>
+          </div>
+
+          <div className="mt-2 space-y-6">
+            {/* Headers Configuration */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-[11px] uppercase font-bold text-[#FFE379] mb-1">
+                  Section Badge (e.g. TESTIMONIAL)
+                </label>
+                <input
+                  type="text"
+                  value={homeData.reviews?.badge || ''}
+                  onChange={(e) => setHomeData({
+                    ...homeData,
+                    reviews: { ...homeData.reviews, badge: e.target.value }
+                  })}
+                  className="w-full px-3.5 py-2 bg-[#1A1A1A] border border-[#2D2D2D] rounded-xl text-xs text-white focus:border-[#FFE379] focus:outline-none uppercase"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[11px] uppercase font-bold text-white mb-1">
+                  Title Line 1 (White Headline)
+                </label>
+                <input
+                  type="text"
+                  value={homeData.reviews?.titleLine1 || ''}
+                  onChange={(e) => setHomeData({
+                    ...homeData,
+                    reviews: { ...homeData.reviews, titleLine1: e.target.value }
+                  })}
+                  className="w-full px-3.5 py-2 bg-[#1A1A1A] border border-[#2D2D2D] rounded-xl text-xs font-bold text-white focus:border-[#FFE379] focus:outline-none uppercase"
+                  style={{ fontFamily: "'Oswald', sans-serif" }}
+                />
+              </div>
+
+              <div>
+                <label className="block text-[11px] uppercase font-bold text-[#FFE379] mb-1">
+                  Title Line 2 (Cursive Golden Accent)
+                </label>
+                <input
+                  type="text"
+                  value={homeData.reviews?.titleLine2 || ''}
+                  onChange={(e) => setHomeData({
+                    ...homeData,
+                    reviews: { ...homeData.reviews, titleLine2: e.target.value }
+                  })}
+                  className="w-full px-3.5 py-2 bg-[#1A1A1A] border border-[#2D2D2D] rounded-xl text-xs font-bold text-[#FFE379] focus:border-[#FFE379] focus:outline-none"
+                />
+              </div>
+            </div>
+
+            {/* Reviews List Editor */}
+            <div className="pt-2 border-t border-[#232323]">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h3 className="text-xs font-black uppercase text-white tracking-wider" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                    Testimonial Cards ({(homeData.reviews?.items || []).length} Reviews)
+                  </h3>
+                  <p className="text-[11px] text-neutral-400">
+                    Add or edit client testimonials, usernames, project titles and 5-star ratings.
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    const currentItems = homeData.reviews?.items || [];
+                    const newItem = {
+                      id: `rev-${Date.now()}`,
+                      username: '@new_client',
+                      rating: 5,
+                      text: 'Exceptional visual storytelling and fast turnaround on our project!',
+                      project: 'Video Editing Project'
+                    };
+                    setHomeData({
+                      ...homeData,
+                      reviews: {
+                        ...homeData.reviews,
+                        items: [...currentItems, newItem]
+                      }
+                    });
+                  }}
+                  className="px-3 py-1.5 rounded-xl bg-[#FFE379] hover:bg-[#F2D76B] text-[#101010] text-[11px] font-black uppercase tracking-wider flex items-center space-x-1.5 transition shadow"
+                  style={{ fontFamily: "'Oswald', sans-serif" }}
+                >
+                  <Plus className="w-3.5 h-3.5 stroke-[3]" />
+                  <span>Add Review</span>
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {(homeData.reviews?.items || []).map((review, rIdx) => (
+                  <div
+                    key={review.id || rIdx}
+                    className="p-4 rounded-2xl bg-[#181818] border border-[#282828] hover:border-[#FFE379]/40 transition space-y-3 relative group/card"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-mono font-bold text-[#FFE379] uppercase">
+                        Review #{rIdx + 1}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const updated = (homeData.reviews?.items || []).filter((_, i) => i !== rIdx);
+                          setHomeData({
+                            ...homeData,
+                            reviews: { ...homeData.reviews, items: updated }
+                          });
+                        }}
+                        className="text-neutral-500 hover:text-red-400 p-1 rounded transition"
+                        title="Delete review"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-2">
+                      <div className="col-span-2">
+                        <label className="block text-[9px] uppercase font-bold text-neutral-400 mb-0.5">
+                          Username / Client Handle
+                        </label>
+                        <input
+                          type="text"
+                          value={review.username || ''}
+                          onChange={(e) => {
+                            const updated = [...(homeData.reviews?.items || [])];
+                            updated[rIdx] = { ...updated[rIdx], username: e.target.value };
+                            setHomeData({
+                              ...homeData,
+                              reviews: { ...homeData.reviews, items: updated }
+                            });
+                          }}
+                          placeholder="@client_name"
+                          className="w-full px-2.5 py-1.5 bg-[#121212] border border-[#282828] rounded text-xs text-white focus:border-[#FFE379] focus:outline-none"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-[9px] uppercase font-bold text-neutral-400 mb-0.5">
+                          Rating (1 - 5)
+                        </label>
+                        <select
+                          value={review.rating || 5}
+                          onChange={(e) => {
+                            const updated = [...(homeData.reviews?.items || [])];
+                            updated[rIdx] = { ...updated[rIdx], rating: Number(e.target.value) };
+                            setHomeData({
+                              ...homeData,
+                              reviews: { ...homeData.reviews, items: updated }
+                            });
+                          }}
+                          className="w-full px-2 py-1.5 bg-[#121212] border border-[#282828] rounded text-xs text-[#FFE379] font-bold focus:border-[#FFE379] focus:outline-none"
+                        >
+                          <option value={5}>⭐⭐⭐⭐⭐ (5)</option>
+                          <option value={4}>⭐⭐⭐⭐ (4)</option>
+                          <option value={3}>⭐⭐⭐ (3)</option>
+                          <option value={2}>⭐⭐ (2)</option>
+                          <option value={1}>⭐ (1)</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-[9px] uppercase font-bold text-neutral-400 mb-0.5">
+                        Project Tag / Service
+                      </label>
+                      <input
+                        type="text"
+                        value={review.project || ''}
+                        onChange={(e) => {
+                          const updated = [...(homeData.reviews?.items || [])];
+                          updated[rIdx] = { ...updated[rIdx], project: e.target.value };
+                          setHomeData({
+                            ...homeData,
+                            reviews: { ...homeData.reviews, items: updated }
+                          });
+                        }}
+                        placeholder="e.g. Cinematic Wedding Film"
+                        className="w-full px-2.5 py-1.5 bg-[#121212] border border-[#282828] rounded text-xs text-[#FFE379] font-mono focus:border-[#FFE379] focus:outline-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[9px] uppercase font-bold text-neutral-400 mb-0.5">
+                        Review Text
+                      </label>
+                      <textarea
+                        rows={3}
+                        value={review.text || ''}
+                        onChange={(e) => {
+                          const updated = [...(homeData.reviews?.items || [])];
+                          updated[rIdx] = { ...updated[rIdx], text: e.target.value };
+                          setHomeData({
+                            ...homeData,
+                            reviews: { ...homeData.reviews, items: updated }
+                          });
+                        }}
+                        placeholder="Write client testimonial..."
+                        className="w-full px-2.5 py-1.5 bg-[#121212] border border-[#282828] rounded text-xs text-neutral-300 focus:border-[#FFE379] focus:outline-none resize-y leading-relaxed"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        {/* ================= 7. CTA BANNER BUILDER ================= */}
+        <div className="relative group rounded-3xl p-6 sm:p-8 bg-[#141414]/90 border-2 border-[#262626] hover:border-[#FFE379]/50 transition-all shadow-xl">
+          <div className="absolute -top-3.5 left-6 px-3 py-0.5 rounded-full bg-[#FFE379] text-[#101010] text-[10px] font-black uppercase tracking-wider flex items-center space-x-1 shadow">
+            <Sparkles className="w-3 h-3" />
+            <span>Section 7: Call To Action (Bottom Banner)</span>
           </div>
 
           <div className="mt-2 space-y-4">
