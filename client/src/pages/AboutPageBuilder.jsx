@@ -51,6 +51,12 @@ export default function AboutPageBuilder() {
         ];
       }
 
+      // Ensure quote has authorScript / signature
+      if (!cloned.quote) cloned.quote = {};
+      if (!cloned.quote.authorScript) {
+        cloned.quote.authorScript = cloned.quote.signature || 'Parvej Mosharrof';
+      }
+
       // Ensure CTA has both buttons and styles
       if (!cloned.cta) {
         cloned.cta = {};

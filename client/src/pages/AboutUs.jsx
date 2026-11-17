@@ -31,6 +31,8 @@ export default function AboutUs() {
     authorTitle: 'Videography / Editor'
   };
 
+  const authorScriptText = quote.authorScript || quote.signature || 'Parvej Mosharrof';
+
   const profile = about.profile || {
     badge: 'SINCE 2022',
     heading: 'HELLO, IM PARVEJ MOSHARROF POLLOB',
@@ -176,7 +178,7 @@ export default function AboutUs() {
             className="text-3xl sm:text-4xl text-neutral-300 tracking-wide select-none"
             style={{ fontFamily: "'Great Vibes', cursive" }}
           >
-            {quote.authorScript}
+            {authorScriptText}
           </div>
           <h4 className="text-[11px] font-bold uppercase tracking-widest text-neutral-300 mt-2">
             {quote.authorName}
